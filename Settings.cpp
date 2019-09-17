@@ -1,31 +1,8 @@
 #include "Settings.h"
 
-Settings * Settings::instance = new Settings();
+//view widgets
+double Settings::mouse_wheel_zoom_factor = 1.2;
+bool Settings::mouse_wheel_inverted_zoom = false;
 
-Settings *Settings::getInstance()
-{
-	if(!Settings::instance)
-		return new Settings();
-
-	return Settings::instance;
-}
-
-void Settings::loadFromFile(QString file_content)
-{
-
-}
-
-QString Settings::getSaveFile()
-{
-
-}
-
-Settings::Settings()
-{
-
-}
-
-Settings::~Settings()
-{
-
-}
+//environment
+QString Settings::user_project_root = QDir::homePath() + "/Konstructor";

@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui->setupUi(this);
 	this->timerID = startTimer(50);
 
-	this->settings = Settings::getInstance();
 	loadSettings();
 }
 
@@ -51,7 +50,7 @@ void MainWindow::on_open_button_clicked()
     QString file_name = QFileDialog::getOpenFileName(
 				this,
 				tr("Open file"),
-				this->settings->user_project_root,
+                Settings::user_project_root,
 				konstructor_sketch_filter + ";;" + all_files_filter
 				);
 
@@ -70,7 +69,7 @@ void MainWindow::on_save_button_clicked()
     QFileDialog save_dialog(
                 this,
                 tr("Save file"),
-                this->settings->user_project_root,
+                Settings::user_project_root,
                 konstructor_sketch_filter
                 );
     save_dialog.setDefaultSuffix("kosk");

@@ -3,31 +3,34 @@
 ViewWidget::ViewWidget(QWidget * parent) : QGraphicsView (parent)
 {
     this->id_counter = 0;
-	this->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-	this->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
-	this->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    this->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
 	this->sketch_scene = new QGraphicsScene(this);
 	this->objects_in_sketch = new QVector<DrawableObject*>;
-	this->settings = Settings::getInstance();
+    this->sketch_scene->setSceneRect(-1000,-1000,2000,2000);
 
 	this->setScene(sketch_scene);
+
 
 	//test code
 	Point * p1 = addPoint(-100,-100);
 	Point * p2 = addPoint(-100, 100);
 	Point * p3 = addPoint(100, 100);
 	Point * p4 = addPoint(100,-100);
-	Line * l1 = addLine(p1, p2);
-	Line * l2 = addLine(p2, p3);
-	Line * l3 = addLine(p3, p4);
-	Line * l4 = addLine(p4, p1);
+    addLine(p1, p2);
+    addLine(p2, p3);
+    addLine(p3, p4);
+    addLine(p4, p1);
 
 
-	Circle * c = addCircle(p3, 50);
+    addCircle(p3, 50);
 	Point * p5 = addPoint(1000,1000);
 	Point * p6 = addPoint(1200,1200);
-	Line * l5 = addLine(p5,p6);
+    addLine(p5,p6);
+    addLine(p4, p5);
 
 	repaint();
 }
@@ -52,33 +55,54 @@ void ViewWidget::setTool(QString tool_name)
 
 //----------	file operations    ----------
 
-void ViewWidget::loadFromFile(QString path)
+void ViewWidget::loadFromFile(QString file)
 {
-    QStringList splited = path.split(";");
+    QStringList splited = file.trimmed().split(";");
 
     QVector<DrawableObject*> loaded_objects;
+    QStringList type_names = {
+        "Point",
+        "Line",
+        "Circle"
+    };
 
     foreach(QString line, splited)
     {
-        QString type_name = line.section('{',0);
-        QString content = line.section('{',1).section('}',0);
-    }
+        QString type_name = line.section('{',0,0).trimmed();
+        QString content = line.section('{',1,1).section('}',0,0);
+        DrawableObject * created_obj;
 
-    foreach(QString line, splited)
-    {
-        QString type_name = line.section('{',0);
-        QString content = line.section('{',1).section('}',0);
-
-        unsigned long id_from_line;
-
-        for(int i = 0; i < loaded_objects.length(); i++)
+        switch(type_names.lastIndexOf(type_name))
         {
-            if(loaded_objects.at(i)->getId() == id_from_line)
-            {
+            case 0:
+                created_obj = new Point();
+                break;
+            case 1:
+                created_obj = new Line();
+                created_obj->loadRelations(&loaded_objects);
+                break;
+            case 2:
+                created_obj = new Circle();
+                break;
+            default:
+                created_obj = nullptr;
+                break;
+        }
 
-            }
+        if(created_obj != nullptr)
+        {
+            created_obj->fromFileString(content);
+            loaded_objects.append(created_obj);
         }
     }
+
+    foreach(DrawableObject * obj, loaded_objects)
+    {
+        obj->loadRelations(&loaded_objects);
+    }
+
+    foreach(DrawableObject * obj, loaded_objects)
+        addDrawable(obj);
 
 }
 
@@ -172,28 +196,35 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent * event)
 
 void ViewWidget::mouseMoveEvent(QMouseEvent * event){
 
+    if(event->buttons() == Qt::RightButton)
+    {
+        this->translate(100,100);
+        this->dragMode();
+
+        this->drag_start_x = event->x();
+        this->drag_start_y = event->y();
+    }
+
 }
 
 void ViewWidget::wheelEvent(QWheelEvent * event)
 {
-	this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
-	if((event->delta() > 0) & !settings->mouse_wheel_inverted_zoom)
+    if((event->delta() > 0) & !Settings::mouse_wheel_inverted_zoom)
 	{
-		this->scale(settings->mouse_wheel_zoom_factor,
-					settings->mouse_wheel_zoom_factor
+        this->scale(Settings::mouse_wheel_zoom_factor,
+                    Settings::mouse_wheel_zoom_factor
 					);
 	}
-	else if ((event->delta() < 0) & settings->mouse_wheel_inverted_zoom)
+    else if ((event->delta() < 0) & Settings::mouse_wheel_inverted_zoom)
 	{
-		this->scale(settings->mouse_wheel_zoom_factor,
-					settings->mouse_wheel_zoom_factor
+        this->scale(Settings::mouse_wheel_zoom_factor,
+                    Settings::mouse_wheel_zoom_factor
 					);
 	}
 	else
 	{
-		this->scale(1.0 / settings->mouse_wheel_zoom_factor,
-					1.0 /settings-> mouse_wheel_zoom_factor
+        this->scale(1.0 / Settings::mouse_wheel_zoom_factor,
+                    1.0 / Settings::mouse_wheel_zoom_factor
 					);
 
 	}

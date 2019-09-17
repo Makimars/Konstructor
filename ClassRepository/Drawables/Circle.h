@@ -8,13 +8,13 @@ class Circle : public DrawableObject
 public:
 	Circle();
 	Circle(Point * center_point, double radius);
-	~Circle();
+    ~Circle() override;
 
 	void resolveTies() override;
 
 	//file handling
     void fromFileString(QString input) override;
-    void loadRelations(QVector<DrawableObject> * list) override;
+    void loadRelations(QVector<DrawableObject*> * list) override;
     QString toFileString() override;
 
 	//getters and setters

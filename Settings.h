@@ -7,29 +7,25 @@
 class Settings
 {
 public:
-	static Settings * getInstance();
-
-    void loadFromFile(QString file_content);
-    QString getSaveFile();
+    static void loadFromFile(QString file_content);
+    static QString getSaveFile();
 
 	//settings variables
 
 		//view widget
-	double mouse_wheel_zoom_factor = 1.2;
-	bool mouse_wheel_inverted_zoom = false;
+    static double mouse_wheel_zoom_factor;
+    static bool mouse_wheel_inverted_zoom;
 
 		//keyboard shortcuts
 
 		//environment
-	QString user_project_root = QDir::homePath() + "/Konstructor";
+    static QString user_project_root;
 
         //file extensions
 
 private:
 	Settings();
-	~Settings();
-
-	static Settings * instance;
+    ~Settings();
 
 };
 

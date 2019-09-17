@@ -25,8 +25,6 @@ private:
 	void loadSettings();
 	void saveSettings();
 
-	Settings * settings;
-
 protected:
 	void timerEvent(QTimerEvent *event);
 private slots:

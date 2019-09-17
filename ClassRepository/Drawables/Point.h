@@ -15,7 +15,7 @@ public:
     //file handling
     void fromFileString(QString json) override;
     QString toFileString() override;
-    void loadRelations(QVector<DrawableObject> *list) override;
+    void loadRelations(QVector<DrawableObject*> *list) override;
 
     //getters and setters
 	double getX();

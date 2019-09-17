@@ -17,11 +17,12 @@ public:
     //file handling
     void fromFileString(QString json) override;
     QString toFileString() override;
-    void loadRelations(QVector<DrawableObject> *list) override;
+    void loadRelations(QVector<DrawableObject*> *list) override;
 
     //getters and setters
 	Vector2D *getLineVector();
 	void setLineVector(Vector2D vector);
+    double lenght();
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
 	Point * getStartPoint();
 	Point * getEndPoint();

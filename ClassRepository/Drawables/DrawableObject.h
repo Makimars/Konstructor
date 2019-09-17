@@ -12,7 +12,7 @@ class DrawableObject : public QGraphicsItem
 {
 public:
     DrawableObject();
-	~DrawableObject();
+    ~DrawableObject() override;
 
 	bool is_constructional = false;
 	bool highlight = false;
@@ -21,8 +21,8 @@ public:
 
 	//file handling
     virtual void fromFileString(QString input);
-    virtual void loadRelations(QVector<DrawableObject> *list);
     virtual QString toFileString();
+    virtual void loadRelations(QVector<DrawableObject*> *list) = 0;
 
 	//getters and setters
     void setName(QString name);
@@ -39,6 +39,9 @@ public:
     void fileAddVar(QString variable, unsigned int value);
 	void fileAddVar(QString variable, bool value);
 	QString fileFinish();
+
+    //array operator
+    static DrawableObject * getById(QVector<DrawableObject*> * list, unsigned int id);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;

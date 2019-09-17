@@ -1,12 +1,17 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
+#include <QtMath>
+
 struct Vector2D{
 	Vector2D(){};
 	Vector2D(double x, double y){
 		this->x = x;
 		this->y = y;
 	}
+    double lenght(){
+        return sqrt((x*x) + (y*y));
+    }
 	double x,y;
 };
 

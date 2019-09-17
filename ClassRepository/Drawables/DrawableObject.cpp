@@ -20,13 +20,16 @@ void DrawableObject::resolveTies()
 //input format: name:value,type:value,
 void DrawableObject::fromFileString(QString input)
 {
-	QStringList var_names;
-	var_names[0] = "id";
-	var_names[1] = "name";
-	var_names[2] = "is_constructional";
+    this->file = input;
+
+    QStringList var_names = {
+        "id",
+        "name",
+        "is_constructional"
+    };
 
 	QStringList variables = input.split(',');
-	for(unsigned long i = 0; i < variables.length() - 1; i++)
+    for(int i = 0; i < variables.length() - 1; i++)
 	{
 		QStringList parts = variables[i].split(":");
 		QString var_name = parts[0];
@@ -34,7 +37,7 @@ void DrawableObject::fromFileString(QString input)
 
 		switch (var_names.indexOf(var_name)) {
 			case 0:
-				this->id = QVariant(var_value).toULongLong();
+                this->id = QVariant(var_value).toUInt();
 				break;
 			case 1:
 				this->name = var_value;
@@ -46,23 +49,23 @@ void DrawableObject::fromFileString(QString input)
 				break;
 		}
 
-	}
-}
-
-void DrawableObject::loadRelations(QVector<DrawableObject> * list)
-{
-
+    }
 }
 
 QString DrawableObject::toFileString()
 {
-	this->file = "";
-	this->fileAddVar("id", this->getId());
-    qDebug() << this->getId();
-	this->fileAddVar("name", this->getName());
-	this->fileAddVar("is_constructional", this->is_constructional);
-	return this->file;
+    this->file = "";
+    this->fileAddVar("id", this->getId());
+    this->fileAddVar("name", this->getName());
+    this->fileAddVar("is_constructional", this->is_constructional);
+    return this->file;
 }
+/*
+void DrawableObject::loadRelations(QVector<DrawableObject *> * list)
+{
+    qDebug() << "parent relations";
+}
+*/
 
 //----------	getters and setters    ----------
 
@@ -88,7 +91,7 @@ void DrawableObject::setId(unsigned int id)
 
 unsigned int DrawableObject::getId()
 {
-	return this->id;
+    return this->id;
 }
 
 //----------	saving    ----------
@@ -127,6 +130,19 @@ QString DrawableObject::fileFinish()
 {
 	this->file = this->type + "{" + this->file + "};";
     return this->file;
+}
+
+//----------    array operator    ----------
+
+DrawableObject *DrawableObject::getById(QVector<DrawableObject *> * list, unsigned int id)
+{
+    for(int i = 0; i < list->length(); i++)
+    {
+        if(list->at(i)->getId() == id)
+            return list->at(i);
+    }
+
+    return nullptr;
 }
 
 //----------	QGraphicsItem overrides    ----------

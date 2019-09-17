@@ -27,11 +27,12 @@ void Circle::fromFileString(QString input)
 {
 	DrawableObject::fromFileString(input);
 
-	QStringList var_names;
-	var_names[0] = "radius";
+    QStringList var_names = {
+      "radius"
+    };
 
 	QStringList variables = input.split(',');
-	for(unsigned long i = 0; i < variables.length() - 1; i++)
+    for(int i = 0; i < variables.length() - 1; i++)
 	{
 		QStringList parts = variables[i].split(":");
 		QString var_name = parts[0];
@@ -48,9 +49,33 @@ void Circle::fromFileString(QString input)
 	}
 }
 
-void Circle::loadRelations(QVector<DrawableObject> * list)
+void Circle::loadRelations(QVector<DrawableObject*> * list)
 {
+    QStringList var_names = {
+        "center_point"
+    };
 
+    QStringList variables = this->file.split(',');
+    for(int i = 0; i < variables.length() - 1; i++)
+    {
+        QStringList parts = variables[i].split(":");
+        QString var_name = parts[0];
+        QString var_value = parts[1];
+
+        DrawableObject * obj;
+
+        switch (var_names.indexOf(var_name)) {
+            case 0:
+                obj = DrawableObject::getById(list, QVariant(var_value).toUInt());
+                if(obj->getType() == "Point")
+                    this->center_point = (Point*)obj;
+
+                break;
+            default:
+                break;
+        }
+
+    }
 }
 
 QString Circle::toFileString()

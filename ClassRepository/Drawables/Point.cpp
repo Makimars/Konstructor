@@ -28,12 +28,13 @@ void Point::fromFileString(QString input)
 {
 	DrawableObject::fromFileString(input);
 
-	QStringList var_names;
-	var_names[0] = "x";
-	var_names[1] = "y";
+    QStringList var_names = {
+        "x",
+        "y"
+    };
 
-	QStringList variables = input.split(',');
-	for(unsigned long i = 0; i < variables.length() - 1; i++)
+    QStringList variables = input.split(',');
+    for(int i = 0; i < variables.length() - 1; i++)
 	{
 		QStringList parts = variables[i].split(":");
 		QString var_name = parts[0];
@@ -61,7 +62,7 @@ QString Point::toFileString()
     return DrawableObject::fileFinish();
 }
 
-void Point::loadRelations(QVector<DrawableObject> * list)
+void Point::loadRelations(QVector<DrawableObject*> * list)
 {
 
 }
@@ -85,7 +86,7 @@ QPointF Point::getLocation()
 
 void Point::setLocation(QPointF point)
 {
-	this->x = point.x();
+    this->x = point.x();
 	this->y = point.y();
 }
 

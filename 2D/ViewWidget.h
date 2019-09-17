@@ -23,26 +23,25 @@ public:
 
 	//file operations
 	void loadFromFile(QString file_contents);
-    void saveToFile(QString path);
+    void saveToFile(QString file);
 
 private:
 	MainWindow * main_window;
-	QGraphicsScene * sketch_scene;
-	Settings * settings;
+    QGraphicsScene * sketch_scene;
 
 	QVector<DrawableObject*> * objects_in_sketch;
     unsigned int id_counter = 0;
 
-	Point * last_click_point, * second_last_click_point;
 
 	//tools processing
+    Point * last_click_point, * second_last_click_point;
 	Point *pointSnapping(Point *point);
 
 	//tools
 	QString selected_tool;
 
 	//object managment
-	DrawableObject * addDrawable(DrawableObject * obj);
+    DrawableObject * addDrawable(DrawableObject * obj);
 	Point * addPoint(double x, double y);
 	Line * addLine(Point * start_point, Point * end_point);
 	Circle * addCircle(Point * center, double radius);
@@ -55,6 +54,9 @@ private:
 	void wheelEvent(QWheelEvent * event);
 	void keyPressEvent(QKeyEvent * event);
 
+    //draging
+    double drag_start_x;
+    double drag_start_y;
 
 };
 
