@@ -116,6 +116,33 @@ Point * Line::getEndPoint()
 	return this->end_point;
 }
 
+//----------    Geometry    ----------
+
+double Line::getAngle(Line * reference_line)
+{
+    double scalar_mult = (
+            this->line_vector.x * reference_line->getLineVector()->x
+            + this->line_vector.y * reference_line->getLineVector()->y
+            );
+
+    return qAcos(
+                scalar_mult / (this->lenght() * reference_line->lenght())
+                );
+}
+
+void Line::setAngle(double new_angle, Line * reference_line)
+{
+    /*
+    double angle_1 = M_PI - new_angle - reference_line->getAngle(positive_axis);
+    double angle_2 = M_PI / 2 - angle_1;
+
+    double x = qSin(angle_1) * this->lenght();
+    double y = qSin(angle_2) * this->lenght();
+
+    this->setLineVector(Vector2D(x, y));
+*/
+}
+
 //----------	QGraphicsItem overrides    ----------
 
 QRectF Line::boundingRect() const

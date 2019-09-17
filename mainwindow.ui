@@ -482,7 +482,7 @@
   <customwidget>
    <class>ViewWidget</class>
    <extends>QGraphicsView</extends>
-   <header>2D/ViewWidget.h</header>
+   <header location="global">ViewWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

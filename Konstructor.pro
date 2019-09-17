@@ -25,24 +25,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    2D/ViewWidget.cpp \
+    main.cpp \
+    mainwindow.cpp \
+    ViewWidget.cpp \
+    ClassRepository/Drawables/Circle.cpp \
     ClassRepository/Drawables/DrawableObject.cpp \
     ClassRepository/Drawables/Line.cpp \
     ClassRepository/Drawables/Point.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    Settings.cpp \
-    ClassRepository/Drawables/Circle.cpp
+    ClassRepository/Plane.cpp \
+    ClassRepository/Settings.cpp \
 
 HEADERS += \
-    2D/ViewWidget.h \
+    mainwindow.h \
+    ViewWidget.h \
+    ClassRepository/Drawables/Circle.h \
     ClassRepository/Drawables/DrawableObject.h \
     ClassRepository/Drawables/Line.h \
     ClassRepository/Drawables/Point.h \
+    ClassRepository/Plane.h \
+    ClassRepository/Settings.h \
     ClassRepository/Vector.h \
-    mainwindow.h \
-    Settings.h \
-    ClassRepository/Drawables/Circle.h
 
 FORMS += \
         mainwindow.ui

@@ -18,7 +18,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::timerEvent(QTimerEvent *event)
 {
-	this->ui->main_view_widget->repaint();
+    this->ui->main_view_widget->repaint();
 }
 
 //----------	settings    ----------

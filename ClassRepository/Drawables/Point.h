@@ -27,6 +27,13 @@ public:
     //aritmetic functions
 	double distanceFrom(QPointF point);
 
+    //QGraphicsItem overrides
+    QRectF boundingRect() const override;
+    void paint(QPainter * painter,
+               const QStyleOptionGraphicsItem * option,
+               QWidget * widget
+               )override;
+
 private:
 	double x, y;
 

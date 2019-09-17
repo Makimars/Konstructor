@@ -60,12 +60,12 @@ QString DrawableObject::toFileString()
     this->fileAddVar("is_constructional", this->is_constructional);
     return this->file;
 }
-/*
+
 void DrawableObject::loadRelations(QVector<DrawableObject *> * list)
 {
     qDebug() << "parent relations";
 }
-*/
+
 
 //----------	getters and setters    ----------
 

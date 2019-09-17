@@ -1,9 +1,7 @@
 #ifndef LINE_H
 #define LINE_H
 
-#include "DrawableObject.h"
 #include "Point.h"
-#include "ClassRepository/Vector.h"
 
 class Line : public DrawableObject
 {
@@ -20,12 +18,16 @@ public:
     void loadRelations(QVector<DrawableObject*> *list) override;
 
     //getters and setters
-	Vector2D *getLineVector();
-	void setLineVector(Vector2D vector);
     double lenght();
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
 	Point * getStartPoint();
 	Point * getEndPoint();
+
+    //Geonmetry
+    Vector2D *getLineVector();
+    void setLineVector(Vector2D vector);
+    double getAngle(Line * reference_line);
+    void setAngle(double angle, Line * reference_line);
 
     //QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -36,7 +38,10 @@ public:
 
 private:
 	Point *start_point, *end_point;
-	Vector2D line_vector;
+
+    Vector2D line_vector;
+
+    //Plane * current_plane;
 };
 
 #endif // LINE_H

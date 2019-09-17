@@ -50,7 +50,6 @@ void Point::fromFileString(QString input)
 			default:
 				break;
 		}
-
 	}
 }
 
@@ -62,7 +61,7 @@ QString Point::toFileString()
     return DrawableObject::fileFinish();
 }
 
-void Point::loadRelations(QVector<DrawableObject*> * list)
+void Point::loadRelations(QVector<DrawableObject *> *list)
 {
 
 }
@@ -100,5 +99,17 @@ void Point::setLocation(double x, double y)
 
 double Point::distanceFrom(QPointF point)
 {
-	return qSqrt(pow(point.x() - this->x, 2) + pow(point.y() - this->y, 2));
+    return qSqrt(pow(point.x() - this->x, 2) + pow(point.y() - this->y, 2));
+}
+
+//----------    QGraphicsItem overrides    ----------
+
+QRectF Point::boundingRect() const
+{
+    return QRectF(this->x, this->y, 20, 20);
+}
+
+void Point::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+{
+    painter->drawEllipse(boundingRect());
 }

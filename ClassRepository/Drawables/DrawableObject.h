@@ -8,6 +8,8 @@
 #include <QtMath>
 #include <QDebug>
 
+#include "ClassRepository/Vector.h"
+
 class DrawableObject : public QGraphicsItem
 {
 public:
@@ -52,8 +54,8 @@ public:
 
 protected:
     QString type, name;
-	QPainter * painter;
     unsigned int id;
+
 
 	//saving
 	QString file;
