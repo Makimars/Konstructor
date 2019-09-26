@@ -7,25 +7,30 @@
 class Settings
 {
 public:
-    static void loadFromFile(QString file_content);
-    static QString getSaveFile();
+	static void loadFromFile(QString file_content);
+	static QString getSaveFile();
 
-	//settings variables
+	//view widget
+	static double mouse_wheel_zoom_factor;
+	static bool mouse_wheel_inverted_zoom;
+	static double point_snapping_distance;
 
-		//view widget
-    static double mouse_wheel_zoom_factor;
-    static bool mouse_wheel_inverted_zoom;
+	static double default_sketch_height;
+	static double default_sketch_width;
 
-		//keyboard shortcuts
+	static int point_render_size;
 
-		//environment
-    static QString user_project_root;
+	//keyboard shortcuts
 
-        //file extensions
+	//environment
+	static QString user_project_root;
+
+	//file extensions
+
 
 private:
 	Settings();
-    ~Settings();
+	~Settings();
 
 };
 

@@ -60,7 +60,7 @@
        <locale language="English" country="UnitedKingdom"/>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="usesScrollButtons">
        <bool>true</bool>
@@ -327,6 +327,9 @@
           <property name="toolButtonStyle">
            <enum>Qt::ToolButtonTextUnderIcon</enum>
           </property>
+          <property name="autoRaise">
+           <bool>false</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -475,7 +478,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="status_bar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

@@ -20,14 +20,14 @@ public:
     //getters and setters
     double lenght();
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
-	Point * getStartPoint();
-	Point * getEndPoint();
+	Point *getStartPoint();
+	Point *getEndPoint();
 
     //Geonmetry
-    Vector2D *getLineVector();
+	Vector2D *getLineVector();
     void setLineVector(Vector2D vector);
-    double getAngle(Line * reference_line);
-    void setAngle(double angle, Line * reference_line);
+	double getAngle(Line *reference_line);
+	void setAngle(double angle, Line *reference_line);
 
     //QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -41,7 +41,8 @@ private:
 
     Vector2D line_vector;
 
-    //Plane * current_plane;
+    //plane axes
+	Line *up_up_axis;
 };
 
 #endif // LINE_H

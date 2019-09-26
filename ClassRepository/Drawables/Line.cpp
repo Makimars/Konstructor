@@ -42,7 +42,7 @@ QString Line::toFileString()
     return DrawableObject::fileFinish();
 }
 
-void Line::loadRelations(QVector<DrawableObject*> * list)
+void Line::loadRelations(QVector<DrawableObject*> *list)
 {
     QStringList var_names = {
         "start_point",
@@ -56,7 +56,7 @@ void Line::loadRelations(QVector<DrawableObject*> * list)
         QString var_name = parts[0];
         QString var_value = parts[1];
 
-        DrawableObject * obj;
+		DrawableObject *obj;
 
         switch (var_names.indexOf(var_name)) {
             case 0:
@@ -81,7 +81,7 @@ void Line::loadRelations(QVector<DrawableObject*> * list)
 
 //----------	getters and setters    ----------
 
-Vector2D * Line::getLineVector()
+Vector2D *Line::getLineVector()
 {
     return &this->line_vector;
 }
@@ -89,8 +89,8 @@ Vector2D * Line::getLineVector()
 void Line::setLineVector(Vector2D vector)
 {
     double vec_conf = lenght()  / vector.lenght();
-    this->line_vector.x = vec_conf * vector.x;
-    this->line_vector.y = vec_conf * vector.y;
+	this->line_vector.x = vec_conf *vector.x;
+	this->line_vector.y = vec_conf *vector.y;
 
     this->end_point->setX(
                 this->start_point->getY() + this->line_vector.x
@@ -106,38 +106,38 @@ double Line::lenght()
     return this->start_point->distanceFrom(end_point->getLocation());
 }
 
-Point * Line::getStartPoint()
+Point *Line::getStartPoint()
 {
 	return this->start_point;
 }
 
-Point * Line::getEndPoint()
+Point *Line::getEndPoint()
 {
 	return this->end_point;
 }
 
 //----------    Geometry    ----------
 
-double Line::getAngle(Line * reference_line)
+double Line::getAngle(Line *reference_line)
 {
     double scalar_mult = (
-            this->line_vector.x * reference_line->getLineVector()->x
-            + this->line_vector.y * reference_line->getLineVector()->y
+			this->line_vector.x *reference_line->getLineVector()->x
+			+ this->line_vector.y *reference_line->getLineVector()->y
             );
 
     return qAcos(
-                scalar_mult / (this->lenght() * reference_line->lenght())
+				scalar_mult / (this->lenght() *reference_line->lenght())
                 );
 }
 
-void Line::setAngle(double new_angle, Line * reference_line)
+void Line::setAngle(double new_angle, Line *reference_line)
 {
     /*
     double angle_1 = M_PI - new_angle - reference_line->getAngle(positive_axis);
     double angle_2 = M_PI / 2 - angle_1;
 
-    double x = qSin(angle_1) * this->lenght();
-    double y = qSin(angle_2) * this->lenght();
+	double x = qSin(angle_1) *this->lenght();
+	double y = qSin(angle_2) *this->lenght();
 
     this->setLineVector(Vector2D(x, y));
 */
@@ -153,13 +153,13 @@ QRectF Line::boundingRect() const
     return QRectF(first, second);
 }
 
-void Line::paint(QPainter * painter,
-				 const QStyleOptionGraphicsItem * option,
-				 QWidget * widget)
+void Line::paint(QPainter *painter,
+				 const QStyleOptionGraphicsItem *option,
+				 QWidget *widget)
 {
-	painter->drawLine(this->start_point->getLocation(),
-					  this->end_point->getLocation()
-					  );
+    painter->drawLine(this->start_point->getLocation(),
+                      this->end_point->getLocation()
+                     );
 }
 
 

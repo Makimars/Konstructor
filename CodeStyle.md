@@ -1,13 +1,13 @@
-#Konstructor Code style
+# Konstructor Code style
 
-###Variables           - snake case
-###Functions           - camel case
-###Class/Struct name   - pascal case
+### Variables           - snake case
+### Functions           - camel case
+### Class/Struct name   - pascal case
 
 While and For follows same rule as if statements
 
-###Conditions:
-####each case has only one line of code
+### Conditions:
+#### each case has only one line of code
 
 ```
 if(condition)
@@ -15,7 +15,7 @@ if(condition)
 else
     oneLineCode;
 ```
-####at least one case has two or more lines of code
+#### at least one case has two or more lines of code
 ```
 if(condition)
 {
@@ -28,7 +28,7 @@ else
     Code;
 }
 ```
-####more then one condition
+#### more then one condition
 ```
 if(condition1 = value1              &
     condition2 = value2             &
@@ -38,9 +38,9 @@ if(condition1 = value1              &
     Code;
 }
 ```
-####note: if only two coditions, they can be left on one line depending on their lenght
+#### note: if only two coditions, they can be left on one line depending on their lenght
 
-###Switch:
+### Switch:
 ```
 switch(variable)
 {
@@ -48,17 +48,15 @@ switch(variable)
         Code;
         Code;
         break;
-
     case value:
         Code;
         break;
-
     default:
         break;
 }
 ```
 
-###Functions:
+### Functions:
 ```
 function funcName()
 {
@@ -66,8 +64,8 @@ function funcName()
     Code;
 }
 ```
-####if two or more parameters, give each one new line
-#####definition
+#### if two or more parameters, give each one new line
+##### definition
 ```
 function funcName(parameter1,
                     parameter2,
@@ -78,7 +76,7 @@ function funcName(parameter1,
     Code;
 }
 ```
-#####declaration
+##### declaration
 ```
 function funcName(parameter1,
                     parameter2,
@@ -88,7 +86,7 @@ function funcName(parameter1,
                  );
 
 ```
-#####calling
+##### calling
 ```
 funcName(parameter1,
             parameter2,
@@ -97,28 +95,27 @@ funcName(parameter1,
             parameter5
         );
 ```
-####note: if only two parameters, they can be left on one line depending on their lenght
+#### note: if only two parameters, they can be left on one line depending on their lenght
 
 
-###Pointers:
+### Pointers:
 ```
-int * variable;
-int * function(int * parameter);
-int * class::foo(){
+int *variable;
+int *function(int *parameter);
+int *class::foo(){
 }
 ```
 
-###Variables and functions in class:
+### Variables and functions in class:
 If calling member variable, always use keyword 'this'.
 Only local variables can be used without it.
 Function are always used without keyword 'this'
-####calling many funcions / accessing many members
+#### calling many funcions / accessing many members
 ```
 object
     ->fucntion()
     ->function()
     ->variable
     ->function()
-    ->variable
-    ;
+    ->variable;
 ```

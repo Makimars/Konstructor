@@ -32,8 +32,8 @@ SOURCES += \
     ClassRepository/Drawables/DrawableObject.cpp \
     ClassRepository/Drawables/Line.cpp \
     ClassRepository/Drawables/Point.cpp \
-    ClassRepository/Plane.cpp \
     ClassRepository/Settings.cpp \
+    ClassRepository/GlobalVariables.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -42,9 +42,9 @@ HEADERS += \
     ClassRepository/Drawables/DrawableObject.h \
     ClassRepository/Drawables/Line.h \
     ClassRepository/Drawables/Point.h \
-    ClassRepository/Plane.h \
     ClassRepository/Settings.h \
     ClassRepository/Vector.h \
+    ClassRepository/GlobalVariables.h
 
 FORMS += \
         mainwindow.ui

@@ -5,6 +5,13 @@ Point::Point() : DrawableObject()
 	this->type = "Point";
 }
 
+Point::Point(QPointF location)
+{
+    this->type = "Point";
+    this->x = location.x();
+    this->y = location.y();
+}
+
 Point::Point(double x, double y) : DrawableObject()
 {
 	this->type = "Point";
@@ -92,7 +99,7 @@ void Point::setLocation(QPointF point)
 void Point::setLocation(double x, double y)
 {
 	this->x = x;
-	this->y = y;
+    this->y = y;
 }
 
 //----------	aritmetic functions    ----------
@@ -106,10 +113,20 @@ double Point::distanceFrom(QPointF point)
 
 QRectF Point::boundingRect() const
 {
-    return QRectF(this->x, this->y, 20, 20);
+    return QRectF(this->x, this->y, 1, 1);
 }
 
-void Point::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-    painter->drawEllipse(boundingRect());
+void Point::paint(QPainter *painter,
+				  const QStyleOptionGraphicsItem *option,
+				  QWidget *widget)
+{    
+    painter->setBrush(Qt::white);
+
+    int coef = Settings::point_render_size;
+    if(this->highlight)
+        coef *= 2;
+
+    QRectF rect(this->x-coef, this->y-coef, coef  + coef, coef + coef);
+
+    painter->drawEllipse(rect);
 }

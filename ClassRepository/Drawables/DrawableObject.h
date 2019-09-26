@@ -9,6 +9,7 @@
 #include <QDebug>
 
 #include "ClassRepository/Vector.h"
+#include "ClassRepository/Settings.h"
 
 class DrawableObject : public QGraphicsItem
 {
@@ -43,13 +44,13 @@ public:
 	QString fileFinish();
 
     //array operator
-    static DrawableObject * getById(QVector<DrawableObject*> * list, unsigned int id);
+	static DrawableObject *getById(QVector<DrawableObject*> *list, unsigned int id);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
-	void paint(QPainter * painter,
-			   const QStyleOptionGraphicsItem * option,
-			   QWidget * widget
+	void paint(QPainter *painter,
+			   const QStyleOptionGraphicsItem *option,
+			   QWidget *widget
 			   )override;
 
 protected:

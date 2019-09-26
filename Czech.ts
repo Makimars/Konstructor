@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="cs_CZ" sourcelanguage="en_GB">
 <context>
     <name>MainWindow</name>
     <message>
@@ -11,77 +11,77 @@
     <message>
         <location filename="mainwindow.ui" line="70"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubor</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="97"/>
         <source>New</source>
-        <translation type="unfinished"></translation>
+        <translation>Nový</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="123"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="149"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="175"/>
         <source>Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Uložit jako</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="201"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Export</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="227"/>
         <source>Print</source>
-        <translation type="unfinished"></translation>
+        <translation>Tisk</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="253"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="279"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukončit</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="300"/>
         <source>Draw</source>
-        <translation type="unfinished"></translation>
+        <translation>Nákres</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="318"/>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation>Úsečka</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="353"/>
         <source>Circle</source>
-        <translation type="unfinished"></translation>
+        <translation>Kruh</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="388"/>
         <source>Rectangle</source>
-        <translation type="unfinished"></translation>
+        <translation>Obdelník</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="423"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Značka</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="50"/>
         <source>Open file</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít soubor</translation>
     </message>
 </context>
 </TS>

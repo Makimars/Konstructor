@@ -7,6 +7,7 @@ class Point : public DrawableObject
 {
 public:
 	Point();
+    Point(QPointF location);
 	Point(double x, double y);
     ~Point() override;
 
@@ -29,9 +30,9 @@ public:
 
     //QGraphicsItem overrides
     QRectF boundingRect() const override;
-    void paint(QPainter * painter,
-               const QStyleOptionGraphicsItem * option,
-               QWidget * widget
+	void paint(QPainter *painter,
+			   const QStyleOptionGraphicsItem *option,
+			   QWidget *widget
                )override;
 
 private:

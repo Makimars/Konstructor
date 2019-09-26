@@ -5,7 +5,7 @@ Circle::Circle()
 	this->type = "Circle";
 }
 
-Circle::Circle(Point * center_point, double radius)
+Circle::Circle(Point *center_point, double radius)
 {
 	this->type = "Circle";
 	this->center_point = center_point;
@@ -49,7 +49,7 @@ void Circle::fromFileString(QString input)
 	}
 }
 
-void Circle::loadRelations(QVector<DrawableObject*> * list)
+void Circle::loadRelations(QVector<DrawableObject*> *list)
 {
     QStringList var_names = {
         "center_point"
@@ -62,7 +62,7 @@ void Circle::loadRelations(QVector<DrawableObject*> * list)
         QString var_name = parts[0];
         QString var_value = parts[1];
 
-        DrawableObject * obj;
+		DrawableObject *obj;
 
         switch (var_names.indexOf(var_name)) {
             case 0:
@@ -88,12 +88,12 @@ QString Circle::toFileString()
 
 //----------	getters and setters    ----------
 
-Point * Circle::getCenterPoint()
+Point *Circle::getCenterPoint()
 {
 	return this->center_point;
 }
 
-double * Circle::getRadius()
+double *Circle::getRadius()
 {
 	return &this->radius;
 }
@@ -119,9 +119,9 @@ QRectF Circle::boundingRect() const
 			  );
 }
 
-void Circle::paint(QPainter * painter,
-				   const QStyleOptionGraphicsItem * option,
-				   QWidget * widget)
+void Circle::paint(QPainter *painter,
+				   const QStyleOptionGraphicsItem *option,
+				   QWidget *widget)
 {
-	painter->drawEllipse(this->boundingRect());
+     painter->drawEllipse(this->boundingRect());
 }

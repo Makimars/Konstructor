@@ -61,7 +61,7 @@ QString DrawableObject::toFileString()
     return this->file;
 }
 
-void DrawableObject::loadRelations(QVector<DrawableObject *> * list)
+void DrawableObject::loadRelations(QVector<DrawableObject *> *list)
 {
     qDebug() << "parent relations";
 }
@@ -134,7 +134,7 @@ QString DrawableObject::fileFinish()
 
 //----------    array operator    ----------
 
-DrawableObject *DrawableObject::getById(QVector<DrawableObject *> * list, unsigned int id)
+DrawableObject *DrawableObject::getById(QVector<DrawableObject *> *list, unsigned int id)
 {
     for(int i = 0; i < list->length(); i++)
     {
@@ -152,9 +152,9 @@ QRectF DrawableObject::boundingRect() const
 	return QRectF();
 }
 
-void DrawableObject::paint(QPainter * painter,
-						   const QStyleOptionGraphicsItem * option,
-						   QWidget * widget)
+void DrawableObject::paint(QPainter *painter,
+						   const QStyleOptionGraphicsItem *option,
+						   QWidget *widget)
 {
 
 }

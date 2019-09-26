@@ -18,8 +18,11 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
+	//ui handeling
+	void setTool(QString tool);
+
 private:
-	Ui::MainWindow * ui;
+	Ui::MainWindow *ui;
 	int timerID;
 
 	//settings
@@ -31,7 +34,7 @@ protected:
 private slots:
 
     //ui events
-        //file tab
+		//file tab
 	void on_new_button_clicked();
 	void on_open_button_clicked();
 	void on_save_button_clicked();
@@ -41,7 +44,12 @@ private slots:
 	void on_settings_button_clicked();
 	void on_quit_button_clicked();
         //draw tab
+	void on_line_button_clicked();
+	void on_circle_button_clicked();
+	void on_rectangle_button_clicked();
+	void on_label_button_clicked();
 
+	void escape();
 };
 
 #endif // MAINWINDOW_H
