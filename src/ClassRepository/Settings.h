@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDir>
+#include <QKeySequence>
 
 class Settings
 {
@@ -21,6 +22,16 @@ public:
 	static int point_render_size;
 
 	//keyboard shortcuts
+	static QKeySequence
+		new_file,
+		open_file,
+		save_file,
+		save_file_as,
+		export_file,
+		print_file,
+		open_settings,
+		quit_app;
+
 
 	//environment
 	static QString user_project_root;

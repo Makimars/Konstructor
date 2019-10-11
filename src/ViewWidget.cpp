@@ -18,6 +18,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->previous_clicked_point = nullptr;
 	this->clicked_point = nullptr;
     this->line_preview = nullptr;
+	this->circle_preview = new Circle();
 
 	this->sketch_scene->setSceneRect(
 				-Settings::default_sketch_width / 2,
@@ -39,6 +40,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	addCircle(p3, 50);
 
 	repaint();
+
 }
 
 ViewWidget::~ViewWidget()
@@ -60,8 +62,7 @@ void ViewWidget::setTool(QString tool_name)
 	this->clicked_point = nullptr;
 	this->previous_clicked_point = nullptr;
 
-	this->sketch_scene->removeItem(this->line_preview);
-	//removeDrawable(this->line_preview);
+    this->sketch_scene->removeItem(this->line_preview);
 }
 
 //----------	file operations    ----------
@@ -248,7 +249,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
     switch(Global::tool_names.lastIndexOf(this->selected_tool))
 	{
-		case 0:
+		case 0: //Line
 			if(this->line_preview != nullptr)
 				removeDrawable(this->line_preview);
 
@@ -257,13 +258,38 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 			if(this->previous_clicked_point != nullptr)
 			{
-				if(this->objects_in_sketch->lastIndexOf(previous_clicked_point) != -1)
-					addDrawable(previous_clicked_point);
-				addDrawable(clicked_point);
-				addLine(previous_clicked_point, clicked_point);
+				if(this->objects_in_sketch->lastIndexOf(this->previous_clicked_point) != -1)
+					addDrawable(this->previous_clicked_point);
+				addDrawable(this->clicked_point);
+				addLine(this->previous_clicked_point, this->clicked_point);
 			}
 			break;
-		case 1:
+		case 1://Circle
+			/*if(this->circle_preview != nullptr)
+				removeDrawable(this->circle_preview);
+
+			this->circle_preview = new Circle(this->clicked_point,
+											  this->clicked_point
+												->distanceFrom(this->mouse_point->getLocation())
+											  );*/
+
+			this->circle_preview->setCenterPoint(this->clicked_point);
+			this->circle_preview->setRadius(this->clicked_point
+											->distanceFrom(this->mouse_point->getLocation())
+										  );
+			this->sketch_scene->addItem(this->circle_preview);
+
+			if(this->previous_clicked_point != nullptr)
+			{
+				if(this->objects_in_sketch->lastIndexOf(this->previous_clicked_point) != -1)
+					addDrawable(this->previous_clicked_point);
+				addCircle(this->previous_clicked_point,
+						  this->previous_clicked_point->distanceFrom(this->clicked_point->getLocation())
+						  );
+				this->previous_clicked_point = nullptr;
+				this->clicked_point = nullptr;
+			}
+
 
 			break;
 		case 2:
@@ -327,10 +353,5 @@ void ViewWidget::wheelEvent(QWheelEvent *event)
 
 void ViewWidget::keyPressEvent(QKeyEvent *event)
 {
-	switch (event->key()) {
-		case Qt::Key::Key_Escape:
-			emit escape();
-			break;
-	}
-
+    emit keyPressed(event);
 }

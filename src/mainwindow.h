@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QFile>
 
 #include "ClassRepository/Settings.h"
 
@@ -49,7 +50,7 @@ private slots:
 	void on_rectangle_button_clicked();
 	void on_label_button_clicked();
 
-	void escape();
+	void viewKeyPress(QKeyEvent *event);
 };
 
 #endif // MAINWINDOW_H

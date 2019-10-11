@@ -19,6 +19,7 @@ public:
 
 	//getters and setters
 	Point *getCenterPoint();
+	void setCenterPoint(Point *center);
 	double *getRadius();
 	void setRadius(double value);
 

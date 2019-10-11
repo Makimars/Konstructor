@@ -25,29 +25,29 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    main.cpp \
-    mainwindow.cpp \
-    ViewWidget.cpp \
-    ClassRepository/Drawables/Circle.cpp \
-    ClassRepository/Drawables/DrawableObject.cpp \
-    ClassRepository/Drawables/Line.cpp \
-    ClassRepository/Drawables/Point.cpp \
-    ClassRepository/Settings.cpp \
-    ClassRepository/GlobalVariables.cpp
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/ViewWidget.cpp \
+    src/ClassRepository/GlobalVariables.cpp \
+    src/ClassRepository/Settings.cpp \
+    src/ClassRepository/Drawables/Circle.cpp \
+    src/ClassRepository/Drawables/DrawableObject.cpp \
+    src/ClassRepository/Drawables/Line.cpp \
+    src/ClassRepository/Drawables/Point.cpp
 
 HEADERS += \
-    mainwindow.h \
-    ViewWidget.h \
-    ClassRepository/Drawables/Circle.h \
-    ClassRepository/Drawables/DrawableObject.h \
-    ClassRepository/Drawables/Line.h \
-    ClassRepository/Drawables/Point.h \
-    ClassRepository/Settings.h \
-    ClassRepository/Vector.h \
-    ClassRepository/GlobalVariables.h
+    src/mainwindow.h \
+    src/ViewWidget.h \
+    src/ClassRepository/GlobalVariables.h \
+    src/ClassRepository/Settings.h \
+    src/ClassRepository/Vector.h \
+    src/ClassRepository/Drawables/Circle.h \
+    src/ClassRepository/Drawables/DrawableObject.h \
+    src/ClassRepository/Drawables/Line.h \
+    src/ClassRepository/Drawables/Point.h
 
 FORMS += \
-        mainwindow.ui
+    src/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,6 +1,6 @@
 #include "GlobalVariables.h"
 
-QString Global::open_file = "Open Fileˇ";
+QString Global::open_file = "Open File";
 QString Global::save_file = "Save File";
 
 QString Global::all_files = "All files (*.*)";

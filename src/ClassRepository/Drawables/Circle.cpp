@@ -93,6 +93,11 @@ Point *Circle::getCenterPoint()
 	return this->center_point;
 }
 
+void Circle::setCenterPoint(Point * center)
+{
+	this->center_point = center;
+}
+
 double *Circle::getRadius()
 {
 	return &this->radius;

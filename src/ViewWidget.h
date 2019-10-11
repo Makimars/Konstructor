@@ -72,7 +72,7 @@ private:
 	void keyPressEvent(QKeyEvent *event);
 
 signals:
-	void escape();
+    void keyPressed(QKeyEvent *event);
 };
 
 #endif // DRAWINGWIDGET_H

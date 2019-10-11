@@ -11,8 +11,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	loadSettings();
 
-	connect(this->ui->main_view_widget, &ViewWidget::escape,
-			this, &MainWindow::escape
+	this->ui->new_button->setShortcut(Settings::new_file);
+	this->ui->open_button->setShortcut(Settings::open_file);
+	this->ui->save_button->setShortcut(Settings::save_file);
+	this->ui->save_as_button->setShortcut(Settings::save_file_as);
+	this->ui->export_button->setShortcut(Settings::export_file);
+	this->ui->print_button->setShortcut(Settings::print_file);
+	this->ui->settings_button->setShortcut(Settings::open_settings);
+	this->ui->quit_button->setShortcut(Settings::quit_app);
+
+	connect(this->ui->main_view_widget, &ViewWidget::keyPressed,
+			this, &MainWindow::viewKeyPress
 			);
 }
 
@@ -70,7 +79,7 @@ void MainWindow::on_open_button_clicked()
 				this,
                 Global::open_file,
 				Settings::user_project_root,
-                Global::konstructor_sketch + ";;" + Global::all_files
+				Global::konstructor_sketch + ";;" + Global::all_files
 				);
 
 	QFile file(file_name);
@@ -156,7 +165,12 @@ void MainWindow::on_label_button_clicked()
 		setTool("");
 }
 
-void MainWindow::escape()
+void MainWindow::viewKeyPress(QKeyEvent *event)
 {
-	setTool("");
+	switch (event->key()) {
+		case Qt::Key::Key_Escape:
+			setTool("");
+			break;
+	}
+
 }

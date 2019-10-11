@@ -8,8 +8,8 @@
 #include <QtMath>
 #include <QDebug>
 
-#include "ClassRepository/Vector.h"
-#include "ClassRepository/Settings.h"
+#include "src/ClassRepository/Vector.h"
+#include "src/ClassRepository/Settings.h"
 
 class DrawableObject : public QGraphicsItem
 {
