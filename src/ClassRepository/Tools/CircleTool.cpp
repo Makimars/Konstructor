@@ -35,7 +35,6 @@ void CircleTool::click(Point *clicked_point, bool cloned_point)
 		}
 		else
 		{
-			emit addDrawable(clicked_point);
 			addCircle(this->previous_clicked_point, clicked_point);
 		}
 
