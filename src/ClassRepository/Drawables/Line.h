@@ -22,6 +22,7 @@ public:
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
 	Point *getStartPoint();
 	Point *getEndPoint();
+	Line *Clone() override;
 
     //Geonmetry
 	Vector2D *getLineVector();
@@ -36,13 +37,14 @@ public:
                QWidget *widget
                ) override;
 
-private:
-	Point *start_point, *end_point;
-
+protected:
     Vector2D line_vector;
 
     //plane axes
 	Line *up_up_axis;
+
+	//defining variables
+	Point *start_point, *end_point;
 };
 
 #endif // LINE_H

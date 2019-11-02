@@ -7,7 +7,7 @@
 #include <QGraphicsView>
 
 #include "mainwindow.h"
-#include "ClassRepository/Drawables/Circle.h"
+#include "ClassRepository/Tools/LabelTool.h"
 #include "ClassRepository/GlobalVariables.h"
 
 class ViewWidget : public QGraphicsView
@@ -33,29 +33,17 @@ private:
 	QGraphicsScene *sketch_scene;
 
 	//tools processing
-	Point *clicked_point, *previous_clicked_point, *mouse_point;
+	Point *mouse_point;
 	Point *pointSnapping(Point *point);
 	Line *lineSnapping(Point *point);
 
 	//tools
-	QString selected_tool;
-    Line *line_preview;
-    Circle *circle_preview;
-    QVector<Line> rect_preview_lines;
-    QVector<Point> rect_preview_points;
-
+	Tool *selected_tool;
 
     //object managment
     QVector<DrawableObject*> *objects_in_sketch, *temporary_objects;
 
 	Line *up_up_axis, *up_down_axis, *down_down_axis, *down_up_axis;
-
-	void removeDrawable(DrawableObject *obj);
-	DrawableObject *addDrawable(DrawableObject *obj);
-	Point *addPoint(double x, double y);
-	Point *addPoint(QPointF location);
-	Line *addLine(Point *start_point, Point *end_point);
-	Circle *addCircle(Point *center, double radius);
 
     unsigned int id_counter = 0;
 
@@ -73,6 +61,31 @@ private:
 
 signals:
     void keyPressed(QKeyEvent *event);
+
+private slots:
+	/**
+	 * @brief removes drawable from object list and view, and deletes it
+	 * @param obj
+	 */
+	void deleteDrawable(DrawableObject *obj);
+
+	/**
+	 * @brief removes the drawable from object list and the scene
+	 * @param obj
+	 */
+	void removeDrawable(DrawableObject *obj);
+	/**
+	 * @brief adds drawable to scene and object list
+	 * @param obj
+	 * @return
+	 */
+	void addDrawable(DrawableObject *obj);
+	/**
+	 * @brief deletes drawable if it is not in object list
+	 * @param obj
+	 */
+	void tryDeleteDrawable(DrawableObject *obj);
+
 };
 
 #endif // DRAWINGWIDGET_H

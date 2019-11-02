@@ -91,7 +91,37 @@ void DrawableObject::setId(unsigned int id)
 
 unsigned int DrawableObject::getId()
 {
-    return this->id;
+	return this->id;
+}
+
+void DrawableObject::setIsConstructiona(bool value)
+{
+	this->is_constructional = value;
+}
+
+bool DrawableObject::isConstructional()
+{
+	return this->is_constructional;
+}
+
+void DrawableObject::setHighlight(bool value)
+{
+	this->highlight = value;
+}
+
+bool DrawableObject::isHighlighted()
+{
+	return this->highlight;
+}
+
+void DrawableObject::setHidden(bool value)
+{
+	this->hidden = value;
+}
+
+bool DrawableObject::isHidden()
+{
+	return this->hidden;
 }
 
 //----------	saving    ----------

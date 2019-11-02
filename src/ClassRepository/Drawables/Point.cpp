@@ -102,6 +102,14 @@ void Point::setLocation(double x, double y)
     this->y = y;
 }
 
+Point *Point::Clone()
+{
+	Point *p = new Point(this->x,this->y);
+	p->setName(this->name);
+
+	return p;
+}
+
 //----------	aritmetic functions    ----------
 
 double Point::distanceFrom(QPointF point)
@@ -120,6 +128,10 @@ void Point::paint(QPainter *painter,
 				  const QStyleOptionGraphicsItem *option,
 				  QWidget *widget)
 {    
+	if(this->hidden)
+		return;
+
+	resolveTies();
     painter->setBrush(Qt::white);
 
     int coef = Settings::point_render_size;

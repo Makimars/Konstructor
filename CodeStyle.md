@@ -83,7 +83,7 @@ function funcName(parameter1,
                     parameter3,
                     parameter4,
                     parameter5
-                 );
+                    );
 
 ```
 ##### calling

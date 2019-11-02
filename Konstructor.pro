@@ -33,7 +33,12 @@ SOURCES += \
     src/ClassRepository/Drawables/Circle.cpp \
     src/ClassRepository/Drawables/DrawableObject.cpp \
     src/ClassRepository/Drawables/Line.cpp \
-    src/ClassRepository/Drawables/Point.cpp
+    src/ClassRepository/Drawables/Point.cpp \
+    src/ClassRepository/Tools/Tool.cpp \
+    src/ClassRepository/Tools/CircleTool.cpp \
+    src/ClassRepository/Tools/RectangleTool.cpp \
+    src/ClassRepository/Tools/LabelTool.cpp \
+    src/ClassRepository/Tools/LineTool.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -44,7 +49,12 @@ HEADERS += \
     src/ClassRepository/Drawables/Circle.h \
     src/ClassRepository/Drawables/DrawableObject.h \
     src/ClassRepository/Drawables/Line.h \
-    src/ClassRepository/Drawables/Point.h
+    src/ClassRepository/Drawables/Point.h \
+    src/ClassRepository/Tools/Tool.h \
+    src/ClassRepository/Tools/LineTool.h \
+    src/ClassRepository/Tools/CircleTool.h \
+    src/ClassRepository/Tools/RectangleTool.h \
+    src/ClassRepository/Tools/LabelTool.h
 
 FORMS += \
     src/mainwindow.ui

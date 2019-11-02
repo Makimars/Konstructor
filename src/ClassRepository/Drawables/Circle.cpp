@@ -10,6 +10,14 @@ Circle::Circle(Point *center_point, double radius)
 	this->type = "Circle";
 	this->center_point = center_point;
 	this->radius = radius;
+	this->lies_on = nullptr;
+}
+
+Circle::Circle(Point *center_point, Point *lies_on)
+{
+	this->type = "Circle";
+	this->center_point = center_point;
+	this->lies_on = lies_on;
 }
 
 Circle::~Circle(){
@@ -18,7 +26,8 @@ Circle::~Circle(){
 
 void Circle::resolveTies()
 {
-
+	if(this->lies_on != nullptr)
+		this->radius = this->center_point->distanceFrom(this->lies_on->getLocation());
 }
 
 //----------	file handling    ----------
@@ -108,6 +117,21 @@ void Circle::setRadius(double value)
 	this->radius = value;
 }
 
+Circle *Circle::Clone()
+{
+	Circle *c = new Circle(this->center_point, this->radius);
+	c->setRelationLiesOn(this->lies_on);
+
+	return c;
+}
+
+//----------	Relations    ----------
+
+void Circle::setRelationLiesOn(Point *p)
+{
+	this->lies_on = p;
+}
+
 //----------	QGraphicsItem overrides    ----------
 
 QRectF Circle::boundingRect() const
@@ -128,5 +152,9 @@ void Circle::paint(QPainter *painter,
 				   const QStyleOptionGraphicsItem *option,
 				   QWidget *widget)
 {
-     painter->drawEllipse(this->boundingRect());
+	if(this->hidden)
+		return;
+
+	resolveTies();
+	painter->drawEllipse(this->boundingRect());
 }

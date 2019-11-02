@@ -17,14 +17,26 @@ public:
     DrawableObject();
     ~DrawableObject() override;
 
-	bool is_constructional = false;
-	bool highlight = false;
-
     virtual void resolveTies();
 
 	//file handling
+
+	/**
+	 * @brief asigns variables from a file representation
+	 * @param input
+	 */
     virtual void fromFileString(QString input);
+
+	/**
+	 * @brief generates file representation of an object
+	 * @return file
+	 */
     virtual QString toFileString();
+
+	/**
+	 * @brief assign pointers to objects to a variable from a vector of drawables
+	 * @param list
+	 */
     virtual void loadRelations(QVector<DrawableObject*> *list) = 0;
 
 	//getters and setters
@@ -33,6 +45,15 @@ public:
 	QString getType();
     void setId(unsigned int id);
     unsigned int getId();
+
+	void setIsConstructiona(bool value);
+	bool isConstructional();
+	void setHighlight(bool value);
+	bool isHighlighted();
+	void setHidden(bool value);
+	bool isHidden();
+
+	virtual DrawableObject *Clone(){}
 
 	//saving
 	void fileAddVar(QString variable, QString value);
@@ -57,6 +78,9 @@ protected:
     QString type, name;
     unsigned int id;
 
+	bool is_constructional = false;
+	bool highlight = false;
+	bool hidden = false;
 
 	//saving
 	QString file;

@@ -12,13 +12,8 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->objects_in_sketch = new QVector<DrawableObject*>;
 
 	this->mouse_point = new Point();
-	this->mouse_point->highlight = true;
+	this->mouse_point->setHighlight(true);
 	this->sketch_scene->addItem(mouse_point);
-
-	this->previous_clicked_point = nullptr;
-	this->clicked_point = nullptr;
-    this->line_preview = nullptr;
-	this->circle_preview = new Circle();
 
 	this->sketch_scene->setSceneRect(
 				-Settings::default_sketch_width / 2,
@@ -27,20 +22,9 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 				Settings::default_sketch_height);
 	this->setScene(sketch_scene);
 
-	//test code
-    Point *p1 = addPoint(-100,-100);
-    Point *p2 = addPoint(-100, 100);
-    Point *p3 = addPoint(100, 100);
-	Point *p4 = addPoint(100,-100);
-	addLine(p1, p2);
-	addLine(p2, p3);
-	addLine(p3, p4);
-	addLine(p4, p1);
-
-	addCircle(p3, 50);
+	this->selected_tool = nullptr;
 
 	repaint();
-
 }
 
 ViewWidget::~ViewWidget()
@@ -54,15 +38,37 @@ ViewWidget::~ViewWidget()
 
 void ViewWidget::setTool(QString tool_name)
 {
-	this->selected_tool = tool_name;
-	if(!this->objects_in_sketch->contains(this->clicked_point))
-		delete this->clicked_point;
-	if(!this->objects_in_sketch->contains(this->previous_clicked_point))
-		delete this->previous_clicked_point;
-	this->clicked_point = nullptr;
-	this->previous_clicked_point = nullptr;
+	if(this->selected_tool != nullptr)
+		this->selected_tool->resetTool();
 
-    this->sketch_scene->removeItem(this->line_preview);
+	switch(Global::tool_names.lastIndexOf(tool_name))
+	{
+		case LINE_TOOL:
+			this->selected_tool = LineTool::getInstance(this->mouse_point, this->sketch_scene);
+			break;
+		case CIRCLE_TOOL:
+			this->selected_tool = CircleTool::getInstance(this->mouse_point, this->sketch_scene);
+			break;
+		case RECTANGLE_TOOL:
+			this->selected_tool = RectangleTool::getInstance();
+			break;
+		case LABEL_TOOL:
+			this->selected_tool = LabelTool::getInstance();
+			break;
+		default:
+			this->selected_tool = nullptr;
+			break;
+	}
+
+	if(selected_tool != nullptr)
+	{
+		connect(this->selected_tool, &Tool::addDrawable,
+				this, &ViewWidget::addDrawable
+				);
+		connect(this->selected_tool, &Tool::tryDeleteDrawable,
+				this, &ViewWidget::tryDeleteDrawable
+				);
+	}
 }
 
 //----------	file operations    ----------
@@ -163,63 +169,40 @@ Line *ViewWidget::lineSnapping(Point *point)
 }
 
 //----------	object managment    ----------
+void ViewWidget::deleteDrawable(DrawableObject *obj)
+{
+	removeDrawable(obj);
+
+	if(obj != nullptr)
+	{
+		delete obj;
+		obj = nullptr;
+	}
+}
 
 void ViewWidget::removeDrawable(DrawableObject *obj)
 {
 	if(objects_in_sketch->contains(obj))
 		this->objects_in_sketch->removeAll(obj);
-	sketch_scene->removeItem(obj);
-	if(obj != nullptr)
+	this->sketch_scene->removeItem(obj);
+}
+
+void ViewWidget::addDrawable(DrawableObject *obj)
+{
+	if(!this->objects_in_sketch->contains(obj))
+	{
+		this->objects_in_sketch->append(obj);
+		this->sketch_scene->addItem(obj);
+
+		obj->setId(this->id_counter);
+		this->id_counter++;
+	}
+}
+
+void ViewWidget::tryDeleteDrawable(DrawableObject *obj)
+{
+	if(!this->objects_in_sketch->contains(obj))
 		delete obj;
-	obj = nullptr;
-}
-
-DrawableObject *ViewWidget::addDrawable(DrawableObject *obj)
-{
-	if(this->objects_in_sketch->contains(obj))
-		return nullptr;
-
-	obj->setId(this->id_counter);
-	this->id_counter++;
-
-	this->sketch_scene->addItem(obj);
-	this->objects_in_sketch->append(obj);
-
-	return obj;
-}
-
-Point *ViewWidget::addPoint(double x, double y)
-{
-	Point *p = new Point(x,y);
-	addDrawable(p);
-	return p;
-}
-
-Point *ViewWidget::addPoint(QPointF location)
-{
-	return addPoint(location.x(), location.y());
-}
-
-Line *ViewWidget::addLine(Point *start_point, Point *end_point)
-{
-	if(this->objects_in_sketch->lastIndexOf(start_point) == -1)
-		this->addDrawable(start_point);
-	if(this->objects_in_sketch->lastIndexOf(end_point) == -1)
-		this->addDrawable(end_point);
-
-	Line *ln = new Line(start_point, end_point);
-	addDrawable(ln);
-	return ln;
-}
-
-Circle *ViewWidget::addCircle(Point *center, double radius)
-{
-	if(this->objects_in_sketch->lastIndexOf(center) == -1)
-		this->addDrawable(center);
-
-	Circle *c = new Circle(center, radius);
-	addDrawable(c);
-	return c;
 }
 
 //----------	events    ----------
@@ -236,68 +219,21 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	if(this->previous_clicked_point != nullptr &
-		this->objects_in_sketch->lastIndexOf(this->previous_clicked_point) == -1)
+	if(event->button() == Qt::LeftButton)
 	{
-		delete this->previous_clicked_point;
-	}
-    this->previous_clicked_point = clicked_point;
+		if(this->selected_tool != nullptr)
+		{
+			bool existing = true;
+			Point *snapped = pointSnapping(this->mouse_point);
 
-    this->clicked_point = pointSnapping(this->mouse_point);
-    if(clicked_point == mouse_point)
-        clicked_point = new Point(mouse_point->getLocation());
-
-    switch(Global::tool_names.lastIndexOf(this->selected_tool))
-	{
-		case 0: //Line
-			if(this->line_preview != nullptr)
-				removeDrawable(this->line_preview);
-
-			this->line_preview = new Line(clicked_point, mouse_point);
-			sketch_scene->addItem(this->line_preview);
-
-			if(this->previous_clicked_point != nullptr)
+			if(snapped == this->mouse_point)
 			{
-				if(this->objects_in_sketch->lastIndexOf(this->previous_clicked_point) != -1)
-					addDrawable(this->previous_clicked_point);
-				addDrawable(this->clicked_point);
-				addLine(this->previous_clicked_point, this->clicked_point);
-			}
-			break;
-		case 1://Circle
-			/*if(this->circle_preview != nullptr)
-				removeDrawable(this->circle_preview);
-
-			this->circle_preview = new Circle(this->clicked_point,
-											  this->clicked_point
-												->distanceFrom(this->mouse_point->getLocation())
-											  );*/
-
-			this->circle_preview->setCenterPoint(this->clicked_point);
-			this->circle_preview->setRadius(this->clicked_point
-											->distanceFrom(this->mouse_point->getLocation())
-										  );
-			this->sketch_scene->addItem(this->circle_preview);
-
-			if(this->previous_clicked_point != nullptr)
-			{
-				if(this->objects_in_sketch->lastIndexOf(this->previous_clicked_point) != -1)
-					addDrawable(this->previous_clicked_point);
-				addCircle(this->previous_clicked_point,
-						  this->previous_clicked_point->distanceFrom(this->clicked_point->getLocation())
-						  );
-				this->previous_clicked_point = nullptr;
-				this->clicked_point = nullptr;
+				snapped = this->mouse_point->Clone();
+				existing = false;
 			}
 
-
-			break;
-		case 2:
-
-			break;
-		default:
-
-			break;
+			this->selected_tool->click(snapped, existing);
+		}
 	}
 }
 
@@ -331,13 +267,8 @@ void ViewWidget::wheelEvent(QWheelEvent *event)
 {
 	setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
-	if((event->delta() > 0) & !Settings::mouse_wheel_inverted_zoom)
-	{
-		this->scale(Settings::mouse_wheel_zoom_factor,
-					Settings::mouse_wheel_zoom_factor
-					);
-	}
-	else if ((event->delta() < 0) & Settings::mouse_wheel_inverted_zoom)
+	if	(	((event->delta() > 0) & !Settings::mouse_wheel_inverted_zoom)	||
+			((event->delta() < 0) & Settings::mouse_wheel_inverted_zoom)	)
 	{
 		this->scale(Settings::mouse_wheel_zoom_factor,
 					Settings::mouse_wheel_zoom_factor

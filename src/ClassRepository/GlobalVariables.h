@@ -1,6 +1,11 @@
 #ifndef GLOBALVARIABLES_H
 #define GLOBALVARIABLES_H
 
+#define LINE_TOOL 0
+#define CIRCLE_TOOL 1
+#define RECTANGLE_TOOL 2
+#define LABEL_TOOL 3
+
 #include <QStringList>
 
 class Global {

@@ -116,6 +116,15 @@ Point *Line::getEndPoint()
 	return this->end_point;
 }
 
+Line *Line::Clone()
+{
+	Line *l = new Line(this->start_point, this->end_point);
+	l->setName(this->getName());
+
+	return l;
+}
+
+
 //----------    Geometry    ----------
 
 double Line::getAngle(Line *reference_line)
@@ -157,9 +166,13 @@ void Line::paint(QPainter *painter,
 				 const QStyleOptionGraphicsItem *option,
 				 QWidget *widget)
 {
-    painter->drawLine(this->start_point->getLocation(),
-                      this->end_point->getLocation()
-                     );
+	if(this->hidden)
+		return;
+
+	resolveTies();
+	painter->drawLine(this->start_point->getLocation(),
+						this->end_point->getLocation()
+					);
 }
 
 
