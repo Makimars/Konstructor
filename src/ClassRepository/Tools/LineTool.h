@@ -6,7 +6,12 @@
 class LineTool : public Tool
 {
 public:
-	static LineTool *getInstance(Point *mouse_point, QGraphicsScene *scene);
+	static void initialise(Point *mouse_point,
+						   QGraphicsScene *scene,
+						   QBrush *default_brush,
+						   QPen *default_pen
+						   );
+	static LineTool *getInstance();
 
 	void click(Point * clicked_point, bool existing_point = false) override;
 	void resetTool() override;

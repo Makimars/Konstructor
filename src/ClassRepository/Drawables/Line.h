@@ -26,9 +26,9 @@ public:
 
     //Geonmetry
 	Vector2D *getLineVector();
-    void setLineVector(Vector2D vector);
+	Line *setLineVector(Vector2D vector);
 	double getAngle(Line *reference_line);
-	void setAngle(double angle, Line *reference_line);
+	Line *setAngle(double angle, Line *reference_line);
 
     //QGraphicsItem overrides
 	QRectF boundingRect() const override;

@@ -1,7 +1,7 @@
 #ifndef TOOL_H
 #define TOOL_H
 
-#include "../Drawables/Circle.h"
+#include "../DrawablesFactory.h"
 
 class Tool : public QObject
 {
@@ -10,20 +10,21 @@ public:
 	virtual void click(Point * clicked_point, bool existing_point = false){}
 	virtual void resetTool();
 
+	//getters and setters
+	QBrush * getCurrentBrush() const;
+	void setCurrentBrush(QBrush * value);
+	QPen * getCurrentPen() const;
+	void setCurrentPen(QPen * value);
+
 private:
 
 protected:
 	Tool();
 
-	Point *addPoint(double x, double y);
-	Point *addPoint(QPointF location);
-	Line *addLine(Point *start_point, Point *end_point);
-	Circle *addCircle(Point *center, double radius);
-	Circle *addCircle(Point *center, Point *lies_on);
+	DrawablesFactory *object_factory;
 
-signals:
-	void addDrawable(DrawableObject *object);
-	void tryDeleteDrawable(DrawableObject *object);
+	QBrush *current_brush;
+	QPen *current_pen;
 
 };
 

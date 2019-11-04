@@ -7,8 +7,7 @@ class Circle : public DrawableObject
 {
 public:
 	Circle();
-	Circle(Point *center_point, double radius);
-	Circle(Point *center_point, Point *lies_on);
+	Circle(Point *center_point);
     ~Circle() override;
 
 	void resolveTies() override;
@@ -20,9 +19,8 @@ public:
 
 	//getters and setters
 	Point *getCenterPoint();
-	void setCenterPoint(Point *center);
 	double *getRadius();
-	void setRadius(double value);
+	Circle *setRadius(double value);
 	Circle *Clone() override;
 
 	//relations

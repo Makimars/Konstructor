@@ -83,10 +83,14 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
 
 Vector2D *Line::getLineVector()
 {
+	this->line_vector = Vector2D(
+				this->end_point->getX() - this->start_point->getX(),
+				this->end_point->getY() - this->start_point->getY()
+				);
     return &this->line_vector;
 }
 
-void Line::setLineVector(Vector2D vector)
+Line *Line::setLineVector(Vector2D vector)
 {
     double vec_conf = lenght()  / vector.lenght();
 	this->line_vector.x = vec_conf *vector.x;
@@ -99,6 +103,7 @@ void Line::setLineVector(Vector2D vector)
                 this->start_point->getY() + this->line_vector.y
                 );
 
+	return this;
 }
 
 double Line::lenght()
@@ -139,7 +144,7 @@ double Line::getAngle(Line *reference_line)
                 );
 }
 
-void Line::setAngle(double new_angle, Line *reference_line)
+Line *Line::setAngle(double new_angle, Line *reference_line)
 {
     /*
     double angle_1 = M_PI - new_angle - reference_line->getAngle(positive_axis);
@@ -150,6 +155,7 @@ void Line::setAngle(double new_angle, Line *reference_line)
 
     this->setLineVector(Vector2D(x, y));
 */
+	return this;
 }
 
 //----------	QGraphicsItem overrides    ----------

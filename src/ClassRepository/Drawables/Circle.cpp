@@ -5,19 +5,10 @@ Circle::Circle()
 	this->type = "Circle";
 }
 
-Circle::Circle(Point *center_point, double radius)
+Circle::Circle(Point *center_point)
 {
 	this->type = "Circle";
 	this->center_point = center_point;
-	this->radius = radius;
-	this->lies_on = nullptr;
-}
-
-Circle::Circle(Point *center_point, Point *lies_on)
-{
-	this->type = "Circle";
-	this->center_point = center_point;
-	this->lies_on = lies_on;
 }
 
 Circle::~Circle(){
@@ -27,7 +18,10 @@ Circle::~Circle(){
 void Circle::resolveTies()
 {
 	if(this->lies_on != nullptr)
+	{
 		this->radius = this->center_point->distanceFrom(this->lies_on->getLocation());
+		qDebug() << "resolve circle tie, lies on";
+	}
 }
 
 //----------	file handling    ----------
@@ -102,27 +96,25 @@ Point *Circle::getCenterPoint()
 	return this->center_point;
 }
 
-void Circle::setCenterPoint(Point * center)
-{
-	this->center_point = center;
-}
-
 double *Circle::getRadius()
 {
 	return &this->radius;
 }
 
-void Circle::setRadius(double value)
+Circle *Circle::setRadius(double value)
 {
 	this->radius = value;
+
+	return this;
 }
 
 Circle *Circle::Clone()
 {
-	Circle *c = new Circle(this->center_point, this->radius);
-	c->setRelationLiesOn(this->lies_on);
+	Circle *circle = new Circle(this->center_point);
+	circle->setRadius(this->radius);
+	circle->setRelationLiesOn(this->lies_on);
 
-	return c;
+	return circle;
 }
 
 //----------	Relations    ----------

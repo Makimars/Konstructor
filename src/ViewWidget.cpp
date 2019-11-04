@@ -7,12 +7,23 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
+	this->default_pen = QPen(Qt::PenStyle::SolidLine);
+	this->default_brush = QBrush(Qt::BrushStyle::TexturePattern);
 
 	this->sketch_scene = new QGraphicsScene(this);
 	this->objects_in_sketch = new QVector<DrawableObject*>;
 
-	this->mouse_point = new Point();
+	DrawablesFactory::initialise(&this->default_brush,
+								 &this->default_pen,
+								 this->objects_in_sketch,
+								 this->sketch_scene
+								 );
+	this->object_factory = DrawablesFactory::getInstance();
+
+	this->mouse_point = this->object_factory->makePoint();
 	this->mouse_point->setHighlight(true);
+	this->mouse_point->setPen(&this->default_pen);
+	this->mouse_point->setBrush(&this->default_brush);
 	this->sketch_scene->addItem(mouse_point);
 
 	this->sketch_scene->setSceneRect(
@@ -22,7 +33,28 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 				Settings::default_sketch_height);
 	this->setScene(sketch_scene);
 
+	//tools initialisation
 	this->selected_tool = nullptr;
+	LineTool::initialise(this->mouse_point,
+						 this->sketch_scene,
+						 &this->default_brush,
+						 &this->default_pen
+						 );
+	CircleTool::initialise(this->mouse_point,
+						 this->sketch_scene,
+						 &this->default_brush,
+						 &this->default_pen
+						 );
+	LabelTool::initialise(this->mouse_point,
+						 this->sketch_scene,
+						 &this->default_brush,
+						 &this->default_pen
+						 );
+	RectangleTool::initialise(this->mouse_point,
+						 this->sketch_scene,
+						 &this->default_brush,
+						 &this->default_pen
+						 );
 
 	repaint();
 }
@@ -44,10 +76,10 @@ void ViewWidget::setTool(QString tool_name)
 	switch(Global::tool_names.lastIndexOf(tool_name))
 	{
 		case LINE_TOOL:
-			this->selected_tool = LineTool::getInstance(this->mouse_point, this->sketch_scene);
+			this->selected_tool = LineTool::getInstance();
 			break;
 		case CIRCLE_TOOL:
-			this->selected_tool = CircleTool::getInstance(this->mouse_point, this->sketch_scene);
+			this->selected_tool = CircleTool::getInstance();
 			break;
 		case RECTANGLE_TOOL:
 			this->selected_tool = RectangleTool::getInstance();
@@ -58,16 +90,6 @@ void ViewWidget::setTool(QString tool_name)
 		default:
 			this->selected_tool = nullptr;
 			break;
-	}
-
-	if(selected_tool != nullptr)
-	{
-		connect(this->selected_tool, &Tool::addDrawable,
-				this, &ViewWidget::addDrawable
-				);
-		connect(this->selected_tool, &Tool::tryDeleteDrawable,
-				this, &ViewWidget::tryDeleteDrawable
-				);
 	}
 }
 
@@ -116,7 +138,7 @@ void ViewWidget::loadFromFile(QString file)
 
 	foreach(DrawableObject *obj, loaded_objects)
     {
-        addDrawable(obj);
+		this->object_factory->addDrawable(obj);
         this->objects_in_sketch->append(obj);
     }
 }
@@ -152,7 +174,7 @@ Point *ViewWidget::pointSnapping(Point *point){
 				return p;
 		}
 	}
-	return point;
+	return nullptr;
 }
 
 Line *ViewWidget::lineSnapping(Point *point)
@@ -168,48 +190,11 @@ Line *ViewWidget::lineSnapping(Point *point)
 	return nullptr;
 }
 
-//----------	object managment    ----------
-void ViewWidget::deleteDrawable(DrawableObject *obj)
-{
-	removeDrawable(obj);
-
-	if(obj != nullptr)
-	{
-		delete obj;
-		obj = nullptr;
-	}
-}
-
-void ViewWidget::removeDrawable(DrawableObject *obj)
-{
-	if(objects_in_sketch->contains(obj))
-		this->objects_in_sketch->removeAll(obj);
-	this->sketch_scene->removeItem(obj);
-}
-
-void ViewWidget::addDrawable(DrawableObject *obj)
-{
-	if(!this->objects_in_sketch->contains(obj))
-	{
-		this->objects_in_sketch->append(obj);
-		this->sketch_scene->addItem(obj);
-
-		obj->setId(this->id_counter);
-		this->id_counter++;
-	}
-}
-
-void ViewWidget::tryDeleteDrawable(DrawableObject *obj)
-{
-	if(!this->objects_in_sketch->contains(obj))
-		delete obj;
-}
-
 //----------	events    ----------
 
 void ViewWidget::mouseClickedEvent(QMouseEvent *event)
 {
-
+qDebug() << "clicked";
 }
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
@@ -224,15 +209,15 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 		if(this->selected_tool != nullptr)
 		{
 			bool existing = true;
-			Point *snapped = pointSnapping(this->mouse_point);
+			Point *snapped_point = pointSnapping(this->mouse_point);
 
-			if(snapped == this->mouse_point)
+			if(snapped_point == nullptr)
 			{
-				snapped = this->mouse_point->Clone();
+				snapped_point = this->mouse_point->Clone();
 				existing = false;
 			}
 
-			this->selected_tool->click(snapped, existing);
+			this->selected_tool->click(snapped_point, existing);
 		}
 	}
 }
@@ -240,7 +225,10 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	//draging
+	//update mouse position
+	mouse_point->setLocation(mapToScene(event->pos()));
+
+	//draging plane
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	if(event->buttons() == Qt::RightButton)
 	{
@@ -251,16 +239,23 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 		this->drag_start_y = event->y();
 	}
 
-	//update
-	sketch_scene->update();
-	mouse_point->setLocation(mapToScene(event->pos()));
+	//draging points
+	Point *snapped_point = pointSnapping(this->mouse_point);
 
-	Point *current_point = pointSnapping(mouse_point);
-	if(current_point != mouse_point)
-		mouse_point->setLocation(current_point->getLocation());
+	if(snapped_point != nullptr)
+	{
+		if(event->buttons() == Qt::LeftButton)
+			snapped_point->setLocation(this->mouse_point->getLocation());
+		else
+			mouse_point->setLocation(snapped_point->getLocation());
+	}
+
+
 
 	//higlighting
 
+
+	sketch_scene->update();
 }
 
 void ViewWidget::wheelEvent(QWheelEvent *event)

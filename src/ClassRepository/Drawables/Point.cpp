@@ -105,7 +105,9 @@ void Point::setLocation(double x, double y)
 Point *Point::Clone()
 {
 	Point *p = new Point(this->x,this->y);
-	p->setName(this->name);
+	p->setName(this->name)
+		->setBrush(this->brush)
+		->setPen(this->pen);
 
 	return p;
 }
@@ -132,7 +134,8 @@ void Point::paint(QPainter *painter,
 		return;
 
 	resolveTies();
-    painter->setBrush(Qt::white);
+	painter->setBrush(this->brush->style());
+	painter->setPen(this->pen->style());
 
     int coef = Settings::point_render_size;
     if(this->highlight)
@@ -140,5 +143,5 @@ void Point::paint(QPainter *painter,
 
     QRectF rect(this->x-coef, this->y-coef, coef  + coef, coef + coef);
 
-    painter->drawEllipse(rect);
+	painter->drawEllipse(rect);
 }

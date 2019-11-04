@@ -4,17 +4,29 @@ LineTool *LineTool::instance = nullptr;
 
 LineTool::LineTool(Point *mouse_point, QGraphicsScene *scene)
 {
-	this->line_preview_start_point = new Point();
-	this->line_preview = new Line(this->line_preview_start_point, mouse_point);
+	this->object_factory = DrawablesFactory::getInstance();
+
+	this->line_preview_start_point = this->object_factory->makePoint();
+	this->line_preview = this->object_factory
+			->makeLine(this->line_preview_start_point, mouse_point);
 	this->line_preview->setHidden(true);
 	scene->addItem(this->line_preview);
 }
 
-LineTool *LineTool::getInstance(Point *mouse_point, QGraphicsScene *scene)
+void LineTool::initialise(Point *mouse_point,
+							QGraphicsScene *scene,
+							QBrush *default_brush,
+							QPen *default_pen)
 {
 	if(LineTool::instance == nullptr)
 		LineTool::instance = new LineTool(mouse_point, scene);
 
+	LineTool::instance->setCurrentPen(default_pen);
+	LineTool::instance->setCurrentBrush(default_brush);
+}
+
+LineTool *LineTool::getInstance()
+{
 	return LineTool::instance;
 }
 
@@ -29,9 +41,12 @@ void LineTool::click(Point *clicked_point, bool existing_point)
 	if(this->clicked_points[1] != nullptr)
 	{
 		if(!existing_point)
-			emit addDrawable(this->clicked_points[0]);
-		emit addDrawable(this->clicked_points[1]);
-		addLine(this->clicked_points[0], this->clicked_points[1]);
+			this->object_factory->addDrawable(this->clicked_points[0]);
+		this->object_factory->addDrawable(this->clicked_points[1]);
+
+		Line *line = this->object_factory
+				->makeLine(this->clicked_points[0], this->clicked_points[1]);
+		this->object_factory->addDrawable(line);
 
 		this->clicked_points[1] = nullptr;
 	}
@@ -39,9 +54,11 @@ void LineTool::click(Point *clicked_point, bool existing_point)
 
 void LineTool::resetTool()
 {
-	emit tryDeleteDrawable(this->clicked_points[0]);
+	this->object_factory->tryDeleteDrawable(this->clicked_points[0]);
 	this->clicked_points[0] = nullptr;
-	emit tryDeleteDrawable(this->clicked_points[1]);
+
+	this->object_factory->tryDeleteDrawable(this->clicked_points[1]);
 	this->clicked_points[1] = nullptr;
+
 	this->line_preview->setHidden(true);
 }

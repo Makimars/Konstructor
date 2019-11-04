@@ -69,9 +69,11 @@ void DrawableObject::loadRelations(QVector<DrawableObject *> *list)
 
 //----------	getters and setters    ----------
 
-void DrawableObject::setName(QString name)
+DrawableObject *DrawableObject::setName(QString name)
 {
 	this->name = name;
+
+	return this;
 }
 
 QString DrawableObject::getName()
@@ -84,14 +86,40 @@ QString DrawableObject::getType()
 	return this->type;
 }
 
-void DrawableObject::setId(unsigned int id)
+DrawableObject *DrawableObject::setId(unsigned int id)
 {
     this->id = id;
+
+	return this;
 }
 
 unsigned int DrawableObject::getId()
 {
 	return this->id;
+}
+
+DrawableObject *DrawableObject::setBrush(QBrush * value)
+{
+	brush = value;
+
+	return this;
+}
+
+QBrush * DrawableObject::getBrush()
+{
+	return brush;
+}
+
+DrawableObject *DrawableObject::setPen(QPen * value)
+{
+	pen = value;
+
+	return this;
+}
+
+QPen * DrawableObject::getPen()
+{
+	return pen;
 }
 
 void DrawableObject::setIsConstructiona(bool value)
@@ -188,3 +216,4 @@ void DrawableObject::paint(QPainter *painter,
 {
 
 }
+

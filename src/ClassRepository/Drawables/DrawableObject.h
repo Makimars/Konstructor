@@ -5,7 +5,6 @@
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QGraphicsScene>
-#include <QtMath>
 #include <QDebug>
 
 #include "src/ClassRepository/Vector.h"
@@ -40,11 +39,16 @@ public:
     virtual void loadRelations(QVector<DrawableObject*> *list) = 0;
 
 	//getters and setters
-    void setName(QString name);
+	DrawableObject *setName(QString name);
     QString getName();
 	QString getType();
-    void setId(unsigned int id);
+	DrawableObject *setId(unsigned int id);
     unsigned int getId();
+
+	DrawableObject *setBrush(QBrush * value);
+	QBrush * getBrush();
+	DrawableObject *setPen(QPen * value);
+	QPen * getPen();
 
 	void setIsConstructiona(bool value);
 	bool isConstructional();
@@ -53,7 +57,7 @@ public:
 	void setHidden(bool value);
 	bool isHidden();
 
-	virtual DrawableObject *Clone(){}
+	virtual DrawableObject *Clone(){return nullptr;}
 
 	//saving
 	void fileAddVar(QString variable, QString value);
@@ -75,9 +79,14 @@ public:
 			   )override;
 
 protected:
-    QString type, name;
-    unsigned int id;
+	//defining variables
+	QString type, name;
+	unsigned int id;
 
+	QBrush *brush;
+	QPen *pen;
+
+	//parameters
 	bool is_constructional = false;
 	bool highlight = false;
 	bool hidden = false;

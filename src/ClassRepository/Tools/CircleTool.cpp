@@ -4,19 +4,31 @@ CircleTool *CircleTool::instance = nullptr;
 
 CircleTool::CircleTool(Point *mouse_point, QGraphicsScene *scene)
 {
-	this->circle_preview_centre = new Point(0,0);
-	this->circle_preview = new Circle(this->circle_preview_centre, mouse_point);
+	this->object_factory = DrawablesFactory::getInstance();
+
+	this->circle_preview_centre = this->object_factory->makePoint();
+	this->circle_preview = this->object_factory
+			->makeCircle(this->circle_preview_centre, mouse_point);
 	this->circle_preview->setHidden(true);
 
 	scene->addItem(this->circle_preview);
 	this->previous_clicked_point = nullptr;
 }
 
-CircleTool *CircleTool::getInstance(Point *mouse_point, QGraphicsScene *scene)
+void CircleTool::initialise(Point *mouse_point,
+							QGraphicsScene *scene,
+							QBrush *default_brush,
+							QPen *default_pen)
 {
 	if(CircleTool::instance == nullptr)
 		CircleTool::instance = new CircleTool(mouse_point, scene);
 
+	CircleTool::instance->setCurrentPen(default_pen);
+	CircleTool::instance->setCurrentBrush(default_brush);
+}
+
+CircleTool *CircleTool::getInstance()
+{
 	return CircleTool::instance;
 }
 
@@ -25,17 +37,24 @@ void CircleTool::click(Point *clicked_point, bool cloned_point)
 
 	if(this->previous_clicked_point != nullptr)
 	{
-		emit addDrawable(this->previous_clicked_point);
+		this->object_factory->addDrawable(this->previous_clicked_point);
 		if(cloned_point)
 		{
-			addCircle(this->previous_clicked_point,
-						this->previous_clicked_point->distanceFrom(clicked_point->getLocation())
-						);
-			emit tryDeleteDrawable(clicked_point);
+			Circle *circle = this->object_factory
+									->makeCircle(this->previous_clicked_point,
+												this->previous_clicked_point->distanceFrom(clicked_point->getLocation())
+												);
+			this->object_factory->addDrawable(circle);
+
+			this->object_factory->tryDeleteDrawable(clicked_point);
 		}
 		else
 		{
-			addCircle(this->previous_clicked_point, clicked_point);
+			Circle *circle = this->object_factory
+									->makeCircle(this->previous_clicked_point,
+												 clicked_point
+												 );
+			this->object_factory->addDrawable(circle);
 		}
 
 		this->circle_preview->setHidden(true);
@@ -51,6 +70,6 @@ void CircleTool::click(Point *clicked_point, bool cloned_point)
 
 void CircleTool::resetTool()
 {
-	emit tryDeleteDrawable(this->previous_clicked_point);
+	this->object_factory->tryDeleteDrawable(this->previous_clicked_point);
 	this->circle_preview->setHidden(true);
 }
