@@ -194,7 +194,7 @@ Line *ViewWidget::lineSnapping(Point *point)
 
 void ViewWidget::mouseClickedEvent(QMouseEvent *event)
 {
-qDebug() << "clicked";
+
 }
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)

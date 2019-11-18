@@ -63,7 +63,7 @@ QString DrawableObject::toFileString()
 
 void DrawableObject::loadRelations(QVector<DrawableObject *> *list)
 {
-    qDebug() << "parent relations";
+
 }
 
 

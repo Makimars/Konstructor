@@ -20,7 +20,6 @@ void Circle::resolveTies()
 	if(this->lies_on != nullptr)
 	{
 		this->radius = this->center_point->distanceFrom(this->lies_on->getLocation());
-		qDebug() << "resolve circle tie, lies on";
 	}
 }
 
