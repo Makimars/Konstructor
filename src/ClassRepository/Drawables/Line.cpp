@@ -81,18 +81,42 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
 
 //----------	getters and setters    ----------
 
-Vector2D *Line::getLineVector()
+double Line::getLength()
+{
+	return this->start_point->distanceFrom(end_point->getLocation());
+}
+
+Line *Line::setLength(double lenght)
+{
+	double multiplier = lenght / getLength();
+
+	Vector2D old_vector = this->getLineVector();
+
+	Vector2D new_vector(
+				old_vector.x * multiplier,
+				old_vector.y * multiplier
+				);
+
+	this->end_point
+			->setLocation(this->start_point->getX() + new_vector.x,
+						this->start_point->getY() + new_vector.y
+						);
+
+	return this;
+}
+
+Vector2D Line::getLineVector()
 {
 	this->line_vector = Vector2D(
 				this->end_point->getX() - this->start_point->getX(),
 				this->end_point->getY() - this->start_point->getY()
 				);
-    return &this->line_vector;
+	return this->line_vector;
 }
 
 Line *Line::setLineVector(Vector2D vector)
 {
-    double vec_conf = length()  / vector.length();
+	double vec_conf = getLength()  / vector.length();
 	this->line_vector.x = vec_conf *vector.x;
 	this->line_vector.y = vec_conf *vector.y;
 
@@ -104,11 +128,6 @@ Line *Line::setLineVector(Vector2D vector)
                 );
 
 	return this;
-}
-
-double Line::length()
-{
-    return this->start_point->distanceFrom(end_point->getLocation());
 }
 
 Point *Line::getStartPoint()
@@ -132,30 +151,48 @@ Line *Line::Clone()
 
 //----------    Geometry    ----------
 
-double Line::getAngle(Line *reference_line)
+double Line::getAngle(Vector2D *reference_vector)
 {
-    double scalar_mult = (
-			this->line_vector.x *reference_line->getLineVector()->x
-			+ this->line_vector.y *reference_line->getLineVector()->y
-            );
+	getLineVector();
+	double scalar_mult = (
+						this->line_vector.x * reference_vector->x
+						+ this->line_vector.y * reference_vector->y
+						);
 
-    return qAcos(
-				scalar_mult / (this->length() *reference_line->length())
-                );
+	return qAcos(
+				scalar_mult /
+				this->getLength() * reference_vector->length()
+				 );
 }
 
-Line *Line::setAngle(double new_angle, Line *reference_line)
+Line *Line::setAngle(double angle, Vector2D *reference_vector)
 {
-    /*
-    double angle_1 = M_PI - new_angle - reference_line->getAngle(positive_axis);
-    double angle_2 = M_PI / 2 - angle_1;
+	double angle_difference = angle - this->getAngle(reference_vector);
 
-	double x = qSin(angle_1) *this->length();
-	double y = qSin(angle_2) *this->length();
+	this->end_point->setLocation(
+				this->end_point->getX() * (qCos(angle_difference) - qSin(angle_difference)),
+				this->end_point->getY() * (qSin(angle_difference) - qCos(angle_difference))
+				);
 
-    this->setLineVector(Vector2D(x, y));
-*/
 	return this;
+}
+
+//----------     Distance    ----------
+
+double Line::distanceFrom(Point *point)
+{
+	double denominator = abs(
+				((this->end_point->getY() - this->start_point->getY()) * point->getY()) -
+				((this->end_point->getX() - this->start_point->getX()) * point->getX()) +
+				(this->end_point->getX() * this->start_point->getY()) -
+				(this->end_point->getY() * this->start_point->getX())
+				);
+	double numerator = sqrt(
+				pow(this->end_point->getY() - this->start_point->getY(), 2) +
+				pow(this->end_point->getX() - this->start_point->getX(), 2)
+				);
+
+	return denominator / numerator;
 }
 
 //----------	QGraphicsItem overrides    ----------

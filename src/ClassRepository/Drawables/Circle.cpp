@@ -19,7 +19,12 @@ void Circle::resolveTies()
 {
 	if(this->lies_on != nullptr)
 	{
-		this->radius = this->center_point->distanceFrom(this->lies_on->getLocation());
+		if(this->lies_on->getType() == TYPE_POINT)
+		{
+			Point *lies_on = dynamic_cast<Point*>(this->lies_on);
+
+			this->radius = this->center_point->distanceFrom(lies_on->getLocation());
+		}
 	}
 }
 
@@ -118,9 +123,9 @@ Circle *Circle::Clone()
 
 //----------	Relations    ----------
 
-void Circle::setRelationLiesOn(Point *p)
+void Circle::setRelationLiesOn(DrawableObject *object)
 {
-	this->lies_on = p;
+	this->lies_on = object;
 }
 
 //----------	QGraphicsItem overrides    ----------

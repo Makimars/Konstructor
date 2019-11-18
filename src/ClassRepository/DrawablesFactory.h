@@ -1,7 +1,7 @@
 #ifndef DRAWABLESFACTORY_H
 #define DRAWABLESFACTORY_H
 
-#include "Drawables/Circle.h"
+#include "Drawables/Dimensions/LinesDistanceDimension.h"
 
 class DrawablesFactory
 {
@@ -18,7 +18,12 @@ public:
 	Line *makeLine(Point *start_point, Point *end_point);
 	Circle *makeCircle(Point *center_point);
 	Circle *makeCircle(Point *center_point, double radius);
-	Circle *makeCircle(Point *center_point, Point *lies_on);
+	Circle *makeCircle(Point *center_point, DrawableObject *lies_on);
+
+	//dimension creation
+	LineLenghtDimension *makeDimension(Line *line, double lenght);
+	LinesAngleDimension *makeDimension(Line *lines[2], double angle);
+	LinesDistanceDimension *makeDimension(Line *lines[2]);
 
 	//object managment
 	/**

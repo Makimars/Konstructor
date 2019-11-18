@@ -39,7 +39,11 @@ SOURCES += \
     src/ClassRepository/Tools/RectangleTool.cpp \
     src/ClassRepository/Tools/LabelTool.cpp \
     src/ClassRepository/Tools/LineTool.cpp \
-    src/ClassRepository/DrawablesFactory.cpp
+    src/ClassRepository/DrawablesFactory.cpp \
+    src/ClassRepository/Drawables/Dimensions/LineLenghtDimension.cpp \
+    src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.cpp \
+    src/ClassRepository/Drawables/Dimensions/LinesDistanceDimension.cpp \
+    src/ClassRepository/Tools/DimensionTool.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -56,7 +60,11 @@ HEADERS += \
     src/ClassRepository/Tools/CircleTool.h \
     src/ClassRepository/Tools/RectangleTool.h \
     src/ClassRepository/Tools/LabelTool.h \
-    src/ClassRepository/DrawablesFactory.h
+    src/ClassRepository/DrawablesFactory.h \
+    src/ClassRepository/Drawables/Dimensions/LineLenghtDimension.h \
+    src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.h \
+    src/ClassRepository/Drawables/Dimensions/LinesDistanceDimension.h \
+    src/ClassRepository/Tools/DimensionTool.h
 
 FORMS += \
     src/mainwindow.ui
