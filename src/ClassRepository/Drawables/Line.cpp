@@ -2,13 +2,13 @@
 
 Line::Line()
 {
-	this->type = "Line";
+	this->type = TYPE_LINE;
 }
 
 
 Line::Line(Point *start_point, Point *end_point) : DrawableObject()
 {
-	this->type = "Line";
+	this->type = TYPE_LINE;
 	this->start_point = start_point;
 	this->end_point = end_point;
 	this->line_vector = Vector2D(
@@ -61,13 +61,13 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
         switch (var_names.indexOf(var_name)) {
             case 0:
                 obj = DrawableObject::getById(list, QVariant(var_value).toUInt());
-                if(obj->getType() == "Point")
+				if(obj->getType() == TYPE_POINT)
                     this->start_point = (Point*)obj;
 
                 break;
             case 1:
                 obj = DrawableObject::getById(list, QVariant(var_value).toUInt());
-                if(obj->getType() == "Point")
+				if(obj->getType() == TYPE_POINT)
                     this->end_point = (Point*)obj;
 
                 break;

@@ -3,6 +3,8 @@
 
 #include "Point.h"
 
+#define TYPE_LINE "Line"
+
 class Line : public DrawableObject
 {
 public:

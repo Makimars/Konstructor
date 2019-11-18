@@ -3,6 +3,8 @@
 
 #include "DrawableObject.h"
 
+#define TYPE_POINT "Point"
+
 class Point : public DrawableObject
 {
 public:

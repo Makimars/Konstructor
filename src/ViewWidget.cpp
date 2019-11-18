@@ -167,7 +167,7 @@ Point *ViewWidget::pointSnapping(Point *point){
 	for(int i = 0; i < this->objects_in_sketch->length(); i++)
 	{
 		DrawableObject *obj = this->objects_in_sketch->at(i);
-		if(QString::compare(obj->getType(), QString("Point"), Qt::CaseInsensitive) == 0)
+		if(obj->getType() == TYPE_POINT)
 		{
 			Point *p = (Point*)obj;
 			if(point->distanceFrom(p->getLocation()) < Settings::point_snapping_distance)
@@ -182,7 +182,7 @@ Line *ViewWidget::lineSnapping(Point *point)
 	for(int i = 0; i < this->objects_in_sketch->length(); i++)
 	{
 		DrawableObject *obj = this->objects_in_sketch->at(i);
-		if(obj->getType() == "Line")
+		if(obj->getType() == TYPE_LINE)
 		{
 
 		}

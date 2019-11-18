@@ -2,19 +2,19 @@
 
 Point::Point() : DrawableObject()
 {
-	this->type = "Point";
+	this->type = TYPE_POINT;
 }
 
 Point::Point(QPointF location)
 {
-    this->type = "Point";
+	this->type = TYPE_POINT;
     this->x = location.x();
     this->y = location.y();
 }
 
 Point::Point(double x, double y) : DrawableObject()
 {
-	this->type = "Point";
+	this->type = TYPE_POINT;
 	this->x = x;
 	this->y = y;
 }

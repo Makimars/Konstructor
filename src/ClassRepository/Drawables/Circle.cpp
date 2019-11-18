@@ -2,12 +2,12 @@
 
 Circle::Circle()
 {
-	this->type = "Circle";
+	this->type = TYPE_CIRCLE;
 }
 
 Circle::Circle(Point *center_point)
 {
-	this->type = "Circle";
+	this->type = TYPE_CIRCLE;
 	this->center_point = center_point;
 }
 
@@ -70,8 +70,8 @@ void Circle::loadRelations(QVector<DrawableObject*> *list)
         switch (var_names.indexOf(var_name)) {
             case 0:
                 obj = DrawableObject::getById(list, QVariant(var_value).toUInt());
-                if(obj->getType() == "Point")
-                    this->center_point = (Point*)obj;
+				if(obj->getType() == TYPE_POINT)
+					this->center_point = dynamic_cast<Point*>(obj);
 
                 break;
             default:
