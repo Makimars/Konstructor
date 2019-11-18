@@ -9,7 +9,7 @@ struct Vector2D{
 		this->x = x;
 		this->y = y;
 	}
-    double lenght(){
+    double length(){
         return sqrt((x*x) + (y*y));
     }
 	double x,y;
