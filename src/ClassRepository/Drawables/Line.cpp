@@ -92,7 +92,7 @@ Vector2D *Line::getLineVector()
 
 Line *Line::setLineVector(Vector2D vector)
 {
-    double vec_conf = lenght()  / vector.lenght();
+    double vec_conf = length()  / vector.length();
 	this->line_vector.x = vec_conf *vector.x;
 	this->line_vector.y = vec_conf *vector.y;
 
@@ -106,7 +106,7 @@ Line *Line::setLineVector(Vector2D vector)
 	return this;
 }
 
-double Line::lenght()
+double Line::length()
 {
     return this->start_point->distanceFrom(end_point->getLocation());
 }
@@ -140,7 +140,7 @@ double Line::getAngle(Line *reference_line)
             );
 
     return qAcos(
-				scalar_mult / (this->lenght() *reference_line->lenght())
+				scalar_mult / (this->length() *reference_line->length())
                 );
 }
 
@@ -150,8 +150,8 @@ Line *Line::setAngle(double new_angle, Line *reference_line)
     double angle_1 = M_PI - new_angle - reference_line->getAngle(positive_axis);
     double angle_2 = M_PI / 2 - angle_1;
 
-	double x = qSin(angle_1) *this->lenght();
-	double y = qSin(angle_2) *this->lenght();
+	double x = qSin(angle_1) *this->length();
+	double y = qSin(angle_2) *this->length();
 
     this->setLineVector(Vector2D(x, y));
 */

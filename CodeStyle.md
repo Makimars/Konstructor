@@ -38,7 +38,7 @@ if(condition1 = value1              &
     Code;
 }
 ```
-#### note: if only two coditions, they can be left on one line depending on their lenght
+#### note: if only two coditions, they can be left on one line depending on their length
 
 ### Switch:
 ```
@@ -95,7 +95,7 @@ funcName(parameter1,
             parameter5
         );
 ```
-#### note: if only two parameters, they can be left on one line depending on their lenght
+#### note: if only two parameters, they can be left on one line depending on their length
 
 
 ### Pointers:

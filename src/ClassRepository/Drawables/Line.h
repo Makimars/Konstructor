@@ -18,7 +18,7 @@ public:
     void loadRelations(QVector<DrawableObject*> *list) override;
 
     //getters and setters
-    double lenght();
+    double length();
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
 	Point *getStartPoint();
 	Point *getEndPoint();
