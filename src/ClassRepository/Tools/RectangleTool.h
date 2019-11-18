@@ -13,7 +13,7 @@ public:
 						   );
 	static RectangleTool *getInstance();
 
-	void click(Point *clicked_point, bool existing_point = false) override;
+	void click(DrawableObject *clicked_point, Point *mouse_point) override;
 	void resetTool() override;
 
 private:

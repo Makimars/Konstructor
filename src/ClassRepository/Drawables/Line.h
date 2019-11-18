@@ -19,18 +19,34 @@ public:
     QString toFileString() override;
     void loadRelations(QVector<DrawableObject*> *list) override;
 
-    //getters and setters
-    double length();
+	//getters and setters
+	double getLength();
+	Line  *setLength(double lenght);
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
 	Point *getStartPoint();
 	Point *getEndPoint();
 	Line *Clone() override;
 
-    //Geonmetry
-	Vector2D *getLineVector();
+	//Geometry
+	Vector2D getLineVector();
 	Line *setLineVector(Vector2D vector);
-	double getAngle(Line *reference_line);
-	Line *setAngle(double angle, Line *reference_line);
+
+	/**
+	 * @brief gets angle of this line relative to reference vector in radians
+	 * @param Vector2D *reference_vector
+	 * @return double angle (radians)
+	 */
+	double getAngle(Vector2D *reference_vector);
+	/**
+	 * @brief sets the angle in radians of this line relative to reference vector
+	 * @param double angle (radians)
+	 * @param Vector2D *reference_vector
+	 * @return this
+	 */
+	Line *setAngle(double angle, Vector2D *reference_vector);
+
+	//Distance
+	double distanceFrom(Point *point);
 
     //QGraphicsItem overrides
 	QRectF boundingRect() const override;

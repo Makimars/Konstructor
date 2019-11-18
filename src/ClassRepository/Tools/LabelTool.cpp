@@ -24,7 +24,7 @@ LabelTool *LabelTool::getInstance()
 	return LabelTool::instance;
 }
 
-void LabelTool::click(Point *clicked_point, bool existing_point)
+void LabelTool::click(DrawableObject *clicked_object, Point *mouse_point)
 {
 
 }

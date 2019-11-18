@@ -169,7 +169,7 @@ Point *ViewWidget::pointSnapping(Point *point){
 		DrawableObject *obj = this->objects_in_sketch->at(i);
 		if(obj->getType() == TYPE_POINT)
 		{
-			Point *p = (Point*)obj;
+			Point *p = dynamic_cast<Point*>(obj);
 			if(point->distanceFrom(p->getLocation()) < Settings::point_snapping_distance)
 				return p;
 		}
@@ -184,10 +184,23 @@ Line *ViewWidget::lineSnapping(Point *point)
 		DrawableObject *obj = this->objects_in_sketch->at(i);
 		if(obj->getType() == TYPE_LINE)
 		{
+			Line *reference_line = dynamic_cast<Line*>(obj);
 
+			if(reference_line->distanceFrom(point) > Settings::point_snapping_distance)
+				return reference_line;
 		}
 	}
 	return nullptr;
+}
+
+DrawableObject *ViewWidget::mouseSnapping()
+{
+	DrawableObject *snapped_object = pointSnapping(this->mouse_point);
+
+	if(snapped_object == nullptr)
+		snapped_object = lineSnapping(this->mouse_point);
+
+	return snapped_object;
 }
 
 //----------	events    ----------
@@ -207,18 +220,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 	if(event->button() == Qt::LeftButton)
 	{
 		if(this->selected_tool != nullptr)
-		{
-			bool existing = true;
-			Point *snapped_point = pointSnapping(this->mouse_point);
-
-			if(snapped_point == nullptr)
-			{
-				snapped_point = this->mouse_point->Clone();
-				existing = false;
-			}
-
-			this->selected_tool->click(snapped_point, existing);
-		}
+			this->selected_tool->click(mouseSnapping(), this->mouse_point);
 	}
 }
 

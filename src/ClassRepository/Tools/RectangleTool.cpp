@@ -25,7 +25,7 @@ RectangleTool *RectangleTool::getInstance()
 	return RectangleTool::instance;
 }
 
-void RectangleTool::click(Point *clicked_point, bool existing_point)
+void RectangleTool::click(DrawableObject *clicked_object, Point *mouse_point)
 {
 
 }

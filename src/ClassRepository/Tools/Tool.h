@@ -7,14 +7,14 @@ class Tool : public QObject
 {
 	Q_OBJECT
 public:
-	virtual void click(Point * clicked_point, bool existing_point = false){}
+	virtual void click(DrawableObject *clicked_object, Point *mouse_point){}
 	virtual void resetTool();
 
 	//getters and setters
-	QBrush * getCurrentBrush() const;
-	void setCurrentBrush(QBrush * value);
-	QPen * getCurrentPen() const;
-	void setCurrentPen(QPen * value);
+	QBrush *getCurrentBrush() const;
+	void setCurrentBrush(QBrush *value);
+	QPen *getCurrentPen() const;
+	void setCurrentPen(QPen *value);
 
 private:
 

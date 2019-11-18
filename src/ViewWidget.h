@@ -7,7 +7,7 @@
 #include <QGraphicsView>
 
 #include "mainwindow.h"
-#include "ClassRepository/Tools/LabelTool.h"
+#include "ClassRepository/Tools/DimensionTool.h"
 #include "ClassRepository/GlobalVariables.h"
 
 class ViewWidget : public QGraphicsView
@@ -36,6 +36,7 @@ private:
 	Point *mouse_point;
 	Point *pointSnapping(Point *point);
 	Line *lineSnapping(Point *point);
+	DrawableObject *mouseSnapping();
 
 	DrawablesFactory *object_factory;
 
