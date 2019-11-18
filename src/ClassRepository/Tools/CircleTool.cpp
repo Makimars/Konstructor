@@ -63,6 +63,9 @@ void CircleTool::click(DrawableObject *clicked_object, Point *mouse_point)
 	}
 	else
 	{
+		if(clicked_object == nullptr)
+			clicked_object = mouse_point->Clone();
+
 		if(clicked_object->getType() == TYPE_POINT)
 		{
 			Point *clicked_point = dynamic_cast<Point*>(clicked_object);

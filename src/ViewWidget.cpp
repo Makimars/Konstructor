@@ -186,7 +186,7 @@ Line *ViewWidget::lineSnapping(Point *point)
 		{
 			Line *reference_line = dynamic_cast<Line*>(obj);
 
-			if(reference_line->distanceFrom(point) > Settings::point_snapping_distance)
+			if(reference_line->distanceFrom(point) < Settings::point_snapping_distance)
 				return reference_line;
 		}
 	}

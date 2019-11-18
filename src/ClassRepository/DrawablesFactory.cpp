@@ -62,22 +62,12 @@ Circle *DrawablesFactory::makeCircle(Point *center_point, double radius)
 	return circle;
 }
 
-Circle *DrawablesFactory::makeCircle(Point *center_point, Point *lies_on)
+Circle *DrawablesFactory::makeCircle(Point *center_point, DrawableObject *lies_on)
 {
 	Circle *circle = makeCircle(center_point);
 	circle->setRelationLiesOn(lies_on);
 
 	return circle;
-}
-
-Circle *DrawablesFactory::makeCircle(Point *center_point, Line *lies_on)
-{
-
-}
-
-Circle *DrawablesFactory::makeCircle(Point *center_point, DrawableObject *lies_on)
-{
-
 }
 
 //----------     dimension creation     ---------
