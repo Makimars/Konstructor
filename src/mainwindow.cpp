@@ -92,18 +92,10 @@ void MainWindow::on_open_button_clicked()
 
 void MainWindow::on_save_button_clicked()
 {
-	QFileDialog save_dialog(
-				this,
-                Global::save_file,
-				Settings::user_project_root,
-                Global::konstructor_sketch
-				);
-	save_dialog.setDefaultSuffix("kosk");
-	save_dialog.exec();
+	QString file_name = QFileDialog::getSaveFileName(this, Global::save_file, Settings::user_project_root, Global::konstructor_sketch + ";;" + Global::all_files);
 
-	if(save_dialog.selectedFiles().length() > 0)
-		this->ui->main_view_widget->saveToFile(save_dialog.selectedFiles().first());
-
+	if(file_name > 0)
+		this->ui->main_view_widget->saveToFile(file_name);
 }
 
 void MainWindow::on_save_as_button_clicked()
