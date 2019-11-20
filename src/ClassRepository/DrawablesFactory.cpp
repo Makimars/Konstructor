@@ -2,17 +2,17 @@
 
 DrawablesFactory *DrawablesFactory::instance = nullptr;
 
-void DrawablesFactory::initialise(QBrush *default_brush,
-									QPen *default_pen,
-									QVector<DrawableObject*> *object_list,
+void DrawablesFactory::initialise(QBrush *defaultBrush,
+									QPen *defaultPen,
+									QVector<DrawableObject*> *objectList,
 									QGraphicsScene *scene
 									)
 {
 	if(DrawablesFactory::instance == nullptr)
 	{
-		DrawablesFactory::instance = new DrawablesFactory(default_brush,
-														  default_pen,
-														  object_list,
+		DrawablesFactory::instance = new DrawablesFactory(defaultBrush,
+														  defaultPen,
+														  objectList,
 														  scene
 														  );
 	}
@@ -28,44 +28,44 @@ DrawablesFactory *DrawablesFactory::getInstance()
 Point *DrawablesFactory::makePoint()
 {
 	Point *point = new Point();
-	point->setBrush(this->default_brush)
-			->setPen(this->default_pen);
+	point->setBrush(this->defaultBrush)
+			->setPen(this->defaultPen);
 
 	return point;
 }
 
-Line *DrawablesFactory::makeLine(Point *start_point, Point *end_point)
+Line *DrawablesFactory::makeLine(Point *startPoint, Point *endPoint)
 {
-	Line *line = new Line(start_point, end_point);
-	line->setBrush(this->default_brush)
-			->setPen(this->default_pen);
+	Line *line = new Line(startPoint, endPoint);
+	line->setBrush(this->defaultBrush)
+			->setPen(this->defaultPen);
 
 	return line;
 }
 
 
-Circle *DrawablesFactory::makeCircle(Point *center_point)
+Circle *DrawablesFactory::makeCircle(Point *centerPoint)
 {
-	Circle *circle = new Circle(center_point);
-	circle->setBrush(this->default_brush)
-			->setPen(this->default_pen);
+	Circle *circle = new Circle(centerPoint);
+	circle->setBrush(this->defaultBrush)
+			->setPen(this->defaultPen);
 
 	return circle;
 }
 
 
-Circle *DrawablesFactory::makeCircle(Point *center_point, double radius)
+Circle *DrawablesFactory::makeCircle(Point *centerPoint, double radius)
 {
-	Circle *circle = makeCircle(center_point);
+	Circle *circle = makeCircle(centerPoint);
 	circle->setRadius(radius);
 
 	return circle;
 }
 
-Circle *DrawablesFactory::makeCircle(Point *center_point, DrawableObject *lies_on)
+Circle *DrawablesFactory::makeCircle(Point *centerPoint, DrawableObject *liesOn)
 {
-	Circle *circle = makeCircle(center_point);
-	circle->setRelationLiesOn(lies_on);
+	Circle *circle = makeCircle(centerPoint);
+	circle->setRelationLiesOn(liesOn);
 
 	return circle;
 }
@@ -91,19 +91,19 @@ LinesDistanceDimension *DrawablesFactory::makeDimension(Line *lines[])
 
 void DrawablesFactory::addDrawable(DrawableObject *object)
 {
-	if(!this->object_list->contains(object))
+	if(!this->objectList->contains(object))
 	{
-		this->object_list->append(object);
+		this->objectList->append(object);
 		this->scene->addItem(object);
 
-		object->setId(this->id_counter);
-		this->id_counter++;
+		object->setId(this->idCounter);
+		this->idCounter++;
 	}
 }
 
 void DrawablesFactory::tryDeleteDrawable(DrawableObject *object)
 {
-	if(!this->object_list->contains(object))
+	if(!this->objectList->contains(object))
 		deleteDrawable(object);
 }
 
@@ -120,22 +120,22 @@ void DrawablesFactory::deleteDrawable(DrawableObject *object)
 
 void DrawablesFactory::removeDrawable(DrawableObject *object)
 {
-	if(object_list->contains(object))
-		this->object_list->removeAll(object);
+	if(objectList->contains(object))
+		this->objectList->removeAll(object);
 	this->scene->removeItem(object);
 }
 
 
 //----------     _     ---------
 
-DrawablesFactory::DrawablesFactory(QBrush *default_brush,
-								   QPen *default_pen,
-								   QVector<DrawableObject*> *object_list,
+DrawablesFactory::DrawablesFactory(QBrush *defaultBrush,
+								   QPen *defaultPen,
+								   QVector<DrawableObject*> *objectList,
 								   QGraphicsScene *scene
 								   )
 {
-	this->default_brush = default_brush;
-	this->default_pen = default_pen;
-	this->object_list = object_list;
+	this->defaultBrush = defaultBrush;
+	this->defaultPen = defaultPen;
+	this->objectList = objectList;
 	this->scene = scene;
 }

@@ -6,18 +6,18 @@
 class RectangleTool : public Tool
 {
 public:
-	static void initialise(Point *mouse_point,
+	static void initialise(Point *mousePoint,
 						   QGraphicsScene *scene,
-						   QBrush *default_brush,
-						   QPen *default_pen
+						   QBrush *defaultBrush,
+						   QPen *defaultPen
 						   );
 	static RectangleTool *getInstance();
 
-	void click(DrawableObject *clicked_point, Point *mouse_point) override;
+	void click(DrawableObject *clickedPoint, Point *mousePoint) override;
 	void resetTool() override;
 
 private:
-	RectangleTool(Point *mouse_point, QGraphicsScene *scene);
+	RectangleTool(Point *mousePoint, QGraphicsScene *scene);
 
 	static RectangleTool *instance;
 };

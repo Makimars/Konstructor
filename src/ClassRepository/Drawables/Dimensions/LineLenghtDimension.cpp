@@ -2,11 +2,11 @@
 
 LineLenghtDimension::LineLenghtDimension(Line *line, double lenght)
 {
-	this->attached_line = line;
-	this->set_lenght = lenght;
+	this->attachedLine = line;
+	this->lengthToSet = lenght;
 }
 
 void LineLenghtDimension::resolveTies()
 {
-	this->attached_line->setLength(this->set_lenght);
+	this->attachedLine->setLength(this->lengthToSet);
 }

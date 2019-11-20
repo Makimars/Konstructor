@@ -7,7 +7,7 @@ class Tool : public QObject
 {
 	Q_OBJECT
 public:
-	virtual void click(DrawableObject *clicked_object, Point *mouse_point){}
+	virtual void click(DrawableObject *clickedObject, Point *mousePoint){}
 	virtual void resetTool();
 
 	//getters and setters
@@ -21,10 +21,10 @@ private:
 protected:
 	Tool();
 
-	DrawablesFactory *object_factory;
+	DrawablesFactory *objectFactory;
 
-	QBrush *current_brush;
-	QPen *current_pen;
+	QBrush *currentBrush;
+	QPen *currentPen;
 
 };
 

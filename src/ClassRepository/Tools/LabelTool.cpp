@@ -2,21 +2,21 @@
 
 LabelTool *LabelTool::instance = nullptr;
 
-LabelTool::LabelTool(Point *mouse_point, QGraphicsScene *scene)
+LabelTool::LabelTool(Point *mousePoint, QGraphicsScene *scene)
 {
-	this->object_factory = DrawablesFactory::getInstance();
+	this->objectFactory = DrawablesFactory::getInstance();
 }
 
-void LabelTool::initialise(Point *mouse_point,
+void LabelTool::initialise(Point *mousePoint,
 							QGraphicsScene *scene,
-							QBrush *default_brush,
-							QPen *default_pen)
+							QBrush *defaultBrush,
+							QPen *defaultPen)
 {
 	if(LabelTool::instance == nullptr)
-		LabelTool::instance = new LabelTool(mouse_point, scene);
+		LabelTool::instance = new LabelTool(mousePoint, scene);
 
-	LabelTool::instance->setCurrentPen(default_pen);
-	LabelTool::instance->setCurrentBrush(default_brush);
+	LabelTool::instance->setCurrentPen(defaultPen);
+	LabelTool::instance->setCurrentBrush(defaultBrush);
 }
 
 LabelTool *LabelTool::getInstance()
@@ -24,7 +24,7 @@ LabelTool *LabelTool::getInstance()
 	return LabelTool::instance;
 }
 
-void LabelTool::click(DrawableObject *clicked_object, Point *mouse_point)
+void LabelTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
 
 }

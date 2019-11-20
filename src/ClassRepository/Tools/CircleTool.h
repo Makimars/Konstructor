@@ -6,26 +6,26 @@
 class CircleTool : public Tool
 {
 public:
-	static void initialise(Point *mouse_point,
+	static void initialise(Point *mousePoint,
 						   QGraphicsScene *scene,
-						   QBrush *default_brush,
-						   QPen *default_pen
+						   QBrush *defaultBrush,
+						   QPen *defaultPen
 						   );
 	static CircleTool *getInstance();
 
-	void click(DrawableObject *clicked_object, Point *mouse_point) override;
+	void click(DrawableObject *clickedObject, Point *mousePoint) override;
 	void resetTool() override;
 
 private:
-	CircleTool(Point *mouse_point, QGraphicsScene *scene);
+	CircleTool(Point *mousePoint, QGraphicsScene *scene);
 	static CircleTool *instance;
 
 	//working variables
-	Point *previous_clicked_point;
+	Point *previousClickedPoint;
 
 	//preview
-	Circle *circle_preview;
-	Point *circle_preview_centre;
+	Circle *circlePreview;
+	Point *circlePreviewCentre;
 };
 
 #endif // CIRCLETOOL_H

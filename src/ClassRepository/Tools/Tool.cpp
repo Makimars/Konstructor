@@ -8,22 +8,22 @@ void Tool::resetTool()
 //----------     getters and setters     ---------
 QBrush * Tool::getCurrentBrush() const
 {
-	return current_brush;
+	return currentBrush;
 }
 
 void Tool::setCurrentBrush(QBrush * value)
 {
-	current_brush = value;
+	currentBrush = value;
 }
 
 QPen * Tool::getCurrentPen() const
 {
-	return current_pen;
+	return currentPen;
 }
 
 void Tool::setCurrentPen(QPen * value)
 {
-	current_pen = value;
+	currentPen = value;
 }
 
 Tool::Tool()

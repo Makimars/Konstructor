@@ -1,19 +1,19 @@
 #include "GlobalVariables.h"
 
-QString Global::open_file = "Open File";
-QString Global::save_file = "Save File";
+QString Global::openFile = "Open File";
+QString Global::saveFile = "Save File";
 
-QString Global::all_files = "All files (*.*)";
-QString Global::konstructor_sketch = "Konstructor sketch .kosk (*.kosk)";
+QString Global::allFiles = "All files (*.*)";
+QString Global::konstructorSketch = "Konstructor sketch .kosk (*.kosk)";
 
-QStringList Global::tool_names = {
+QStringList Global::toolNames = {
 	"Line",
 	"Circle",
 	"Rectangle",
 	"Label"
 };
 
-QStringList Global::type_names = {
+QStringList Global::typeNames = {
     "Point",
     "Line",
     "Circle"

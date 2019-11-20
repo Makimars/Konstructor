@@ -2,27 +2,27 @@
 
 LineTool *LineTool::instance = nullptr;
 
-LineTool::LineTool(Point *mouse_point, QGraphicsScene *scene)
+LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 {
-	this->object_factory = DrawablesFactory::getInstance();
+	this->objectFactory = DrawablesFactory::getInstance();
 
-	this->line_preview_start_point = this->object_factory->makePoint();
-	this->line_preview = this->object_factory
-			->makeLine(this->line_preview_start_point, mouse_point);
-	this->line_preview->setHidden(true);
-	scene->addItem(this->line_preview);
+	this->linePreviewStartPoint = this->objectFactory->makePoint();
+	this->linePreview = this->objectFactory
+			->makeLine(this->linePreviewStartPoint, mousePoint);
+	this->linePreview->setHidden(true);
+	scene->addItem(this->linePreview);
 }
 
-void LineTool::initialise(Point *mouse_point,
+void LineTool::initialise(Point *mousePoint,
 							QGraphicsScene *scene,
-							QBrush *default_brush,
-							QPen *default_pen)
+							QBrush *defaultBrush,
+							QPen *defaultPen)
 {
 	if(LineTool::instance == nullptr)
-		LineTool::instance = new LineTool(mouse_point, scene);
+		LineTool::instance = new LineTool(mousePoint, scene);
 
-	LineTool::instance->setCurrentPen(default_pen);
-	LineTool::instance->setCurrentBrush(default_brush);
+	LineTool::instance->setCurrentPen(defaultPen);
+	LineTool::instance->setCurrentBrush(defaultBrush);
 }
 
 LineTool *LineTool::getInstance()
@@ -30,47 +30,47 @@ LineTool *LineTool::getInstance()
 	return LineTool::instance;
 }
 
-void LineTool::click(DrawableObject *clicked_object, Point *mouse_point)
+void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
-	if(clicked_object == nullptr)
-		clicked_object = mouse_point->Clone();
+	if(clickedObject == nullptr)
+		clickedObject = mousePoint->clone();
 
-	if(clicked_object->getType() == TYPE_POINT)
+	if(clickedObject->getType() == TYPE_POINT)
 	{
-		Point *clicked_point;
+		Point *clickedPoint;
 
-		if(clicked_object != nullptr)
-			clicked_point = dynamic_cast<Point*>(clicked_object);
+		if(clickedObject != nullptr)
+			clickedPoint = dynamic_cast<Point*>(clickedObject);
 		else
-			clicked_point = mouse_point->Clone();
+			clickedPoint = mousePoint->clone();
 
-		this->clicked_points[1] = this->clicked_points[0];
-		this->clicked_points[0] = clicked_point;
+		this->clickedPoints[1] = this->clickedPoints[0];
+		this->clickedPoints[0] = clickedPoint;
 
-		this->line_preview->setHidden(false);
-		this->line_preview_start_point->setLocation(this->clicked_points[0]->getLocation());
+		this->linePreview->setHidden(false);
+		this->linePreviewStartPoint->setLocation(this->clickedPoints[0]->getLocation());
 
-		if(this->clicked_points[1] != nullptr)
+		if(this->clickedPoints[1] != nullptr)
 		{
-			this->object_factory->addDrawable(this->clicked_points[0]);
-			this->object_factory->addDrawable(this->clicked_points[1]);
+			this->objectFactory->addDrawable(this->clickedPoints[0]);
+			this->objectFactory->addDrawable(this->clickedPoints[1]);
 
-			Line *line = this->object_factory
-					->makeLine(this->clicked_points[0], this->clicked_points[1]);
-			this->object_factory->addDrawable(line);
+			Line *line = this->objectFactory
+					->makeLine(this->clickedPoints[0], this->clickedPoints[1]);
+			this->objectFactory->addDrawable(line);
 
-			this->clicked_points[1] = nullptr;
+			this->clickedPoints[1] = nullptr;
 		}
 	}
 }
 
 void LineTool::resetTool()
 {
-	this->object_factory->tryDeleteDrawable(this->clicked_points[0]);
-	this->clicked_points[0] = nullptr;
+	this->objectFactory->tryDeleteDrawable(this->clickedPoints[0]);
+	this->clickedPoints[0] = nullptr;
 
-	this->object_factory->tryDeleteDrawable(this->clicked_points[1]);
-	this->clicked_points[1] = nullptr;
+	this->objectFactory->tryDeleteDrawable(this->clickedPoints[1]);
+	this->clickedPoints[1] = nullptr;
 
-	this->line_preview->setHidden(true);
+	this->linePreview->setHidden(true);
 }

@@ -6,22 +6,22 @@
 class DimensionTool : public Tool
 {
 public:
-	static void initialise(Point *mouse_point,
+	static void initialise(Point *mousePoint,
 						   QGraphicsScene *scene,
-						   QBrush *default_brush,
-						   QPen *default_pen
+						   QBrush *defaultBrush,
+						   QPen *defaultPen
 						   );
 	static DimensionTool *getInstance();
 
-	void click(DrawableObject *clicked_object, Point *mouse_point) override;
+	void click(DrawableObject *clickedObject, Point *mousePoint) override;
 	void resetTool() override;
 
 private:
-	DimensionTool(Point *mouse_point, QGraphicsScene *scene);
+	DimensionTool(Point *mousePoint, QGraphicsScene *scene);
 	static DimensionTool *instance;
 
 	//working variables
-	DrawableObject *clicked_objects[2] = {nullptr, nullptr};
+	DrawableObject *clickedObjects[2] = {nullptr, nullptr};
 
 };
 

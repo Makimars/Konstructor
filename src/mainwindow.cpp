@@ -11,16 +11,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	loadSettings();
 
-	this->ui->new_button->setShortcut(Settings::new_file);
-	this->ui->open_button->setShortcut(Settings::open_file);
-	this->ui->save_button->setShortcut(Settings::save_file);
-	this->ui->save_as_button->setShortcut(Settings::save_file_as);
-	this->ui->export_button->setShortcut(Settings::export_file);
-	this->ui->print_button->setShortcut(Settings::print_file);
-	this->ui->settings_button->setShortcut(Settings::open_settings);
-	this->ui->quit_button->setShortcut(Settings::quit_app);
+	this->ui->newButton->setShortcut(Settings::newFile);
+	this->ui->openButton->setShortcut(Settings::openFile);
+	this->ui->saveButton->setShortcut(Settings::saveFile);
+	this->ui->saveAsButton->setShortcut(Settings::saveFileAs);
+	this->ui->exportButton->setShortcut(Settings::exportFile);
+	this->ui->printButton->setShortcut(Settings::printFile);
+	this->ui->settingsButton->setShortcut(Settings::openSettings);
+	this->ui->quitButton->setShortcut(Settings::quitApp);
 
-	connect(this->ui->main_view_widget, &ViewWidget::keyPressed,
+	connect(this->ui->mainViewWidget, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
 }
@@ -32,7 +32,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::timerEvent(QTimerEvent *event)
 {
-	this->ui->main_view_widget->update();
+	this->ui->mainViewWidget->update();
 }
 
 //----------    Ui handeling    ---------
@@ -40,15 +40,15 @@ void MainWindow::timerEvent(QTimerEvent *event)
 void MainWindow::setTool(QString tool)
 {
 	if(tool != "Line")
-		this->ui->line_button->setChecked(false);
+		this->ui->lineButton->setChecked(false);
 	if(tool != "Circle")
-		this->ui->circle_button->setChecked(false);
+		this->ui->circleButton->setChecked(false);
 	if(tool != "Rectangle")
-		this->ui->rectangle_button->setChecked(false);
+		this->ui->rectangleButton->setChecked(false);
 	if(tool != "Label")
-		this->ui->label_button->setChecked(false);
+		this->ui->labelButton->setChecked(false);
 
-	this->ui->main_view_widget->setTool(tool);
+	this->ui->mainViewWidget->setTool(tool);
 }
 
 //----------	settings    ----------
@@ -68,93 +68,94 @@ void MainWindow::saveSettings()
 
 //-----    file tab    -----
 
-void MainWindow::on_new_button_clicked()
+void MainWindow::on_newButton_clicked()
 {
 
 }
 
-void MainWindow::on_open_button_clicked()
+void MainWindow::on_openButton_clicked()
 {
-	QString file_name = QFileDialog::getOpenFileName(
+	QString fileName = QFileDialog::getOpenFileName(
 			this,
-                	Global::open_file,
-			Settings::user_project_root,
-			Global::konstructor_sketch + ";;" + Global::all_files
+					Global::openFile,
+			Settings::userProjectRoot,
+			Global::konstructorSketch + ";;" + Global::allFiles
 			);
 
-	QFile file(file_name);
+	QFile file(fileName);
 	if(file.exists())
 	{
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-			this->ui->main_view_widget->loadFromFile(file.readAll());
+			this->ui->mainViewWidget->loadFromFile(file.readAll());
 	}
 }
 
-void MainWindow::on_save_button_clicked()
+void MainWindow::on_saveButton_clicked()
 {
-	QString file_name = QFileDialog::getSaveFileName(
+	QString fileName = QFileDialog::getSaveFileName(
 			this,
-			Global::save_file,
-			Settings::user_project_root,
-			Global::konstructor_sketch + ";;" + Global::all_files
+			Global::saveFile,
+			Settings::userProjectRoot,
+			Global::konstructorSketch + ";;" + Global::allFiles
 			);
-	this->ui->main_view_widget->saveToFile(file_name);
+	this->ui->mainViewWidget->saveToFile(fileName);
 }
 
-void MainWindow::on_save_as_button_clicked()
+void MainWindow::on_saveAsButton_clicked()
 {
 
 }
 
-void MainWindow::on_export_button_clicked()
+void MainWindow::on_exportButton_clicked()
 {
 
 }
 
-void MainWindow::on_print_button_clicked()
-{
-
-}
-
-void MainWindow::on_settings_button_clicked()
-{
-
-}
-
-void MainWindow::on_quit_button_clicked()
+void MainWindow::on_printButton_clicked()
 {
 	this->close();
 }
 
+void MainWindow::on_settingsButton_clicked()
+{
+
+}
+
+void MainWindow::on_quitButton_clicked()
+{
+
+}
+
 //-----    draw tab    -----
 
-void MainWindow::on_line_button_clicked()
+void MainWindow::on_lineButton_clicked()
 {
-	if(this->ui->line_button->isChecked())
+	if(this->ui->lineButton->isChecked())
 		setTool("Line");
 	else
 		setTool("");
 }
 
-void MainWindow::on_circle_button_clicked()
+void MainWindow::on_circleButton_clicked()
 {
-	if(this->ui->circle_button->isChecked())
+
+	if(this->ui->circleButton->isChecked())
 		setTool("Circle");
 	else
 		setTool("");
 }
 
-void MainWindow::on_rectangle_button_clicked()
+void MainWindow::on_rectangleButton_clicked()
 {
-	if(this->ui->rectangle_button->isChecked())
+	if(this->ui->rectangleButton->isChecked())
 		setTool("Rectangle");
 	else
 		setTool("");
 }
 
-void MainWindow::on_label_button_clicked()
+void MainWindow::on_labelButton_clicked()
 {
-	if(this->ui->label_button->isChecked())
+	if(this->ui->labelButton->isChecked())
 		setTool("Label");
 	else
 		setTool("");

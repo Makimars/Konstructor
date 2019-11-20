@@ -36,19 +36,19 @@ private slots:
 
     //ui events
 		//file tab
-	void on_new_button_clicked();
-	void on_open_button_clicked();
-	void on_save_button_clicked();
-	void on_save_as_button_clicked();
-	void on_export_button_clicked();
-	void on_print_button_clicked();
-	void on_settings_button_clicked();
-	void on_quit_button_clicked();
-        //draw tab
-	void on_line_button_clicked();
-	void on_circle_button_clicked();
-	void on_rectangle_button_clicked();
-	void on_label_button_clicked();
+	void on_newButton_clicked();
+	void on_openButton_clicked();
+	void on_saveButton_clicked();
+	void on_saveAsButton_clicked();
+	void on_exportButton_clicked();
+	void on_printButton_clicked();
+	void on_settingsButton_clicked();
+	void on_quitButton_clicked();
+		//draw tab
+	void on_lineButton_clicked();
+	void on_circleButton_clicked();
+	void on_rectangleButton_clicked();
+	void on_labelButton_clicked();
 
 	void viewKeyPress(QKeyEvent *event);
 };

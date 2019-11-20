@@ -6,19 +6,19 @@
 class DrawablesFactory
 {
 public:
-	static void initialise(QBrush *default_brush,
-							QPen *default_pen,
-							QVector<DrawableObject*> *object_list,
+	static void initialise(QBrush *defaultBrush,
+							QPen *defaultPen,
+							QVector<DrawableObject*> *objectList,
 							QGraphicsScene *scene
 							);
 	static DrawablesFactory *getInstance();
 
 	//object creation
 	Point *makePoint();
-	Line *makeLine(Point *start_point, Point *end_point);
-	Circle *makeCircle(Point *center_point);
-	Circle *makeCircle(Point *center_point, double radius);
-	Circle *makeCircle(Point *center_point, DrawableObject *lies_on);
+	Line *makeLine(Point *startPoint, Point *endPoint);
+	Circle *makeCircle(Point *centerPoint);
+	Circle *makeCircle(Point *centerPoint, double radius);
+	Circle *makeCircle(Point *centerPoint, DrawableObject *liesOn);
 
 	//dimension creation
 	LineLenghtDimension *makeDimension(Line *line, double lenght);
@@ -47,19 +47,19 @@ public:
 
 private:
 	static DrawablesFactory *instance;
-	DrawablesFactory(QBrush *default_brush,
-					 QPen *default_pen,
-					 QVector<DrawableObject*> *object_list,
+	DrawablesFactory(QBrush *defaultBrush,
+					 QPen *defaultPen,
+					 QVector<DrawableObject*> *objectList,
 					 QGraphicsScene *scene
 					 );
 
-	unsigned int id_counter = 0;
+	unsigned int idCounter = 0;
 
-	QVector<DrawableObject*> *object_list;
+	QVector<DrawableObject*> *objectList;
 	QGraphicsScene *scene;
 
-	QPen *default_pen;
-	QBrush *default_brush;
+	QPen *defaultPen;
+	QBrush *defaultBrush;
 
 
 

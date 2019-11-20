@@ -20,39 +20,39 @@ public:
 	//getters and setters
 
 	//tools
-	void setTool(QString tool_name);
+	void setTool(QString toolName);
 
 	//file operations
-	void loadFromFile(QString file_contents);
+	void loadFromFile(QString fileContents);
     void saveToFile(QString file);
 
     //axis
-	Line *getAxisLine(int x_direction, int y_direction);
+	Line *getAxisLine(int xDirection, int yDirection);
 
 private:
-	QGraphicsScene *sketch_scene;
+	QGraphicsScene *sketchScene;
 
 	//tools processing
-	Point *mouse_point;
+	Point *mousePoint;
 	Point *pointSnapping(Point *point);
 	Line *lineSnapping(Point *point);
 	DrawableObject *mouseSnapping();
 
-	DrawablesFactory *object_factory;
+	DrawablesFactory *objectFactory;
 
 	//tools
-	Tool *selected_tool;
-	QPen default_pen;
-	QBrush default_brush;
+	Tool *selectedTool;
+	QPen defaultPen;
+	QBrush defaultBrush;
 
     //object managment
-	QVector<DrawableObject*> *objects_in_sketch;
+	QVector<DrawableObject*> *objectsInSketch;
 
-	Line *up_up_axis, *up_down_axis, *down_down_axis, *down_up_axis;
+	Line *upUpAxis, *upDownAxis, *downDownAxis, *downUpAxis;
 
 	//draging
-	double drag_start_x;
-	double drag_start_y;
+	double dragStartX;
+	double dragStartY;
 
 	//events
 	void mouseClickedEvent(QMouseEvent *event);

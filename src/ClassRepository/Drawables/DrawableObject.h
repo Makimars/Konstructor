@@ -50,14 +50,14 @@ public:
 	DrawableObject *setPen(QPen * value);
 	QPen * getPen();
 
-	void setIsConstructiona(bool value);
+	void setIsConstructional(bool value);
 	bool isConstructional();
 	void setHighlight(bool value);
 	bool isHighlighted();
 	void setHidden(bool value);
 	bool isHidden();
 
-	virtual DrawableObject *Clone(){return nullptr;}
+	virtual DrawableObject *clone(){return nullptr;}
 
 	//saving
 	void fileAddVar(QString variable, QString value);
@@ -87,7 +87,7 @@ protected:
 	QPen *pen;
 
 	//parameters
-	bool is_constructional = false;
+	bool constructional = false;
 	bool highlight = false;
 	bool hidden = false;
 

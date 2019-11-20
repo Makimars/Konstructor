@@ -7,53 +7,53 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
-	this->default_pen = QPen(Qt::PenStyle::SolidLine);
-	this->default_brush = QBrush(Qt::BrushStyle::TexturePattern);
+	this->defaultPen = QPen(Qt::PenStyle::SolidLine);
+	this->defaultBrush = QBrush(Qt::BrushStyle::TexturePattern);
 
-	this->sketch_scene = new QGraphicsScene(this);
-	this->objects_in_sketch = new QVector<DrawableObject*>;
+	this->sketchScene = new QGraphicsScene(this);
+	this->objectsInSketch = new QVector<DrawableObject*>;
 
-	DrawablesFactory::initialise(&this->default_brush,
-								 &this->default_pen,
-								 this->objects_in_sketch,
-								 this->sketch_scene
+	DrawablesFactory::initialise(&this->defaultBrush,
+								 &this->defaultPen,
+								 this->objectsInSketch,
+								 this->sketchScene
 								 );
-	this->object_factory = DrawablesFactory::getInstance();
+	this->objectFactory = DrawablesFactory::getInstance();
 
-	this->mouse_point = this->object_factory->makePoint();
-	this->mouse_point->setHighlight(true);
-	this->mouse_point->setPen(&this->default_pen);
-	this->mouse_point->setBrush(&this->default_brush);
-	this->sketch_scene->addItem(mouse_point);
+	this->mousePoint = this->objectFactory->makePoint();
+	this->mousePoint->setHighlight(true);
+	this->mousePoint->setPen(&this->defaultPen);
+	this->mousePoint->setBrush(&this->defaultBrush);
+	this->sketchScene->addItem(mousePoint);
 
-	this->sketch_scene->setSceneRect(
-				-Settings::default_sketch_width / 2,
-				-Settings::default_sketch_height / 2,
-				Settings::default_sketch_width,
-				Settings::default_sketch_height);
-	this->setScene(sketch_scene);
+	this->sketchScene->setSceneRect(
+				-Settings::defaultSketchWidth / 2,
+				-Settings::defaultSketchHeight / 2,
+				Settings::defaultSketchWidth,
+				Settings::defaultSketchHeight);
+	this->setScene(sketchScene);
 
 	//tools initialisation
-	this->selected_tool = nullptr;
-	LineTool::initialise(this->mouse_point,
-						 this->sketch_scene,
-						 &this->default_brush,
-						 &this->default_pen
+	this->selectedTool = nullptr;
+	LineTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
 						 );
-	CircleTool::initialise(this->mouse_point,
-						 this->sketch_scene,
-						 &this->default_brush,
-						 &this->default_pen
+	CircleTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
 						 );
-	LabelTool::initialise(this->mouse_point,
-						 this->sketch_scene,
-						 &this->default_brush,
-						 &this->default_pen
+	LabelTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
 						 );
-	RectangleTool::initialise(this->mouse_point,
-						 this->sketch_scene,
-						 &this->default_brush,
-						 &this->default_pen
+	RectangleTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
 						 );
 
 	repaint();
@@ -68,27 +68,27 @@ ViewWidget::~ViewWidget()
 
 //----------	tools    ----------
 
-void ViewWidget::setTool(QString tool_name)
+void ViewWidget::setTool(QString toolName)
 {
-	if(this->selected_tool != nullptr)
-		this->selected_tool->resetTool();
+	if(this->selectedTool != nullptr)
+		this->selectedTool->resetTool();
 
-	switch(Global::tool_names.lastIndexOf(tool_name))
+	switch(Global::toolNames.lastIndexOf(toolName))
 	{
 		case LINE_TOOL:
-			this->selected_tool = LineTool::getInstance();
+			this->selectedTool = LineTool::getInstance();
 			break;
 		case CIRCLE_TOOL:
-			this->selected_tool = CircleTool::getInstance();
+			this->selectedTool = CircleTool::getInstance();
 			break;
 		case RECTANGLE_TOOL:
-			this->selected_tool = RectangleTool::getInstance();
+			this->selectedTool = RectangleTool::getInstance();
 			break;
 		case LABEL_TOOL:
-			this->selected_tool = LabelTool::getInstance();
+			this->selectedTool = LabelTool::getInstance();
 			break;
 		default:
-			this->selected_tool = nullptr;
+			this->selectedTool = nullptr;
 			break;
 	}
 }
@@ -99,59 +99,59 @@ void ViewWidget::loadFromFile(QString file)
 {
     QStringList splited = file.trimmed().split(";");
 
-    QVector<DrawableObject*> loaded_objects;
+	QVector<DrawableObject*> loadedObjects;
 
 	foreach(QString line, splited)
 	{
-		QString type_name = line.section('{',0,0).trimmed();
+		QString typeName = line.section('{',0,0).trimmed();
 		QString content = line.section('{',1,1).section('}',0,0);
-        DrawableObject *created_obj;
+		DrawableObject *createdObj;
 
-        switch(Global::type_names.lastIndexOf(type_name))
+		switch(Global::typeNames.lastIndexOf(typeName))
 		{
 			case 0:
-				created_obj = new Point();
+				createdObj = new Point();
 				break;
 			case 1:
-				created_obj = new Line();
-				created_obj->loadRelations(&loaded_objects);
+				createdObj = new Line();
+				createdObj->loadRelations(&loadedObjects);
 				break;
 			case 2:
-				created_obj = new Circle();
+				createdObj = new Circle();
 				break;
 			default:
-				created_obj = nullptr;
+				createdObj = nullptr;
 				break;
 		}
 
-		if(created_obj != nullptr)
+		if(createdObj != nullptr)
 		{
-			created_obj->fromFileString(content);
-			loaded_objects.append(created_obj);
+			createdObj->fromFileString(content);
+			loadedObjects.append(createdObj);
 		}
 	}
 
-	foreach(DrawableObject *obj, loaded_objects)
+	foreach(DrawableObject *obj, loadedObjects)
 	{
-		obj->loadRelations(&loaded_objects);
+		obj->loadRelations(&loadedObjects);
 	}
 
-	foreach(DrawableObject *obj, loaded_objects)
+	foreach(DrawableObject *obj, loadedObjects)
     {
-		this->object_factory->addDrawable(obj);
-        this->objects_in_sketch->append(obj);
+		this->objectFactory->addDrawable(obj);
+        this->objectsInSketch->append(obj);
     }
 }
 
 void ViewWidget::saveToFile(QString path)
 {
-	QFile target_file(path);
-	if(target_file.open(QIODevice::WriteOnly))
+	QFile targetFile(path);
+	if(targetFile.open(QIODevice::WriteOnly))
 	{
-		for(int i = 0; i < this->objects_in_sketch->length(); i++)
+		for(int i = 0; i < this->objectsInSketch->length(); i++)
 		{
-			target_file.write(
-						this->objects_in_sketch
+			targetFile.write(
+						this->objectsInSketch
 						->at(i)
 						->toFileString()
 						.toLatin1() + "\n"
@@ -164,13 +164,13 @@ void ViewWidget::saveToFile(QString path)
 //----------	tools processing    ----------
 
 Point *ViewWidget::pointSnapping(Point *point){
-	for(int i = 0; i < this->objects_in_sketch->length(); i++)
+	for(int i = 0; i < this->objectsInSketch->length(); i++)
 	{
-		DrawableObject *obj = this->objects_in_sketch->at(i);
+		DrawableObject *obj = this->objectsInSketch->at(i);
 		if(obj->getType() == TYPE_POINT)
 		{
 			Point *p = dynamic_cast<Point*>(obj);
-			if(point->distanceFrom(p->getLocation()) < Settings::point_snapping_distance)
+			if(point->distanceFrom(p->getLocation()) < Settings::pointSnappingDistance)
 				return p;
 		}
 	}
@@ -179,15 +179,15 @@ Point *ViewWidget::pointSnapping(Point *point){
 
 Line *ViewWidget::lineSnapping(Point *point)
 {
-	for(int i = 0; i < this->objects_in_sketch->length(); i++)
+	for(int i = 0; i < this->objectsInSketch->length(); i++)
 	{
-		DrawableObject *obj = this->objects_in_sketch->at(i);
+		DrawableObject *obj = this->objectsInSketch->at(i);
 		if(obj->getType() == TYPE_LINE)
 		{
-			Line *reference_line = dynamic_cast<Line*>(obj);
+			Line *referenceLine = dynamic_cast<Line*>(obj);
 
-			if(reference_line->distanceFrom(point) < Settings::point_snapping_distance)
-				return reference_line;
+			if(referenceLine->distanceFrom(point) < Settings::pointSnappingDistance)
+				return referenceLine;
 		}
 	}
 	return nullptr;
@@ -195,12 +195,12 @@ Line *ViewWidget::lineSnapping(Point *point)
 
 DrawableObject *ViewWidget::mouseSnapping()
 {
-	DrawableObject *snapped_object = pointSnapping(this->mouse_point);
+	DrawableObject *snappedObject = pointSnapping(this->mousePoint);
 
-	if(snapped_object == nullptr)
-		snapped_object = lineSnapping(this->mouse_point);
+	if(snappedObject == nullptr)
+		snappedObject = lineSnapping(this->mousePoint);
 
-	return snapped_object;
+	return snappedObject;
 }
 
 //----------	events    ----------
@@ -219,8 +219,8 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton)
 	{
-		if(this->selected_tool != nullptr)
-			this->selected_tool->click(mouseSnapping(), this->mouse_point);
+		if(this->selectedTool != nullptr)
+			this->selectedTool->click(mouseSnapping(), this->mousePoint);
 	}
 }
 
@@ -228,7 +228,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	//update mouse position
-	mouse_point->setLocation(mapToScene(event->pos()));
+	mousePoint->setLocation(mapToScene(event->pos()));
 
 	//draging plane
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
@@ -237,19 +237,19 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 		this->translate(100,100);
 		this->dragMode();
 
-		this->drag_start_x = event->x();
-		this->drag_start_y = event->y();
+		this->dragStartX = event->x();
+		this->dragStartY = event->y();
 	}
 
 	//draging points
-	Point *snapped_point = pointSnapping(this->mouse_point);
+	Point *snappedPoint = pointSnapping(this->mousePoint);
 
-	if(snapped_point != nullptr)
+	if(snappedPoint != nullptr)
 	{
 		if(event->buttons() == Qt::LeftButton)
-			snapped_point->setLocation(this->mouse_point->getLocation());
+			snappedPoint->setLocation(this->mousePoint->getLocation());
 		else
-			mouse_point->setLocation(snapped_point->getLocation());
+			mousePoint->setLocation(snappedPoint->getLocation());
 	}
 
 
@@ -257,24 +257,24 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	//higlighting
 
 
-	sketch_scene->update();
+	sketchScene->update();
 }
 
 void ViewWidget::wheelEvent(QWheelEvent *event)
 {
 	setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
-	if	(	((event->delta() > 0) & !Settings::mouse_wheel_inverted_zoom)	||
-			((event->delta() < 0) & Settings::mouse_wheel_inverted_zoom)	)
+	if	(	((event->delta() > 0) & !Settings::mouseWheelInvertedZoom)	||
+			((event->delta() < 0) & Settings::mouseWheelInvertedZoom)	)
 	{
-		this->scale(Settings::mouse_wheel_zoom_factor,
-					Settings::mouse_wheel_zoom_factor
+		this->scale(Settings::mouseWheelZoomFactor,
+					Settings::mouseWheelZoomFactor
 					);
 	}
 	else
 	{
-		this->scale(1.0 / Settings::mouse_wheel_zoom_factor,
-					1.0 / Settings::mouse_wheel_zoom_factor
+		this->scale(1.0 / Settings::mouseWheelZoomFactor,
+					1.0 / Settings::mouseWheelZoomFactor
 					);
 	}
 }

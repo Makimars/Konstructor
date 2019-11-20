@@ -102,7 +102,7 @@ void Point::setLocation(double x, double y)
     this->y = y;
 }
 
-Point *Point::Clone()
+Point *Point::clone()
 {
 	Point *p = new Point(this->x,this->y);
 	p->setName(this->name)
@@ -137,7 +137,7 @@ void Point::paint(QPainter *painter,
 	painter->setBrush(this->brush->style());
 	painter->setPen(this->pen->style());
 
-    int coef = Settings::point_render_size;
+	int coef = Settings::pointRenderSize;
     if(this->highlight)
         coef *= 2;
 

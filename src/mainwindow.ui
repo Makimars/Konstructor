@@ -34,7 +34,7 @@
      <number>4</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="top_tab_menu">
+     <widget class="QTabWidget" name="topTabMenu">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -65,7 +65,7 @@
       <property name="usesScrollButtons">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="file_tab">
+      <widget class="QWidget" name="fileTab">
        <attribute name="title">
         <string>File</string>
        </attribute>
@@ -86,7 +86,7 @@
          <number>4</number>
         </property>
         <item>
-         <widget class="QToolButton" name="new_button">
+         <widget class="QToolButton" name="newButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
@@ -112,7 +112,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="open_button">
+         <widget class="QToolButton" name="openButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -138,7 +138,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="save_button">
+         <widget class="QToolButton" name="saveButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -164,7 +164,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="save_as_button">
+         <widget class="QToolButton" name="saveAsButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -190,7 +190,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="export_button">
+         <widget class="QToolButton" name="exportButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -216,7 +216,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="print_button">
+         <widget class="QToolButton" name="printButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -242,7 +242,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="settings_button">
+         <widget class="QToolButton" name="settingsButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -268,7 +268,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="quit_button">
+         <widget class="QToolButton" name="quitButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -295,13 +295,13 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="draw_tab">
+      <widget class="QWidget" name="drawTab">
        <attribute name="title">
         <string>Draw</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <widget class="QToolButton" name="line_button">
+         <widget class="QToolButton" name="lineButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -333,7 +333,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="circle_button">
+         <widget class="QToolButton" name="circleButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -362,7 +362,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="rectangle_button">
+         <widget class="QToolButton" name="rectangleButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -391,7 +391,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QToolButton" name="label_button">
+         <widget class="QToolButton" name="labelButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -448,7 +448,7 @@
         <number>4</number>
        </property>
        <item>
-        <widget class="QListView" name="object_list_view">
+        <widget class="QListView" name="objectListView">
          <property name="maximumSize">
           <size>
            <width>200</width>
@@ -458,7 +458,7 @@
         </widget>
        </item>
        <item>
-        <widget class="ViewWidget" name="main_view_widget">
+        <widget class="ViewWidget" name="mainViewWidget">
          <property name="maximumSize">
           <size>
            <width>16777215</width>
@@ -478,7 +478,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="status_bar"/>
+  <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

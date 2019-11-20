@@ -2,22 +2,22 @@
 
 RectangleTool *RectangleTool::instance = nullptr;
 
-RectangleTool::RectangleTool(Point *mouse_point, QGraphicsScene *scene)
+RectangleTool::RectangleTool(Point *mousePoint, QGraphicsScene *scene)
 {
-	this->object_factory = DrawablesFactory::getInstance();
+	this->objectFactory = DrawablesFactory::getInstance();
 
 }
 
-void RectangleTool::initialise(Point *mouse_point,
+void RectangleTool::initialise(Point *mousePoint,
 							QGraphicsScene *scene,
-							QBrush *default_brush,
-							QPen *default_pen)
+							QBrush *defaultBrush,
+							QPen *defaultPen)
 {
 	if(RectangleTool::instance == nullptr)
-		RectangleTool::instance = new RectangleTool(mouse_point, scene);
+		RectangleTool::instance = new RectangleTool(mousePoint, scene);
 
-	RectangleTool::instance->setCurrentPen(default_pen);
-	RectangleTool::instance->setCurrentBrush(default_brush);
+	RectangleTool::instance->setCurrentPen(defaultPen);
+	RectangleTool::instance->setCurrentBrush(defaultBrush);
 }
 
 RectangleTool *RectangleTool::getInstance()
@@ -25,7 +25,7 @@ RectangleTool *RectangleTool::getInstance()
 	return RectangleTool::instance;
 }
 
-void RectangleTool::click(DrawableObject *clicked_object, Point *mouse_point)
+void RectangleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
 
 }

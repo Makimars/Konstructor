@@ -6,26 +6,26 @@
 class LineTool : public Tool
 {
 public:
-	static void initialise(Point *mouse_point,
+	static void initialise(Point *mousePoint,
 						   QGraphicsScene *scene,
-						   QBrush *default_brush,
-						   QPen *default_pen
+						   QBrush *defaultBrush,
+						   QPen *defaultPen
 						   );
 	static LineTool *getInstance();
 
-	void click(DrawableObject *clicked_object, Point *mouse_point) override;
+	void click(DrawableObject *clickedObject, Point *mousePoint) override;
 	void resetTool() override;
 
 private:
-	LineTool(Point *mouse_point, QGraphicsScene *scene);
+	LineTool(Point *mousePoint, QGraphicsScene *scene);
 	static LineTool *instance;
 
 	//working variables
-	Point *clicked_points[2] = {nullptr, nullptr};
+	Point *clickedPoints[2] = {nullptr, nullptr};
 
 	//preview
-	Line *line_preview;
-	Point *line_preview_start_point;
+	Line *linePreview;
+	Point *linePreviewStartPoint;
 
 };
 

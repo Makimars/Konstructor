@@ -11,8 +11,8 @@ public:
 	void resolveTies() override;
 
 private:
-	Line *attached_line;
-	double set_lenght;
+	Line *attachedLine;
+	double lengthToSet;
 
 };
 

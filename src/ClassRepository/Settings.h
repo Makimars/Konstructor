@@ -8,33 +8,33 @@
 class Settings
 {
 public:
-	static void loadFromFile(QString file_content);
+	static void loadFromFile(QString fileContent);
 	static QString getSaveFile();
 
 	//view widget
-	static double mouse_wheel_zoom_factor;
-	static bool mouse_wheel_inverted_zoom;
-	static double point_snapping_distance;
+	static double mouseWheelZoomFactor;
+	static bool mouseWheelInvertedZoom;
+	static double pointSnappingDistance;
 
-	static double default_sketch_height;
-	static double default_sketch_width;
+	static double defaultSketchHeight;
+	static double defaultSketchWidth;
 
-	static int point_render_size;
+	static int pointRenderSize;
 
 	//keyboard shortcuts
 	static QKeySequence
-		new_file,
-		open_file,
-		save_file,
-		save_file_as,
-		export_file,
-		print_file,
-		open_settings,
-		quit_app;
+		newFile,
+		openFile,
+		saveFile,
+		saveFileAs,
+		exportFile,
+		printFile,
+		openSettings,
+		quitApp;
 
 
 	//environment
-	static QString user_project_root;
+	static QString userProjectRoot;
 
 	//file extensions
 

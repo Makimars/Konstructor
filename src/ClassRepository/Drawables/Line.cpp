@@ -6,14 +6,14 @@ Line::Line()
 }
 
 
-Line::Line(Point *start_point, Point *end_point) : DrawableObject()
+Line::Line(Point *startPoint, Point *endPoint) : DrawableObject()
 {
 	this->type = TYPE_LINE;
-	this->start_point = start_point;
-	this->end_point = end_point;
-	this->line_vector = Vector2D(
-				this->end_point->getX() - this->start_point->getX(),
-				this->end_point->getY() - this->start_point->getY()
+	this->startPoint = startPoint;
+	this->endPoint = endPoint;
+	this->lineVector = Vector2D(
+				this->endPoint->getX() - this->startPoint->getX(),
+				this->endPoint->getY() - this->startPoint->getY()
 				);
 }
 
@@ -37,38 +37,38 @@ void Line::fromFileString(QString input)
 QString Line::toFileString()
 {
 	DrawableObject::toFileString();
-	this->fileAddVar("start_point", this->start_point->getId());
-	this->fileAddVar("end_point", this->end_point->getId());
+	this->fileAddVar("startPoint", this->startPoint->getId());
+	this->fileAddVar("endPoint", this->endPoint->getId());
     return DrawableObject::fileFinish();
 }
 
 void Line::loadRelations(QVector<DrawableObject*> *list)
 {
-    QStringList var_names = {
-        "start_point",
-        "end_point"
+    QStringList varNames = {
+		"startPoint",
+		"endPoint"
     };
 
     QStringList variables = this->file.split(',');
     for(int i = 0; i < variables.length() - 1; i++)
     {
         QStringList parts = variables[i].split(":");
-        QString var_name = parts[0];
-        QString var_value = parts[1];
+        QString varName = parts[0];
+        QString varValue = parts[1];
 
-		DrawableObject *obj;
+		DrawableObject *object;
 
-        switch (var_names.indexOf(var_name)) {
+        switch (varNames.indexOf(varName)) {
             case 0:
-                obj = DrawableObject::getById(list, QVariant(var_value).toUInt());
-				if(obj->getType() == TYPE_POINT)
-                    this->start_point = (Point*)obj;
+				object = DrawableObject::getById(list, QVariant(varValue).toUInt());
+				if(object->getType() == TYPE_POINT)
+					this->startPoint = dynamic_cast<Point*>(object);
 
                 break;
             case 1:
-                obj = DrawableObject::getById(list, QVariant(var_value).toUInt());
-				if(obj->getType() == TYPE_POINT)
-                    this->end_point = (Point*)obj;
+				object = DrawableObject::getById(list, QVariant(varValue).toUInt());
+				if(object->getType() == TYPE_POINT)
+					this->endPoint = dynamic_cast<Point*>(object);
 
                 break;
             default:
@@ -83,23 +83,23 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
 
 double Line::getLength()
 {
-	return this->start_point->distanceFrom(end_point->getLocation());
+	return this->startPoint->distanceFrom(endPoint->getLocation());
 }
 
 Line *Line::setLength(double lenght)
 {
 	double multiplier = lenght / getLength();
 
-	Vector2D old_vector = this->getLineVector();
+	Vector2D oldVector = this->getLineVector();
 
-	Vector2D new_vector(
-				old_vector.x * multiplier,
-				old_vector.y * multiplier
+	Vector2D newVector(
+				oldVector.x * multiplier,
+				oldVector.y * multiplier
 				);
 
-	this->end_point
-			->setLocation(this->start_point->getX() + new_vector.x,
-						this->start_point->getY() + new_vector.y
+	this->endPoint
+			->setLocation(this->startPoint->getX() + newVector.x,
+						this->startPoint->getY() + newVector.y
 						);
 
 	return this;
@@ -107,24 +107,24 @@ Line *Line::setLength(double lenght)
 
 Vector2D Line::getLineVector()
 {
-	this->line_vector = Vector2D(
-				this->end_point->getX() - this->start_point->getX(),
-				this->end_point->getY() - this->start_point->getY()
+	this->lineVector = Vector2D(
+				this->endPoint->getX() - this->startPoint->getX(),
+				this->endPoint->getY() - this->startPoint->getY()
 				);
-	return this->line_vector;
+	return this->lineVector;
 }
 
 Line *Line::setLineVector(Vector2D vector)
 {
-	double vec_conf = getLength()  / vector.length();
-	this->line_vector.x = vec_conf *vector.x;
-	this->line_vector.y = vec_conf *vector.y;
+	double vecConf = getLength()  / vector.length();
+	this->lineVector.x = vecConf *vector.x;
+	this->lineVector.y = vecConf *vector.y;
 
-    this->end_point->setX(
-                this->start_point->getY() + this->line_vector.x
+    this->endPoint->setX(
+                this->startPoint->getY() + this->lineVector.x
                 );
-    this->end_point->setY(
-                this->start_point->getY() + this->line_vector.y
+    this->endPoint->setY(
+                this->startPoint->getY() + this->lineVector.y
                 );
 
 	return this;
@@ -132,17 +132,17 @@ Line *Line::setLineVector(Vector2D vector)
 
 Point *Line::getStartPoint()
 {
-	return this->start_point;
+	return this->startPoint;
 }
 
 Point *Line::getEndPoint()
 {
-	return this->end_point;
+	return this->endPoint;
 }
 
-Line *Line::Clone()
+Line *Line::clone()
 {
-	Line *l = new Line(this->start_point, this->end_point);
+	Line *l = new Line(this->startPoint, this->endPoint);
 	l->setName(this->getName());
 
 	return l;
@@ -151,27 +151,27 @@ Line *Line::Clone()
 
 //----------    Geometry    ----------
 
-double Line::getAngle(Vector2D *reference_vector)
+double Line::getAngle(Vector2D *referenceVector)
 {
 	getLineVector();
-	double scalar_mult = (
-						this->line_vector.x * reference_vector->x
-						+ this->line_vector.y * reference_vector->y
+	double scalarMult = (
+						this->lineVector.x * referenceVector->x
+						+ this->lineVector.y * referenceVector->y
 						);
 
 	return qAcos(
-				scalar_mult /
-				this->getLength() * reference_vector->length()
+				scalarMult /
+				this->getLength() * referenceVector->length()
 				 );
 }
 
-Line *Line::setAngle(double angle, Vector2D *reference_vector)
+Line *Line::setAngle(double angle, Vector2D *referenceVector)
 {
-	double angle_difference = angle - this->getAngle(reference_vector);
+	double angleDifference = angle - this->getAngle(referenceVector);
 
-	this->end_point->setLocation(
-				this->end_point->getX() * (qCos(angle_difference) - qSin(angle_difference)),
-				this->end_point->getY() * (qSin(angle_difference) - qCos(angle_difference))
+	this->endPoint->setLocation(
+				this->endPoint->getX() * (qCos(angleDifference) - qSin(angleDifference)),
+				this->endPoint->getY() * (qSin(angleDifference) - qCos(angleDifference))
 				);
 
 	return this;
@@ -182,14 +182,14 @@ Line *Line::setAngle(double angle, Vector2D *reference_vector)
 double Line::distanceFrom(Point *point)
 {
 	double denominator = abs(
-				((this->end_point->getY() - this->start_point->getY()) * point->getY()) -
-				((this->end_point->getX() - this->start_point->getX()) * point->getX()) +
-				(this->end_point->getX() * this->start_point->getY()) -
-				(this->end_point->getY() * this->start_point->getX())
+				((this->endPoint->getY() - this->startPoint->getY()) * point->getY()) -
+				((this->endPoint->getX() - this->startPoint->getX()) * point->getX()) +
+				(this->endPoint->getX() * this->startPoint->getY()) -
+				(this->endPoint->getY() * this->startPoint->getX())
 				);
 	double numerator = sqrt(
-				pow(this->end_point->getY() - this->start_point->getY(), 2) +
-				pow(this->end_point->getX() - this->start_point->getX(), 2)
+				pow(this->endPoint->getY() - this->startPoint->getY(), 2) +
+				pow(this->endPoint->getX() - this->startPoint->getX(), 2)
 				);
 
 	return denominator / numerator;
@@ -199,8 +199,8 @@ double Line::distanceFrom(Point *point)
 
 QRectF Line::boundingRect() const
 {
-	QPointF first = this->start_point->getLocation();
-	QPointF second = this->end_point->getLocation();
+	QPointF first = this->startPoint->getLocation();
+	QPointF second = this->endPoint->getLocation();
 
     return QRectF(first, second);
 }
@@ -213,8 +213,8 @@ void Line::paint(QPainter *painter,
 		return;
 
 	resolveTies();
-	painter->drawLine(this->start_point->getLocation(),
-						this->end_point->getLocation()
+	painter->drawLine(this->startPoint->getLocation(),
+						this->endPoint->getLocation()
 					);
 }
 

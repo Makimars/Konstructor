@@ -9,7 +9,7 @@ class Circle : public DrawableObject
 {
 public:
 	Circle();
-	Circle(Point *center_point);
+	Circle(Point *centerPoint);
     ~Circle() override;
 
 	void resolveTies() override;
@@ -23,7 +23,7 @@ public:
 	Point *getCenterPoint();
 	double *getRadius();
 	Circle *setRadius(double value);
-	Circle *Clone() override;
+	Circle *clone() override;
 
 	//relations
 	void setRelationLiesOn(DrawableObject *point);
@@ -37,11 +37,11 @@ public:
 
 private:
 	//defining variables
-	Point *center_point;
+	Point *centerPoint;
 	double radius;
 
 	//relations
-	DrawableObject *lies_on = nullptr;
+	DrawableObject *liesOn = nullptr;
 
 };
 

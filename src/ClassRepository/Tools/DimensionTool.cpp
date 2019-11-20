@@ -2,21 +2,21 @@
 
 DimensionTool *DimensionTool::instance = nullptr;
 
-DimensionTool::DimensionTool(Point *mouse_point, QGraphicsScene *scene)
+DimensionTool::DimensionTool(Point *mousePoint, QGraphicsScene *scene)
 {
 
 }
 
-void DimensionTool::initialise(Point *mouse_point,
+void DimensionTool::initialise(Point *mousePoint,
 							QGraphicsScene *scene,
-							QBrush *default_brush,
-							QPen *default_pen)
+							QBrush *defaultBrush,
+							QPen *defaultPen)
 {
 	if(DimensionTool::instance == nullptr)
-		DimensionTool::instance = new DimensionTool(mouse_point, scene);
+		DimensionTool::instance = new DimensionTool(mousePoint, scene);
 
-	DimensionTool::instance->setCurrentPen(default_pen);
-	DimensionTool::instance->setCurrentBrush(default_brush);
+	DimensionTool::instance->setCurrentPen(defaultPen);
+	DimensionTool::instance->setCurrentBrush(defaultBrush);
 }
 
 DimensionTool *DimensionTool::getInstance()
@@ -24,22 +24,22 @@ DimensionTool *DimensionTool::getInstance()
 	return DimensionTool::instance;
 }
 
-void DimensionTool::click(DrawableObject *clicked_object, Point *mouse_point)
+void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
-	this->clicked_objects[1] = this->clicked_objects[0];
-	this->clicked_objects[0] = clicked_object;
+	this->clickedObjects[1] = this->clickedObjects[0];
+	this->clickedObjects[0] = clickedObject;
 
-	if(this->clicked_objects[1] != nullptr)
+	if(this->clickedObjects[1] != nullptr)
 	{
-		QString object_0_type = this->clicked_objects[0]->getType();
-		QString object_1_type = this->clicked_objects[1]->getType();
+		QString object0Type = this->clickedObjects[0]->getType();
+		QString object1Type = this->clickedObjects[1]->getType();
 
-		if(object_0_type == TYPE_LINE & object_1_type == TYPE_LINE)
+		if(object0Type == TYPE_LINE & object1Type == TYPE_LINE)
 		{
 			// two lines
 			Line *lines[] = {
-				dynamic_cast<Line*>(this->clicked_objects[0]),
-				dynamic_cast<Line*>(this->clicked_objects[1])
+				dynamic_cast<Line*>(this->clickedObjects[0]),
+				dynamic_cast<Line*>(this->clickedObjects[1])
 			};
 
 			// one common point
@@ -53,8 +53,8 @@ void DimensionTool::click(DrawableObject *clicked_object, Point *mouse_point)
 				//two lines distance
 			}
 		}
-		else if((object_0_type == TYPE_POINT | object_1_type == TYPE_POINT) &
-				(object_0_type == TYPE_LINE  | object_1_type == TYPE_LINE))
+		else if((object0Type == TYPE_POINT | object1Type == TYPE_POINT) &
+				(object0Type == TYPE_LINE  | object1Type == TYPE_LINE))
 		{
 			//one line and one point
 
@@ -69,9 +69,9 @@ void DimensionTool::click(DrawableObject *clicked_object, Point *mouse_point)
 
 void DimensionTool::resetTool()
 {
-	this->object_factory->tryDeleteDrawable(this->clicked_objects[0]);
-	this->clicked_objects[0] = nullptr;
+	this->objectFactory->tryDeleteDrawable(this->clickedObjects[0]);
+	this->clickedObjects[0] = nullptr;
 
-	this->object_factory->tryDeleteDrawable(this->clicked_objects[1]);
-	this->clicked_objects[1] = nullptr;
+	this->objectFactory->tryDeleteDrawable(this->clickedObjects[1]);
+	this->clickedObjects[1] = nullptr;
 }

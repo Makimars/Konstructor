@@ -26,7 +26,7 @@ public:
 	QPointF getLocation();
 	void setLocation(QPointF point);
 	void setLocation(double x, double y);
-	Point *Clone() override;
+	Point *clone() override;
 
     //aritmetic functions
 	double distanceFrom(QPointF point);

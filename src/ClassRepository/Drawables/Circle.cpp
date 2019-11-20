@@ -8,7 +8,7 @@ Circle::Circle()
 Circle::Circle(Point *center_point)
 {
 	this->type = TYPE_CIRCLE;
-	this->center_point = center_point;
+	this->centerPoint = center_point;
 }
 
 Circle::~Circle(){
@@ -17,13 +17,13 @@ Circle::~Circle(){
 
 void Circle::resolveTies()
 {
-	if(this->lies_on != nullptr)
+	if(this->liesOn != nullptr)
 	{
-		if(this->lies_on->getType() == TYPE_POINT)
+		if(this->liesOn->getType() == TYPE_POINT)
 		{
-			Point *lies_on = dynamic_cast<Point*>(this->lies_on);
+			Point *liesOn = dynamic_cast<Point*>(this->liesOn);
 
-			this->radius = this->center_point->distanceFrom(lies_on->getLocation());
+			this->radius = this->centerPoint->distanceFrom(liesOn->getLocation());
 		}
 	}
 }
@@ -34,7 +34,7 @@ void Circle::fromFileString(QString input)
 {
 	DrawableObject::fromFileString(input);
 
-    QStringList var_names = {
+	QStringList varNames = {
       "radius"
     };
 
@@ -42,12 +42,12 @@ void Circle::fromFileString(QString input)
     for(int i = 0; i < variables.length() - 1; i++)
 	{
 		QStringList parts = variables[i].split(":");
-		QString var_name = parts[0];
-		QString var_value = parts[1];
+		QString varName = parts[0];
+		QString varValue = parts[1];
 
-		switch (var_names.indexOf(var_name)) {
+		switch (varNames.indexOf(varName)) {
 			case 0:
-				this->radius = QVariant(var_value).toDouble();
+				this->radius = QVariant(varValue).toDouble();
 				break;
 			default:
 				break;
@@ -58,24 +58,24 @@ void Circle::fromFileString(QString input)
 
 void Circle::loadRelations(QVector<DrawableObject*> *list)
 {
-    QStringList var_names = {
-        "center_point"
+	QStringList varNames = {
+		"centerPoint"
     };
 
     QStringList variables = this->file.split(',');
     for(int i = 0; i < variables.length() - 1; i++)
     {
         QStringList parts = variables[i].split(":");
-        QString var_name = parts[0];
-        QString var_value = parts[1];
+		QString varName = parts[0];
+		QString varValue = parts[1];
 
 		DrawableObject *obj;
 
-        switch (var_names.indexOf(var_name)) {
+		switch (varNames.indexOf(varName)) {
             case 0:
-                obj = DrawableObject::getById(list, QVariant(var_value).toUInt());
+				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
 				if(obj->getType() == TYPE_POINT)
-					this->center_point = dynamic_cast<Point*>(obj);
+					this->centerPoint = dynamic_cast<Point*>(obj);
 
                 break;
             default:
@@ -88,7 +88,7 @@ void Circle::loadRelations(QVector<DrawableObject*> *list)
 QString Circle::toFileString()
 {
 	DrawableObject::toFileString();
-	this->fileAddVar("center_point", this->center_point->getId());
+	this->fileAddVar("centerPoint", this->centerPoint->getId());
 	this->fileAddVar("radius", this->radius);
 	return this->fileFinish();
 }
@@ -97,7 +97,7 @@ QString Circle::toFileString()
 
 Point *Circle::getCenterPoint()
 {
-	return this->center_point;
+	return this->centerPoint;
 }
 
 double *Circle::getRadius()
@@ -112,11 +112,11 @@ Circle *Circle::setRadius(double value)
 	return this;
 }
 
-Circle *Circle::Clone()
+Circle *Circle::clone()
 {
-	Circle *circle = new Circle(this->center_point);
+	Circle *circle = new Circle(this->centerPoint);
 	circle->setRadius(this->radius);
-	circle->setRelationLiesOn(this->lies_on);
+	circle->setRelationLiesOn(this->liesOn);
 
 	return circle;
 }
@@ -125,7 +125,7 @@ Circle *Circle::Clone()
 
 void Circle::setRelationLiesOn(DrawableObject *object)
 {
-	this->lies_on = object;
+	this->liesOn = object;
 }
 
 //----------	QGraphicsItem overrides    ----------
@@ -133,7 +133,7 @@ void Circle::setRelationLiesOn(DrawableObject *object)
 QRectF Circle::boundingRect() const
 {
 	QPointF top_left_point(
-				this->center_point->getLocation() -
+				this->centerPoint->getLocation() -
 				QPointF(radius, radius)
 				);
 

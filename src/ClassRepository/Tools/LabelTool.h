@@ -6,18 +6,18 @@
 class LabelTool : public Tool
 {
 public:
-	static void initialise(Point *mouse_point,
+	static void initialise(Point *mousePoint,
 						   QGraphicsScene *scene,
-						   QBrush *default_brush,
-						   QPen *default_pen
+						   QBrush *defaultBrush,
+						   QPen *defaultPen
 						   );
 	static LabelTool *getInstance();
 
-	void click(DrawableObject *clicked_point, Point *mouse_point) override;
+	void click(DrawableObject *clickedPoint, Point *mousePoint) override;
 	void resetTool() override;
 
 private:
-	LabelTool(Point *mouse_point, QGraphicsScene *scene);
+	LabelTool(Point *mousePoint, QGraphicsScene *scene);
 
 	static LabelTool *instance;
 };

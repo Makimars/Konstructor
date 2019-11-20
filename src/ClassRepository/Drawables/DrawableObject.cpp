@@ -25,7 +25,7 @@ void DrawableObject::fromFileString(QString input)
     QStringList var_names = {
         "id",
         "name",
-        "is_constructional"
+		"constructional"
     };
 
 	QStringList variables = input.split(',');
@@ -43,7 +43,7 @@ void DrawableObject::fromFileString(QString input)
 				this->name = var_value;
 				break;
 			case 2:
-				this->is_constructional = QVariant(var_value).toBool();
+				this->constructional = QVariant(var_value).toBool();
 				break;
 			default:
 				break;
@@ -57,7 +57,7 @@ QString DrawableObject::toFileString()
     this->file = "";
     this->fileAddVar("id", this->getId());
     this->fileAddVar("name", this->getName());
-    this->fileAddVar("is_constructional", this->is_constructional);
+	this->fileAddVar("constructional", this->constructional);
     return this->file;
 }
 
@@ -122,14 +122,14 @@ QPen * DrawableObject::getPen()
 	return pen;
 }
 
-void DrawableObject::setIsConstructiona(bool value)
+void DrawableObject::setIsConstructional(bool value)
 {
-	this->is_constructional = value;
+	this->constructional = value;
 }
 
 bool DrawableObject::isConstructional()
 {
-	return this->is_constructional;
+	return this->constructional;
 }
 
 void DrawableObject::setHighlight(bool value)

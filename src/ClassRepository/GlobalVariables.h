@@ -12,15 +12,15 @@ class Global {
 
 public:
 	//consatants
-    static QStringList tool_names;
-    static QStringList type_names;
+	static QStringList toolNames;
+	static QStringList typeNames;
 
 	//messages
-    static QString open_file, save_file;
+	static QString openFile, saveFile;
 
 	//file types
-    static QString konstructor_sketch;
-    static QString all_files;
+	static QString konstructorSketch;
+	static QString allFiles;
 
 };
 

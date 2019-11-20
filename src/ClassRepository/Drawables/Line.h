@@ -9,7 +9,7 @@ class Line : public DrawableObject
 {
 public:
 	Line();
-	Line(Point *start_point, Point *end_point);
+	Line(Point *startPoint, Point *endPoint);
     ~Line() override;
 
 	void resolveTies() override;
@@ -25,7 +25,7 @@ public:
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
 	Point *getStartPoint();
 	Point *getEndPoint();
-	Line *Clone() override;
+	Line *clone() override;
 
 	//Geometry
 	Vector2D getLineVector();
@@ -33,17 +33,17 @@ public:
 
 	/**
 	 * @brief gets angle of this line relative to reference vector in radians
-	 * @param Vector2D *reference_vector
+	 * @param Vector2D *referenceVector
 	 * @return double angle (radians)
 	 */
-	double getAngle(Vector2D *reference_vector);
+	double getAngle(Vector2D *referenceVector);
 	/**
 	 * @brief sets the angle in radians of this line relative to reference vector
 	 * @param double angle (radians)
-	 * @param Vector2D *reference_vector
+	 * @param Vector2D *referenceVector
 	 * @return this
 	 */
-	Line *setAngle(double angle, Vector2D *reference_vector);
+	Line *setAngle(double angle, Vector2D *referenceVector);
 
 	//Distance
 	double distanceFrom(Point *point);
@@ -56,13 +56,13 @@ public:
                ) override;
 
 protected:
-    Vector2D line_vector;
+	Vector2D lineVector;
 
     //plane axes
-	Line *up_up_axis;
+	Line *upUpAxis;
 
 	//defining variables
-	Point *start_point, *end_point;
+	Point *startPoint, *endPoint;
 };
 
 #endif // LINE_H
