@@ -26,6 +26,10 @@ private:
 	//preview
 	Line *linePreview;
 	Point *linePreviewStartPoint;
+	LineLenghtDimension *lineLenghtDimension;
+
+public slots:
+	void KeyPressed(QKeyEvent *event) override;
 
 };
 

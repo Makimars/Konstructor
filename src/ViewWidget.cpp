@@ -91,6 +91,14 @@ void ViewWidget::setTool(QString toolName)
 			this->selectedTool = nullptr;
 			break;
 	}
+
+	if(this->selectedTool != nullptr)
+	{
+		connect(this, &ViewWidget::keyPressed,
+				this->selectedTool, &Tool::KeyPressed
+				);
+
+	}
 }
 
 //----------	file operations    ----------

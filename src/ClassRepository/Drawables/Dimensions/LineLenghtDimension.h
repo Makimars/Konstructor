@@ -3,16 +3,24 @@
 
 #include "../Circle.h"
 
-class LineLenghtDimension : DrawableObject
+class LineLenghtDimension : public DrawableObject
 {
 public:
 	LineLenghtDimension(Line *line, double lenght);
 
 	void resolveTies() override;
+	void setValue(double lenght);
+
+	//QGraphicsItem overrides
+	QRectF boundingRect() const override;
+	void paint(QPainter *painter,
+			   const QStyleOptionGraphicsItem *option,
+			   QWidget *widget
+			   ) override;
 
 private:
 	Line *attachedLine;
-	double lengthToSet;
+	double lengthToSet, distanceFromLine;
 
 };
 

@@ -2,6 +2,7 @@
 #define TOOL_H
 
 #include "../DrawablesFactory.h"
+#include <QKeyEvent>
 
 class Tool : public QObject
 {
@@ -25,6 +26,9 @@ protected:
 
 	QBrush *currentBrush;
 	QPen *currentPen;
+
+public slots:
+	virtual void KeyPressed(QKeyEvent *event);
 
 };
 

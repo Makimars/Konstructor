@@ -6,11 +6,21 @@ LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 {
 	this->objectFactory = DrawablesFactory::getInstance();
 
-	this->linePreviewStartPoint = this->objectFactory->makePoint();
+	//line preview
+	this->linePreviewStartPoint = this->objectFactory
+			->makePoint();
+
 	this->linePreview = this->objectFactory
 			->makeLine(this->linePreviewStartPoint, mousePoint);
 	this->linePreview->setHidden(true);
+
+	this->lineLenghtDimension = this->objectFactory
+			->makeDimension(this->linePreview, 0);
+	this->lineLenghtDimension->setHidden(false);
+
 	scene->addItem(this->linePreview);
+	scene->addItem(this->lineLenghtDimension);
+
 }
 
 void LineTool::initialise(Point *mousePoint,
@@ -73,4 +83,14 @@ void LineTool::resetTool()
 	this->clickedPoints[1] = nullptr;
 
 	this->linePreview->setHidden(true);
+}
+
+void LineTool::KeyPressed(QKeyEvent *event)
+{
+	bool ok = false;
+	event->text().toInt(&ok);
+	if(ok)
+	{
+
+	}
 }

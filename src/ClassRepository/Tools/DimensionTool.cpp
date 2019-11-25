@@ -47,6 +47,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 					(lines[0]->getStartPoint() == lines[1]->getEndPoint()))
 			{
 				//two lines angle
+
 			}
 			else // no common point
 			{

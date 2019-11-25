@@ -88,13 +88,13 @@ double Line::getLength()
 
 Line *Line::setLength(double lenght)
 {
-	double multiplier = lenght / getLength();
+	double multiplier = pow(lenght, 2) / pow(getLength(), 2);
 
 	Vector2D oldVector = this->getLineVector();
 
 	Vector2D newVector(
-				oldVector.x * multiplier,
-				oldVector.y * multiplier
+				sqrt( pow(oldVector.x, 2) * multiplier),
+				sqrt( pow(oldVector.y, 2) * multiplier)
 				);
 
 	this->endPoint
