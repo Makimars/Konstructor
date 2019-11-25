@@ -27,9 +27,6 @@ protected:
 	QBrush *currentBrush;
 	QPen *currentPen;
 
-public slots:
-	virtual void KeyPressed(QKeyEvent *event);
-
 };
 
 #endif // TOOL_H

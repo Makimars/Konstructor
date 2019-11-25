@@ -21,7 +21,8 @@ public:
 	Circle *makeCircle(Point *centerPoint, DrawableObject *liesOn);
 
 	//dimension creation
-	LineLenghtDimension *makeDimension(Line *line, double lenght);
+	LineLengthDimension *makeDimension(Line *line, double lenght);
+	LineLengthDimension *makeDimension(Line *line, double lenght, double distanceFromLine);
 	LinesAngleDimension *makeDimension(Line *lines[2], double angle);
 	LinesDistanceDimension *makeDimension(Line *lines[2]);
 

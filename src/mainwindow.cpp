@@ -47,6 +47,8 @@ void MainWindow::setTool(QString tool)
 		this->ui->rectangleButton->setChecked(false);
 	if(tool != "Label")
 		this->ui->labelButton->setChecked(false);
+	if(tool != "Dimension")
+		this->ui->dimensionButton->setChecked(false);
 
 	this->ui->mainViewWidget->setTool(tool);
 }
@@ -157,6 +159,14 @@ void MainWindow::on_labelButton_clicked()
 {
 	if(this->ui->labelButton->isChecked())
 		setTool("Label");
+	else
+		setTool("");
+}
+
+void MainWindow::on_dimensionButton_clicked()
+{
+	if(this->ui->dimensionButton->isChecked())
+		setTool("Dimension");
 	else
 		setTool("");
 }

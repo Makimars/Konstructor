@@ -182,8 +182,8 @@ Line *Line::setAngle(double angle, Vector2D *referenceVector)
 double Line::distanceFrom(Point *point)
 {
 	double denominator = abs(
-				((this->endPoint->getY() - this->startPoint->getY()) * point->getY()) -
-				((this->endPoint->getX() - this->startPoint->getX()) * point->getX()) +
+				((this->endPoint->getY() - this->startPoint->getY()) * point->getX()) -
+				((this->endPoint->getX() - this->startPoint->getX()) * point->getY()) +
 				(this->endPoint->getX() * this->startPoint->getY()) -
 				(this->endPoint->getY() * this->startPoint->getX())
 				);

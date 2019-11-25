@@ -23,6 +23,7 @@ private:
 	//working variables
 	DrawableObject *clickedObjects[2] = {nullptr, nullptr};
 
+	DrawableObject *dimensionPreview = nullptr;
 };
 
 #endif // DIMENSIONSTOOL_H

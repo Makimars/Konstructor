@@ -14,12 +14,7 @@ LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 			->makeLine(this->linePreviewStartPoint, mousePoint);
 	this->linePreview->setHidden(true);
 
-	this->lineLenghtDimension = this->objectFactory
-			->makeDimension(this->linePreview, 0);
-	this->lineLenghtDimension->setHidden(false);
-
 	scene->addItem(this->linePreview);
-	scene->addItem(this->lineLenghtDimension);
 
 }
 
@@ -47,12 +42,7 @@ void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
 
 	if(clickedObject->getType() == TYPE_POINT)
 	{
-		Point *clickedPoint;
-
-		if(clickedObject != nullptr)
-			clickedPoint = dynamic_cast<Point*>(clickedObject);
-		else
-			clickedPoint = mousePoint->clone();
+		Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
 
 		this->clickedPoints[1] = this->clickedPoints[0];
 		this->clickedPoints[0] = clickedPoint;
@@ -83,14 +73,4 @@ void LineTool::resetTool()
 	this->clickedPoints[1] = nullptr;
 
 	this->linePreview->setHidden(true);
-}
-
-void LineTool::KeyPressed(QKeyEvent *event)
-{
-	bool ok = false;
-	event->text().toInt(&ok);
-	if(ok)
-	{
-
-	}
 }
