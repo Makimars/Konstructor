@@ -212,11 +212,13 @@ void ViewWidget::mouseClickedEvent(QMouseEvent *event)
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
-
+	this->grabbedPoint = pointSnapping(this->mousePoint);
 }
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+	this->grabbedPoint = nullptr;
+
 	if(event->button() == Qt::LeftButton)
 	{
 		if(this->selectedTool != nullptr)
@@ -241,18 +243,9 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 		this->dragStartY = event->y();
 	}
 
-	//draging points
-	Point *snappedPoint = pointSnapping(this->mousePoint);
-
-	if(snappedPoint != nullptr)
-	{
-		if(event->buttons() == Qt::LeftButton)
-			snappedPoint->setLocation(this->mousePoint->getLocation());
-		else
-			mousePoint->setLocation(snappedPoint->getLocation());
-	}
-
-
+	//draging point
+	if(this->grabbedPoint != nullptr)
+		grabbedPoint->setLocation(this->mousePoint->getLocation());
 
 	//higlighting
 

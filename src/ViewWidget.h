@@ -53,6 +53,7 @@ private:
 	//draging
 	double dragStartX;
 	double dragStartY;
+	Point *grabbedPoint = nullptr;
 
 	//events
 	void mouseClickedEvent(QMouseEvent *event);
