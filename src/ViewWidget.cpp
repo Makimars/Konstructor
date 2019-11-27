@@ -212,7 +212,8 @@ void ViewWidget::mouseClickedEvent(QMouseEvent *event)
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
-	this->grabbedPoint = pointSnapping(this->mousePoint);
+	if(event->button() == Qt::LeftButton)
+		this->grabbedPoint = pointSnapping(this->mousePoint);
 }
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
