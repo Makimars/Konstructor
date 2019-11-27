@@ -92,9 +92,16 @@ Line *Line::setLength(double lenght)
 
 	Vector2D oldVector = this->getLineVector();
 
+	int signX = 1;
+	int signY = 1;
+	if(oldVector.x < 0)
+		signX = -1;
+	if(oldVector.y < 0)
+		signY = -1;
+
 	Vector2D newVector(
-				sqrt( pow(oldVector.x, 2) * multiplier),
-				sqrt( pow(oldVector.y, 2) * multiplier)
+				signX * sqrt( pow(oldVector.x, 2) * multiplier),
+				signY * sqrt( pow(oldVector.y, 2) * multiplier)
 				);
 
 	this->endPoint

@@ -56,7 +56,7 @@ void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
 			this->objectFactory->addDrawable(this->clickedPoints[1]);
 
 			Line *line = this->objectFactory
-					->makeLine(this->clickedPoints[0], this->clickedPoints[1]);
+					->makeLine(this->clickedPoints[1], this->clickedPoints[0]);
 			this->objectFactory->addDrawable(line);
 
 			this->clickedPoints[1] = nullptr;

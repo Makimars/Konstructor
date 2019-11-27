@@ -44,7 +44,35 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 
 QRectF LineLengthDimension::boundingRect() const
 {
+	double multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x, 2);
 
+	Vector2D lineVector = this->attachedLine->getLineVector();
+
+	//X direction multiplier
+	int mult = 1;
+	if((lineVector.x > 0 & lineVector.y < 0)	|
+		(lineVector.x < 0 & lineVector.y > 0)	)
+	{
+		mult = -1;
+	}
+
+	//get normal vector of line
+	Vector2D normalVector(
+				mult * sqrt(pow(lineVector.y, 2) * multiplier),
+				-sqrt(pow(lineVector.x, 2) * multiplier)
+				);
+
+	//edge points
+	QPointF aboveStartPoint(
+				this->attachedLine->getStartPoint()->getX() + normalVector.x,
+				this->attachedLine->getStartPoint()->getY() + normalVector.y
+				);
+	QPointF aboveEndPoint(
+				this->attachedLine->getEndPoint()->getX() + normalVector.x,
+				this->attachedLine->getEndPoint()->getY() + normalVector.y
+				);
+
+	return QRectF(aboveStartPoint, aboveEndPoint);
 }
 
 void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -97,26 +125,21 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 				qAtan(normalVector.x / normalVector.y)
 										);
 
-	painter->rotate(-textAngle);
-
-	double textHeight = 20;
-	double textWidth = 30;
 	QPointF	centerPoint(
-				-mult * (aboveStartPoint.x() + ((aboveEndPoint.x() - aboveStartPoint.x()) / 2) - textWidth*2),
-				mult * (aboveStartPoint.y() + ((aboveEndPoint.y() - aboveStartPoint.y()) / 2) - textHeight*2)
+				(aboveStartPoint.x() + aboveEndPoint.x()) / 2,
+				(aboveStartPoint.y() + aboveEndPoint.y()) / 2
 				);
 
-	painter->drawText(centerPoint, QString::number(this->lengthToSet));
+	painter->save();
+	painter->translate(centerPoint);
+	//rotate funciton rotates clockwise, we have angle counter clockwise
+	painter->rotate(-textAngle);
+
+	int textWidth = 60;
+	int textHeight = 20;
+	QRectF textRect(-textWidth / 2, -textHeight, textWidth, textHeight);
+	painter->drawText(textRect, QString::number(this->lengthToSet));
 
 	painter->resetTransform();
-
-	//test the location of center point
-	this->pen->setWidth(10);
-	this->brush->setStyle(Qt::BrushStyle::SolidPattern);
-	painter->setPen(*this->pen);
-	painter->setBrush(*this->brush);
-	int coef = 40;
-	QRectF rect(centerPoint.x() - coef, centerPoint.y() - coef, coef + coef, coef + coef);
-	painter->drawEllipse(rect);
-
+	painter->restore();
 }

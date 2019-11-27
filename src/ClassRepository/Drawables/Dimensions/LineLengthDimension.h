@@ -27,7 +27,6 @@ public:
 private:
 	Line *attachedLine;
 	double lengthToSet, distanceFromLine;
-
 };
 
 #endif // LINELENGHTDIMENSION_H
