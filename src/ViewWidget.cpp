@@ -214,6 +214,11 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
 	if(event->button() == Qt::LeftButton)
 		this->grabbedPoint = pointSnapping(this->mousePoint);
+
+	//TODO: reimplement click on drawable
+	QGraphicsItem *item = this->sketchScene->itemAt(mousePoint->getLocation(), QTransform());
+	qDebug() << dynamic_cast<DrawableObject*>(item)->getType();
+	//QGraphicsView::mousePressEvent(event);
 }
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
