@@ -151,6 +151,7 @@ void Circle::paint(QPainter *painter,
 	if(this->hidden)
 		return;
 
-	resolveTies();
+	DrawableObject::paint(painter, option, widget);
+
 	painter->drawEllipse(this->boundingRect());
 }

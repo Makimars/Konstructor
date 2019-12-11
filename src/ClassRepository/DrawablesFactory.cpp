@@ -72,7 +72,7 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, DrawableObject *liesOn)
 
 //----------     dimension creation     ---------
 
-LineLengthDimension *DrawablesFactory::makeDimension(Line *line, double length)
+LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, double length)
 {
 	LineLengthDimension *dimension = new LineLengthDimension(line, length);
 	dimension->setPen(this->defaultPen)
@@ -81,7 +81,7 @@ LineLengthDimension *DrawablesFactory::makeDimension(Line *line, double length)
 	return dimension;
 }
 
-LineLengthDimension *DrawablesFactory::makeDimension(Line *line, double length, double distanceFromLine)
+LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, double length, double distanceFromLine)
 {
 	LineLengthDimension *dimension = new LineLengthDimension(line, length);
 	dimension->setDistanceFromLine(distanceFromLine);
@@ -91,12 +91,12 @@ LineLengthDimension *DrawablesFactory::makeDimension(Line *line, double length, 
 	return dimension;
 }
 
-LinesAngleDimension *DrawablesFactory::makeDimension(Line *lines[], double angle)
+LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], double angle)
 {
 
 }
 
-LinesDistanceDimension *DrawablesFactory::makeDimension(Line *lines[])
+LinesDistanceDimension *DrawablesFactory::makeLinesDistanceDimension(Line *lines[])
 {
 
 }

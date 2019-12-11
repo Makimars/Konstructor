@@ -80,7 +80,7 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	if(this->hidden)
 		return;
 
-	resolveTies();
+	DrawableObject::paint(painter, option, widget);
 
 	double multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x, 2);
 
