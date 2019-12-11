@@ -94,6 +94,8 @@ protected:
 	//saving
 	QString file;
 
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+
 };
 
 #endif // DRAWABLEOBJECT_H
