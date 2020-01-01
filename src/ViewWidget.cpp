@@ -207,7 +207,11 @@ DrawableObject *ViewWidget::mouseSnapping()
 
 void ViewWidget::mouseClickedEvent(QMouseEvent *event)
 {
-
+	//TODO: reimplement click on drawable
+	QGraphicsItem *item = this->sketchScene->itemAt(mousePoint->getLocation(), QTransform());
+	if(item != nullptr)
+		qDebug() << dynamic_cast<DrawableObject*>(item)->getType();
+	//QGraphicsView::mousePressEvent(event);
 }
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
@@ -215,10 +219,7 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 	if(event->button() == Qt::LeftButton)
 		this->grabbedPoint = pointSnapping(this->mousePoint);
 
-	//TODO: reimplement click on drawable
-	QGraphicsItem *item = this->sketchScene->itemAt(mousePoint->getLocation(), QTransform());
-	qDebug() << dynamic_cast<DrawableObject*>(item)->getType();
-	//QGraphicsView::mousePressEvent(event);
+	this->mouseMovedSincePressed = false;
 }
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -230,6 +231,9 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 		if(this->selectedTool != nullptr)
 			this->selectedTool->click(mouseSnapping(), this->mousePoint);
 	}
+
+	if(!this->mouseMovedSincePressed)
+		mouseClickedEvent(event);
 }
 
 
@@ -237,6 +241,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	//update mouse position
 	mousePoint->setLocation(mapToScene(event->pos()));
+	this->mouseMovedSincePressed = true;
 
 	//draging plane
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
@@ -252,9 +257,6 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	//draging point
 	if(this->grabbedPoint != nullptr)
 		grabbedPoint->setLocation(this->mousePoint->getLocation());
-
-	//higlighting
-
 
 	sketchScene->update();
 }

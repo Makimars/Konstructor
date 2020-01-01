@@ -56,7 +56,9 @@ private:
 	Point *grabbedPoint = nullptr;
 
 	//events
+	bool mouseMovedSincePressed = false;
 	void mouseClickedEvent(QMouseEvent *event);
+
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
