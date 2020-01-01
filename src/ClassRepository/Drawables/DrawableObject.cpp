@@ -227,3 +227,8 @@ void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	qDebug() << "mousepress on drawable" + type;
 }
 
+void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	qDebug() << "mousepress on drawable" + type;
+}
+
