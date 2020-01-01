@@ -33,6 +33,7 @@ private:
 	QGraphicsScene *sketchScene;
 
 	//tools processing
+	void initialiseTools();
 	Point *mousePoint;
 	Point *pointSnapping(Point *point);
 	Line *lineSnapping(Point *point);

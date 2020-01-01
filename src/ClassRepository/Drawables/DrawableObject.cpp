@@ -214,7 +214,12 @@ void DrawableObject::paint(QPainter *painter,
 						   const QStyleOptionGraphicsItem *option,
 						   QWidget *widget)
 {
+	resolveTies();
 
+	if(this->highlight){
+		this->pen->setWidth(2);
+		painter->setPen(*this->pen);
+	}
 }
 
 void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)

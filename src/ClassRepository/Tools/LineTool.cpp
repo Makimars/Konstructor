@@ -6,11 +6,16 @@ LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 {
 	this->objectFactory = DrawablesFactory::getInstance();
 
-	this->linePreviewStartPoint = this->objectFactory->makePoint();
+	//line preview
+	this->linePreviewStartPoint = this->objectFactory
+			->makePoint();
+
 	this->linePreview = this->objectFactory
 			->makeLine(this->linePreviewStartPoint, mousePoint);
 	this->linePreview->setHidden(true);
+
 	scene->addItem(this->linePreview);
+
 }
 
 void LineTool::initialise(Point *mousePoint,
@@ -37,12 +42,7 @@ void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
 
 	if(clickedObject->getType() == TYPE_POINT)
 	{
-		Point *clickedPoint;
-
-		if(clickedObject != nullptr)
-			clickedPoint = dynamic_cast<Point*>(clickedObject);
-		else
-			clickedPoint = mousePoint->clone();
+		Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
 
 		this->clickedPoints[1] = this->clickedPoints[0];
 		this->clickedPoints[0] = clickedPoint;
@@ -56,7 +56,7 @@ void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
 			this->objectFactory->addDrawable(this->clickedPoints[1]);
 
 			Line *line = this->objectFactory
-					->makeLine(this->clickedPoints[0], this->clickedPoints[1]);
+					->makeLine(this->clickedPoints[1], this->clickedPoints[0]);
 			this->objectFactory->addDrawable(line);
 
 			this->clickedPoints[1] = nullptr;

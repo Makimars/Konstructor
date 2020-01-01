@@ -5,6 +5,7 @@
 #define CIRCLE_TOOL 1
 #define RECTANGLE_TOOL 2
 #define LABEL_TOOL 3
+#define DIMENSION_TOOL 4
 
 #include <QStringList>
 

@@ -7,6 +7,8 @@ class LinesDistanceDimension : DrawableObject
 {
 public:
 	LinesDistanceDimension();
+
+	void setValue(double value);
 };
 
 #endif // LINESDISTANCEDIMENSION_H

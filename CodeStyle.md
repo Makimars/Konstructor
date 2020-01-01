@@ -117,7 +117,7 @@ funcName(parameter1,
             parameter3,
             parameter4,
             parameter5
-        );
+            );
 ```
 
 #### note: if only two parameters, they can be left on one line depending on their length

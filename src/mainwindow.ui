@@ -419,6 +419,28 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QToolButton" name="dimensionButton">
+          <property name="text">
+           <string>Dimension</string>
+          </property>
+          <property name="icon">
+           <iconset theme="document"/>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="toolButtonStyle">
+           <enum>Qt::ToolButtonTextUnderIcon</enum>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </widget>

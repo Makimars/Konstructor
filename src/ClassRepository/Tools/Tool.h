@@ -2,6 +2,7 @@
 #define TOOL_H
 
 #include "../DrawablesFactory.h"
+#include <QKeyEvent>
 
 class Tool : public QObject
 {

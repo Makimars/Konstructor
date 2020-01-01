@@ -21,7 +21,8 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->objectFactory = DrawablesFactory::getInstance();
 
 	this->mousePoint = this->objectFactory->makePoint();
-	this->mousePoint->setHighlight(true);
+	//this->mousePoint->setHighlight(true);
+	this->mousePoint->setHidden(true);
 	this->mousePoint->setPen(&this->defaultPen);
 	this->mousePoint->setBrush(&this->defaultBrush);
 	this->sketchScene->addItem(mousePoint);
@@ -35,26 +36,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 	//tools initialisation
 	this->selectedTool = nullptr;
-	LineTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
-						 );
-	CircleTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
-						 );
-	LabelTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
-						 );
-	RectangleTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
-						 );
+	initialiseTools();
 
 	repaint();
 }
@@ -72,7 +54,6 @@ void ViewWidget::setTool(QString toolName)
 {
 	if(this->selectedTool != nullptr)
 		this->selectedTool->resetTool();
-
 	switch(Global::toolNames.lastIndexOf(toolName))
 	{
 		case LINE_TOOL:
@@ -86,6 +67,9 @@ void ViewWidget::setTool(QString toolName)
 			break;
 		case LABEL_TOOL:
 			this->selectedTool = LabelTool::getInstance();
+			break;
+		case DIMENSION_TOOL:
+			this->selectedTool = DimensionTool::getInstance();
 			break;
 		default:
 			this->selectedTool = nullptr;
@@ -159,6 +143,35 @@ void ViewWidget::saveToFile(QString path)
 		}
 	}
 
+}
+
+void ViewWidget::initialiseTools()
+{
+	LineTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
+						 );
+	CircleTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
+						 );
+	LabelTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
+						 );
+	RectangleTool::initialise(this->mousePoint,
+						 this->sketchScene,
+						 &this->defaultBrush,
+						 &this->defaultPen
+						 );
+	DimensionTool::initialise(this->mousePoint,
+							  this->sketchScene,
+							  &this->defaultBrush,
+							  &this->defaultPen
+							  );
 }
 
 //----------	tools processing    ----------

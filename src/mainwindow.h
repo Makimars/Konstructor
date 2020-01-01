@@ -49,6 +49,7 @@ private slots:
 	void on_circleButton_clicked();
 	void on_rectangleButton_clicked();
 	void on_labelButton_clicked();
+	void on_dimensionButton_clicked();
 
 	void viewKeyPress(QKeyEvent *event);
 };

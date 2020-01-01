@@ -133,7 +133,8 @@ void Point::paint(QPainter *painter,
 	if(this->hidden)
 		return;
 
-	resolveTies();
+	DrawableObject::paint(painter, option, widget);
+
 	painter->setBrush(this->brush->style());
 	painter->setPen(this->pen->style());
 

@@ -88,13 +88,20 @@ double Line::getLength()
 
 Line *Line::setLength(double lenght)
 {
-	double multiplier = lenght / getLength();
+	double multiplier = pow(lenght, 2) / pow(getLength(), 2);
 
 	Vector2D oldVector = this->getLineVector();
 
+	int signX = 1;
+	int signY = 1;
+	if(oldVector.x < 0)
+		signX = -1;
+	if(oldVector.y < 0)
+		signY = -1;
+
 	Vector2D newVector(
-				oldVector.x * multiplier,
-				oldVector.y * multiplier
+				signX * sqrt( pow(oldVector.x, 2) * multiplier),
+				signY * sqrt( pow(oldVector.y, 2) * multiplier)
 				);
 
 	this->endPoint
@@ -182,8 +189,8 @@ Line *Line::setAngle(double angle, Vector2D *referenceVector)
 double Line::distanceFrom(Point *point)
 {
 	double denominator = abs(
-				((this->endPoint->getY() - this->startPoint->getY()) * point->getY()) -
-				((this->endPoint->getX() - this->startPoint->getX()) * point->getX()) +
+				((this->endPoint->getY() - this->startPoint->getY()) * point->getX()) -
+				((this->endPoint->getX() - this->startPoint->getX()) * point->getY()) +
 				(this->endPoint->getX() * this->startPoint->getY()) -
 				(this->endPoint->getY() * this->startPoint->getX())
 				);
@@ -212,7 +219,8 @@ void Line::paint(QPainter *painter,
 	if(this->hidden)
 		return;
 
-	resolveTies();
+	DrawableObject::paint(painter, option, widget);
+
 	painter->drawLine(this->startPoint->getLocation(),
 						this->endPoint->getLocation()
 					);

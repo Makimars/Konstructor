@@ -10,7 +10,8 @@ QStringList Global::toolNames = {
 	"Line",
 	"Circle",
 	"Rectangle",
-	"Label"
+	"Label",
+	"Dimension"
 };
 
 QStringList Global::typeNames = {
