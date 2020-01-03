@@ -21,7 +21,7 @@ public:
 
 	//getters and setters
 	double getLength();
-	Line  *setLength(double lenght);
+	Line  *setLength(float lenght);
 	bool isInView(QGraphicsView *view, Point *origin, double scale);
 	Point *getStartPoint();
 	Point *getEndPoint();

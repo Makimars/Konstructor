@@ -86,9 +86,9 @@ double Line::getLength()
 	return this->startPoint->distanceFrom(endPoint->getLocation());
 }
 
-Line *Line::setLength(double lenght)
+Line *Line::setLength(float lenght)
 {
-	QVector2D newVector = this->getLineVector().normalized();
+	QVector2D newVector = this->getLineVector().normalized() * lenght;
 
 	this->endPoint
 			->setLocation(this->startPoint->getX() + newVector.x(),

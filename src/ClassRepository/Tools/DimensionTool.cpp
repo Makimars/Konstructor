@@ -108,7 +108,7 @@ void DimensionTool::resetTool()
 
 	if(this->clickedObjects[1] != nullptr)
 	{
-		this->clickedObjects[1]->setHighlight(true);
+		this->clickedObjects[1]->setHighlight(false);
 		this->clickedObjects[1] = nullptr;
 	}
 }

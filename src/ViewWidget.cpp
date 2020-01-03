@@ -253,8 +253,12 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	//update mouse position
-	mousePoint->setLocation(mapToScene(event->pos()));
+	this->mousePoint->setLocation(mapToScene(event->pos()));
 	this->mouseMovedSincePressed = true;
+
+	Point *snapped = pointSnapping(this->mousePoint);
+	if(snapped != nullptr & this->grabbedPoint != snapped)
+		this->mousePoint->setLocation(snapped->getLocation());
 
 	//draging plane
 	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
