@@ -5,9 +5,11 @@
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QGraphicsScene>
+#include <QtMath>
+#include <QVector2D>
+
 #include <QDebug>
 
-#include "src/ClassRepository/Vector.h"
 #include "src/ClassRepository/Settings.h"
 
 class DrawableObject : public QGraphicsItem

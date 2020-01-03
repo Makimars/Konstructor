@@ -11,7 +11,7 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject()
 	this->type = TYPE_LINE;
 	this->startPoint = startPoint;
 	this->endPoint = endPoint;
-	this->lineVector = Vector2D(
+	this->lineVector = QVector2D(
 				this->endPoint->getX() - this->startPoint->getX(),
 				this->endPoint->getY() - this->startPoint->getY()
 				);
@@ -88,50 +88,35 @@ double Line::getLength()
 
 Line *Line::setLength(double lenght)
 {
-	double multiplier = pow(lenght, 2) / pow(getLength(), 2);
-
-	Vector2D oldVector = this->getLineVector();
-
-	int signX = 1;
-	int signY = 1;
-	if(oldVector.x < 0)
-		signX = -1;
-	if(oldVector.y < 0)
-		signY = -1;
-
-	Vector2D newVector(
-				signX * sqrt( pow(oldVector.x, 2) * multiplier),
-				signY * sqrt( pow(oldVector.y, 2) * multiplier)
-				);
+	QVector2D newVector = this->getLineVector().normalized();
 
 	this->endPoint
-			->setLocation(this->startPoint->getX() + newVector.x,
-						this->startPoint->getY() + newVector.y
+			->setLocation(this->startPoint->getX() + newVector.x(),
+						this->startPoint->getY() + newVector.y()
 						);
 
 	return this;
 }
 
-Vector2D Line::getLineVector()
+QVector2D Line::getLineVector()
 {
-	this->lineVector = Vector2D(
+	this->lineVector =QVector2D(
 				this->endPoint->getX() - this->startPoint->getX(),
 				this->endPoint->getY() - this->startPoint->getY()
 				);
 	return this->lineVector;
 }
 
-Line *Line::setLineVector(Vector2D vector)
+Line *Line::setLineVector(QVector2D vector)
 {
-	double vecConf = getLength()  / vector.length();
-	this->lineVector.x = vecConf *vector.x;
-	this->lineVector.y = vecConf *vector.y;
+	vector.normalize();
+	vector *= this->getLength();
 
     this->endPoint->setX(
-                this->startPoint->getY() + this->lineVector.x
+				this->startPoint->getY() + this->lineVector.x()
                 );
     this->endPoint->setY(
-                this->startPoint->getY() + this->lineVector.y
+				this->startPoint->getY() + this->lineVector.y()
                 );
 
 	return this;
@@ -158,12 +143,12 @@ Line *Line::clone()
 
 //----------    Geometry    ----------
 
-double Line::getAngle(Vector2D *referenceVector)
+double Line::getAngle(QVector2D *referenceVector)
 {
 	getLineVector();
 	double scalarMult = (
-						this->lineVector.x * referenceVector->x
-						+ this->lineVector.y * referenceVector->y
+						this->lineVector.x() * referenceVector->x()
+						+ this->lineVector.y() * referenceVector->y()
 						);
 
 	return qAcos(
@@ -172,7 +157,7 @@ double Line::getAngle(Vector2D *referenceVector)
 				 );
 }
 
-Line *Line::setAngle(double angle, Vector2D *referenceVector)
+Line *Line::setAngle(double angle,QVector2D *referenceVector)
 {
 	double angleDifference = angle - this->getAngle(referenceVector);
 

@@ -44,32 +44,32 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 
 QRectF LineLengthDimension::boundingRect() const
 {
-	double multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x, 2);
+	double multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x(), 2);
 
-	Vector2D lineVector = this->attachedLine->getLineVector();
+	QVector2D lineVector = this->attachedLine->getLineVector();
 
 	//X direction multiplier
 	int mult = 1;
-	if((lineVector.x > 0 & lineVector.y < 0)	|
-		(lineVector.x < 0 & lineVector.y > 0)	)
+	if((lineVector.x() > 0 & lineVector.y() < 0)	|
+		(lineVector.x() < 0 & lineVector.y() > 0)	)
 	{
 		mult = -1;
 	}
 
 	//get normal vector of line
-	Vector2D normalVector(
-				mult * sqrt(pow(lineVector.y, 2) * multiplier),
-				-sqrt(pow(lineVector.x, 2) * multiplier)
+	QVector2D normalVector(
+				mult * sqrt(pow(lineVector.y(), 2) * multiplier),
+				-sqrt(pow(lineVector.x(), 2) * multiplier)
 				);
 
 	//edge points
 	QPointF aboveStartPoint(
-				this->attachedLine->getStartPoint()->getX() + normalVector.x,
-				this->attachedLine->getStartPoint()->getY() + normalVector.y
+				this->attachedLine->getStartPoint()->getX() + normalVector.x(),
+				this->attachedLine->getStartPoint()->getY() + normalVector.y()
 				);
 	QPointF aboveEndPoint(
-				this->attachedLine->getEndPoint()->getX() + normalVector.x,
-				this->attachedLine->getEndPoint()->getY() + normalVector.y
+				this->attachedLine->getEndPoint()->getX() + normalVector.x(),
+				this->attachedLine->getEndPoint()->getY() + normalVector.y()
 				);
 
 	return QRectF(aboveStartPoint, aboveEndPoint);
@@ -82,32 +82,32 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 	DrawableObject::paint(painter, option, widget);
 
-	double multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x, 2);
+	float multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x(), 2);
 
-	Vector2D lineVector = this->attachedLine->getLineVector();
+	QVector2D lineVector = this->attachedLine->getLineVector();
 
 	//X direction multiplier
 	int mult = 1;
-	if((lineVector.x > 0 & lineVector.y < 0)	|
-		(lineVector.x < 0 & lineVector.y > 0)	)
+	if((lineVector.x() > 0 & lineVector.y() < 0)	|
+		(lineVector.x() < 0 & lineVector.y() > 0)	)
 	{
 		mult = -1;
 	}
 
 	//get normal vector of line
-	Vector2D normalVector(
-				mult * sqrt(pow(lineVector.y, 2) * multiplier),
-				-sqrt(pow(lineVector.x, 2) * multiplier)
+	QVector2D normalVector(
+				mult * sqrt(pow(lineVector.y(), 2) * multiplier),
+				-sqrt(pow(lineVector.x(), 2) * multiplier)
 				);
 
 	//edge points
 	QPointF aboveStartPoint(
-				this->attachedLine->getStartPoint()->getX() + normalVector.x,
-				this->attachedLine->getStartPoint()->getY() + normalVector.y
+				this->attachedLine->getStartPoint()->getX() + normalVector.x(),
+				this->attachedLine->getStartPoint()->getY() + normalVector.y()
 				);
 	QPointF aboveEndPoint(
-				this->attachedLine->getEndPoint()->getX() + normalVector.x,
-				this->attachedLine->getEndPoint()->getY() + normalVector.y
+				this->attachedLine->getEndPoint()->getX() + normalVector.x(),
+				this->attachedLine->getEndPoint()->getY() + normalVector.y()
 				);
 
 	//drawing the lines
@@ -121,8 +121,8 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 	//drawing text
 
-	double textAngle = qRadiansToDegrees(
-				qAtan(normalVector.x / normalVector.y)
+	float textAngle = qRadiansToDegrees(
+				qAtan(normalVector.x() / normalVector.y())
 										);
 
 	QPointF	centerPoint(

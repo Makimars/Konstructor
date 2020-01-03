@@ -50,7 +50,6 @@ HEADERS += \
     src/ViewWidget.h \
     src/ClassRepository/GlobalVariables.h \
     src/ClassRepository/Settings.h \
-    src/ClassRepository/Vector.h \
     src/ClassRepository/Drawables/Circle.h \
     src/ClassRepository/Drawables/DrawableObject.h \
     src/ClassRepository/Drawables/Line.h \
