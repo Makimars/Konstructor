@@ -77,6 +77,12 @@ void ViewWidget::setTool(QString toolName)
 	}
 }
 
+void ViewWidget::resetTool()
+{
+	if(this->selectedTool != nullptr)
+		this->selectedTool->resetTool();
+}
+
 //----------	file operations    ----------
 
 void ViewWidget::loadFromFile(QString file)

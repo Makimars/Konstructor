@@ -78,11 +78,14 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 			//line and place
 
 			Line *line = dynamic_cast<Line*>(this->clickedObjects[1]);
+
+			double distanceFromLine = -line->signedDistanceFrom(mousePoint);
+
 			this->objectFactory->addDrawable(
 				this->objectFactory->makeLineLengthDimension(
 							line,
 							line->getLength(),
-							line->distanceFrom(mousePoint)
+							distanceFromLine
 							)
 				);
 			this->clickedObjects[1]->setHighlight(false);

@@ -44,23 +44,9 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 
 QRectF LineLengthDimension::boundingRect() const
 {
-	double multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x(), 2);
-
-	QVector2D lineVector = this->attachedLine->getLineVector();
-
-	//X direction multiplier
-	int mult = 1;
-	if((lineVector.x() > 0 & lineVector.y() < 0)	|
-		(lineVector.x() < 0 & lineVector.y() > 0)	)
-	{
-		mult = -1;
-	}
-
 	//get normal vector of line
-	QVector2D normalVector(
-				mult * sqrt(pow(lineVector.y(), 2) * multiplier),
-				-sqrt(pow(lineVector.x(), 2) * multiplier)
-				);
+	QVector2D normalVector = this->attachedLine->getLineVector().normalized();
+	normalVector *= this->distanceFromLine;
 
 	//edge points
 	QPointF aboveStartPoint(
@@ -82,23 +68,14 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 	DrawableObject::paint(painter, option, widget);
 
-	float multiplier = pow(this->distanceFromLine, 2) / pow(this->attachedLine->getLineVector().x(), 2);
+	QVector2D lineVector = this->attachedLine->getLineVector().normalized();
 
-	QVector2D lineVector = this->attachedLine->getLineVector();
-
-	//X direction multiplier
-	int mult = 1;
-	if((lineVector.x() > 0 & lineVector.y() < 0)	|
-		(lineVector.x() < 0 & lineVector.y() > 0)	)
-	{
-		mult = -1;
-	}
-
-	//get normal vector of line
+	//get normal vector of line with defined length
 	QVector2D normalVector(
-				mult * sqrt(pow(lineVector.y(), 2) * multiplier),
-				-sqrt(pow(lineVector.x(), 2) * multiplier)
-				);
+				-lineVector.y(),
+				lineVector.x()
+						);
+	normalVector *= this->distanceFromLine;
 
 	//edge points
 	QPointF aboveStartPoint(

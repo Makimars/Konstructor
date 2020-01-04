@@ -47,6 +47,7 @@ public:
 
 	//Distance
 	double distanceFrom(Point *point);
+	double signedDistanceFrom(Point *point);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;

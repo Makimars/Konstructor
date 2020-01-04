@@ -173,7 +173,12 @@ Line *Line::setAngle(double angle,QVector2D *referenceVector)
 
 double Line::distanceFrom(Point *point)
 {
-	double denominator = abs(
+	return abs(signedDistanceFrom(point));
+}
+
+double Line::signedDistanceFrom(Point *point)
+{
+	double denominator = (
 				((this->endPoint->getY() - this->startPoint->getY()) * point->getX()) -
 				((this->endPoint->getX() - this->startPoint->getX()) * point->getY()) +
 				(this->endPoint->getX() * this->startPoint->getY()) -

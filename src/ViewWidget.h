@@ -21,6 +21,7 @@ public:
 
 	//tools
 	void setTool(QString toolName);
+	void resetTool();
 
 	//file operations
 	void loadFromFile(QString fileContents);

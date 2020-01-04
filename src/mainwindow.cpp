@@ -177,6 +177,9 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 		case Qt::Key::Key_Escape:
 			setTool("");
 			break;
+		case Qt::Key::Key_Enter:
+			this->ui->mainViewWidget->resetTool();
+			break;
 	}
 
 }
