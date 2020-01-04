@@ -61,15 +61,6 @@ public:
 
 	virtual DrawableObject *clone(){return nullptr;}
 
-	//saving
-	void fileAddVar(QString variable, QString value);
-	void fileAddVar(QString variable, double value);
-	void fileAddVar(QString variable, int value);
-	void fileAddVar(QString variable, long value);
-    void fileAddVar(QString variable, unsigned int value);
-	void fileAddVar(QString variable, bool value);
-	QString fileFinish();
-
     //array operator
 	static DrawableObject *getById(QVector<DrawableObject*> *list, unsigned int id);
 
@@ -95,6 +86,15 @@ protected:
 
 	//saving
 	QString file;
+
+	//saving
+	void fileAddVar(QString variable, QString value);
+	void fileAddVar(QString variable, double value);
+	void fileAddVar(QString variable, int value);
+	void fileAddVar(QString variable, long value);
+	void fileAddVar(QString variable, unsigned int value);
+	void fileAddVar(QString variable, bool value);
+	QString fileFinish();
 
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
