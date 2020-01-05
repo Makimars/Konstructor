@@ -3,6 +3,8 @@
 
 #include "../Circle.h"
 
+#define TYPE_LINE_LENGTH_DIMENSION "LineLengthDimension"
+
 class LineLengthDimension : public DrawableObject
 {
 public:
@@ -19,6 +21,7 @@ public:
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
+	QPainterPath shape() const override;
 	void paint(QPainter *painter,
 			   const QStyleOptionGraphicsItem *option,
 			   QWidget *widget
@@ -27,6 +30,9 @@ public:
 private:
 	Line *attachedLine;
 	double lengthToSet, distanceFromLine;
+
+	int textWidth = 60;
+	int textHeight = 20;
 };
 
 #endif // LINELENGHTDIMENSION_H

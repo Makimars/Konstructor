@@ -144,6 +144,17 @@ QRectF Circle::boundingRect() const
 			  );
 }
 
+QPainterPath Circle::shape() const
+{
+	QPainterPath path;
+	path.addEllipse(boundingRect() + QMargins(1,1,1,1));
+
+	QPainterPath smaller;
+	smaller.addEllipse(boundingRect() - QMargins(2,2,2,2));
+
+	return path.subtracted(smaller);
+}
+
 void Circle::paint(QPainter *painter,
 				   const QStyleOptionGraphicsItem *option,
 				   QWidget *widget)

@@ -123,7 +123,20 @@ double Point::distanceFrom(QPointF point)
 
 QRectF Point::boundingRect() const
 {
-    return QRectF(this->x, this->y, 1, 1);
+	return QRectF(
+				this->x + Settings::pointRenderSize/2,
+				this->y + Settings::pointRenderSize/2,
+				Settings::pointRenderSize,
+				Settings::pointRenderSize
+				);
+}
+
+QPainterPath Point::shape() const
+{
+	QPainterPath path;
+	path.addEllipse(boundingRect());
+
+	return path;
 }
 
 void Point::paint(QPainter *painter,
@@ -137,6 +150,7 @@ void Point::paint(QPainter *painter,
 
 	painter->setBrush(this->brush->style());
 	painter->setPen(this->pen->style());
+	this->brush->setStyle(Qt::BrushStyle::SolidPattern);
 
 	int coef = Settings::pointRenderSize;
     if(this->highlight)

@@ -5,6 +5,7 @@ LineLengthDimension::LineLengthDimension(Line *line, double length)
 	this->attachedLine = line;
 	this->lengthToSet = length;
 	this->distanceFromLine = 20;
+	this->type = TYPE_LINE_LENGTH_DIMENSION;
 }
 
 void LineLengthDimension::resolveTies()
@@ -44,8 +45,13 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 
 QRectF LineLengthDimension::boundingRect() const
 {
-	//get normal vector of line
-	QVector2D normalVector = this->attachedLine->getLineVector().normalized();
+	QVector2D lineVector = this->attachedLine->getLineVector().normalized();
+
+	//get normal vector of line with defined length
+	QVector2D normalVector(
+				-lineVector.y(),
+				lineVector.x()
+						);
 	normalVector *= this->distanceFromLine;
 
 	//edge points
@@ -59,6 +65,44 @@ QRectF LineLengthDimension::boundingRect() const
 				);
 
 	return QRectF(aboveStartPoint, aboveEndPoint);
+}
+
+QPainterPath LineLengthDimension::shape() const
+{
+	QPolygonF polygon;
+
+	QVector2D lineVector = this->attachedLine->getLineVector().normalized();
+
+	//get normal vector of line with defined length
+	QVector2D normalVector(
+				-lineVector.y(),
+				lineVector.x()
+						);
+	normalVector *= this->distanceFromLine;
+
+	//edge points
+	QPointF aboveStartPoint(
+				this->attachedLine->getStartPoint()->getX() + normalVector.x(),
+				this->attachedLine->getStartPoint()->getY() + normalVector.y()
+				);
+	QPointF aboveEndPoint(
+				this->attachedLine->getEndPoint()->getX() + normalVector.x(),
+				this->attachedLine->getEndPoint()->getY() + normalVector.y()
+				);
+
+	normalVector.normalize();
+	normalVector *= this->textHeight;
+
+	polygon << aboveStartPoint << aboveEndPoint;
+	polygon << aboveEndPoint + QPointF(normalVector.x(),normalVector.y());
+	polygon << aboveStartPoint + QPointF(normalVector.x(),normalVector.y());
+	polygon << aboveStartPoint;
+
+	QPainterPath path;
+	path.setFillRule(Qt::FillRule::OddEvenFill);
+	path.addPolygon(polygon);
+
+	return path;
 }
 
 void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -112,9 +156,7 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	//rotate funciton rotates clockwise, we have angle counter clockwise
 	painter->rotate(-textAngle);
 
-	int textWidth = 60;
-	int textHeight = 20;
-	QRectF textRect(-textWidth / 2, -textHeight, textWidth, textHeight);
+	QRectF textRect(-this->textWidth / 2, -this->textHeight, this->textWidth, this->textHeight);
 	painter->drawText(textRect, QString::number(this->lengthToSet));
 
 	painter->resetTransform();

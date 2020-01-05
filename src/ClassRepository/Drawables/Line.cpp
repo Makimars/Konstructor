@@ -202,6 +202,15 @@ QRectF Line::boundingRect() const
     return QRectF(first, second);
 }
 
+QPainterPath Line::shape() const
+{
+	QPainterPath path;
+	path.moveTo(this->startPoint->getLocation());
+	path.lineTo(this->endPoint->getLocation());
+
+	return path;
+}
+
 void Line::paint(QPainter *painter,
 				 const QStyleOptionGraphicsItem *option,
 				 QWidget *widget)
