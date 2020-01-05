@@ -226,8 +226,6 @@ DrawableObject *ViewWidget::mouseSnapping()
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
-	if(this->selectedTool == nullptr)
-		QGraphicsView::mousePressEvent(event);
 
 	if(event->button() == Qt::LeftButton)
 		this->grabbedPoint = pointSnapping(this->mousePoint);
@@ -235,8 +233,6 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	if(this->selectedTool == nullptr)
-		QGraphicsView::mouseReleaseEvent(event);
 
 	this->grabbedPoint = nullptr;
 

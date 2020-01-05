@@ -96,8 +96,6 @@ protected:
 	void fileAddVar(QString variable, bool value);
 	QString fileFinish();
 
-	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-
 };
 
 #endif // DRAWABLEOBJECT_H
