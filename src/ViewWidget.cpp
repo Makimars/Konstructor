@@ -263,9 +263,6 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	{
 		this->translate(100,100);
 		this->dragMode();
-
-		this->dragStartX = event->x();
-		this->dragStartY = event->y();
 	}
 
 	//draging point

@@ -53,8 +53,6 @@ private:
 	Line *upUpAxis, *upDownAxis, *downDownAxis, *downUpAxis;
 
 	//draging
-	double dragStartX;
-	double dragStartY;
 	Point *grabbedPoint = nullptr;
 
 	//events
