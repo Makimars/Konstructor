@@ -19,19 +19,20 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
-	//ui handeling
-	void setTool(QString tool);
-
 private:
 	Ui::MainWindow *ui;
-	int timerID;
 
 	//settings
 	void loadSettings();
 	void saveSettings();
 
-protected:
-	void timerEvent(QTimerEvent *event);
+	//Ui handeling
+	void refreshTools(QString toolName);
+
+signals:
+	void setTool(QString toolName);
+	void resetTool();
+
 private slots:
 
     //ui events

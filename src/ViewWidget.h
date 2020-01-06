@@ -17,12 +17,6 @@ public:
 	ViewWidget(QWidget *parent = nullptr);
 	~ViewWidget();
 
-	//getters and setters
-
-	//tools
-	void setTool(QString toolName);
-	void resetTool();
-
 	//file operations
 	void loadFromFile(QString fileContents);
     void saveToFile(QString file);
@@ -64,6 +58,10 @@ private:
 
 signals:
     void keyPressed(QKeyEvent *event);
+
+public slots:
+	void setTool(QString toolName);
+	void resetTool();
 
 };
 

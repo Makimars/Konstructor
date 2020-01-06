@@ -7,7 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	this->ui->setupUi(this);
-	this->timerID = startTimer(50);
 
 	loadSettings();
 
@@ -23,6 +22,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(this->ui->mainViewWidget, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
+	connect(this, &MainWindow::setTool,
+			this->ui->mainViewWidget, &ViewWidget::setTool
+			);
+	connect(this, &MainWindow::resetTool,
+			this->ui->mainViewWidget, &ViewWidget::resetTool
+			);
 }
 
 MainWindow::~MainWindow()
@@ -30,27 +35,22 @@ MainWindow::~MainWindow()
 	delete this->ui;
 }
 
-void MainWindow::timerEvent(QTimerEvent *event)
-{
-	this->ui->mainViewWidget->update();
-}
-
 //----------    Ui handeling    ---------
 
-void MainWindow::setTool(QString tool)
+void MainWindow::refreshTools(QString toolName)
 {
-	if(tool != "Line")
+	if(toolName != "Line")
 		this->ui->lineButton->setChecked(false);
-	if(tool != "Circle")
+	if(toolName != "Circle")
 		this->ui->circleButton->setChecked(false);
-	if(tool != "Rectangle")
+	if(toolName != "Rectangle")
 		this->ui->rectangleButton->setChecked(false);
-	if(tool != "Label")
+	if(toolName != "Label")
 		this->ui->labelButton->setChecked(false);
-	if(tool != "Dimension")
+	if(toolName != "Dimension")
 		this->ui->dimensionButton->setChecked(false);
 
-	this->ui->mainViewWidget->setTool(tool);
+	emit setTool(toolName);
 }
 
 //----------	settings    ----------
@@ -133,52 +133,52 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_lineButton_clicked()
 {
 	if(this->ui->lineButton->isChecked())
-		setTool("Line");
+		refreshTools("Line");
 	else
-		setTool("");
+		refreshTools("");
 }
 
 void MainWindow::on_circleButton_clicked()
 {
 
 	if(this->ui->circleButton->isChecked())
-		setTool("Circle");
+		refreshTools("Circle");
 	else
-		setTool("");
+		refreshTools("");
 }
 
 void MainWindow::on_rectangleButton_clicked()
 {
 	if(this->ui->rectangleButton->isChecked())
-		setTool("Rectangle");
+		refreshTools("Rectangle");
 	else
-		setTool("");
+		refreshTools("");
 }
 
 void MainWindow::on_labelButton_clicked()
 {
 	if(this->ui->labelButton->isChecked())
-		setTool("Label");
+		refreshTools("Label");
 	else
-		setTool("");
+		refreshTools("");
 }
 
 void MainWindow::on_dimensionButton_clicked()
 {
 	if(this->ui->dimensionButton->isChecked())
-		setTool("Dimension");
+		refreshTools("Dimension");
 	else
-		setTool("");
+		refreshTools("");
 }
 
 void MainWindow::viewKeyPress(QKeyEvent *event)
 {
 	switch (event->key()) {
 		case Qt::Key::Key_Escape:
-			setTool("");
+			refreshTools("");
 			break;
 		case Qt::Key::Key_Enter:
-			this->ui->mainViewWidget->resetTool();
+			emit resetTool();
 			break;
 	}
 

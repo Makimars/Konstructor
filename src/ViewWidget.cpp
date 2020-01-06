@@ -46,43 +46,6 @@ ViewWidget::~ViewWidget()
 
 }
 
-//----------	getters and setters    ----------
-
-//----------	tools    ----------
-
-void ViewWidget::setTool(QString toolName)
-{
-	if(this->selectedTool != nullptr)
-		this->selectedTool->resetTool();
-	switch(Global::toolNames.lastIndexOf(toolName))
-	{
-		case LINE_TOOL:
-			this->selectedTool = LineTool::getInstance();
-			break;
-		case CIRCLE_TOOL:
-			this->selectedTool = CircleTool::getInstance();
-			break;
-		case RECTANGLE_TOOL:
-			this->selectedTool = RectangleTool::getInstance();
-			break;
-		case LABEL_TOOL:
-			this->selectedTool = LabelTool::getInstance();
-			break;
-		case DIMENSION_TOOL:
-			this->selectedTool = DimensionTool::getInstance();
-			break;
-		default:
-			this->selectedTool = nullptr;
-			break;
-	}
-}
-
-void ViewWidget::resetTool()
-{
-	if(this->selectedTool != nullptr)
-		this->selectedTool->resetTool();
-}
-
 //----------	file operations    ----------
 
 void ViewWidget::loadFromFile(QString file)
@@ -290,4 +253,39 @@ void ViewWidget::wheelEvent(QWheelEvent *event)
 void ViewWidget::keyPressEvent(QKeyEvent *event)
 {
     emit keyPressed(event);
+}
+
+//----------	tools    ----------
+
+void ViewWidget::setTool(QString toolName)
+{
+	if(this->selectedTool != nullptr)
+		this->selectedTool->resetTool();
+	switch(Global::toolNames.lastIndexOf(toolName))
+	{
+		case LINE_TOOL:
+			this->selectedTool = LineTool::getInstance();
+			break;
+		case CIRCLE_TOOL:
+			this->selectedTool = CircleTool::getInstance();
+			break;
+		case RECTANGLE_TOOL:
+			this->selectedTool = RectangleTool::getInstance();
+			break;
+		case LABEL_TOOL:
+			this->selectedTool = LabelTool::getInstance();
+			break;
+		case DIMENSION_TOOL:
+			this->selectedTool = DimensionTool::getInstance();
+			break;
+		default:
+			this->selectedTool = nullptr;
+			break;
+	}
+}
+
+void ViewWidget::resetTool()
+{
+	if(this->selectedTool != nullptr)
+		this->selectedTool->resetTool();
 }
