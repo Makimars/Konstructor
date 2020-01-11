@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QGraphicsView>
+#include <QScrollBar>
 
 #include "mainwindow.h"
 #include "ClassRepository/Tools/DimensionTool.h"
@@ -48,6 +49,7 @@ private:
 
 	//draging
 	Point *grabbedPoint = nullptr;
+	int prevX, prevY;
 
 	//events
 	void mousePressEvent(QMouseEvent *event);

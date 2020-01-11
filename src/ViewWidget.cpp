@@ -2,10 +2,11 @@
 
 ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 {
-	this->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+	this->setAlignment(Qt::AlignCenter);
 	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+	this->setDragMode(DragMode::NoDrag);
 
 	this->defaultPen = QPen(Qt::PenStyle::SolidLine);
 	this->defaultBrush = QBrush(Qt::BrushStyle::TexturePattern);
@@ -21,10 +22,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->objectFactory = DrawablesFactory::getInstance();
 
 	this->mousePoint = this->objectFactory->makePoint();
-	//this->mousePoint->setHighlight(true);
 	this->mousePoint->setHidden(true);
-	this->mousePoint->setPen(&this->defaultPen);
-	this->mousePoint->setBrush(&this->defaultBrush);
 	this->sketchScene->addItem(mousePoint);
 
 	this->sketchScene->setSceneRect(
@@ -37,8 +35,6 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	//tools initialisation
 	this->selectedTool = nullptr;
 	initialiseTools();
-
-	repaint();
 }
 
 ViewWidget::~ViewWidget()
@@ -189,13 +185,22 @@ DrawableObject *ViewWidget::mouseSnapping()
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
+	if(this->selectedTool == nullptr)
+		QGraphicsView::mousePressEvent(event);
 
 	if(event->button() == Qt::LeftButton)
 		this->grabbedPoint = pointSnapping(this->mousePoint);
+
+	this->prevX = event->x();
+	this->prevY = event->y();
 }
 
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+	viewport()->setCursor(Qt::CursorShape::ArrowCursor);
+
+	if(this->selectedTool == nullptr)
+		QGraphicsView::mouseReleaseEvent(event);
 
 	this->grabbedPoint = nullptr;
 
@@ -209,6 +214,9 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
+	if(this->selectedTool == nullptr)
+		QGraphicsView::mouseMoveEvent(event);
+
 	//update mouse position
 	this->mousePoint->setLocation(mapToScene(event->pos()));
 
@@ -217,18 +225,23 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 		this->mousePoint->setLocation(snapped->getLocation());
 
 	//draging plane
-	setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-	if(event->buttons() == Qt::RightButton)
+	if(event->buttons() == Qt::MouseButton::RightButton)
 	{
-		this->translate(100,100);
-		this->dragMode();
+		viewport()->setCursor(Qt::CursorShape::ClosedHandCursor);
+
+		QScrollBar *hBar = horizontalScrollBar();
+		QScrollBar *vBar = verticalScrollBar();
+		hBar->setValue(hBar->value() + prevX - event->x());
+		vBar->setValue(vBar->value() + prevY - event->y());
 	}
 
 	//draging point
 	if(this->grabbedPoint != nullptr)
 		grabbedPoint->setLocation(this->mousePoint->getLocation());
 
-	sketchScene->update();
+	this->sketchScene->update();
+	this->prevX = event->x();
+	this->prevY = event->y();
 }
 
 void ViewWidget::wheelEvent(QWheelEvent *event)
