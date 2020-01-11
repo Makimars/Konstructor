@@ -153,4 +153,6 @@ DrawablesFactory::DrawablesFactory(QBrush *defaultBrush,
 	this->defaultPen = defaultPen;
 	this->objectList = objectList;
 	this->scene = scene;
+
+	this->userInput = QGraphicsViewUserInput::getInstance(scene);
 }

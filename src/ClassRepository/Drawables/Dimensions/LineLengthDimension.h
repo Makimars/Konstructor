@@ -1,14 +1,14 @@
 #ifndef LINELENGTHDIMENSION_H
 #define LINELENGTHDIMENSION_H
 
-#include "../Circle.h"
+#include "../../UserInputRequester.h"
 
 #define TYPE_LINE_LENGTH_DIMENSION "LineLengthDimension"
 
-class LineLengthDimension : public DrawableObject
+class LineLengthDimension : public DrawableObject, public UserInputRequester
 {
 public:
-		LineLengthDimension(Line *line, double lenght);
+	LineLengthDimension(Line *line, double lenght);
 
 	void resolveTies() override;
 	void setValue(double lenght);
@@ -18,6 +18,9 @@ public:
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> *list) override;
 	void setDistanceFromLine(double distance);
+
+	//user input requests
+	void recieveDouble(double value) override;
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;

@@ -1,7 +1,7 @@
 #ifndef DRAWABLESFACTORY_H
 #define DRAWABLESFACTORY_H
 
-#include "Drawables/Dimensions/LinesDistanceDimension.h"
+#include "QGraphicsViewUserInput.h"
 
 class DrawablesFactory
 {
@@ -62,7 +62,7 @@ private:
 	QPen *defaultPen;
 	QBrush *defaultBrush;
 
-
+	QGraphicsViewUserInput *userInput;
 
 };
 

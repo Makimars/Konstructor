@@ -24,6 +24,14 @@ void LineLengthDimension::setDistanceFromLine(double distance)
 	this->distanceFromLine = distance;
 }
 
+//--------     user input requests     ---------
+
+void LineLengthDimension::recieveDouble(double value)
+{
+	this->lengthToSet = value;
+	resolveTies();
+}
+
 //---------    file handeling     ---------
 
 void LineLengthDimension::fromFileString(QString json)

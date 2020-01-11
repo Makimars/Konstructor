@@ -265,6 +265,7 @@ void ViewWidget::wheelEvent(QWheelEvent *event)
 
 void ViewWidget::keyPressEvent(QKeyEvent *event)
 {
+	QGraphicsView::keyPressEvent(event);
     emit keyPressed(event);
 }
 

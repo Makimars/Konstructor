@@ -44,6 +44,8 @@ SOURCES += \
     src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.cpp \
     src/ClassRepository/Drawables/Dimensions/LinesDistanceDimension.cpp \
     src/ClassRepository/Tools/DimensionTool.cpp \
+    src/ClassRepository/UserInputRequester.cpp \
+    src/ClassRepository/QGraphicsViewUserInput.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -64,6 +66,8 @@ HEADERS += \
     src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.h \
     src/ClassRepository/Drawables/Dimensions/LinesDistanceDimension.h \
     src/ClassRepository/Tools/DimensionTool.h \
+    src/ClassRepository/UserInputRequester.h \
+    src/ClassRepository/QGraphicsViewUserInput.h
 
 FORMS += \
     src/mainwindow.ui
