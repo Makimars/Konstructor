@@ -78,15 +78,17 @@ LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, doubl
 	dimension->setPen(this->defaultPen)
 			->setBrush(this->defaultBrush);
 
+	QObject::connect(dimension, &UserInputRequester::requestDouble,
+					 this->userInput, &QGraphicsViewUserInput::requestDouble
+					 );
+
 	return dimension;
 }
 
 LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, double length, double distanceFromLine)
 {
-	LineLengthDimension *dimension = new LineLengthDimension(line, length);
+	LineLengthDimension *dimension = makeLineLengthDimension(line, length);
 	dimension->setDistanceFromLine(distanceFromLine);
-	dimension->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
 
 	return dimension;
 }
@@ -153,4 +155,7 @@ DrawablesFactory::DrawablesFactory(QBrush *defaultBrush,
 	this->defaultPen = defaultPen;
 	this->objectList = objectList;
 	this->scene = scene;
+
+	QGraphicsViewUserInput::initialize(scene);
+	this->userInput = QGraphicsViewUserInput::getInstance();
 }

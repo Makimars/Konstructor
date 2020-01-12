@@ -24,6 +24,14 @@ void LineLengthDimension::setDistanceFromLine(double distance)
 	this->distanceFromLine = distance;
 }
 
+//--------     user input requests     ---------
+
+void LineLengthDimension::recieveDouble(double value)
+{
+	this->lengthToSet = value;
+	resolveTies();
+}
+
 //---------    file handeling     ---------
 
 void LineLengthDimension::fromFileString(QString json)
@@ -163,4 +171,11 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 	painter->resetTransform();
 	painter->restore();
+}
+
+//---------     events     ----------
+
+void LineLengthDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	emit requestDouble(this);
 }

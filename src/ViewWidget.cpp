@@ -191,6 +191,11 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 	if(event->button() == Qt::LeftButton)
 		this->grabbedPoint = pointSnapping(this->mousePoint);
 
+	QGraphicsViewUserInput *userInput = QGraphicsViewUserInput::getInstance();
+	userInput->setInputBoxLocation(this->mousePoint->getLocation());
+	if(!userInput->isFocused())
+		userInput->closeInputBox();
+
 	this->prevX = event->x();
 	this->prevY = event->y();
 }
@@ -210,7 +215,6 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 			this->selectedTool->click(mouseSnapping(), this->mousePoint);
 	}
 }
-
 
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
@@ -265,6 +269,7 @@ void ViewWidget::wheelEvent(QWheelEvent *event)
 
 void ViewWidget::keyPressEvent(QKeyEvent *event)
 {
+	QGraphicsView::keyPressEvent(event);
     emit keyPressed(event);
 }
 
