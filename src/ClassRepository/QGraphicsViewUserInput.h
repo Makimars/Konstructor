@@ -10,7 +10,12 @@
 class QGraphicsViewUserInput : public QObject
 {
 public:
-	static QGraphicsViewUserInput *getInstance(QGraphicsScene *sketchScene);
+	static void initialize(QGraphicsScene *sketchScene);
+	static QGraphicsViewUserInput *getInstance();
+
+	bool isFocused();
+	void closeInputBox();
+	void setInputBoxLocation(QPointF location);
 
 private:
 	static QGraphicsViewUserInput *instance;
@@ -28,12 +33,10 @@ private:
 	void returnDouble(double value);
 	void returnString(double value);
 
-
 public slots:
 	void requestDouble(UserInputRequester *requester);
 	void requestString(UserInputRequester *requester);
 
-	void closeInputBox();
 	void returnInput();
 };
 

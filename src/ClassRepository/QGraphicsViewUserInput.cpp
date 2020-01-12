@@ -2,11 +2,14 @@
 
 QGraphicsViewUserInput *QGraphicsViewUserInput::instance = nullptr;
 
-QGraphicsViewUserInput *QGraphicsViewUserInput::getInstance(QGraphicsScene *sketchScene)
+void QGraphicsViewUserInput::initialize(QGraphicsScene *sketchScene)
 {
 	if(QGraphicsViewUserInput::instance == nullptr)
 		QGraphicsViewUserInput::instance = new QGraphicsViewUserInput(sketchScene);
+}
 
+QGraphicsViewUserInput *QGraphicsViewUserInput::getInstance()
+{
 	return QGraphicsViewUserInput::instance;
 }
 
@@ -21,6 +24,22 @@ QGraphicsViewUserInput::QGraphicsViewUserInput(QGraphicsScene *sketchScene)
 			);
 }
 
+bool QGraphicsViewUserInput::isFocused()
+{
+	return this->inputBox.hasFocus();
+}
+
+void QGraphicsViewUserInput::closeInputBox()
+{
+	this->currentReciever = nullptr;
+	this->inputBoxProxy->hide();
+}
+
+void QGraphicsViewUserInput::setInputBoxLocation(QPointF location)
+{
+	this->inputBoxProxy->setPos(location);
+}
+
 void QGraphicsViewUserInput::showInputBox()
 {
 	this->inputBoxProxy->show();
@@ -33,6 +52,8 @@ void QGraphicsViewUserInput::requestValue(UserInputRequester *requester)
 	showInputBox();
 }
 
+//---------     slots     ----------
+
 void QGraphicsViewUserInput::requestDouble(UserInputRequester *requester)
 {
 	this->inputBox.setValidator(&this->doubleValidator);
@@ -43,12 +64,6 @@ void QGraphicsViewUserInput::requestString(UserInputRequester *requester)
 {
 	this->inputBox.setValidator(nullptr);
 	requestValue(requester);
-}
-
-void QGraphicsViewUserInput::closeInputBox()
-{
-	this->currentReciever = nullptr;
-	this->inputBoxProxy->hide();
 }
 
 void QGraphicsViewUserInput::returnInput()
