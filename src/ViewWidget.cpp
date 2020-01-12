@@ -22,8 +22,6 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->objectFactory = DrawablesFactory::getInstance();
 
 	this->mousePoint = this->objectFactory->makePoint();
-	this->mousePoint->setHidden(true);
-	this->sketchScene->addItem(mousePoint);
 
 	this->sketchScene->setSceneRect(
 				-Settings::defaultSketchWidth / 2,
