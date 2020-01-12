@@ -170,3 +170,10 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->resetTransform();
 	painter->restore();
 }
+
+//---------     events     ----------
+
+void LineLengthDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	emit requestDouble(this);
+}

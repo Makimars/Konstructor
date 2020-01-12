@@ -36,6 +36,10 @@ private:
 
 	int textWidth = 60;
 	int textHeight = 20;
+
+	//events
+	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
 };
 
 #endif // LINELENGHTDIMENSION_H
