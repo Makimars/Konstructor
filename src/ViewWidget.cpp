@@ -113,29 +113,29 @@ void ViewWidget::saveToFile(QString path)
 void ViewWidget::initialiseTools()
 {
 	LineTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
+						this->sketchScene,
+						&this->defaultBrush,
+						&this->defaultPen
 						 );
 	CircleTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
+						this->sketchScene,
+						&this->defaultBrush,
+						&this->defaultPen
 						 );
 	LabelTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
+						this->sketchScene,
+						&this->defaultBrush,
+						&this->defaultPen
 						 );
 	RectangleTool::initialise(this->mousePoint,
-						 this->sketchScene,
-						 &this->defaultBrush,
-						 &this->defaultPen
-						 );
+							this->sketchScene,
+							&this->defaultBrush,
+							&this->defaultPen
+							 );
 	DimensionTool::initialise(this->mousePoint,
-							  this->sketchScene,
-							  &this->defaultBrush,
-							  &this->defaultPen
+							this->sketchScene,
+							&this->defaultBrush,
+							&this->defaultPen
 							  );
 }
 

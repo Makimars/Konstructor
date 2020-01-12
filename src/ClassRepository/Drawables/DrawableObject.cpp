@@ -187,7 +187,7 @@ void DrawableObject::fileAddVar(QString variable, bool value)
 QString DrawableObject::fileFinish()
 {
 	this->file = this->type + "{" + this->file + "};";
-    return this->file;
+	return this->file;
 }
 
 //----------    array operator    ----------
@@ -220,4 +220,16 @@ void DrawableObject::paint(QPainter *painter,
 		this->pen->setWidth(2);
 		painter->setPen(*this->pen);
 	}
+}
+
+//----------     events     ----------
+
+void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	this->draging = true;
+}
+
+void DrawableObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	this->draging = false;
 }

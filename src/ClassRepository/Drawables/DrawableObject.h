@@ -5,6 +5,7 @@
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QGraphicsScene>
+#include <QGraphicsSceneEvent>
 #include <QtMath>
 #include <QVector2D>
 
@@ -83,6 +84,7 @@ protected:
 	bool constructional = false;
 	bool highlight = false;
 	bool hidden = false;
+	bool draging = false;
 
 	//saving
 	QString file;
@@ -96,6 +98,9 @@ protected:
 	void fileAddVar(QString variable, bool value);
 	QString fileFinish();
 
+	//events
+	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // DRAWABLEOBJECT_H
