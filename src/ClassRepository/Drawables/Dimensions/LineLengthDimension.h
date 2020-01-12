@@ -38,6 +38,7 @@ private:
 	int textHeight = 20;
 
 	//events
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 };

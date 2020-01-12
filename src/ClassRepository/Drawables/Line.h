@@ -46,8 +46,8 @@ public:
 	Line *setAngle(double angle, QVector2D *referenceVector);
 
 	//Distance
-	double distanceFrom(Point *point);
-	double signedDistanceFrom(Point *point);
+	double distanceFrom(QPointF location);
+	double signedDistanceFrom(QPointF location);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;

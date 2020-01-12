@@ -175,6 +175,15 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 //---------     events     ----------
 
+void LineLengthDimension::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	if(this->draging)
+	{
+		QPointF mousePos = event->pos();
+		this->distanceFromLine = -this->attachedLine->signedDistanceFrom(mousePos);
+	}
+}
+
 void LineLengthDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	emit requestDouble(this);

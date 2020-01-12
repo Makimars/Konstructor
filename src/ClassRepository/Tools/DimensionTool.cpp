@@ -79,7 +79,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 
 			Line *line = dynamic_cast<Line*>(this->clickedObjects[1]);
 
-			double distanceFromLine = -line->signedDistanceFrom(mousePoint);
+			double distanceFromLine = -line->signedDistanceFrom(mousePoint->getLocation());
 
 			this->objectFactory->addDrawable(
 				this->objectFactory->makeLineLengthDimension(

@@ -162,7 +162,7 @@ Line *ViewWidget::lineSnapping(Point *point)
 		{
 			Line *referenceLine = dynamic_cast<Line*>(obj);
 
-			if(referenceLine->distanceFrom(point) < Settings::pointSnappingDistance)
+			if(referenceLine->distanceFrom(point->getLocation()) < Settings::pointSnappingDistance)
 				return referenceLine;
 		}
 	}

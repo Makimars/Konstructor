@@ -171,16 +171,16 @@ Line *Line::setAngle(double angle,QVector2D *referenceVector)
 
 //----------     Distance    ----------
 
-double Line::distanceFrom(Point *point)
+double Line::distanceFrom(QPointF location)
 {
-	return abs(signedDistanceFrom(point));
+	return abs(signedDistanceFrom(location));
 }
 
-double Line::signedDistanceFrom(Point *point)
+double Line::signedDistanceFrom(QPointF location)
 {
 	double denominator = (
-				((this->endPoint->getY() - this->startPoint->getY()) * point->getX()) -
-				((this->endPoint->getX() - this->startPoint->getX()) * point->getY()) +
+				((this->endPoint->getY() - this->startPoint->getY()) * location.x()) -
+				((this->endPoint->getX() - this->startPoint->getX()) * location.y()) +
 				(this->endPoint->getX() * this->startPoint->getY()) -
 				(this->endPoint->getY() * this->startPoint->getX())
 				);
