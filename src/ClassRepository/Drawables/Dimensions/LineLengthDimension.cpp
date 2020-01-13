@@ -163,7 +163,8 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->translate(centerPoint);
 	//rotate funciton rotates clockwise, we have angle counter clockwise
 	painter->rotate(-textAngle);
-	if(this->distanceFromLine > 0)
+	if(lineVector.x() < 0 & this->distanceFromLine < 0	||
+		lineVector.x() > 0 & this->distanceFromLine > 0	)
 		painter->translate(QPointF(0,textHeight));
 
 	QRectF textRect(-this->textWidth / 2, -this->textHeight, this->textWidth, this->textHeight);
