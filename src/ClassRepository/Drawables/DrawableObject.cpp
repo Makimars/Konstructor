@@ -216,10 +216,12 @@ void DrawableObject::paint(QPainter *painter,
 {
 	resolveTies();
 
-	if(this->highlight){
+	if(this->highlight)
 		this->pen->setWidth(2);
-		painter->setPen(*this->pen);
-	}
+	else
+		this->pen->setWidth(1);
+
+	painter->setPen(*this->pen);
 }
 
 //----------     events     ----------

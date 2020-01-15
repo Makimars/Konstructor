@@ -2,6 +2,9 @@
 
 ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 {
+
+	this->setBackgroundBrush(QBrush(QColor::fromRgb(210,210,210)));
+
 	this->setAlignment(Qt::AlignCenter);
 	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -9,7 +12,9 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->setDragMode(DragMode::NoDrag);
 
 	this->defaultPen = QPen(Qt::PenStyle::SolidLine);
+	this->defaultPen.setColor(Qt::black);
 	this->defaultBrush = QBrush(Qt::BrushStyle::TexturePattern);
+	this->defaultBrush.setColor(Qt::black);
 
 	this->sketchScene = new QGraphicsScene(this);
 	this->objectsInSketch = new QVector<DrawableObject*>;
