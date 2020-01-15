@@ -143,21 +143,21 @@ Line *Line::clone()
 
 //----------    Geometry    ----------
 
-double Line::getAngle(QVector2D *referenceVector)
+double Line::getAngle(QVector2D referenceVector)
 {
 	getLineVector();
 	double scalarMult = (
-						this->lineVector.x() * referenceVector->x()
-						+ this->lineVector.y() * referenceVector->y()
+						this->lineVector.x() * referenceVector.x()
+						+ this->lineVector.y() * referenceVector.y()
 						);
 
 	return qAcos(
 				scalarMult /
-				this->getLength() * referenceVector->length()
+				this->getLength() * referenceVector.length()
 				 );
 }
 
-Line *Line::setAngle(double angle,QVector2D *referenceVector)
+Line *Line::setAngle(double angle,QVector2D referenceVector)
 {
 	double angleDifference = angle - this->getAngle(referenceVector);
 

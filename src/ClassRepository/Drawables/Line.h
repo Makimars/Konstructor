@@ -36,14 +36,14 @@ public:
 	 * @param Vector2D *referenceVector
 	 * @return double angle (radians)
 	 */
-	double getAngle(QVector2D *referenceVector);
+	double getAngle(QVector2D referenceVector);
 	/**
 	 * @brief sets the angle in radians of this line relative to reference vector
 	 * @param double angle (radians)
 	 * @param Vector2D *referenceVector
 	 * @return this
 	 */
-	Line *setAngle(double angle, QVector2D *referenceVector);
+	Line *setAngle(double angle, QVector2D referenceVector);
 
 	//Distance
 	double distanceFrom(QPointF location);
