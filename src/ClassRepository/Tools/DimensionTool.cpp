@@ -48,12 +48,27 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 			};
 
 
-			if((lines[0]->getStartPoint() == lines[1]->getStartPoint()) |
-					(lines[0]->getStartPoint() == lines[1]->getEndPoint()))
+			if(lines[0]->getStartPoint() == lines[1]->getStartPoint()		|
+					lines[0]->getStartPoint() == lines[1]->getEndPoint()	|
+					lines[0]->getEndPoint() == lines[1]->getStartPoint()	|
+					lines[0]->getEndPoint() == lines[1]->getEndPoint()		)
 			{
 				// one common point
-				//two lines angle
+				Point *commonPoint;
+				if(lines[0]->getStartPoint() == lines[1]->getStartPoint()	|
+					lines[0]->getStartPoint() == lines[1]->getEndPoint()	)
+					commonPoint = lines[0]->getStartPoint();
+				else
+					commonPoint = lines[0]->getEndPoint();
 
+				//two lines angle
+				this->objectFactory->addDrawable(
+							this->objectFactory->makeLinesAngleDimension(
+								lines,
+								lines[0]->getAngle(lines[1]->getLineVector()),
+								Settings::defaultAngleDimensionTextDistance
+								)
+							);
 			}
 			else
 			{

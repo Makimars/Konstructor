@@ -95,7 +95,19 @@ LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, doubl
 
 LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], double angle)
 {
+	LinesAngleDimension *dimension = new LinesAngleDimension(lines, angle);
+	dimension->setPen(this->defaultPen)
+			->setBrush(this->defaultBrush);
 
+	return dimension;
+}
+
+LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], double angle, float distanceFromCenter)
+{
+	LinesAngleDimension *dimension = makeLinesAngleDimension(lines, angle);
+	dimension->setDistanceFromCenter(distanceFromCenter);
+
+	return dimension;
 }
 
 LinesDistanceDimension *DrawablesFactory::makeLinesDistanceDimension(Line *lines[])

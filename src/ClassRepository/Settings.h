@@ -19,6 +19,8 @@ public:
 	static double defaultSketchHeight;
 	static double defaultSketchWidth;
 
+	static float defaultAngleDimensionTextDistance;
+
 	static int pointRenderSize;
 
 	//keyboard shortcuts

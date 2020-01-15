@@ -8,6 +8,8 @@ double Settings::pointSnappingDistance = 10;
 double  Settings::defaultSketchHeight = 4000;
 double  Settings::defaultSketchWidth  = 4000;
 
+float Settings::defaultAngleDimensionTextDistance = 200;
+
 int Settings::pointRenderSize = 2;
 
 //keyboad shortcuts
