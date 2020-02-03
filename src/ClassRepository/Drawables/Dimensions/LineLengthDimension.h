@@ -22,9 +22,6 @@ public:
 	void setDistanceFromLine(double distance);
 	void setLineLength(double length);
 
-	//user input requests
-	void recieveDouble(double value) override;
-
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
@@ -43,6 +40,11 @@ private:
 	//events
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+public slots:
+
+	//user input requests
+	void recieveDouble(double value) override;
 
 };
 

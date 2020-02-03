@@ -12,6 +12,8 @@ float Settings::defaultAngleDimensionTextDistance = 200;
 
 int Settings::pointRenderSize = 2;
 
+QMargins Settings::lineAngleArcMargins(10,10,10,10);
+
 //keyboad shortcuts
 QKeySequence Settings::newFile(Qt::CTRL + Qt::Key_N);
 QKeySequence Settings::openFile(Qt::CTRL + Qt::Key_O);

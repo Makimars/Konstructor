@@ -3,6 +3,8 @@
 
 #include "LineLengthDimension.h"
 
+#define TYPE_LINE_ANGLE_DIMENSION "LineAngleDimension"
+
 class LinesAngleDimension : public DrawableObject, public UserInputRequester
 {
 public:
@@ -36,6 +38,7 @@ private:
 
 	Line *lines[2];
 	Point *commonPoint;
+	Point *edgePoints[2];
 
 	int textWidth = 60;
 	int textHeight = 20;

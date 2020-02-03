@@ -4,6 +4,7 @@
 #include <QString>
 #include <QDir>
 #include <QKeySequence>
+#include <QMargins>
 
 class Settings
 {
@@ -22,6 +23,7 @@ public:
 	static float defaultAngleDimensionTextDistance;
 
 	static int pointRenderSize;
+	static QMargins lineAngleArcMargins;
 
 	//keyboard shortcuts
 	static QKeySequence
