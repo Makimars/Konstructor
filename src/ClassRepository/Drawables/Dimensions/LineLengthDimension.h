@@ -8,7 +8,7 @@
 class LineLengthDimension : public DrawableObject, public UserInputRequester
 {
 public:
-	LineLengthDimension(Line *line, double lenght);
+	LineLengthDimension(Line *line);
 
 	void resolveTies() override;
 	void setValue(double lenght);
@@ -18,6 +18,7 @@ public:
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> *list) override;
 	void setDistanceFromLine(double distance);
+	void setLineLength(double length);
 
 	//user input requests
 	void recieveDouble(double value) override;

@@ -72,15 +72,23 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, DrawableObject *liesOn)
 
 //----------     dimension creation     ---------
 
-LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, double length)
+LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line)
 {
-	LineLengthDimension *dimension = new LineLengthDimension(line, length);
+	LineLengthDimension *dimension = new LineLengthDimension(line);
 	dimension->setPen(this->defaultPen)
 			->setBrush(this->defaultBrush);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
 					 );
+
+	return dimension;
+}
+
+LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, double length)
+{
+	LineLengthDimension *dimension = makeLineLengthDimension(line);
+	dimension->setLineLength(length);
 
 	return dimension;
 }

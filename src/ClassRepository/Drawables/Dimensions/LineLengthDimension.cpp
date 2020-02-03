@@ -1,9 +1,9 @@
 #include "LineLengthDimension.h"
 
-LineLengthDimension::LineLengthDimension(Line *line, double length)
+LineLengthDimension::LineLengthDimension(Line *line)
 {
 	this->attachedLine = line;
-	this->lengthToSet = length;
+	this->distanceFromLine = 0;
 	this->distanceFromLine = 20;
 	this->type = TYPE_LINE_LENGTH_DIMENSION;
 }
@@ -22,6 +22,11 @@ void LineLengthDimension::setValue(double length)
 void LineLengthDimension::setDistanceFromLine(double distance)
 {
 	this->distanceFromLine = distance;
+}
+
+void LineLengthDimension::setLineLength(double length)
+{
+	this->lengthToSet = length;
 }
 
 //--------     user input requests     ---------
