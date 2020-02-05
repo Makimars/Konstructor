@@ -10,9 +10,6 @@ class Line : public DrawableObject
 public:
 	Line();
 	Line(Point *startPoint, Point *endPoint);
-    ~Line() override;
-
-	void resolveTies() override;
 
     //file handling
     void fromFileString(QString json) override;
@@ -59,9 +56,6 @@ public:
 
 protected:
 	QVector2D lineVector;
-
-    //plane axes
-	Line *upUpAxis;
 
 	//defining variables
 	Point *startPoint, *endPoint;

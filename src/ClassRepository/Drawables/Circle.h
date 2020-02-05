@@ -10,7 +10,6 @@ class Circle : public DrawableObject
 public:
 	Circle();
 	Circle(Point *centerPoint);
-    ~Circle() override;
 
 	void resolveTies() override;
 

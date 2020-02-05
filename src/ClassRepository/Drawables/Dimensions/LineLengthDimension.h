@@ -17,6 +17,8 @@ public:
 	void fromFileString(QString json) override;
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> *list) override;
+
+	//getters and setters
 	void setDistanceFromLine(double distance);
 	void setLineLength(double length);
 

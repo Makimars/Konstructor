@@ -11,10 +11,6 @@ Circle::Circle(Point *center_point)
 	this->centerPoint = center_point;
 }
 
-Circle::~Circle(){
-
-}
-
 void Circle::resolveTies()
 {
 	if(this->liesOn != nullptr)

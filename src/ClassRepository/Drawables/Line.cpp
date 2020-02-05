@@ -17,16 +17,6 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject()
 				);
 }
 
-Line::~Line()
-{
-
-}
-
-void Line::resolveTies()
-{
-
-}
-
 //----------	file handling    ----------
 
 void Line::fromFileString(QString input)

@@ -11,9 +11,6 @@ public:
 	Point();
     Point(QPointF location);
 	Point(double x, double y);
-    ~Point() override;
-
-	void resolveTies() override;
 
     //file handling
     void fromFileString(QString json) override;
@@ -24,8 +21,8 @@ public:
 	double getX();
 	double getY();
 	QPointF getLocation();
-	void setLocation(QPointF point);
-	void setLocation(double x, double y);
+	Point *setLocation(QPointF point);
+	Point *setLocation(double x, double y);
 	Point *clone() override;
 
     //aritmetic functions

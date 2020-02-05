@@ -19,16 +19,6 @@ Point::Point(double x, double y) : DrawableObject()
 	this->y = y;
 }
 
-Point::~Point()
-{
-
-}
-
-void Point::resolveTies()
-{
-
-}
-
 //----------	file handling    ----------
 
 void Point::fromFileString(QString input)
@@ -90,16 +80,20 @@ QPointF Point::getLocation()
 	return QPointF(this->x,this->y);
 }
 
-void Point::setLocation(QPointF point)
+Point *Point::setLocation(QPointF point)
 {
     this->x = point.x();
 	this->y = point.y();
+
+	return this;
 }
 
-void Point::setLocation(double x, double y)
+Point *Point::setLocation(double x, double y)
 {
 	this->x = x;
     this->y = y;
+
+	return this;
 }
 
 Point *Point::clone()
