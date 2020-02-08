@@ -130,6 +130,8 @@ void Circle::paint(QPainter *painter,
 	painter->drawEllipse(this->boundingRect());
 }
 
+//----------     geometry     ---------
+
 void Circle::setGeometryUpdates()
 {
 	this->centerPoint->addGeometryUpdate(this);

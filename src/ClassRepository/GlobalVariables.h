@@ -14,7 +14,8 @@ enum Types{
 	Type_Line,
 	Type_Circle,
 	Type_LineLengthDimension,
-	Type_LineAngleDimension
+	Type_LineAngleDimension,
+	Type_CircleRadiusDimension
 };
 
 class Global {
