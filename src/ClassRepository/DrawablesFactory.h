@@ -24,8 +24,8 @@ public:
 	LineLengthDimension *makeLineLengthDimension(Line *line);
 	LineLengthDimension *makeLineLengthDimension(Line *line, double lenght);
 	LineLengthDimension *makeLineLengthDimension(Line *line, double lenght, double distanceFromLine);
-	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double angle);
-	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double angle, float distanceFromCenter);
+	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2]);
+	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double distanceFromCenter);
 	LinesDistanceDimension *makeLinesDistanceDimension(Line *lines[2]);
 
 	//object managment

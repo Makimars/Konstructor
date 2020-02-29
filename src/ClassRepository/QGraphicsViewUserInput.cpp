@@ -33,6 +33,7 @@ void QGraphicsViewUserInput::closeInputBox()
 {
 	this->currentReciever = nullptr;
 	this->inputBoxProxy->hide();
+	this->inputBox.setText("");
 }
 
 void QGraphicsViewUserInput::setInputBoxLocation(QPointF location)

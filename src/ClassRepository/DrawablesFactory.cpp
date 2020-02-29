@@ -101,18 +101,22 @@ LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, doubl
 	return dimension;
 }
 
-LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], double angle)
+LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[])
 {
-	LinesAngleDimension *dimension = new LinesAngleDimension(lines, angle);
+	LinesAngleDimension *dimension = new LinesAngleDimension(lines);
 	dimension->setPen(this->defaultPen)
 			->setBrush(this->defaultBrush);
+
+	QObject::connect(dimension, &UserInputRequester::requestDouble,
+					 this->userInput, &QGraphicsViewUserInput::requestDouble
+					 );
 
 	return dimension;
 }
 
-LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], double angle, float distanceFromCenter)
+LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], double distanceFromCenter)
 {
-	LinesAngleDimension *dimension = makeLinesAngleDimension(lines, angle);
+	LinesAngleDimension *dimension = makeLinesAngleDimension(lines);
 	dimension->setDistanceFromCenter(distanceFromCenter);
 
 	return dimension;
