@@ -15,7 +15,9 @@ QStringList Global::toolNames = {
 };
 
 QStringList Global::typeNames = {
-    "Point",
-    "Line",
-    "Circle"
+	TYPE_POINT,
+	TYPE_LINE,
+	TYPE_CIRCLE,
+	TYPE_LINE_LENGTH_DIMENSION,
+	TYPE_LINE_ANGLE_DIMENSION
 };

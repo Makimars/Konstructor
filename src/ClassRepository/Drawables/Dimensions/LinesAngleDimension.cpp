@@ -1,5 +1,10 @@
 #include "LinesAngleDimension.h"
 
+LinesAngleDimension::LinesAngleDimension()
+{
+	this->type = TYPE_LINE_ANGLE_DIMENSION;
+}
+
 LinesAngleDimension::LinesAngleDimension(Line *lines[])
 {
 	this->type = TYPE_LINE_ANGLE_DIMENSION;
@@ -46,19 +51,78 @@ void LinesAngleDimension::setValue(double angle)
 
 //----------     file handling     ---------
 
-void LinesAngleDimension::fromFileString(QString json)
+void LinesAngleDimension::fromFileString(QString input)
 {
+	DrawableObject::fromFileString(input);
 
+	QStringList varNames = {
+		"angle",
+		"distanceFromCenter"
+	};
+
+	QStringList variables = input.split(',');
+	for(int i = 0; i < variables.length() - 1; i++)
+	{
+		QStringList parts = variables[i].split(":");
+		QString varName = parts[0];
+		QString varValue = parts[1];
+
+		switch (varNames.indexOf(varName)) {
+			case 0:
+				this->angle = QVariant(varValue).toDouble();
+				break;
+			case 1:
+				this->distanceFromCenter = QVariant(varValue).toDouble();
+				break;
+			default:
+				break;
+		}
+
+	}
 }
 
 QString LinesAngleDimension::toFileString()
 {
-
+	DrawableObject::toFileString();
+	this->fileAddVar("angle", this->angle);
+	this->fileAddVar("distanceFromCenter", this->distanceFromCenter);
+	this->fileAddVar("lines0", this->lines[0]->getId());
+	this->fileAddVar("lines1", this->lines[1]->getId());
+	return this->fileFinish();
 }
 
 void LinesAngleDimension::loadRelations(QVector<DrawableObject *> *list)
 {
+	QStringList varNames = {
+		"lines0",
+		"lines1"
+	};
 
+	QStringList variables = this->file.split(',');
+	for(int i = 0; i < variables.length() - 1; i++)
+	{
+		QStringList parts = variables[i].split(":");
+		QString varName = parts[0];
+		QString varValue = parts[1];
+
+		DrawableObject *obj;
+
+		switch (varNames.indexOf(varName)) {
+			case 0:
+				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
+				if(obj->getType() == TYPE_LINE)
+					this->lines[0] = dynamic_cast<Line*>(obj);
+				break;
+			case 1:
+				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
+				if(obj->getType() == TYPE_LINE)
+					this->lines[1] = dynamic_cast<Line*>(obj);
+				break;
+			default:
+				break;
+		}
+
+	}
 }
 
 //----------    Getters and setters    -----------

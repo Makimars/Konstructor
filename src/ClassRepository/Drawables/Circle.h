@@ -15,8 +15,8 @@ public:
 
 	//file handling
     void fromFileString(QString input) override;
+	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> *list) override;
-    QString toFileString() override;
 
 	//getters and setters
 	Point *getCenterPoint();

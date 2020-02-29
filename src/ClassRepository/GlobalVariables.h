@@ -9,6 +9,8 @@
 
 #include <QStringList>
 
+#include "Tools/DimensionTool.h"
+
 class Global {
 
 public:

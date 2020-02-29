@@ -8,13 +8,14 @@
 class LinesAngleDimension : public DrawableObject, public UserInputRequester
 {
 public:
+	LinesAngleDimension();
 	LinesAngleDimension(Line *lines[2]);
 
 	void resolveTies() override;
 	void setValue(double angle);
 
 	//file handling
-	void fromFileString(QString json) override;
+	void fromFileString(QString input) override;
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> *list) override;
 

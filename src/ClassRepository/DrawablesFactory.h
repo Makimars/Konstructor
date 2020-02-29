@@ -15,6 +15,7 @@ public:
 
 	//object creation
 	Point *makePoint();
+	Point *makePoint(double x, double y);
 	Line *makeLine(Point *startPoint, Point *endPoint);
 	Circle *makeCircle(Point *centerPoint);
 	Circle *makeCircle(Point *centerPoint, double radius);

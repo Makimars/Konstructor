@@ -34,6 +34,14 @@ Point *DrawablesFactory::makePoint()
 	return point;
 }
 
+Point *DrawablesFactory::makePoint(double x, double y)
+{
+	Point *point = makePoint();
+	point->setLocation(x, y);
+
+	return point;
+}
+
 Line *DrawablesFactory::makeLine(Point *startPoint, Point *endPoint)
 {
 	Line *line = new Line(startPoint, endPoint);
@@ -42,7 +50,6 @@ Line *DrawablesFactory::makeLine(Point *startPoint, Point *endPoint)
 
 	return line;
 }
-
 
 Circle *DrawablesFactory::makeCircle(Point *centerPoint)
 {
@@ -131,6 +138,9 @@ LinesDistanceDimension *DrawablesFactory::makeLinesDistanceDimension(Line *lines
 
 void DrawablesFactory::addDrawable(DrawableObject *object)
 {
+	object->setPen(this->defaultPen)
+			->setBrush(this->defaultBrush);
+
 	if(!this->objectList->contains(object))
 	{
 		object->setFlag(QGraphicsItem::ItemIsFocusable, true);

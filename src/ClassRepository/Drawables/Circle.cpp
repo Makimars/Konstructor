@@ -31,7 +31,7 @@ void Circle::fromFileString(QString input)
 	DrawableObject::fromFileString(input);
 
 	QStringList varNames = {
-      "radius"
+		"radius"
     };
 
 	QStringList variables = input.split(',');
@@ -50,6 +50,14 @@ void Circle::fromFileString(QString input)
 		}
 
 	}
+}
+
+QString Circle::toFileString()
+{
+	DrawableObject::toFileString();
+	this->fileAddVar("centerPoint", this->centerPoint->getId());
+	this->fileAddVar("radius", this->radius);
+	return this->fileFinish();
 }
 
 void Circle::loadRelations(QVector<DrawableObject*> *list)
@@ -79,14 +87,6 @@ void Circle::loadRelations(QVector<DrawableObject*> *list)
         }
 
     }
-}
-
-QString Circle::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("centerPoint", this->centerPoint->getId());
-	this->fileAddVar("radius", this->radius);
-	return this->fileFinish();
 }
 
 //----------	getters and setters    ----------

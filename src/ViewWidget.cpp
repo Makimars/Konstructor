@@ -66,10 +66,15 @@ void ViewWidget::loadFromFile(QString file)
 				break;
 			case 1:
 				createdObj = new Line();
-				createdObj->loadRelations(&loadedObjects);
 				break;
 			case 2:
 				createdObj = new Circle();
+				break;
+			case 3:
+				createdObj = new LineLengthDimension();
+				break;
+			case 4:
+				createdObj = new LinesAngleDimension();
 				break;
 			default:
 				createdObj = nullptr;
@@ -91,7 +96,6 @@ void ViewWidget::loadFromFile(QString file)
 	foreach(DrawableObject *obj, loadedObjects)
     {
 		this->objectFactory->addDrawable(obj);
-        this->objectsInSketch->append(obj);
     }
 }
 

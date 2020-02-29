@@ -1,11 +1,18 @@
 #include "LineLengthDimension.h"
 
-LineLengthDimension::LineLengthDimension(Line *line)
+LineLengthDimension::LineLengthDimension()
 {
-	this->attachedLine = line;
 	this->distanceFromLine = 0;
 	this->distanceFromLine = 20;
 	this->type = TYPE_LINE_LENGTH_DIMENSION;
+}
+
+LineLengthDimension::LineLengthDimension(Line *line)
+{
+	this->distanceFromLine = 0;
+	this->distanceFromLine = 20;
+	this->type = TYPE_LINE_LENGTH_DIMENSION;
+	this->attachedLine = line;
 }
 
 void LineLengthDimension::resolveTies()
@@ -31,19 +38,72 @@ void LineLengthDimension::setLineLength(double length)
 
 //---------    file handeling     ---------
 
-void LineLengthDimension::fromFileString(QString json)
+void LineLengthDimension::fromFileString(QString input)
 {
+	DrawableObject::fromFileString(input);
 
+	QStringList varNames = {
+		"lengthToSet",
+		"distanceFromLine"
+	};
+
+	QStringList variables = input.split(',');
+	for(int i = 0; i < variables.length() - 1; i++)
+	{
+		QStringList parts = variables[i].split(":");
+		QString varName = parts[0];
+		QString varValue = parts[1];
+
+		switch (varNames.indexOf(varName)) {
+			case 0:
+				this->lengthToSet = QVariant(varValue).toDouble();
+				break;
+			case 1:
+				this->distanceFromLine = QVariant(varValue).toDouble();
+				break;
+			default:
+				break;
+		}
+
+	}
 }
 
 QString LineLengthDimension::toFileString()
 {
-
+	DrawableObject::toFileString();
+	this->fileAddVar("lengthToSet", this->lengthToSet);
+	this->fileAddVar("distanceFromLine", this->distanceFromLine);
+	this->fileAddVar("attachedLine", this->attachedLine->getId());
+	return this->fileFinish();
 }
 
 void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 {
+	QStringList varNames = {
+		"attachedLine"
+	};
 
+	QStringList variables = this->file.split(',');
+	for(int i = 0; i < variables.length() - 1; i++)
+	{
+		QStringList parts = variables[i].split(":");
+		QString varName = parts[0];
+		QString varValue = parts[1];
+
+		DrawableObject *obj;
+
+		switch (varNames.indexOf(varName)) {
+			case 0:
+				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
+				if(obj->getType() == TYPE_LINE)
+					this->attachedLine = dynamic_cast<Line*>(obj);
+
+				break;
+			default:
+				break;
+		}
+
+	}
 }
 
 //----------	QGraphicsItem overrides    ----------

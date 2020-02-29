@@ -65,7 +65,6 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 				this->objectFactory->addDrawable(
 							this->objectFactory->makeLinesAngleDimension(
 								lines,
-								lines[0]->getAngle(lines[1]->getLineVector()),
 								Settings::defaultAngleDimensionTextDistance
 								)
 							);
