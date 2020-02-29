@@ -229,6 +229,7 @@ void DrawableObject::paint(QPainter *painter,
 void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	this->draging = true;
+	qDebug() << "press on " + this->type;
 }
 
 void DrawableObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)

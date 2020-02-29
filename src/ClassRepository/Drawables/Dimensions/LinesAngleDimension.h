@@ -3,10 +3,12 @@
 
 #include "LineLengthDimension.h"
 
+#define TYPE_LINE_ANGLE_DIMENSION "LineAngleDimension"
+
 class LinesAngleDimension : public DrawableObject, public UserInputRequester
 {
 public:
-	LinesAngleDimension(Line *lines[2], double angle);
+	LinesAngleDimension(Line *lines[2]);
 
 	void resolveTies() override;
 	void setValue(double angle);
@@ -17,10 +19,7 @@ public:
 	void loadRelations(QVector<DrawableObject*> *list) override;
 
 	//getters and setters
-	void setDistanceFromCenter(float distance);
-
-	//user input requests
-	void recieveDouble(double value) override;
+	void setDistanceFromCenter(double distance);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -32,10 +31,11 @@ public:
 
 private:
 	double angle;
-	float distanceFromCenter;
+	double distanceFromCenter;
 
 	Line *lines[2];
 	Point *commonPoint;
+	Point *edgePoints[2];
 
 	int textWidth = 60;
 	int textHeight = 20;
@@ -43,6 +43,12 @@ private:
 	//events
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+
+public slots:
+
+	//user input requests
+	void recieveDouble(double value) override;
 };
 
 #endif // LINESANGLEDIMENSION_H

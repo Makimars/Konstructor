@@ -29,14 +29,6 @@ void LineLengthDimension::setLineLength(double length)
 	this->lengthToSet = length;
 }
 
-//--------     user input requests     ---------
-
-void LineLengthDimension::recieveDouble(double value)
-{
-	this->lengthToSet = value;
-	resolveTies();
-}
-
 //---------    file handeling     ---------
 
 void LineLengthDimension::fromFileString(QString json)
@@ -193,4 +185,13 @@ void LineLengthDimension::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void LineLengthDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	emit requestDouble(this);
+}
+
+
+//--------     user input requests     ---------
+
+void LineLengthDimension::recieveDouble(double value)
+{
+	this->lengthToSet = value;
+	resolveTies();
 }
