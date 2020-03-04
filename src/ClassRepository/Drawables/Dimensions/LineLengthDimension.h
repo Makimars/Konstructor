@@ -3,8 +3,6 @@
 
 #include "../../UserInputRequester.h"
 
-#define TYPE_LINE_LENGTH_DIMENSION "LineLengthDimension"
-
 class LineLengthDimension : public DrawableObject, public UserInputRequester
 {
 public:

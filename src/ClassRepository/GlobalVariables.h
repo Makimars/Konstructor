@@ -9,14 +9,19 @@
 
 #include <QStringList>
 
-#include "Tools/DimensionTool.h"
+enum Types{
+	Type_Point,
+	Type_Line,
+	Type_Circle,
+	Type_LineLengthDimension,
+	Type_LineAngleDimension
+};
 
 class Global {
 
 public:
 	//consatants
 	static QStringList toolNames;
-	static QStringList typeNames;
 
 	//messages
 	static QString openFile, saveFile;

@@ -1,17 +1,14 @@
 #include "LineLengthDimension.h"
 
-LineLengthDimension::LineLengthDimension()
+LineLengthDimension::LineLengthDimension() : DrawableObject (Type_LineLengthDimension)
 {
 	this->distanceFromLine = 0;
 	this->distanceFromLine = 20;
-	this->type = TYPE_LINE_LENGTH_DIMENSION;
 }
 
-LineLengthDimension::LineLengthDimension(Line *line)
+LineLengthDimension::LineLengthDimension(Line *line) : DrawableObject (Type_LineLengthDimension)
 {
-	this->distanceFromLine = 0;
-	this->distanceFromLine = 20;
-	this->type = TYPE_LINE_LENGTH_DIMENSION;
+	LineLengthDimension();
 	this->attachedLine = line;
 }
 
@@ -83,7 +80,7 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 		"attachedLine"
 	};
 
-	QStringList variables = this->file.split(',');
+	QStringList variables = this->getFile().split(',');
 	for(int i = 0; i < variables.length() - 1; i++)
 	{
 		QStringList parts = variables[i].split(":");
@@ -95,7 +92,7 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 		switch (varNames.indexOf(varName)) {
 			case 0:
 				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == TYPE_LINE)
+				if(obj->getType() == Type_Line)
 					this->attachedLine = dynamic_cast<Line*>(obj);
 
 				break;
@@ -172,7 +169,7 @@ QPainterPath LineLengthDimension::shape() const
 
 void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if(this->hidden)
+	if(this->isHidden())
 		return;
 
 	DrawableObject::paint(painter, option, widget);
@@ -235,7 +232,7 @@ void LineLengthDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 void LineLengthDimension::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if(this->draging)
+	if(this->isDraging())
 	{
 		QPointF mousePos = event->pos();
 		this->distanceFromLine = -this->attachedLine->signedDistanceFrom(mousePos);

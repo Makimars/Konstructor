@@ -3,8 +3,6 @@
 
 #include "LineLengthDimension.h"
 
-#define TYPE_LINE_ANGLE_DIMENSION "LineAngleDimension"
-
 class LinesAngleDimension : public DrawableObject, public UserInputRequester
 {
 public:

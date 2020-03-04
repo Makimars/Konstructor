@@ -1,20 +1,15 @@
 #include "Point.h"
 
-Point::Point() : DrawableObject()
-{
-	this->type = TYPE_POINT;
-}
+Point::Point() : DrawableObject(Type_Point){}
 
-Point::Point(QPointF location)
+Point::Point(QPointF location) : DrawableObject (Type_Point)
 {
-	this->type = TYPE_POINT;
     this->x = location.x();
     this->y = location.y();
 }
 
-Point::Point(double x, double y) : DrawableObject()
+Point::Point(double x, double y) : DrawableObject (Type_Point)
 {
-	this->type = TYPE_POINT;
 	this->x = x;
 	this->y = y;
 }
@@ -56,11 +51,6 @@ QString Point::toFileString()
 	this->fileAddVar("x", this->x);
 	this->fileAddVar("y", this->y);
     return DrawableObject::fileFinish();
-}
-
-void Point::loadRelations(QVector<DrawableObject *> *list)
-{
-
 }
 
 //----------	getters and setters    ----------
@@ -137,7 +127,7 @@ void Point::paint(QPainter *painter,
 				  const QStyleOptionGraphicsItem *option,
 				  QWidget *widget)
 {    
-	if(this->hidden)
+	if(this->isHidden())
 		return;
 
 	DrawableObject::paint(painter, option, widget);
@@ -147,7 +137,7 @@ void Point::paint(QPainter *painter,
 	this->brush->setStyle(Qt::BrushStyle::SolidPattern);
 
 	int coef = Settings::pointRenderSize;
-    if(this->highlight)
+	if(this->isHighlighted())
         coef *= 2;
 
     QRectF rect(this->x-coef, this->y-coef, coef  + coef, coef + coef);

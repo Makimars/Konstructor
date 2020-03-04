@@ -8,7 +8,7 @@
 #include <QScrollBar>
 
 #include "mainwindow.h"
-#include "ClassRepository/GlobalVariables.h"
+#include "ClassRepository/Tools/DimensionTool.h"
 
 class ViewWidget : public QGraphicsView
 {

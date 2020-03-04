@@ -1,14 +1,10 @@
 #include "Line.h"
 
-Line::Line()
-{
-	this->type = TYPE_LINE;
-}
+Line::Line() : DrawableObject (Type_Line){}
 
 
-Line::Line(Point *startPoint, Point *endPoint) : DrawableObject()
+Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Type_Line)
 {
-	this->type = TYPE_LINE;
 	this->startPoint = startPoint;
 	this->endPoint = endPoint;
 	this->lineVector = QVector2D(
@@ -39,7 +35,7 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
 		"endPoint"
     };
 
-    QStringList variables = this->file.split(',');
+	QStringList variables = this->getFile().split(',');
     for(int i = 0; i < variables.length() - 1; i++)
     {
         QStringList parts = variables[i].split(":");
@@ -51,13 +47,13 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
         switch (varNames.indexOf(varName)) {
             case 0:
 				object = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(object->getType() == TYPE_POINT)
+				if(object->getType() == Type_Point)
 					this->startPoint = dynamic_cast<Point*>(object);
 
                 break;
             case 1:
 				object = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(object->getType() == TYPE_POINT)
+				if(object->getType() == Type_Point)
 					this->endPoint = dynamic_cast<Point*>(object);
 
                 break;
@@ -205,7 +201,7 @@ void Line::paint(QPainter *painter,
 				 const QStyleOptionGraphicsItem *option,
 				 QWidget *widget)
 {
-	if(this->hidden)
+	if(this->isHidden())
 		return;
 
 	DrawableObject::paint(painter, option, widget);

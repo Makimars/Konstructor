@@ -5,7 +5,7 @@
 #include <QGraphicsProxyWidget>
 #include <QValidator>
 
-#include  "Drawables/Dimensions/LinesDistanceDimension.h"
+#include  "Drawables/Dimensions/LinesAngleDimension.h"
 
 class QGraphicsViewUserInput : public QObject
 {

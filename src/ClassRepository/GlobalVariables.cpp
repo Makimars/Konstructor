@@ -13,11 +13,3 @@ QStringList Global::toolNames = {
 	"Label",
 	"Dimension"
 };
-
-QStringList Global::typeNames = {
-	TYPE_POINT,
-	TYPE_LINE,
-	TYPE_CIRCLE,
-	TYPE_LINE_LENGTH_DIMENSION,
-	TYPE_LINE_ANGLE_DIMENSION
-};

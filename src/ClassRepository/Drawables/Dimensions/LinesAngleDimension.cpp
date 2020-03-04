@@ -1,14 +1,9 @@
 #include "LinesAngleDimension.h"
 
-LinesAngleDimension::LinesAngleDimension()
-{
-	this->type = TYPE_LINE_ANGLE_DIMENSION;
-}
+LinesAngleDimension::LinesAngleDimension() : DrawableObject (Type_LineAngleDimension){}
 
-LinesAngleDimension::LinesAngleDimension(Line *lines[])
+LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Type_LineAngleDimension)
 {
-	this->type = TYPE_LINE_ANGLE_DIMENSION;
-
 	this->lines[0] = lines[0];
 	this->lines[1] = lines[1];
 
@@ -98,7 +93,7 @@ void LinesAngleDimension::loadRelations(QVector<DrawableObject *> *list)
 		"lines1"
 	};
 
-	QStringList variables = this->file.split(',');
+	QStringList variables = this->getFile().split(',');
 	for(int i = 0; i < variables.length() - 1; i++)
 	{
 		QStringList parts = variables[i].split(":");
@@ -110,12 +105,12 @@ void LinesAngleDimension::loadRelations(QVector<DrawableObject *> *list)
 		switch (varNames.indexOf(varName)) {
 			case 0:
 				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == TYPE_LINE)
+				if(obj->getType() == Type_Line)
 					this->lines[0] = dynamic_cast<Line*>(obj);
 				break;
 			case 1:
 				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == TYPE_LINE)
+				if(obj->getType() == Type_Line)
 					this->lines[1] = dynamic_cast<Line*>(obj);
 				break;
 			default:
@@ -186,7 +181,7 @@ QPainterPath LinesAngleDimension::shape() const
 
 void LinesAngleDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if(this->hidden)
+	if(this->isHidden())
 		return
 
 	DrawableObject::paint(painter, option, widget);
@@ -206,7 +201,7 @@ void LinesAngleDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 void LinesAngleDimension::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if(this->draging)
+	if(this->isDraging())
 	{
 		double shorterLineLength;
 		if(this->lines[0]->getLength() < this->lines[1]->getLength())

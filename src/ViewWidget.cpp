@@ -55,25 +55,25 @@ void ViewWidget::loadFromFile(QString file)
 
 	foreach(QString line, splited)
 	{
-		QString typeName = line.section('{',0,0).trimmed();
+		QString type = line.section('{',0,0).trimmed();
 		QString content = line.section('{',1,1).section('}',0,0);
 		DrawableObject *createdObj;
 
-		switch(Global::typeNames.lastIndexOf(typeName))
+		switch(QVariant::fromValue(type).toInt())
 		{
-			case 0:
+			case Type_Point:
 				createdObj = new Point();
 				break;
-			case 1:
+			case Type_Line:
 				createdObj = new Line();
 				break;
-			case 2:
+			case Type_Circle:
 				createdObj = new Circle();
 				break;
-			case 3:
+			case Type_LineLengthDimension:
 				createdObj = new LineLengthDimension();
 				break;
-			case 4:
+			case Type_LineAngleDimension:
 				createdObj = new LinesAngleDimension();
 				break;
 			default:
@@ -152,7 +152,7 @@ Point *ViewWidget::pointSnapping(Point *point){
 	for(int i = 0; i < this->objectsInSketch->length(); i++)
 	{
 		DrawableObject *obj = this->objectsInSketch->at(i);
-		if(obj->getType() == TYPE_POINT)
+		if(obj->getType() == Type_Point)
 		{
 			Point *p = dynamic_cast<Point*>(obj);
 			if(point->distanceFrom(p->getLocation()) < Settings::pointSnappingDistance)
@@ -167,7 +167,7 @@ Line *ViewWidget::lineSnapping(Point *point)
 	for(int i = 0; i < this->objectsInSketch->length(); i++)
 	{
 		DrawableObject *obj = this->objectsInSketch->at(i);
-		if(obj->getType() == TYPE_LINE)
+		if(obj->getType() == Type_Line)
 		{
 			Line *referenceLine = dynamic_cast<Line*>(obj);
 

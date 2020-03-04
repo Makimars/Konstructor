@@ -129,11 +129,6 @@ LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], do
 	return dimension;
 }
 
-LinesDistanceDimension *DrawablesFactory::makeLinesDistanceDimension(Line *lines[])
-{
-
-}
-
 //----------     object managment     ---------
 
 void DrawablesFactory::addDrawable(DrawableObject *object)

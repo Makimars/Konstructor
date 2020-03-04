@@ -1,18 +1,8 @@
 #include "DrawableObject.h"
 
-DrawableObject::DrawableObject()
+DrawableObject::DrawableObject(int type)
 {
-	this->type = "DrawableObject";
-}
-
-DrawableObject::~DrawableObject()
-{
-
-}
-
-void DrawableObject::resolveTies()
-{
-
+	this->type = type;
 }
 
 //----------	file handling    ----------
@@ -61,12 +51,6 @@ QString DrawableObject::toFileString()
     return this->file;
 }
 
-void DrawableObject::loadRelations(QVector<DrawableObject *> *list)
-{
-
-}
-
-
 //----------	getters and setters    ----------
 
 DrawableObject *DrawableObject::setName(QString name)
@@ -81,7 +65,7 @@ QString DrawableObject::getName()
 	return this->name;
 }
 
-QString DrawableObject::getType()
+int DrawableObject::getType()
 {
 	return this->type;
 }
@@ -122,7 +106,7 @@ QPen * DrawableObject::getPen()
 	return pen;
 }
 
-void DrawableObject::setIsConstructional(bool value)
+DrawableObject *DrawableObject::setIsConstructional(bool value)
 {
 	this->constructional = value;
 }
@@ -132,7 +116,7 @@ bool DrawableObject::isConstructional()
 	return this->constructional;
 }
 
-void DrawableObject::setHighlight(bool value)
+DrawableObject *DrawableObject::setHighlight(bool value)
 {
 	this->highlight = value;
 }
@@ -142,7 +126,7 @@ bool DrawableObject::isHighlighted()
 	return this->highlight;
 }
 
-void DrawableObject::setHidden(bool value)
+DrawableObject *DrawableObject::setHidden(bool value)
 {
 	this->hidden = value;
 }
@@ -186,8 +170,18 @@ void DrawableObject::fileAddVar(QString variable, bool value)
 
 QString DrawableObject::fileFinish()
 {
-	this->file = this->type + "{" + this->file + "};";
+	this->file = QString::number(this->type) + "{" + this->file + "};";
 	return this->file;
+}
+
+QString DrawableObject::getFile()
+{
+	return this->file;
+}
+
+bool DrawableObject::isDraging()
+{
+	return  this->draging;
 }
 
 //----------    array operator    ----------

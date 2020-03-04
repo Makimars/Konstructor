@@ -35,10 +35,10 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 	{
 		// two not null drawables
 
-		QString object0Type = this->clickedObjects[0]->getType();
-		QString object1Type = this->clickedObjects[1]->getType();
+		int object0Type = this->clickedObjects[0]->getType();
+		int object1Type = this->clickedObjects[1]->getType();
 
-		if(object0Type == TYPE_LINE & object1Type == TYPE_LINE)
+		if(object0Type == Type_Line & object1Type == Type_Line)
 		{
 			// two lines
 
@@ -87,7 +87,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 	{
 		// second drawable is null
 
-		if(this->clickedObjects[1]->getType() == TYPE_LINE)
+		if(this->clickedObjects[1]->getType() == Type_Line)
 		{
 			//line and place
 

@@ -3,8 +3,6 @@
 
 #include "Line.h"
 
-#define TYPE_CIRCLE "Circle"
-
 class Circle : public DrawableObject
 {
 public:

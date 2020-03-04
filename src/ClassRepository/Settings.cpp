@@ -25,4 +25,4 @@ QKeySequence Settings::openSettings(Qt::CTRL + Qt::SHIFT + Qt::Key_O);
 QKeySequence Settings::quitApp(Qt::CTRL + Qt::Key_Q);
 
 //environment
-QString Settings::userProjectRoot = QDir::homePath() + "/Konstructor";
+QString Settings::userProjectRoot = QDir::homePath();

@@ -12,14 +12,13 @@
 #include <QDebug>
 
 #include "src/ClassRepository/Settings.h"
+#include "src/ClassRepository/GlobalVariables.h"
 
 class DrawableObject : public QGraphicsItem
 {
 public:
-    DrawableObject();
-    ~DrawableObject() override;
 
-    virtual void resolveTies();
+	virtual void resolveTies() {}
 
 	//file handling
 
@@ -39,12 +38,12 @@ public:
 	 * @brief assign pointers to objects to a variable from a vector of drawables
 	 * @param list
 	 */
-    virtual void loadRelations(QVector<DrawableObject*> *list) = 0;
+	virtual void loadRelations(QVector<DrawableObject*> *list) {}
 
 	//getters and setters
 	DrawableObject *setName(QString name);
     QString getName();
-	QString getType();
+	int getType();
 	DrawableObject *setId(unsigned int id);
     unsigned int getId();
 
@@ -53,11 +52,11 @@ public:
 	DrawableObject *setPen(QPen * value);
 	QPen * getPen();
 
-	void setIsConstructional(bool value);
+	DrawableObject *setIsConstructional(bool value);
 	bool isConstructional();
-	void setHighlight(bool value);
+	DrawableObject *setHighlight(bool value);
 	bool isHighlighted();
-	void setHidden(bool value);
+	DrawableObject *setHidden(bool value);
 	bool isHidden();
 
 	virtual DrawableObject *clone(){return nullptr;}
@@ -73,21 +72,13 @@ public:
 			   )override;
 
 protected:
+	DrawableObject(int type);
+
 	//defining variables
-	QString type, name;
-	unsigned int id;
+	QString name;
 
 	QBrush *brush;
 	QPen *pen;
-
-	//parameters
-	bool constructional = false;
-	bool highlight = false;
-	bool hidden = false;
-	bool draging = false;
-
-	//saving
-	QString file;
 
 	//saving
 	void fileAddVar(QString variable, QString value);
@@ -97,10 +88,27 @@ protected:
 	void fileAddVar(QString variable, unsigned int value);
 	void fileAddVar(QString variable, bool value);
 	QString fileFinish();
+	QString getFile();
+
+	bool isDraging();
 
 	//events
 	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
+private:
+	//defining variables
+	unsigned int id;
+	int type;
+
+	//parameters
+	bool constructional = false;
+	bool highlight = false;
+	bool hidden = false;
+	bool draging = false;
+
+	//saving
+	QString file;
 };
 
 #endif // DRAWABLEOBJECT_H

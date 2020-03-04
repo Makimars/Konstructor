@@ -1,13 +1,9 @@
 #include "Circle.h"
 
-Circle::Circle()
-{
-	this->type = TYPE_CIRCLE;
-}
+Circle::Circle() : DrawableObject (Type_Circle){}
 
-Circle::Circle(Point *center_point)
+Circle::Circle(Point *center_point) : DrawableObject (Type_Circle)
 {
-	this->type = TYPE_CIRCLE;
 	this->centerPoint = center_point;
 }
 
@@ -15,7 +11,7 @@ void Circle::resolveTies()
 {
 	if(this->liesOn != nullptr)
 	{
-		if(this->liesOn->getType() == TYPE_POINT)
+		if(this->liesOn->getType() == Type_Point)
 		{
 			Point *liesOn = dynamic_cast<Point*>(this->liesOn);
 
@@ -66,7 +62,7 @@ void Circle::loadRelations(QVector<DrawableObject*> *list)
 		"centerPoint"
     };
 
-    QStringList variables = this->file.split(',');
+	QStringList variables = this->getFile().split(',');
     for(int i = 0; i < variables.length() - 1; i++)
     {
         QStringList parts = variables[i].split(":");
@@ -78,7 +74,7 @@ void Circle::loadRelations(QVector<DrawableObject*> *list)
 		switch (varNames.indexOf(varName)) {
             case 0:
 				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == TYPE_POINT)
+				if(obj->getType() == Type_Point)
 					this->centerPoint = dynamic_cast<Point*>(obj);
 
                 break;
@@ -155,7 +151,7 @@ void Circle::paint(QPainter *painter,
 				   const QStyleOptionGraphicsItem *option,
 				   QWidget *widget)
 {
-	if(this->hidden)
+	if(this->isHidden())
 		return;
 
 	DrawableObject::paint(painter, option, widget);

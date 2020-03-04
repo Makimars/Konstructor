@@ -3,8 +3,6 @@
 
 #include "DrawableObject.h"
 
-#define TYPE_POINT "Point"
-
 class Point : public DrawableObject
 {
 public:
@@ -14,8 +12,7 @@ public:
 
     //file handling
     void fromFileString(QString json) override;
-    QString toFileString() override;
-    void loadRelations(QVector<DrawableObject*> *list) override;
+	QString toFileString() override;
 
     //getters and setters
 	double getX();
