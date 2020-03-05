@@ -1,5 +1,5 @@
 #include "Line.h"
-
+#include "QException"
 Line::Line() : DrawableObject (Type_Line){}
 
 
@@ -15,9 +15,9 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Type_Line)
 
 //----------	file handling    ----------
 
-void Line::fromFileString(QString input)
+void Line::loadVariables(QString input)
 {
-	DrawableObject::fromFileString(input);
+	fetchVariables(input);
 }
 
 QString Line::toFileString()
@@ -35,33 +35,10 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
 		"endPoint"
     };
 
-	QStringList variables = this->getFile().split(',');
-    for(int i = 0; i < variables.length() - 1; i++)
-    {
-        QStringList parts = variables[i].split(":");
-        QString varName = parts[0];
-        QString varValue = parts[1];
+	QVector<DrawableObject*> values = fetchRelations(list, varNames);
 
-		DrawableObject *object;
-
-        switch (varNames.indexOf(varName)) {
-            case 0:
-				object = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(object->getType() == Type_Point)
-					this->startPoint = dynamic_cast<Point*>(object);
-
-                break;
-            case 1:
-				object = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(object->getType() == Type_Point)
-					this->endPoint = dynamic_cast<Point*>(object);
-
-                break;
-            default:
-                break;
-        }
-
-    }
+	this->startPoint = dynamic_cast<Point*>(values[0]);
+	this->startPoint = dynamic_cast<Point*>(values[1]);
 
 }
 

@@ -26,7 +26,7 @@ public:
 	 * @brief asigns variables from a file representation
 	 * @param input
 	 */
-    virtual void fromFileString(QString input);
+	virtual void loadVariables(QString input){}
 
 	/**
 	 * @brief generates file representation of an object
@@ -80,7 +80,7 @@ protected:
 	QBrush *brush;
 	QPen *pen;
 
-	//saving
+	//saving objects
 	void fileAddVar(QString variable, QString value);
 	void fileAddVar(QString variable, double value);
 	void fileAddVar(QString variable, int value);
@@ -88,8 +88,13 @@ protected:
 	void fileAddVar(QString variable, unsigned int value);
 	void fileAddVar(QString variable, bool value);
 	QString fileFinish();
-	QString getFile();
 
+	//loading objects
+	QVector<QVariant> fetchVariables(QString input, QStringList varNames = QStringList());
+	QVector<DrawableObject*> fetchRelations(QVector<DrawableObject*> *list, QStringList varNames = QStringList());
+
+	//getters and setters
+	QString getFile();
 	bool isDraging();
 
 	//events

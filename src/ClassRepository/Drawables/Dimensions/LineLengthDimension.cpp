@@ -35,34 +35,17 @@ void LineLengthDimension::setLineLength(double length)
 
 //---------    file handeling     ---------
 
-void LineLengthDimension::fromFileString(QString input)
+void LineLengthDimension::loadVariables(QString input)
 {
-	DrawableObject::fromFileString(input);
-
 	QStringList varNames = {
 		"lengthToSet",
 		"distanceFromLine"
 	};
 
-	QStringList variables = input.split(',');
-	for(int i = 0; i < variables.length() - 1; i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
+	QVector<QVariant> variables = fetchVariables(input, varNames);
 
-		switch (varNames.indexOf(varName)) {
-			case 0:
-				this->lengthToSet = QVariant(varValue).toDouble();
-				break;
-			case 1:
-				this->distanceFromLine = QVariant(varValue).toDouble();
-				break;
-			default:
-				break;
-		}
-
-	}
+	this->lengthToSet = variables[0].toDouble();
+	this->distanceFromLine = variables[1].toDouble();
 }
 
 QString LineLengthDimension::toFileString()
@@ -80,27 +63,9 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 		"attachedLine"
 	};
 
-	QStringList variables = this->getFile().split(',');
-	for(int i = 0; i < variables.length() - 1; i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
+	QVector<DrawableObject*> values = fetchRelations(list, varNames);
 
-		DrawableObject *obj;
-
-		switch (varNames.indexOf(varName)) {
-			case 0:
-				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == Type_Line)
-					this->attachedLine = dynamic_cast<Line*>(obj);
-
-				break;
-			default:
-				break;
-		}
-
-	}
+	this->attachedLine = dynamic_cast<Line*>(values[0]);
 }
 
 //----------	QGraphicsItem overrides    ----------
@@ -126,7 +91,32 @@ QRectF LineLengthDimension::boundingRect() const
 				this->attachedLine->getEndPoint()->getY() + normalVector.y()
 				);
 
-	return QRectF(aboveStartPoint, aboveEndPoint);
+	//calculate rectangle edges
+	double topX,topY;
+
+	if(aboveStartPoint.y() > aboveEndPoint.y())
+		topY = aboveStartPoint.y() + textHeight;
+	else
+		topY = aboveEndPoint.y() + textHeight;
+
+	if(aboveStartPoint.x() > aboveEndPoint.x())
+		topX = aboveStartPoint.x() + textWidth;
+	else
+		topX = aboveEndPoint.x() + textWidth;
+
+	double bottomX,bottomY;
+
+	if(aboveStartPoint.y() < aboveEndPoint.y())
+		bottomY = aboveStartPoint.y() - textHeight;
+	else
+		bottomY = aboveEndPoint.y() - textHeight;
+
+	if(aboveStartPoint.x() < aboveEndPoint.x())
+		bottomX = aboveStartPoint.x() - textWidth;
+	else
+		bottomX = aboveEndPoint.x() - textWidth;
+
+	return QRectF(QPointF(topX, topY),QPointF(bottomX, bottomY));
 }
 
 QPainterPath LineLengthDimension::shape() const

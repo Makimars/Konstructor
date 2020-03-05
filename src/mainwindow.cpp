@@ -115,7 +115,7 @@ void MainWindow::on_exportButton_clicked()
 
 void MainWindow::on_printButton_clicked()
 {
-	this->close();
+
 }
 
 void MainWindow::on_settingsButton_clicked()
@@ -125,7 +125,7 @@ void MainWindow::on_settingsButton_clicked()
 
 void MainWindow::on_quitButton_clicked()
 {
-
+	this->close();
 }
 
 //-----    draw tab    -----

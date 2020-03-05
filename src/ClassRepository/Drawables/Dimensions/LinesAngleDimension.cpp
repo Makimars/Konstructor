@@ -6,7 +6,13 @@ LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Type_L
 {
 	this->lines[0] = lines[0];
 	this->lines[1] = lines[1];
+	this->angle = lines[0]->getAngle(lines[1]->getLineVector());
 
+	calculateEdgePoints();
+}
+
+void LinesAngleDimension::calculateEdgePoints()
+{
 	if(this->lines[0]->getStartPoint() == this->lines[1]->getStartPoint()	|
 		this->lines[0]->getStartPoint() == this->lines[1]->getEndPoint()	)
 	{
@@ -30,8 +36,6 @@ LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Type_L
 		else
 			this->edgePoints[1] = lines[1]->getStartPoint();
 	}
-
-	this->angle = lines[0]->getAngle(lines[1]->getLineVector());
 }
 
 void LinesAngleDimension::resolveTies()
@@ -46,34 +50,17 @@ void LinesAngleDimension::setValue(double angle)
 
 //----------     file handling     ---------
 
-void LinesAngleDimension::fromFileString(QString input)
+void LinesAngleDimension::loadVariables(QString input)
 {
-	DrawableObject::fromFileString(input);
-
 	QStringList varNames = {
 		"angle",
 		"distanceFromCenter"
 	};
 
-	QStringList variables = input.split(',');
-	for(int i = 0; i < variables.length() - 1; i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
+	QVector<QVariant> variables = fetchVariables(input, varNames);
 
-		switch (varNames.indexOf(varName)) {
-			case 0:
-				this->angle = QVariant(varValue).toDouble();
-				break;
-			case 1:
-				this->distanceFromCenter = QVariant(varValue).toDouble();
-				break;
-			default:
-				break;
-		}
-
-	}
+	this->angle = variables[0].toDouble();
+	this->distanceFromCenter = variables[1].toDouble();
 }
 
 QString LinesAngleDimension::toFileString()
@@ -93,31 +80,12 @@ void LinesAngleDimension::loadRelations(QVector<DrawableObject *> *list)
 		"lines1"
 	};
 
-	QStringList variables = this->getFile().split(',');
-	for(int i = 0; i < variables.length() - 1; i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
+	QVector<DrawableObject*> values = fetchRelations(list, varNames);
 
-		DrawableObject *obj;
+	this->lines[0] = dynamic_cast<Line*>(values[0]);
+	this->lines[1] = dynamic_cast<Line*>(values[1]);
 
-		switch (varNames.indexOf(varName)) {
-			case 0:
-				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == Type_Line)
-					this->lines[0] = dynamic_cast<Line*>(obj);
-				break;
-			case 1:
-				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == Type_Line)
-					this->lines[1] = dynamic_cast<Line*>(obj);
-				break;
-			default:
-				break;
-		}
-
-	}
+	calculateEdgePoints();
 }
 
 //----------    Getters and setters    -----------

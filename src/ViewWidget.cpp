@@ -49,7 +49,8 @@ ViewWidget::~ViewWidget()
 
 void ViewWidget::loadFromFile(QString file)
 {
-    QStringList splited = file.trimmed().split(";");
+	QStringList splited = file.trimmed().replace('\n',"").split(";");
+	splited.removeAt(splited.length()-1);
 
 	QVector<DrawableObject*> loadedObjects;
 
@@ -83,7 +84,7 @@ void ViewWidget::loadFromFile(QString file)
 
 		if(createdObj != nullptr)
 		{
-			createdObj->fromFileString(content);
+			createdObj->loadVariables(content);
 			loadedObjects.append(createdObj);
 		}
 	}

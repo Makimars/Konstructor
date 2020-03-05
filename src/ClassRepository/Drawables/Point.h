@@ -11,7 +11,7 @@ public:
 	Point(double x, double y);
 
     //file handling
-    void fromFileString(QString json) override;
+    void loadVariables(QString json) override;
 	QString toFileString() override;
 
     //getters and setters

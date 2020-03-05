@@ -7,41 +7,6 @@ DrawableObject::DrawableObject(int type)
 
 //----------	file handling    ----------
 
-//input format: name:value,type:value,
-void DrawableObject::fromFileString(QString input)
-{
-    this->file = input;
-
-    QStringList var_names = {
-        "id",
-        "name",
-		"constructional"
-    };
-
-	QStringList variables = input.split(',');
-    for(int i = 0; i < variables.length() - 1; i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString var_name = parts[0];
-		QString var_value = parts[1];
-
-		switch (var_names.indexOf(var_name)) {
-			case 0:
-                this->id = QVariant(var_value).toUInt();
-				break;
-			case 1:
-				this->name = var_value;
-				break;
-			case 2:
-				this->constructional = QVariant(var_value).toBool();
-				break;
-			default:
-				break;
-		}
-
-    }
-}
-
 QString DrawableObject::toFileString()
 {
     this->file = "";
@@ -170,9 +135,64 @@ void DrawableObject::fileAddVar(QString variable, bool value)
 
 QString DrawableObject::fileFinish()
 {
-	this->file = QString::number(this->type) + "{" + this->file + "};";
+	this->file = QString::number(this->type) + "{" + this->file.remove(this->file.length()-1, 1) + "};";
 	return this->file;
 }
+
+//----------     loading objects     ----------
+
+QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varNames)
+{
+	this->file = input;
+
+	int startIndex = varNames.length();
+	varNames.append("id");
+	varNames.append("name");
+	varNames.append("constructional");
+
+	QVector<QVariant> values;
+	values.resize(varNames.length());
+
+	QStringList variables = input.split(',');
+	for(int i = 0; i < variables.length(); i++)
+	{
+		QStringList parts = variables[i].split(":");
+		QString varName = parts[0];
+		QString varValue = parts[1];
+
+		int index = varNames.indexOf(varName);
+		if(index >= 0)
+			values[index] = QVariant(varValue);
+	}
+
+	this->id = values[startIndex].toUInt();
+	this->name = values[startIndex + 1].toString();
+	this->constructional = values[startIndex + 2].toBool();
+
+	return values;
+}
+
+QVector<DrawableObject*> DrawableObject::fetchRelations(QVector<DrawableObject*>*list, QStringList varNames)
+{
+	QVector<DrawableObject*> values;
+	values.resize(varNames.length());
+
+	QStringList fileVars = this->getFile().split(',');
+	for(int i = 0; i < fileVars.length(); i++)
+	{
+		QStringList parts = fileVars[i].split(":");
+		QString varName = parts[0];
+		QString varValue = parts[1];
+
+		int index = varNames.indexOf(varName);
+		if(index >= 0)
+			values[index] = DrawableObject::getById(list, QVariant(varValue).toUInt());
+	}
+
+	return values;
+}
+
+//----------     getters and setters      ----------
 
 QString DrawableObject::getFile()
 {
@@ -223,7 +243,6 @@ void DrawableObject::paint(QPainter *painter,
 void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	this->draging = true;
-	qDebug() << "press on " + this->type;
 }
 
 void DrawableObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
