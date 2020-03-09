@@ -1,5 +1,5 @@
 #include "Line.h"
-#include "QException"
+
 Line::Line() : DrawableObject (Type_Line){}
 
 
@@ -156,34 +156,7 @@ double Line::signedDistanceFrom(QPointF location)
 
 QRectF Line::boundingRect() const
 {
-	QVector2D lineVector = this->getLineVector().normalized();
-	QVector2D normalVector(
-				-lineVector.y(),
-				lineVector.x()
-						);
-	QPointF startPointOne(this->startPoint->getLocation()+normalVector.toPointF());
-	QPointF startPointTwo(this->startPoint->getLocation()-normalVector.toPointF());
-
-	QPointF endPointOne(this->endPoint->getLocation()+normalVector.toPointF());
-	QPointF endPointTwo(this->endPoint->getLocation()-normalVector.toPointF());
-
-	QList<double> xList;
-	xList << startPointOne.x() << startPointTwo.x() << endPointOne.x() << endPointTwo.x();
-
-	QList<double> yList;
-	yList << startPointOne.y() << startPointTwo.y() << endPointOne.y() << endPointTwo.y();
-
-	std::sort(xList.begin(), xList.end(), std::greater<double>());
-	std::sort(yList.begin(), yList.end(), std::greater<double>());
-	double topX = xList[0];
-	double topY = yList[0];
-
-	std::sort(xList.begin(), xList.end(), std::less<double>());
-	std::sort(yList.begin(), yList.end(), std::less<double>());
-	double bottomX = xList[0];
-	double bottomY = yList[0];
-
-	return QRectF(QPointF(topX,topY), QPointF(bottomX, bottomY));
+	return QRectF(this->startPoint->getLocation(), this->endPoint->getLocation());
 }
 
 QPainterPath Line::shape() const
@@ -193,6 +166,7 @@ QPainterPath Line::shape() const
 				-lineVector.y(),
 				lineVector.x()
 						);
+	normalVector *= 4;
 	QPointF startPointOne(this->startPoint->getLocation()+normalVector.toPointF());
 	QPointF startPointTwo(this->startPoint->getLocation()-normalVector.toPointF());
 

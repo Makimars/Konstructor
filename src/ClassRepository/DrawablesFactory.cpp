@@ -138,7 +138,7 @@ void DrawablesFactory::addDrawable(DrawableObject *object)
 
 	if(!this->objectList->contains(object))
 	{
-		object->setFlag(QGraphicsItem::ItemIsFocusable, true);
+		object->setFlags(QGraphicsItem::ItemIsSelectable);
 		object->setAcceptHoverEvents(true);
 		this->objectList->append(object);
 		this->scene->addItem(object);

@@ -92,8 +92,8 @@ double Point::distanceFrom(QPointF point)
 QRectF Point::boundingRect() const
 {
 	return QRectF(
-				this->x + Settings::pointRenderSize/2,
-				this->y + Settings::pointRenderSize/2,
+				this->x - Settings::pointRenderSize/2,
+				this->y - Settings::pointRenderSize/2,
 				Settings::pointRenderSize,
 				Settings::pointRenderSize
 				);
@@ -102,7 +102,7 @@ QRectF Point::boundingRect() const
 QPainterPath Point::shape() const
 {
 	QPainterPath path;
-	path.addEllipse(boundingRect());
+	path.addEllipse(boundingRect()+Settings::linesMargins);
 
 	return path;
 }

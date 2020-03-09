@@ -242,10 +242,22 @@ void DrawableObject::paint(QPainter *painter,
 
 void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	qDebug() << "Mouse press on " + QString::number(this->getType());
 	this->draging = true;
 }
 
 void DrawableObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	this->draging = false;
+}
+
+void DrawableObject::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+	qDebug() << "hover enter" + QString::number(this->getType());
+	this->highlight = true;
+}
+
+void DrawableObject::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+	this->highlight = false;
 }

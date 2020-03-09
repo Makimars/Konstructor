@@ -193,8 +193,7 @@ DrawableObject *ViewWidget::mouseSnapping()
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
-	if(this->selectedTool == nullptr)
-		QGraphicsView::mousePressEvent(event);
+	QGraphicsView::mousePressEvent(event);
 
 	if(event->button() == Qt::LeftButton)
 		this->grabbedPoint = pointSnapping(this->mousePoint);
@@ -211,9 +210,7 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	viewport()->setCursor(Qt::CursorShape::ArrowCursor);
-
-	if(this->selectedTool == nullptr)
-		QGraphicsView::mouseReleaseEvent(event);
+	QGraphicsView::mouseReleaseEvent(event);
 
 	this->grabbedPoint = nullptr;
 
@@ -226,8 +223,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if(this->selectedTool == nullptr)
-		QGraphicsView::mouseMoveEvent(event);
+	QGraphicsView::mouseMoveEvent(event);
 
 	//update mouse position
 	this->mousePoint->setLocation(mapToScene(event->pos()));
