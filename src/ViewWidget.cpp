@@ -118,6 +118,8 @@ void ViewWidget::saveToFile(QString path)
 
 }
 
+//----------	tools processing    ----------
+
 void ViewWidget::initialiseTools()
 {
 	LineTool::initialise(this->mousePoint,
@@ -147,8 +149,6 @@ void ViewWidget::initialiseTools()
 							  );
 }
 
-//----------	tools processing    ----------
-
 Point *ViewWidget::pointSnapping(Point *point){
 	for(int i = 0; i < this->objectsInSketch->length(); i++)
 	{
@@ -156,7 +156,7 @@ Point *ViewWidget::pointSnapping(Point *point){
 		if(obj->getType() == Type_Point)
 		{
 			Point *p = dynamic_cast<Point*>(obj);
-			if(point->distanceFrom(p->getLocation()) < Settings::pointSnappingDistance)
+			if(point->distanceFrom(p->getLocation()) < Settings::snappingDistance)
 				return p;
 		}
 	}
@@ -172,7 +172,7 @@ Line *ViewWidget::lineSnapping(Point *point)
 		{
 			Line *referenceLine = dynamic_cast<Line*>(obj);
 
-			if(referenceLine->distanceFrom(point->getLocation()) < Settings::pointSnappingDistance)
+			if(referenceLine->distanceFrom(point->getLocation()) < Settings::snappingDistance)
 				return referenceLine;
 		}
 	}

@@ -23,7 +23,7 @@ public:
 	Line *clone() override;
 
 	//Geometry
-	QVector2D getLineVector();
+	QVector2D getLineVector() const;
 	Line *setLineVector(QVector2D vector);
 
 	/**
@@ -53,8 +53,6 @@ public:
 			   ) override;
 
 protected:
-	QVector2D lineVector;
-
 	//defining variables
 	Point *startPoint, *endPoint;
 };

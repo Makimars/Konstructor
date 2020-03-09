@@ -3,7 +3,7 @@
 //view widgets
 double Settings::mouseWheelZoomFactor = 1.15;
 bool Settings::mouseWheelInvertedZoom = false;
-double Settings::pointSnappingDistance = 10;
+double Settings::snappingDistance = 10;
 
 double  Settings::defaultSketchHeight = 4000;
 double  Settings::defaultSketchWidth  = 4000;

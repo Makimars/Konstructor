@@ -7,10 +7,6 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Type_Line)
 {
 	this->startPoint = startPoint;
 	this->endPoint = endPoint;
-	this->lineVector = QVector2D(
-				this->endPoint->getX() - this->startPoint->getX(),
-				this->endPoint->getY() - this->startPoint->getY()
-				);
 }
 
 //----------	file handling    ----------
@@ -61,25 +57,25 @@ Line *Line::setLength(float lenght)
 	return this;
 }
 
-QVector2D Line::getLineVector()
+QVector2D Line::getLineVector() const
 {
-	this->lineVector =QVector2D(
+	return QVector2D(
 				this->endPoint->getX() - this->startPoint->getX(),
 				this->endPoint->getY() - this->startPoint->getY()
 				);
-	return this->lineVector;
 }
 
 Line *Line::setLineVector(QVector2D vector)
 {
 	vector.normalize();
 	vector *= this->getLength();
+	QVector2D lineVector = this->getLineVector();
 
     this->endPoint->setX(
-				this->startPoint->getY() + this->lineVector.x()
+				this->startPoint->getY() + lineVector.x()
                 );
     this->endPoint->setY(
-				this->startPoint->getY() + this->lineVector.y()
+				this->startPoint->getY() + lineVector.y()
                 );
 
 	return this;
@@ -109,9 +105,10 @@ Line *Line::clone()
 double Line::getAngle(QVector2D referenceVector)
 {
 	getLineVector();
+	QVector2D lineVector = this->getLineVector();
 	double scalarMult = (
-						this->lineVector.x() * referenceVector.x()
-						+ this->lineVector.y() * referenceVector.y()
+						lineVector.x() * referenceVector.x()
+						+ lineVector.y() * referenceVector.y()
 						);
 
 	return qAcos(
@@ -159,17 +156,54 @@ double Line::signedDistanceFrom(QPointF location)
 
 QRectF Line::boundingRect() const
 {
-	QPointF first = this->startPoint->getLocation();
-	QPointF second = this->endPoint->getLocation();
+	QVector2D lineVector = this->getLineVector().normalized();
+	QVector2D normalVector(
+				-lineVector.y(),
+				lineVector.x()
+						);
+	QPointF startPointOne(this->startPoint->getLocation()+normalVector.toPointF());
+	QPointF startPointTwo(this->startPoint->getLocation()-normalVector.toPointF());
 
-    return QRectF(first, second);
+	QPointF endPointOne(this->endPoint->getLocation()+normalVector.toPointF());
+	QPointF endPointTwo(this->endPoint->getLocation()-normalVector.toPointF());
+
+	QList<double> xList;
+	xList << startPointOne.x() << startPointTwo.x() << endPointOne.x() << endPointTwo.x();
+
+	QList<double> yList;
+	yList << startPointOne.y() << startPointTwo.y() << endPointOne.y() << endPointTwo.y();
+
+	std::sort(xList.begin(), xList.end(), std::greater<double>());
+	std::sort(yList.begin(), yList.end(), std::greater<double>());
+	double topX = xList[0];
+	double topY = yList[0];
+
+	std::sort(xList.begin(), xList.end(), std::less<double>());
+	std::sort(yList.begin(), yList.end(), std::less<double>());
+	double bottomX = xList[0];
+	double bottomY = yList[0];
+
+	return QRectF(QPointF(topX,topY), QPointF(bottomX, bottomY));
 }
 
 QPainterPath Line::shape() const
 {
+	QVector2D lineVector = this->getLineVector().normalized();
+	QVector2D normalVector(
+				-lineVector.y(),
+				lineVector.x()
+						);
+	QPointF startPointOne(this->startPoint->getLocation()+normalVector.toPointF());
+	QPointF startPointTwo(this->startPoint->getLocation()-normalVector.toPointF());
+
+	QPointF endPointOne(this->endPoint->getLocation()+normalVector.toPointF());
+	QPointF endPointTwo(this->endPoint->getLocation()-normalVector.toPointF());
+
+	QPolygonF polygon;
+	polygon << startPointOne << startPointTwo << endPointTwo << endPointOne << startPointOne;
+
 	QPainterPath path;
-	path.moveTo(this->startPoint->getLocation());
-	path.lineTo(this->endPoint->getLocation());
+	path.addPolygon(polygon);
 
 	return path;
 }
