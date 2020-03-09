@@ -13,7 +13,7 @@ public:
 	void setValue(double angle);
 
 	//file handling
-	void fromFileString(QString input) override;
+	void loadVariables(QString input) override;
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> *list) override;
 
@@ -38,6 +38,8 @@ private:
 
 	int textWidth = 60;
 	int textHeight = 20;
+
+	void calculateEdgePoints();
 
 	//events
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

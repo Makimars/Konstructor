@@ -16,33 +16,17 @@ Point::Point(double x, double y) : DrawableObject (Type_Point)
 
 //----------	file handling    ----------
 
-void Point::fromFileString(QString input)
+void Point::loadVariables(QString input)
 {
-	DrawableObject::fromFileString(input);
-
-    QStringList var_names = {
+	QStringList varNames = {
         "x",
         "y"
     };
 
-    QStringList variables = input.split(',');
-    for(int i = 0; i < variables.length() - 1; i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString var_name = parts[0];
-		QString var_value = parts[1];
+	QVector<QVariant> variables = fetchVariables(input, varNames);
 
-		switch (var_names.indexOf(var_name)) {
-			case 0:
-				this->x = QVariant(var_value).toDouble();
-				break;
-			case 1:
-				this->y = QVariant(var_value).toDouble();
-				break;
-			default:
-				break;
-		}
-	}
+	this->x = variables[0].toDouble();
+	this->y = variables[1].toDouble();
 }
 
 QString Point::toFileString()

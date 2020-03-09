@@ -22,30 +22,15 @@ void Circle::resolveTies()
 
 //----------	file handling    ----------
 
-void Circle::fromFileString(QString input)
+void Circle::loadVariables(QString input)
 {
-	DrawableObject::fromFileString(input);
-
 	QStringList varNames = {
 		"radius"
     };
 
-	QStringList variables = input.split(',');
-    for(int i = 0; i < variables.length() - 1; i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
+	QVector<QVariant> variables = fetchVariables(input, varNames);
 
-		switch (varNames.indexOf(varName)) {
-			case 0:
-				this->radius = QVariant(varValue).toDouble();
-				break;
-			default:
-				break;
-		}
-
-	}
+	this->radius = variables[0].toDouble();
 }
 
 QString Circle::toFileString()
@@ -62,27 +47,9 @@ void Circle::loadRelations(QVector<DrawableObject*> *list)
 		"centerPoint"
     };
 
-	QStringList variables = this->getFile().split(',');
-    for(int i = 0; i < variables.length() - 1; i++)
-    {
-        QStringList parts = variables[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
+	QVector<DrawableObject*> values = fetchRelations(list, varNames);
 
-		DrawableObject *obj;
-
-		switch (varNames.indexOf(varName)) {
-            case 0:
-				obj = DrawableObject::getById(list, QVariant(varValue).toUInt());
-				if(obj->getType() == Type_Point)
-					this->centerPoint = dynamic_cast<Point*>(obj);
-
-                break;
-            default:
-                break;
-        }
-
-    }
+	this->centerPoint = dynamic_cast<Point*>(values[0]);
 }
 
 //----------	getters and setters    ----------

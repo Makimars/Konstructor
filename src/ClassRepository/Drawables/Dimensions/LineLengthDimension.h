@@ -13,7 +13,7 @@ public:
 	void setValue(double lenght);
 
 	//file handling
-	void fromFileString(QString input) override;
+	void loadVariables(QString input) override;
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> *list) override;
 
