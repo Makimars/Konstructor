@@ -8,6 +8,7 @@ class LineLengthDimension : public DrawableObject, public UserInputRequester
 public:
 	LineLengthDimension();
 	LineLengthDimension(Line *line);
+	~LineLengthDimension() override;
 
 	void resolveTies() override;
 	void setValue(double lenght);
@@ -31,7 +32,8 @@ public:
 
 private:
 	Line *attachedLine;
-	double lengthToSet, distanceFromLine;
+	double lengthToSet;
+	double distanceFromLine = 20;
 
 	int textWidth = 60;
 	int textHeight = 20;
@@ -45,6 +47,8 @@ public slots:
 	//user input requests
 	void recieveDouble(double value) override;
 
+	//geometry
+	void setGeometryUpdates();
 };
 
 #endif // LINELENGHTDIMENSION_H

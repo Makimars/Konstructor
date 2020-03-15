@@ -17,7 +17,6 @@
 class DrawableObject : public QGraphicsItem
 {
 public:
-
 	virtual void resolveTies() {}
 
 	//file handling
@@ -61,6 +60,10 @@ public:
 
 	virtual DrawableObject *clone(){return nullptr;}
 
+	//geometry
+	void addGeometryUpdate(DrawableObject *object);
+	void removeGeometryUpdate(DrawableObject *object);
+
     //array operator
 	static DrawableObject *getById(QVector<DrawableObject*> *list, unsigned int id);
 
@@ -103,6 +106,9 @@ protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
 	void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
+	//geometry
+	void updateGeometry();
+
 private:
 	//defining variables
 	unsigned int id;
@@ -116,6 +122,9 @@ private:
 
 	//saving
 	QString file;
+
+	//geometry
+	QVector<DrawableObject*> propagateGeometry;
 };
 
 #endif // DRAWABLEOBJECT_H

@@ -1,15 +1,16 @@
 #include "LineLengthDimension.h"
 
-LineLengthDimension::LineLengthDimension() : DrawableObject (Type_LineLengthDimension)
-{
-	this->distanceFromLine = 0;
-	this->distanceFromLine = 20;
-}
+LineLengthDimension::LineLengthDimension() : DrawableObject (Type_LineLengthDimension){}
 
 LineLengthDimension::LineLengthDimension(Line *line) : DrawableObject (Type_LineLengthDimension)
 {
-	LineLengthDimension();
 	this->attachedLine = line;
+	setGeometryUpdates();
+}
+
+LineLengthDimension::~LineLengthDimension()
+{
+	this->attachedLine->removeGeometryUpdate(this);
 }
 
 void LineLengthDimension::resolveTies()
@@ -66,6 +67,7 @@ void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
 	QVector<DrawableObject*> values = fetchRelations(list, varNames);
 
 	this->attachedLine = dynamic_cast<Line*>(values[0]);
+	setGeometryUpdates();
 }
 
 //----------	QGraphicsItem overrides    ----------
@@ -241,4 +243,9 @@ void LineLengthDimension::recieveDouble(double value)
 {
 	this->lengthToSet = value;
 	resolveTies();
+}
+
+void LineLengthDimension::setGeometryUpdates()
+{
+	this->attachedLine->addGeometryUpdate(this);
 }

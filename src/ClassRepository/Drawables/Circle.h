@@ -8,6 +8,7 @@ class Circle : public DrawableObject
 public:
 	Circle();
 	Circle(Point *centerPoint);
+	~Circle() override;
 
 	void resolveTies() override;
 
@@ -41,6 +42,8 @@ private:
 	//relations
 	DrawableObject *liesOn = nullptr;
 
+	//geometry
+	void setGeometryUpdates();
 };
 
 #endif // CIRCLE_H

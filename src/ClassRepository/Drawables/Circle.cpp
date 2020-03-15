@@ -5,6 +5,12 @@ Circle::Circle() : DrawableObject (Type_Circle){}
 Circle::Circle(Point *center_point) : DrawableObject (Type_Circle)
 {
 	this->centerPoint = center_point;
+	setGeometryUpdates();
+}
+
+Circle::~Circle()
+{
+	this->centerPoint->removeGeometryUpdate(this);
 }
 
 void Circle::resolveTies()
@@ -50,6 +56,7 @@ void Circle::loadRelations(QVector<DrawableObject*> *list)
 	QVector<DrawableObject*> values = fetchRelations(list, varNames);
 
 	this->centerPoint = dynamic_cast<Point*>(values[0]);
+	setGeometryUpdates();
 }
 
 //----------	getters and setters    ----------
@@ -124,4 +131,9 @@ void Circle::paint(QPainter *painter,
 	DrawableObject::paint(painter, option, widget);
 
 	painter->drawEllipse(this->boundingRect());
+}
+
+void Circle::setGeometryUpdates()
+{
+	this->centerPoint->addGeometryUpdate(this);
 }

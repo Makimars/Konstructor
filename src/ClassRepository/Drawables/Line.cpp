@@ -7,6 +7,13 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Type_Line)
 {
 	this->startPoint = startPoint;
 	this->endPoint = endPoint;
+	setGeometryUpdates();
+}
+
+Line::~Line()
+{
+	this->startPoint->removeGeometryUpdate(this);
+	this->endPoint->removeGeometryUpdate(this);
 }
 
 //----------	file handling    ----------
@@ -35,7 +42,7 @@ void Line::loadRelations(QVector<DrawableObject*> *list)
 
 	this->startPoint = dynamic_cast<Point*>(values[0]);
 	this->startPoint = dynamic_cast<Point*>(values[1]);
-
+	setGeometryUpdates();
 }
 
 //----------	getters and setters    ----------
@@ -49,10 +56,11 @@ Line *Line::setLength(float lenght)
 {
 	QVector2D newVector = this->getLineVector().normalized() * lenght;
 
-	this->endPoint
-			->setLocation(this->startPoint->getX() + newVector.x(),
-						this->startPoint->getY() + newVector.y()
-						);
+	this->endPoint->setLocation(
+				this->startPoint->getX() + newVector.x(),
+				this->startPoint->getY() + newVector.y()
+				);
+	updateGeometry();
 
 	return this;
 }
@@ -75,6 +83,7 @@ Line *Line::setLineVector(QVector2D vector)
 				this->startPoint->getY() + lineVector.x(),
 				this->startPoint->getY() + lineVector.y()
                 );
+	updateGeometry();
 
 	return this;
 }
@@ -123,6 +132,7 @@ Line *Line::setAngle(double angle,QVector2D referenceVector)
 				this->endPoint->getX() * (qCos(angleDifference) - qSin(angleDifference)),
 				this->endPoint->getY() * (qSin(angleDifference) - qCos(angleDifference))
 				);
+	updateGeometry();
 
 	return this;
 }
@@ -191,7 +201,13 @@ void Line::paint(QPainter *painter,
 
 	painter->drawLine(this->startPoint->getLocation(),
 						this->endPoint->getLocation()
-					);
+					  );
+}
+
+void Line::setGeometryUpdates()
+{
+	this->startPoint->addGeometryUpdate(this);
+	this->endPoint->addGeometryUpdate(this);
 }
 
 

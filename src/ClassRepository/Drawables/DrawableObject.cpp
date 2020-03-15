@@ -3,6 +3,7 @@
 DrawableObject::DrawableObject(int type)
 {
 	this->type = type;
+	this->propagateGeometry = QVector<DrawableObject*>();
 }
 
 //----------	file handling    ----------
@@ -99,6 +100,18 @@ DrawableObject *DrawableObject::setHidden(bool value)
 bool DrawableObject::isHidden()
 {
 	return this->hidden;
+}
+
+//----------	geometry    ----------
+
+void DrawableObject::addGeometryUpdate(DrawableObject *object)
+{
+	this->propagateGeometry.append(object);
+}
+
+void DrawableObject::removeGeometryUpdate(DrawableObject *object)
+{
+	this->propagateGeometry.removeOne(object);
 }
 
 //----------	saving    ----------
@@ -242,7 +255,6 @@ void DrawableObject::paint(QPainter *painter,
 
 void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	qDebug() << "Mouse press on " + QString::number(this->getType());
 	this->draging = true;
 }
 
@@ -253,11 +265,19 @@ void DrawableObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void DrawableObject::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
-	qDebug() << "hover enter" + QString::number(this->getType());
 	this->highlight = true;
 }
 
 void DrawableObject::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
 	this->highlight = false;
+}
+
+void DrawableObject::updateGeometry()
+{
+	prepareGeometryChange();
+	foreach(DrawableObject *object, this->propagateGeometry)
+	{
+		object->updateGeometry();
+	}
 }
