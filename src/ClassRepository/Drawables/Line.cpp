@@ -71,10 +71,8 @@ Line *Line::setLineVector(QVector2D vector)
 	vector *= this->getLength();
 	QVector2D lineVector = this->getLineVector();
 
-    this->endPoint->setX(
-				this->startPoint->getY() + lineVector.x()
-                );
-    this->endPoint->setY(
+	this->endPoint->setLocation(
+				this->startPoint->getY() + lineVector.x(),
 				this->startPoint->getY() + lineVector.y()
                 );
 

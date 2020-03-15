@@ -7,8 +7,6 @@ class Point : public DrawableObject
 {
 public:
 	Point();
-    Point(QPointF location);
-	Point(double x, double y);
 
     //file handling
     void loadVariables(QString json) override;
@@ -37,6 +35,8 @@ private:
 	//defining variables
 	double x, y;
 
+	//events
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // POINT_H

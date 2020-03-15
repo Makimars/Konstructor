@@ -149,54 +149,11 @@ void ViewWidget::initialiseTools()
 							  );
 }
 
-Point *ViewWidget::pointSnapping(Point *point){
-	for(int i = 0; i < this->objectsInSketch->length(); i++)
-	{
-		DrawableObject *obj = this->objectsInSketch->at(i);
-		if(obj->getType() == Type_Point)
-		{
-			Point *p = dynamic_cast<Point*>(obj);
-			if(point->distanceFrom(p->getLocation()) < Settings::snappingDistance)
-				return p;
-		}
-	}
-	return nullptr;
-}
-
-Line *ViewWidget::lineSnapping(Point *point)
-{
-	for(int i = 0; i < this->objectsInSketch->length(); i++)
-	{
-		DrawableObject *obj = this->objectsInSketch->at(i);
-		if(obj->getType() == Type_Line)
-		{
-			Line *referenceLine = dynamic_cast<Line*>(obj);
-
-			if(referenceLine->distanceFrom(point->getLocation()) < Settings::snappingDistance)
-				return referenceLine;
-		}
-	}
-	return nullptr;
-}
-
-DrawableObject *ViewWidget::mouseSnapping()
-{
-	DrawableObject *snappedObject = pointSnapping(this->mousePoint);
-
-	if(snappedObject == nullptr)
-		snappedObject = lineSnapping(this->mousePoint);
-
-	return snappedObject;
-}
-
 //----------	events    ----------
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
 {
 	QGraphicsView::mousePressEvent(event);
-
-	if(event->button() == Qt::LeftButton)
-		this->grabbedPoint = pointSnapping(this->mousePoint);
 
 	QGraphicsViewUserInput *userInput = QGraphicsViewUserInput::getInstance();
 	userInput->setInputBoxLocation(this->mousePoint->getLocation());
@@ -212,12 +169,10 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 	viewport()->setCursor(Qt::CursorShape::ArrowCursor);
 	QGraphicsView::mouseReleaseEvent(event);
 
-	this->grabbedPoint = nullptr;
-
 	if(event->button() == Qt::LeftButton)
 	{
 		if(this->selectedTool != nullptr)
-			this->selectedTool->click(mouseSnapping(), this->mousePoint);
+			this->selectedTool->click(dynamic_cast<DrawableObject*>(this->itemAt(event->pos())), this->mousePoint);
 	}
 }
 
@@ -228,9 +183,10 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	//update mouse position
 	this->mousePoint->setLocation(mapToScene(event->pos()));
 
-	Point *snapped = pointSnapping(this->mousePoint);
-	if(snapped != nullptr & this->grabbedPoint != snapped)
-		this->mousePoint->setLocation(snapped->getLocation());
+	DrawableObject *snapped = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
+	if(snapped != nullptr)
+		if(snapped->getType() == Type_Point)
+			this->mousePoint->setLocation(dynamic_cast<Point*>(snapped)->getLocation());
 
 	//draging plane
 	if(event->buttons() == Qt::MouseButton::RightButton)
@@ -242,10 +198,6 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 		hBar->setValue(hBar->value() + prevX - event->x());
 		vBar->setValue(vBar->value() + prevY - event->y());
 	}
-
-	//draging point
-	if(this->grabbedPoint != nullptr)
-		grabbedPoint->setLocation(this->mousePoint->getLocation());
 
 	this->sketchScene->update();
 	this->prevX = event->x();

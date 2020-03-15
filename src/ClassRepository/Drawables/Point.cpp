@@ -2,26 +2,14 @@
 
 Point::Point() : DrawableObject(Type_Point){}
 
-Point::Point(QPointF location) : DrawableObject (Type_Point)
-{
-    this->x = location.x();
-    this->y = location.y();
-}
-
-Point::Point(double x, double y) : DrawableObject (Type_Point)
-{
-	this->x = x;
-	this->y = y;
-}
-
 //----------	file handling    ----------
 
 void Point::loadVariables(QString input)
 {
 	QStringList varNames = {
-        "x",
-        "y"
-    };
+		"x",
+		"y"
+	};
 
 	QVector<QVariant> variables = fetchVariables(input, varNames);
 
@@ -34,7 +22,7 @@ QString Point::toFileString()
 	DrawableObject::toFileString();
 	this->fileAddVar("x", this->x);
 	this->fileAddVar("y", this->y);
-    return DrawableObject::fileFinish();
+	return DrawableObject::fileFinish();
 }
 
 //----------	getters and setters    ----------
@@ -56,8 +44,7 @@ QPointF Point::getLocation()
 
 Point *Point::setLocation(QPointF point)
 {
-    this->x = point.x();
-	this->y = point.y();
+	setLocation(point.x(), point.y());
 
 	return this;
 }
@@ -72,7 +59,8 @@ Point *Point::setLocation(double x, double y)
 
 Point *Point::clone()
 {
-	Point *p = new Point(this->x,this->y);
+	Point *p = new Point();
+	p->setLocation(getLocation());
 	p->setName(this->name)
 		->setBrush(this->brush)
 		->setPen(this->pen);
@@ -84,7 +72,7 @@ Point *Point::clone()
 
 double Point::distanceFrom(QPointF point)
 {
-    return qSqrt(pow(point.x() - this->x, 2) + pow(point.y() - this->y, 2));
+	return qSqrt(pow(point.x() - this->x, 2) + pow(point.y() - this->y, 2));
 }
 
 //----------    QGraphicsItem overrides    ----------
@@ -92,17 +80,17 @@ double Point::distanceFrom(QPointF point)
 QRectF Point::boundingRect() const
 {
 	return QRectF(
-				this->x - Settings::pointRenderSize/2,
-				this->y - Settings::pointRenderSize/2,
-				Settings::pointRenderSize,
-				Settings::pointRenderSize
-				);
+				this->x - Settings::pointRenderSize,
+				this->y - Settings::pointRenderSize,
+				Settings::pointRenderSize * 2,
+				Settings::pointRenderSize * 2
+				) + Settings::pointMargin;
 }
 
 QPainterPath Point::shape() const
 {
 	QPainterPath path;
-	path.addEllipse(boundingRect()+Settings::linesMargins);
+	path.addEllipse(boundingRect());
 
 	return path;
 }
@@ -110,21 +98,40 @@ QPainterPath Point::shape() const
 void Point::paint(QPainter *painter,
 				  const QStyleOptionGraphicsItem *option,
 				  QWidget *widget)
-{    
+{
 	if(this->isHidden())
 		return;
 
 	DrawableObject::paint(painter, option, widget);
 
 	painter->setBrush(this->brush->style());
-	painter->setPen(this->pen->style());
 	this->brush->setStyle(Qt::BrushStyle::SolidPattern);
 
-	int coef = Settings::pointRenderSize;
-	if(this->isHighlighted())
-        coef *= 2;
+	QRectF rect;
 
-    QRectF rect(this->x-coef, this->y-coef, coef  + coef, coef + coef);
+	if(this->isHighlighted())
+	{
+		rect = boundingRect();
+	}
+	else
+	{
+		rect = QRectF(
+					this->x-Settings::pointRenderSize,
+					this->y-Settings::pointRenderSize,
+					Settings::pointRenderSize * 2,
+					Settings::pointRenderSize * 2
+					);
+	}
 
 	painter->drawEllipse(rect);
+}
+
+//---------     events     ----------
+
+void Point::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	if(this->isDraging())
+	{
+		this->setLocation(event->pos());
+	}
 }

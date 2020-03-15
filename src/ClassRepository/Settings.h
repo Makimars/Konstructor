@@ -24,7 +24,7 @@ public:
 
 	static int pointRenderSize;
 	static QMargins lineAngleArcMargins;
-	static QMargins linesMargins;
+	static QMargins pointMargin;
 
 	//keyboard shortcuts
 	static QKeySequence
