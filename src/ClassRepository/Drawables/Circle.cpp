@@ -18,6 +18,7 @@ void Circle::resolveTies()
 {
 	if(this->liesOn != nullptr)
 	{
+		updateGeometry();
 		this->radius = this->centerPoint->distanceFrom(this->liesOn->getLocation());
 	}
 }
@@ -71,7 +72,9 @@ double Circle::getRadius()
 
 Circle *Circle::setRadius(double value)
 {
+	prepareGeometryChange();
 	this->radius = value;
+	updateGeometry();
 
 	return this;
 }

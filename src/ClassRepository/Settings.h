@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QKeySequence>
 #include <QMargins>
+#include <QLocale>
 
 class Settings
 {
@@ -40,6 +41,7 @@ public:
 
 	//environment
 	static QString userProjectRoot;
+	static QLocale locals;
 
 	//file extensions
 

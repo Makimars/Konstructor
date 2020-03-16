@@ -22,6 +22,8 @@ QGraphicsViewUserInput::QGraphicsViewUserInput(QGraphicsScene *sketchScene)
 			&this->inputBox, &QLineEdit::returnPressed,
 			this, &QGraphicsViewUserInput::returnInput
 			);
+
+	this->doubleValidator.setLocale(Settings::locals);
 }
 
 bool QGraphicsViewUserInput::isFocused()

@@ -51,9 +51,9 @@ Point *Point::setLocation(QPointF point)
 
 Point *Point::setLocation(double x, double y)
 {
+	updateGeometry();
 	this->x = x;
     this->y = y;
-	updateGeometry();
 
 	return this;
 }

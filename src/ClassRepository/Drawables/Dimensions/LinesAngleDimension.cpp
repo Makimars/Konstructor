@@ -6,9 +6,13 @@ LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Type_L
 {
 	this->lines[0] = lines[0];
 	this->lines[1] = lines[1];
-	this->angle = lines[0]->getAngle(lines[1]->getLineVector());
 
 	calculateEdgePoints();
+
+	double deltaX = this->edgePoints[0]->getX() - this->commonPoint->getX();
+	double deltaY = this->edgePoints[0]->getY() - this->commonPoint->getY();
+	this->angle = qAtan2(deltaY, deltaX);
+
 	setGeometryUpdates();
 }
 
@@ -47,7 +51,14 @@ void LinesAngleDimension::calculateEdgePoints()
 
 void LinesAngleDimension::resolveTies()
 {
-	//this->lines[0]->setAngle(this->angle, this->lines[1]->getLineVector());
+	double deltaX = this->edgePoints[1]->getX() - this->commonPoint->getX();
+	double deltaY = this->edgePoints[1]->getY() - this->commonPoint->getY();
+	double lineOneAngle = qAtan2(deltaY, deltaX);
+
+	this->edgePoints[0]->setLocation(
+				this->commonPoint->getX() + this->lines[0]->getLength() * qCos(this->angle + lineOneAngle),
+				this->commonPoint->getY() + this->lines[0]->getLength() * qSin(this->angle + lineOneAngle)
+			);
 }
 
 void LinesAngleDimension::setValue(double angle)
@@ -124,7 +135,12 @@ QPainterPath LinesAngleDimension::shape() const
 
 	QPointF virtualPoint = this->edgePoints[1]->getLocation() + lineVector.toPointF();
 	QPolygonF shape;
-	shape << this->commonPoint->getLocation() << this->edgePoints[0]->getLocation() << virtualPoint << this->edgePoints[1]->getLocation() << this->commonPoint->getLocation();
+	shape << this->commonPoint->getLocation()
+		  << this->edgePoints[0]->getLocation()
+		  << virtualPoint
+		  << this->edgePoints[1]->getLocation()
+		  << this->commonPoint->getLocation();
+
 	QPainterPath interPath;
 	interPath.addPolygon(shape);
 
@@ -158,7 +174,10 @@ void LinesAngleDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	innerCircle.addEllipse(this->commonPoint->getLocation(),this->distanceFromCenter - 0.5, this->distanceFromCenter - 0.5);
 
 	painter->drawPath(outerCircle.subtracted(innerCircle).intersected(shape()));
-	painter->drawText(this->edgePoints[0]->getLocation(),QString::number(this->angle));
+	painter->drawText(this->edgePoints[0]->getLocation(),QString::number(qRadiansToDegrees(this->angle)));
+
+	painter->drawPath(shape());
+	painter->drawRect(boundingRect());
 }
 
 //---------     events     ----------
@@ -188,7 +207,7 @@ void LinesAngleDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void LinesAngleDimension::recieveDouble(double value)
 {
-	this->angle = value;
+	this->angle = qDegreesToRadians(value);
 }
 
 void LinesAngleDimension::setGeometryUpdates()

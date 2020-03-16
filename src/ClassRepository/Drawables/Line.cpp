@@ -56,11 +56,11 @@ Line *Line::setLength(float lenght)
 {
 	QVector2D newVector = this->getLineVector().normalized() * lenght;
 
+	updateGeometry();
 	this->endPoint->setLocation(
 				this->startPoint->getX() + newVector.x(),
 				this->startPoint->getY() + newVector.y()
 				);
-	updateGeometry();
 
 	return this;
 }
@@ -79,11 +79,11 @@ Line *Line::setLineVector(QVector2D vector)
 	vector *= this->getLength();
 	QVector2D lineVector = this->getLineVector();
 
+	updateGeometry();
 	this->endPoint->setLocation(
 				this->startPoint->getY() + lineVector.x(),
 				this->startPoint->getY() + lineVector.y()
                 );
-	updateGeometry();
 
 	return this;
 }
@@ -104,37 +104,6 @@ Line *Line::clone()
 	l->setName(this->getName());
 
 	return l;
-}
-
-
-//----------    Geometry    ----------
-
-double Line::getAngle(QVector2D referenceVector)
-{
-	getLineVector();
-	QVector2D lineVector = this->getLineVector();
-	double scalarMult = (
-						lineVector.x() * referenceVector.x()
-						+ lineVector.y() * referenceVector.y()
-						);
-
-	return qAcos(
-				scalarMult /
-				this->getLength() * referenceVector.length()
-				 );
-}
-
-Line *Line::setAngle(double angle,QVector2D referenceVector)
-{
-	double angleDifference = angle - this->getAngle(referenceVector);
-
-	this->endPoint->setLocation(
-				this->endPoint->getX() * (qCos(angleDifference) - qSin(angleDifference)),
-				this->endPoint->getY() * (qSin(angleDifference) - qCos(angleDifference))
-				);
-	updateGeometry();
-
-	return this;
 }
 
 //----------     Distance    ----------
