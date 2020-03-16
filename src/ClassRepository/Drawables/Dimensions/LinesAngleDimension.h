@@ -46,14 +46,13 @@ private:
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
+	//geometry
+	void setGeometryUpdates();
 
 public slots:
 
 	//user input requests
 	void recieveDouble(double value) override;
-
-	//geometry
-	void setGeometryUpdates();
 };
 
 #endif // LINESANGLEDIMENSION_H

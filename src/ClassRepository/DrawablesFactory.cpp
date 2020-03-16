@@ -129,6 +129,19 @@ LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], do
 	return dimension;
 }
 
+CircleRadiusDimension *DrawablesFactory::makeCircleRadiusDimension(Circle *circle)
+{
+	CircleRadiusDimension *dimension = new CircleRadiusDimension(circle);
+	dimension->setPen(this->defaultPen)
+			->setBrush(this->defaultBrush);
+
+	QObject::connect(dimension, &UserInputRequester::requestDouble,
+					 this->userInput, &QGraphicsViewUserInput::requestDouble
+					 );
+
+	return dimension;
+}
+
 //----------     object managment     ---------
 
 void DrawablesFactory::addDrawable(DrawableObject *object)

@@ -102,8 +102,14 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 							distanceFromLine
 							)
 				);
-			this->clickedObjects[1]->setHighlight(false);
-			this->clickedObjects[0] = nullptr;
+		}
+		else if(this->clickedObjects[1]->getType() == Type_Circle)
+		{
+			Circle *circle = dynamic_cast<Circle*>(this->clickedObjects[1]);
+
+			this->objectFactory->addDrawable(
+						this->objectFactory->makeCircleRadiusDimension(circle)
+						);
 		}
 
 		this->clickedObjects[1]->setHighlight(false);

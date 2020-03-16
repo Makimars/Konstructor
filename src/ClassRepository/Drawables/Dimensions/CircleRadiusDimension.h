@@ -1,17 +1,15 @@
-#ifndef LINELENGTHDIMENSION_H
-#define LINELENGTHDIMENSION_H
+#ifndef CIRCLERADIUSDIMENSION_H
+#define CIRCLERADIUSDIMENSION_H
 
-#include "../../UserInputRequester.h"
+#include "LinesAngleDimension.h"
 
-class LineLengthDimension : public DrawableObject, public UserInputRequester
+class CircleRadiusDimension : public DrawableObject, public UserInputRequester
 {
 public:
-	LineLengthDimension();
-	LineLengthDimension(Line *line);
-	~LineLengthDimension() override;
+	CircleRadiusDimension();
+	CircleRadiusDimension(Circle *circle);
 
 	void resolveTies() override;
-	void setValue(double lenght);
 
 	//file handling
 	void loadVariables(QString input) override;
@@ -19,8 +17,8 @@ public:
 	void loadRelations(QVector<DrawableObject*> *list) override;
 
 	//getters and setters
-	void setDistanceFromLine(double distance);
-	void setLineLength(double length);
+	void setRadius(double value);
+	double getRadius();
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -31,15 +29,13 @@ public:
 			   ) override;
 
 private:
-	Line *attachedLine;
-	double lengthToSet;
-	double distanceFromLine = 20;
+	double radius;
+	Circle *circle;
 
 	int textWidth = 60;
 	int textHeight = 20;
 
 	//events
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 	//geometry
@@ -51,4 +47,4 @@ public slots:
 	void recieveDouble(double value) override;
 };
 
-#endif // LINELENGHTDIMENSION_H
+#endif // CIRCLERADIUSDIMENSION_H

@@ -44,7 +44,8 @@ SOURCES += \
     src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.cpp \
     src/ClassRepository/Tools/DimensionTool.cpp \
     src/ClassRepository/UserInputRequester.cpp \
-    src/ClassRepository/QGraphicsViewUserInput.cpp
+    src/ClassRepository/QGraphicsViewUserInput.cpp \
+    src/ClassRepository/Drawables/Dimensions/CircleRadiusDimension.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -65,7 +66,8 @@ HEADERS += \
     src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.h \
     src/ClassRepository/Tools/DimensionTool.h \
     src/ClassRepository/UserInputRequester.h \
-    src/ClassRepository/QGraphicsViewUserInput.h
+    src/ClassRepository/QGraphicsViewUserInput.h \
+    src/ClassRepository/Drawables/Dimensions/CircleRadiusDimension.h
 
 FORMS += \
     src/mainwindow.ui
