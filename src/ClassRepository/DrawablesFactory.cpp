@@ -69,7 +69,7 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, double radius)
 	return circle;
 }
 
-Circle *DrawablesFactory::makeCircle(Point *centerPoint, DrawableObject *liesOn)
+Circle *DrawablesFactory::makeCircle(Point *centerPoint, Point *liesOn)
 {
 	Circle *circle = makeCircle(centerPoint);
 	circle->setRelationLiesOn(liesOn);

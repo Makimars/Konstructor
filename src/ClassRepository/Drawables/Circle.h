@@ -24,7 +24,7 @@ public:
 	Circle *clone() override;
 
 	//relations
-	void setRelationLiesOn(DrawableObject *point);
+	void setRelationLiesOn(Point *point);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -40,7 +40,7 @@ private:
 	double radius;
 
 	//relations
-	DrawableObject *liesOn = nullptr;
+	Point *liesOn = nullptr;
 
 	//geometry
 	void setGeometryUpdates();

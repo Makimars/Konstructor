@@ -46,16 +46,26 @@ void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 												this->previousClickedPoint->distanceFrom(clickedPoint->getLocation())
 												);
 			this->objectFactory->addDrawable(circle);
-
-			this->objectFactory->tryDeleteDrawable(clickedPoint);
 		}
 		else
 		{
-			Circle *circle = this->objectFactory
-									->makeCircle(this->previousClickedPoint,
-												 clickedObject
-												 );
-			this->objectFactory->addDrawable(circle);
+			if(clickedObject->getType() == Type_Point)
+			{
+				Circle *circle = this->objectFactory
+										->makeCircle(this->previousClickedPoint,
+													 dynamic_cast<Point*>(clickedObject)
+													 );
+				this->objectFactory->addDrawable(circle);
+			}
+			else if (clickedObject == this->circlePreview)
+			{
+				Point *clickedPoint = mousePoint->clone();
+				Circle *circle = this->objectFactory
+										->makeCircle(this->previousClickedPoint,
+													this->previousClickedPoint->distanceFrom(clickedPoint->getLocation())
+													);
+				this->objectFactory->addDrawable(circle);
+			}
 		}
 
 		this->circlePreview->setHidden(true);

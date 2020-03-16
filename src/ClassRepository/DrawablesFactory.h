@@ -19,7 +19,7 @@ public:
 	Line *makeLine(Point *startPoint, Point *endPoint);
 	Circle *makeCircle(Point *centerPoint);
 	Circle *makeCircle(Point *centerPoint, double radius);
-	Circle *makeCircle(Point *centerPoint, DrawableObject *liesOn);
+	Circle *makeCircle(Point *centerPoint, Point *liesOn);
 
 	//dimension creation
 	LineLengthDimension *makeLineLengthDimension(Line *line);
