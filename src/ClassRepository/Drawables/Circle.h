@@ -19,7 +19,7 @@ public:
 
 	//getters and setters
 	Point *getCenterPoint();
-	double *getRadius();
+	double getRadius();
 	Circle *setRadius(double value);
 	Circle *clone() override;
 

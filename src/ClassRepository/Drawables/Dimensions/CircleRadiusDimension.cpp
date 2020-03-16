@@ -5,6 +5,7 @@ CircleRadiusDimension::CircleRadiusDimension() : DrawableObject (Type_CircleRadi
 CircleRadiusDimension::CircleRadiusDimension(Circle *circle) : DrawableObject (Type_CircleRadiusDimension)
 {
 	this->circle = circle;
+	this->radius = circle->getRadius();
 }
 
 void CircleRadiusDimension::resolveTies()

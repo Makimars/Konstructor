@@ -77,6 +77,9 @@ void ViewWidget::loadFromFile(QString file)
 			case Type_LineAngleDimension:
 				createdObj = new LinesAngleDimension();
 				break;
+			case Type_CircleRadiusDimension:
+				createdObj = new CircleRadiusDimension();
+				break;
 			default:
 				createdObj = nullptr;
 				break;

@@ -4,6 +4,7 @@ Circle::Circle() : DrawableObject (Type_Circle){}
 
 Circle::Circle(Point *center_point) : DrawableObject (Type_Circle)
 {
+	this->radius = 0;
 	this->centerPoint = center_point;
 	setGeometryUpdates();
 }
@@ -63,9 +64,9 @@ Point *Circle::getCenterPoint()
 	return this->centerPoint;
 }
 
-double *Circle::getRadius()
+double Circle::getRadius()
 {
-	return &this->radius;
+	return this->radius;
 }
 
 Circle *Circle::setRadius(double value)
