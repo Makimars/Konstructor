@@ -1,4 +1,4 @@
-#ifndef LINESANGLEDIMENSION_H
+﻿#ifndef LINESANGLEDIMENSION_H
 #define LINESANGLEDIMENSION_H
 
 #include "LineLengthDimension.h"
@@ -8,6 +8,7 @@ class LinesAngleDimension : public DrawableObject, public UserInputRequester
 public:
 	LinesAngleDimension();
 	LinesAngleDimension(Line *lines[2]);
+	~LinesAngleDimension() override;
 
 	void resolveTies() override;
 	void setValue(double angle);
@@ -50,6 +51,9 @@ public slots:
 
 	//user input requests
 	void recieveDouble(double value) override;
+
+	//geometry
+	void setGeometryUpdates();
 };
 
 #endif // LINESANGLEDIMENSION_H

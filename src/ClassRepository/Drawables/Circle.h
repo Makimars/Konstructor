@@ -8,6 +8,7 @@ class Circle : public DrawableObject
 public:
 	Circle();
 	Circle(Point *centerPoint);
+	~Circle() override;
 
 	void resolveTies() override;
 
@@ -23,7 +24,7 @@ public:
 	Circle *clone() override;
 
 	//relations
-	void setRelationLiesOn(DrawableObject *point);
+	void setRelationLiesOn(Point *point);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -39,8 +40,10 @@ private:
 	double radius;
 
 	//relations
-	DrawableObject *liesOn = nullptr;
+	Point *liesOn = nullptr;
 
+	//geometry
+	void setGeometryUpdates();
 };
 
 #endif // CIRCLE_H

@@ -5,18 +5,19 @@ Circle::Circle() : DrawableObject (Type_Circle){}
 Circle::Circle(Point *center_point) : DrawableObject (Type_Circle)
 {
 	this->centerPoint = center_point;
+	setGeometryUpdates();
+}
+
+Circle::~Circle()
+{
+	this->centerPoint->removeGeometryUpdate(this);
 }
 
 void Circle::resolveTies()
 {
 	if(this->liesOn != nullptr)
 	{
-		if(this->liesOn->getType() == Type_Point)
-		{
-			Point *liesOn = dynamic_cast<Point*>(this->liesOn);
-
-			this->radius = this->centerPoint->distanceFrom(liesOn->getLocation());
-		}
+		this->radius = this->centerPoint->distanceFrom(this->liesOn->getLocation());
 	}
 }
 
@@ -44,12 +45,15 @@ QString Circle::toFileString()
 void Circle::loadRelations(QVector<DrawableObject*> *list)
 {
 	QStringList varNames = {
-		"centerPoint"
+		"centerPoint",
+		"liesOn"
     };
 
 	QVector<DrawableObject*> values = fetchRelations(list, varNames);
 
 	this->centerPoint = dynamic_cast<Point*>(values[0]);
+	this->liesOn = dynamic_cast<Point*>(values[1]);
+	setGeometryUpdates();
 }
 
 //----------	getters and setters    ----------
@@ -82,7 +86,7 @@ Circle *Circle::clone()
 
 //----------	Relations    ----------
 
-void Circle::setRelationLiesOn(DrawableObject *object)
+void Circle::setRelationLiesOn(Point *object)
 {
 	this->liesOn = object;
 }
@@ -124,4 +128,9 @@ void Circle::paint(QPainter *painter,
 	DrawableObject::paint(painter, option, widget);
 
 	painter->drawEllipse(this->boundingRect());
+}
+
+void Circle::setGeometryUpdates()
+{
+	this->centerPoint->addGeometryUpdate(this);
 }

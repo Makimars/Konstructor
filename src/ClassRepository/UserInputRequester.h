@@ -5,10 +5,10 @@
 
 class UserInputRequester : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 protected:
 	UserInputRequester();
-        virtual ~UserInputRequester();
+	virtual ~UserInputRequester();
 
 signals:
 	void requestDouble(UserInputRequester *requester);

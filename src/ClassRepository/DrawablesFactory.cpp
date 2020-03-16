@@ -69,7 +69,7 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, double radius)
 	return circle;
 }
 
-Circle *DrawablesFactory::makeCircle(Point *centerPoint, DrawableObject *liesOn)
+Circle *DrawablesFactory::makeCircle(Point *centerPoint, Point *liesOn)
 {
 	Circle *circle = makeCircle(centerPoint);
 	circle->setRelationLiesOn(liesOn);
@@ -138,7 +138,7 @@ void DrawablesFactory::addDrawable(DrawableObject *object)
 
 	if(!this->objectList->contains(object))
 	{
-		object->setFlag(QGraphicsItem::ItemIsFocusable, true);
+		object->setFlags(QGraphicsItem::ItemIsSelectable);
 		object->setAcceptHoverEvents(true);
 		this->objectList->append(object);
 		this->scene->addItem(object);

@@ -30,9 +30,6 @@ private:
 	//tools processing
 	void initialiseTools();
 	Point *mousePoint;
-	Point *pointSnapping(Point *point);
-	Line *lineSnapping(Point *point);
-	DrawableObject *mouseSnapping();
 
 	DrawablesFactory *objectFactory;
 
@@ -47,7 +44,6 @@ private:
 	Line *upUpAxis, *upDownAxis, *downDownAxis, *downUpAxis;
 
 	//draging
-	Point *grabbedPoint = nullptr;
 	int prevX, prevY;
 
 	//events

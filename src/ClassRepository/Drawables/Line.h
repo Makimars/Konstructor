@@ -8,6 +8,7 @@ class Line : public DrawableObject
 public:
 	Line();
 	Line(Point *startPoint, Point *endPoint);
+	~Line() override;
 
     //file handling
     void loadVariables(QString json) override;
@@ -55,6 +56,9 @@ public:
 protected:
 	//defining variables
 	Point *startPoint, *endPoint;
+
+	//geometry
+	void setGeometryUpdates();
 };
 
 #endif // LINE_H

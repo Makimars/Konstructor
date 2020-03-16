@@ -9,6 +9,13 @@ LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Type_L
 	this->angle = lines[0]->getAngle(lines[1]->getLineVector());
 
 	calculateEdgePoints();
+	setGeometryUpdates();
+}
+
+LinesAngleDimension::~LinesAngleDimension()
+{
+	this->lines[0]->removeGeometryUpdate(this);
+	this->lines[1]->removeGeometryUpdate(this);
 }
 
 void LinesAngleDimension::calculateEdgePoints()
@@ -40,7 +47,7 @@ void LinesAngleDimension::calculateEdgePoints()
 
 void LinesAngleDimension::resolveTies()
 {
-	this->lines[0]->setAngle(this->angle, this->lines[1]->getLineVector());
+	//this->lines[0]->setAngle(this->angle, this->lines[1]->getLineVector());
 }
 
 void LinesAngleDimension::setValue(double angle)
@@ -86,6 +93,7 @@ void LinesAngleDimension::loadRelations(QVector<DrawableObject *> *list)
 	this->lines[1] = dynamic_cast<Line*>(values[1]);
 
 	calculateEdgePoints();
+	setGeometryUpdates();
 }
 
 //----------    Getters and setters    -----------
@@ -99,27 +107,16 @@ void LinesAngleDimension::setDistanceFromCenter(double distance)
 
 QRectF LinesAngleDimension::boundingRect() const
 {
-	double x,y;
+	double diameter = this->distanceFromCenter + Settings::lineAngleArcMargins.top();
 
-	if(this->edgePoints[0]->getX() > this->edgePoints[1]->getX())
-		x = this->edgePoints[0]->getX();
-	else
-		x = this->edgePoints[1]->getX();
-
-	if(this->edgePoints[0]->getY() > this->edgePoints[1]->getY())
-		y = this->edgePoints[0]->getY();
-	else
-		y = this->edgePoints[1]->getY();
-
-	double distance = this->edgePoints[0]->distanceFrom(this->edgePoints[1]->getLocation());
-
-	QPointF upperRightPoint(x - distance,y - distance);
-
-	return QRectF(upperRightPoint.x(), upperRightPoint.y(), distance * 3 , distance * 3);
+	return QRectF(
+				this->commonPoint->getLocation() - QPointF(diameter, diameter),
+				this->commonPoint->getLocation() + QPointF(diameter, diameter)
+				);
 }
 
 QPainterPath LinesAngleDimension::shape() const
-{	
+{
 	QVector2D lineVector = lines[0]->getLineVector();
 
 	if(this->lines[0]->getEndPoint() == this->commonPoint)
@@ -150,16 +147,15 @@ QPainterPath LinesAngleDimension::shape() const
 void LinesAngleDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	if(this->isHidden())
-		return
+		return;
 
 	DrawableObject::paint(painter, option, widget);
-	painter->setPen(*this->pen);
 
 	QPainterPath outerCircle;
 	outerCircle.addEllipse(this->commonPoint->getLocation(),this->distanceFromCenter, this->distanceFromCenter);
 
 	QPainterPath innerCircle;
-	innerCircle.addEllipse(this->commonPoint->getLocation(),this->distanceFromCenter - 1, this->distanceFromCenter - 1);
+	innerCircle.addEllipse(this->commonPoint->getLocation(),this->distanceFromCenter - 0.5, this->distanceFromCenter - 0.5);
 
 	painter->drawPath(outerCircle.subtracted(innerCircle).intersected(shape()));
 	painter->drawText(this->edgePoints[0]->getLocation(),QString::number(this->angle));
@@ -193,4 +189,10 @@ void LinesAngleDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void LinesAngleDimension::recieveDouble(double value)
 {
 	this->angle = value;
+}
+
+void LinesAngleDimension::setGeometryUpdates()
+{
+	this->lines[0]->addGeometryUpdate(this);
+	this->lines[1]->addGeometryUpdate(this);
 }
