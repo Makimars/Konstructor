@@ -37,7 +37,16 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 ViewWidget::~ViewWidget()
 {
+	QList<QGraphicsItem*> items = this->sketchScene->items();
+	foreach(QGraphicsItem *item, items)
+	{
+		delete item;
+	}
+}
 
+void ViewWidget::newFile()
+{
+	this->objectFactory->deleteAll();
 }
 
 //----------	file operations    ----------

@@ -16,12 +16,6 @@ LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Type_L
 	setGeometryUpdates();
 }
 
-LinesAngleDimension::~LinesAngleDimension()
-{
-	this->lines[0]->removeGeometryUpdate(this);
-	this->lines[1]->removeGeometryUpdate(this);
-}
-
 void LinesAngleDimension::calculateEdgePoints()
 {
 	if(this->lines[0]->getStartPoint() == this->lines[1]->getStartPoint()	|
@@ -214,4 +208,10 @@ void LinesAngleDimension::setGeometryUpdates()
 {
 	this->lines[0]->addGeometryUpdate(this);
 	this->lines[1]->addGeometryUpdate(this);
+}
+
+void LinesAngleDimension::unsetGeometryUpdates()
+{
+	this->lines[0]->removeGeometryUpdate(this);
+	this->lines[1]->removeGeometryUpdate(this);
 }

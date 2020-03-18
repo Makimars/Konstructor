@@ -63,6 +63,7 @@ public:
 	//geometry
 	void addGeometryUpdate(DrawableObject *object);
 	void removeGeometryUpdate(DrawableObject *object);
+	void removeGeometryUpdates();
 
     //array operator
 	static DrawableObject *getById(QVector<DrawableObject*> *list, int id);
@@ -107,6 +108,8 @@ protected:
 
 	//geometry
 	void updateGeometry();
+	virtual void setGeometryUpdates(){}
+	virtual void unsetGeometryUpdates(){}
 
 private:
 	//defining variables

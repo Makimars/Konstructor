@@ -8,11 +8,6 @@ LineLengthDimension::LineLengthDimension(Line *line) : DrawableObject (Type_Line
 	setGeometryUpdates();
 }
 
-LineLengthDimension::~LineLengthDimension()
-{
-	this->attachedLine->removeGeometryUpdate(this);
-}
-
 void LineLengthDimension::resolveTies()
 {
 	if(this->lengthToSet > 0)
@@ -248,4 +243,9 @@ void LineLengthDimension::recieveDouble(double value)
 void LineLengthDimension::setGeometryUpdates()
 {
 	this->attachedLine->addGeometryUpdate(this);
+}
+
+void LineLengthDimension::unsetGeometryUpdates()
+{
+	this->attachedLine->removeGeometryUpdate(this);
 }

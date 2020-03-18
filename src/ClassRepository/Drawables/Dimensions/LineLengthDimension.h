@@ -8,7 +8,6 @@ class LineLengthDimension : public DrawableObject, public UserInputRequester
 public:
 	LineLengthDimension();
 	LineLengthDimension(Line *line);
-	~LineLengthDimension() override;
 
 	void resolveTies() override;
 	void setValue(double lenght);
@@ -43,7 +42,8 @@ private:
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 	//geometry
-	void setGeometryUpdates();
+	void setGeometryUpdates() override;
+	void unsetGeometryUpdates() override;
 
 public slots:
 

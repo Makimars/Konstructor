@@ -8,7 +8,6 @@ class LinesAngleDimension : public DrawableObject, public UserInputRequester
 public:
 	LinesAngleDimension();
 	LinesAngleDimension(Line *lines[2]);
-	~LinesAngleDimension() override;
 
 	void resolveTies() override;
 	void setValue(double angle);
@@ -47,7 +46,8 @@ private:
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 	//geometry
-	void setGeometryUpdates();
+	void setGeometryUpdates() override;
+	void unsetGeometryUpdates() override;
 
 public slots:
 

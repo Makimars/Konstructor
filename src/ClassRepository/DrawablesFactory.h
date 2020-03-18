@@ -49,7 +49,10 @@ public:
 	 * @brief removes drawable from object list and scene
 	 */
 	void removeDrawable(DrawableObject *object);
-
+	/**
+	 * @brief deletes all objects and resets the id counter to 0
+	 */
+	void deleteAll();
 
 private:
 	static DrawablesFactory *instance;

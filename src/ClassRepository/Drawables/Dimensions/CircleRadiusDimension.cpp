@@ -109,6 +109,11 @@ void CircleRadiusDimension::setGeometryUpdates()
 	this->circle->addGeometryUpdate(this);
 }
 
+void CircleRadiusDimension::unsetGeometryUpdates()
+{
+	this->circle->removeGeometryUpdate(this);
+}
+
 //----------     user input requests      ---------
 
 void CircleRadiusDimension::recieveDouble(double value)

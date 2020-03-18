@@ -39,7 +39,8 @@ private:
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 	//geometry
-	void setGeometryUpdates();
+	void setGeometryUpdates() override;
+	void unsetGeometryUpdates() override;
 
 public slots:
 

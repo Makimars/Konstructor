@@ -10,12 +10,6 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Type_Line)
 	setGeometryUpdates();
 }
 
-Line::~Line()
-{
-	this->startPoint->removeGeometryUpdate(this);
-	this->endPoint->removeGeometryUpdate(this);
-}
-
 //----------	file handling    ----------
 
 void Line::loadVariables(QString input)
@@ -173,10 +167,18 @@ void Line::paint(QPainter *painter,
 					  );
 }
 
+//----------     geometry     ----------´
+
 void Line::setGeometryUpdates()
 {
 	this->startPoint->addGeometryUpdate(this);
 	this->endPoint->addGeometryUpdate(this);
+}
+
+void Line::unsetGeometryUpdates()
+{
+	this->startPoint->removeGeometryUpdate(this);
+	this->endPoint->removeGeometryUpdate(this);
 }
 
 

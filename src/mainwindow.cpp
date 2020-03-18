@@ -72,7 +72,7 @@ void MainWindow::saveSettings()
 
 void MainWindow::on_newButton_clicked()
 {
-
+	this->ui->mainViewWidget->newFile();
 }
 
 void MainWindow::on_openButton_clicked()

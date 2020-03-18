@@ -9,11 +9,6 @@ Circle::Circle(Point *center_point) : DrawableObject (Type_Circle)
 	setGeometryUpdates();
 }
 
-Circle::~Circle()
-{
-	this->centerPoint->removeGeometryUpdate(this);
-}
-
 void Circle::resolveTies()
 {
 	if(this->liesOn != nullptr)
@@ -139,4 +134,9 @@ void Circle::paint(QPainter *painter,
 void Circle::setGeometryUpdates()
 {
 	this->centerPoint->addGeometryUpdate(this);
+}
+
+void Circle::unsetGeometryUpdates()
+{
+	this->centerPoint->removeGeometryUpdate(this);
 }

@@ -208,7 +208,21 @@ void DrawablesFactory::removeDrawable(DrawableObject *object)
 {
 	if(objectList->contains(object))
 		this->objectList->removeAll(object);
-	this->scene->removeItem(object);
+	if(this->scene->items().contains(object))
+		this->scene->removeItem(object);
+}
+
+void DrawablesFactory::deleteAll()
+{
+	foreach(DrawableObject *item, *this->objectList)
+	{
+		item->removeGeometryUpdates();
+	}
+	foreach(DrawableObject *item, *this->objectList)
+	{
+		deleteDrawable(item);
+	}
+	this->idCounter = 0;
 }
 
 

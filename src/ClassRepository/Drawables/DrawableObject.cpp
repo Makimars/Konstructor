@@ -114,6 +114,11 @@ void DrawableObject::removeGeometryUpdate(DrawableObject *object)
 	this->propagateGeometry.removeOne(object);
 }
 
+void DrawableObject::removeGeometryUpdates()
+{
+	unsetGeometryUpdates();
+}
+
 //----------	saving    ----------
 
 void DrawableObject::fileAddVar(QString variable, QString value)
