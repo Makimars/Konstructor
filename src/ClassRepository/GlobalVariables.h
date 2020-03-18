@@ -13,6 +13,7 @@ enum Types{
 	Type_Point,
 	Type_Line,
 	Type_Circle,
+	Type_Label,
 	Type_LineLengthDimension,
 	Type_LineAngleDimension,
 	Type_CircleRadiusDimension

@@ -20,6 +20,8 @@ public:
 	Circle *makeCircle(Point *centerPoint);
 	Circle *makeCircle(Point *centerPoint, double radius);
 	Circle *makeCircle(Point *centerPoint, Point *liesOn);
+	Label *makeLabel(QPointF location);
+	Label *makeLabel(QPointF location, QString text);
 
 	//dimension creation
 	LineLengthDimension *makeLineLengthDimension(Line *line);

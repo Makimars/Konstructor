@@ -71,6 +71,9 @@ void ViewWidget::loadFromFile(QString file)
 			case Type_Circle:
 				createdObj = new Circle();
 				break;
+			case Type_Label:
+				createdObj = new Label();
+				break;
 			case Type_LineLengthDimension:
 				createdObj = new LineLengthDimension();
 				break;

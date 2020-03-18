@@ -77,6 +77,32 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, Point *liesOn)
 	return circle;
 }
 
+Label *DrawablesFactory::makeLabel(QPointF location)
+{
+	Label *label = new Label(location);
+	label->setPen(this->defaultPen)
+			->setBrush(this->defaultBrush);
+
+	QObject::connect(label, &UserInputRequester::requestString,
+					 this->userInput, &QGraphicsViewUserInput::requestString
+					 );
+
+	return label;
+}
+
+Label *DrawablesFactory::makeLabel(QPointF location, QString text)
+{
+	Label *label = new Label(location, text);
+	label->setPen(this->defaultPen)
+			->setBrush(this->defaultBrush);
+
+	QObject::connect(label, &UserInputRequester::requestString,
+					 this->userInput, &QGraphicsViewUserInput::requestString
+					 );
+
+	return label;
+}
+
 //----------     dimension creation     ---------
 
 LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line)

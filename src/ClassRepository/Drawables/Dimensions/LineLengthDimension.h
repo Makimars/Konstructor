@@ -1,7 +1,7 @@
 #ifndef LINELENGTHDIMENSION_H
 #define LINELENGTHDIMENSION_H
 
-#include "../../UserInputRequester.h"
+#include "../Label.h"
 
 class LineLengthDimension : public DrawableObject, public UserInputRequester
 {

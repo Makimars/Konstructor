@@ -26,7 +26,9 @@ LabelTool *LabelTool::getInstance()
 
 void LabelTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
-
+	Label *label = this->objectFactory->makeLabel(mousePoint->getLocation());
+	this->objectFactory->addDrawable(label);
+	label->requestText();
 }
 
 void LabelTool::resetTool()
