@@ -7,7 +7,7 @@ DimensionTool::DimensionTool(Point *mousePoint, QGraphicsScene *scene)
 	this->objectFactory = DrawablesFactory::getInstance();
 }
 
-void DimensionTool::initialise(Point *mousePoint,
+void DimensionTool::initialize(Point *mousePoint,
 							QGraphicsScene *scene,
 							QBrush *defaultBrush,
 							QPen *defaultPen)

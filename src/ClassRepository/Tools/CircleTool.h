@@ -6,7 +6,7 @@
 class CircleTool : public Tool
 {
 public:
-	static void initialise(Point *mousePoint,
+	static void initialize(Point *mousePoint,
 						   QGraphicsScene *scene,
 						   QBrush *defaultBrush,
 						   QPen *defaultPen

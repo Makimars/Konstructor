@@ -28,7 +28,6 @@ private:
 	QGraphicsScene *sketchScene;
 
 	//tools processing
-	void initialiseTools();
 	Point *mousePoint;
 
 	DrawablesFactory *objectFactory;
@@ -45,6 +44,10 @@ private:
 
 	//draging
 	int prevX, prevY;
+
+	//initialisation
+	void initializeTools();
+	void initializeScene();
 
 	//events
 	void mousePressEvent(QMouseEvent *event);

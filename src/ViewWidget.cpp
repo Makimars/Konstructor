@@ -37,7 +37,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 	//tools initialisation
 	this->selectedTool = nullptr;
-	initialiseTools();
+	initializeTools();
 }
 
 ViewWidget::~ViewWidget()
@@ -124,31 +124,31 @@ void ViewWidget::saveToFile(QString path)
 
 }
 
-//----------	tools processing    ----------
+//----------    initialization    ----------
 
-void ViewWidget::initialiseTools()
+void ViewWidget::initializeTools()
 {
-	LineTool::initialise(this->mousePoint,
+	LineTool::initialize(this->mousePoint,
 						this->sketchScene,
 						&this->defaultBrush,
 						&this->defaultPen
 						 );
-	CircleTool::initialise(this->mousePoint,
+	CircleTool::initialize(this->mousePoint,
 						this->sketchScene,
 						&this->defaultBrush,
 						&this->defaultPen
 						 );
-	LabelTool::initialise(this->mousePoint,
+	LabelTool::initialize(this->mousePoint,
 						this->sketchScene,
 						&this->defaultBrush,
 						&this->defaultPen
 						 );
-	RectangleTool::initialise(this->mousePoint,
+	RectangleTool::initialize(this->mousePoint,
 							this->sketchScene,
 							&this->defaultBrush,
 							&this->defaultPen
 							 );
-	DimensionTool::initialise(this->mousePoint,
+	DimensionTool::initialize(this->mousePoint,
 							this->sketchScene,
 							&this->defaultBrush,
 							&this->defaultPen

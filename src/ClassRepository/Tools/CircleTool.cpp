@@ -15,7 +15,7 @@ CircleTool::CircleTool(Point *mousePoint, QGraphicsScene *scene)
 	this->previousClickedPoint = nullptr;
 }
 
-void CircleTool::initialise(Point *mousePoint,
+void CircleTool::initialize(Point *mousePoint,
 							QGraphicsScene *scene,
 							QBrush *defaultBrush,
 							QPen *defaultPen)

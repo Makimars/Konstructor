@@ -7,7 +7,7 @@ LabelTool::LabelTool(Point *mousePoint, QGraphicsScene *scene)
 	this->objectFactory = DrawablesFactory::getInstance();
 }
 
-void LabelTool::initialise(Point *mousePoint,
+void LabelTool::initialize(Point *mousePoint,
 							QGraphicsScene *scene,
 							QBrush *defaultBrush,
 							QPen *defaultPen)

@@ -18,7 +18,7 @@ LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 
 }
 
-void LineTool::initialise(Point *mousePoint,
+void LineTool::initialize(Point *mousePoint,
 							QGraphicsScene *scene,
 							QBrush *defaultBrush,
 							QPen *defaultPen)

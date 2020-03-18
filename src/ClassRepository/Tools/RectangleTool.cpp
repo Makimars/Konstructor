@@ -8,7 +8,7 @@ RectangleTool::RectangleTool(Point *mousePoint, QGraphicsScene *scene)
 
 }
 
-void RectangleTool::initialise(Point *mousePoint,
+void RectangleTool::initialize(Point *mousePoint,
 							QGraphicsScene *scene,
 							QBrush *defaultBrush,
 							QPen *defaultPen)
