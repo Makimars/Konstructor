@@ -37,14 +37,14 @@ public:
 	 * @brief assign pointers to objects to a variable from a vector of drawables
 	 * @param list
 	 */
-	virtual void loadRelations(QVector<DrawableObject*> *list) {}
+	virtual void loadRelations(QVector<DrawableObject*> list) {}
 
 	//getters and setters
 	DrawableObject *setName(QString name);
     QString getName();
 	int getType();
-	DrawableObject *setId(unsigned int id);
-    unsigned int getId();
+	DrawableObject *setId(int id);
+	int getId();
 
 	DrawableObject *setBrush(QBrush * value);
 	QBrush * getBrush();
@@ -65,7 +65,7 @@ public:
 	void removeGeometryUpdate(DrawableObject *object);
 
     //array operator
-	static DrawableObject *getById(QVector<DrawableObject*> *list, unsigned int id);
+	static DrawableObject *getById(QVector<DrawableObject*> *list, int id);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -88,7 +88,6 @@ protected:
 	void fileAddVar(QString variable, double value);
 	void fileAddVar(QString variable, int value);
 	void fileAddVar(QString variable, long value);
-	void fileAddVar(QString variable, unsigned int value);
 	void fileAddVar(QString variable, bool value);
 	QString fileFinish();
 
@@ -111,7 +110,7 @@ protected:
 
 private:
 	//defining variables
-	unsigned int id;
+	int id;
 	int type;
 
 	//parameters

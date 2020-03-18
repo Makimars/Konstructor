@@ -7,6 +7,10 @@
 #define LABEL_TOOL 3
 #define DIMENSION_TOOL 4
 
+#define ZERO_POINT_ID -1
+#define X_AXIS_ID -2
+#define Y_AXIS_ID -3
+
 #include <QStringList>
 
 enum Types{

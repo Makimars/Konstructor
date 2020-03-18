@@ -58,13 +58,13 @@ QString LineLengthDimension::toFileString()
 	return this->fileFinish();
 }
 
-void LineLengthDimension::loadRelations(QVector<DrawableObject *> *list)
+void LineLengthDimension::loadRelations(QVector<DrawableObject*> list)
 {
 	QStringList varNames = {
 		"attachedLine"
 	};
 
-	QVector<DrawableObject*> values = fetchRelations(list, varNames);
+	QVector<DrawableObject*> values = fetchRelations(&list, varNames);
 
 	this->attachedLine = dynamic_cast<Line*>(values[0]);
 	setGeometryUpdates();

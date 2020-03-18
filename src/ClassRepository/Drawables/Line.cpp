@@ -31,17 +31,17 @@ QString Line::toFileString()
     return DrawableObject::fileFinish();
 }
 
-void Line::loadRelations(QVector<DrawableObject*> *list)
+void Line::loadRelations(QVector<DrawableObject*> list)
 {
     QStringList varNames = {
 		"startPoint",
 		"endPoint"
     };
 
-	QVector<DrawableObject*> values = fetchRelations(list, varNames);
+	QVector<DrawableObject*> values = fetchRelations(&list, varNames);
 
 	this->startPoint = dynamic_cast<Point*>(values[0]);
-	this->startPoint = dynamic_cast<Point*>(values[1]);
+	this->endPoint = dynamic_cast<Point*>(values[1]);
 	setGeometryUpdates();
 }
 

@@ -91,14 +91,14 @@ QString LinesAngleDimension::toFileString()
 	return this->fileFinish();
 }
 
-void LinesAngleDimension::loadRelations(QVector<DrawableObject *> *list)
+void LinesAngleDimension::loadRelations(QVector<DrawableObject*> list)
 {
 	QStringList varNames = {
 		"lines0",
 		"lines1"
 	};
 
-	QVector<DrawableObject*> values = fetchRelations(list, varNames);
+	QVector<DrawableObject*> values = fetchRelations(&list, varNames);
 
 	this->lines[0] = dynamic_cast<Line*>(values[0]);
 	this->lines[1] = dynamic_cast<Line*>(values[1]);

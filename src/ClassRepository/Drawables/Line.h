@@ -13,7 +13,7 @@ public:
     //file handling
     void loadVariables(QString json) override;
     QString toFileString() override;
-    void loadRelations(QVector<DrawableObject*> *list) override;
+	void loadRelations(QVector<DrawableObject*> list) override;
 
 	//getters and setters
 	double getLength();

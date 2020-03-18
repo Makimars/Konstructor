@@ -34,13 +34,13 @@ QString CircleRadiusDimension::toFileString()
 	return DrawableObject::fileFinish();
 }
 
-void CircleRadiusDimension::loadRelations(QVector<DrawableObject *> *list)
+void CircleRadiusDimension::loadRelations(QVector<DrawableObject*> list)
 {
 	QStringList varNames = {
 		"circle"
 	};
 
-	QVector<DrawableObject*> values = fetchRelations(list, varNames);
+	QVector<DrawableObject*> values = fetchRelations(&list, varNames);
 
 	this->circle = dynamic_cast<Circle*>(values[0]);
 	setGeometryUpdates();

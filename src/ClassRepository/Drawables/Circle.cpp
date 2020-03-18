@@ -44,14 +44,14 @@ QString Circle::toFileString()
 	return this->fileFinish();
 }
 
-void Circle::loadRelations(QVector<DrawableObject*> *list)
+void Circle::loadRelations(QVector<DrawableObject*> list)
 {
 	QStringList varNames = {
 		"centerPoint",
 		"liesOn"
     };
 
-	QVector<DrawableObject*> values = fetchRelations(list, varNames);
+	QVector<DrawableObject*> values = fetchRelations(&list, varNames);
 
 	this->centerPoint = dynamic_cast<Point*>(values[0]);
 	this->liesOn = dynamic_cast<Point*>(values[1]);

@@ -59,7 +59,7 @@ private:
 					 QGraphicsScene *scene
 					 );
 
-	unsigned int idCounter = 0;
+	int idCounter = 0;
 
 	QVector<DrawableObject*> *objectList;
 	QGraphicsScene *scene;

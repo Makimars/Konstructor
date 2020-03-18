@@ -36,14 +36,14 @@ int DrawableObject::getType()
 	return this->type;
 }
 
-DrawableObject *DrawableObject::setId(unsigned int id)
+DrawableObject *DrawableObject::setId(int id)
 {
     this->id = id;
 
 	return this;
 }
 
-unsigned int DrawableObject::getId()
+int DrawableObject::getId()
 {
 	return this->id;
 }
@@ -136,11 +136,6 @@ void DrawableObject::fileAddVar(QString variable, long value)
     this->fileAddVar(variable, QString::number(value));
 }
 
-void DrawableObject::fileAddVar(QString variable, unsigned int value)
-{
-    this->fileAddVar(variable, QString::number(value));
-}
-
 void DrawableObject::fileAddVar(QString variable, bool value)
 {
     this->fileAddVar(variable, QString::number(value));
@@ -178,7 +173,7 @@ QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varN
 			values[index] = QVariant(varValue);
 	}
 
-	this->id = values[startIndex].toUInt();
+	this->id = values[startIndex].toInt();
 	this->name = values[startIndex + 1].toString();
 	this->constructional = values[startIndex + 2].toBool();
 
@@ -199,7 +194,7 @@ QVector<DrawableObject*> DrawableObject::fetchRelations(QVector<DrawableObject*>
 
 		int index = varNames.indexOf(varName);
 		if(index >= 0)
-			values[index] = DrawableObject::getById(list, QVariant(varValue).toUInt());
+			values[index] = DrawableObject::getById(list, QVariant(varValue).toInt());
 	}
 
 	return values;
@@ -219,7 +214,7 @@ bool DrawableObject::isDraging()
 
 //----------    array operator    ----------
 
-DrawableObject *DrawableObject::getById(QVector<DrawableObject *> *list, unsigned int id)
+DrawableObject *DrawableObject::getById(QVector<DrawableObject *> *list, int id)
 {
     for(int i = 0; i < list->length(); i++)
     {

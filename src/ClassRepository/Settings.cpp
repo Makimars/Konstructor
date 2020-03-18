@@ -5,8 +5,7 @@ double Settings::mouseWheelZoomFactor = 1.15;
 bool Settings::mouseWheelInvertedZoom = false;
 double Settings::snappingDistance = 10;
 
-double  Settings::defaultSketchHeight = 4000;
-double  Settings::defaultSketchWidth  = 4000;
+double Settings::sketchSize  = 4000;
 
 float Settings::defaultAngleDimensionTextDistance = 200;
 

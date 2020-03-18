@@ -18,6 +18,7 @@ public:
 	~ViewWidget();
 
 	//file operations
+	void newFile();
 	void loadFromFile(QString fileContents);
     void saveToFile(QString file);
 
@@ -39,8 +40,7 @@ private:
 
     //object managment
 	QVector<DrawableObject*> *objectsInSketch;
-
-	Line *upUpAxis, *upDownAxis, *downDownAxis, *downUpAxis;
+	QVector<DrawableObject*> staticObjects;
 
 	//draging
 	int prevX, prevY;

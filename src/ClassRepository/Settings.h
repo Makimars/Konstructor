@@ -18,8 +18,7 @@ public:
 	static bool mouseWheelInvertedZoom;
 	static double snappingDistance;
 
-	static double defaultSketchHeight;
-	static double defaultSketchWidth;
+	static double sketchSize;
 
 	static float defaultAngleDimensionTextDistance;
 

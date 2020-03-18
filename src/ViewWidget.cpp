@@ -28,12 +28,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 	this->mousePoint = this->objectFactory->makePoint();
 
-	this->sketchScene->setSceneRect(
-				-Settings::defaultSketchWidth / 2,
-				-Settings::defaultSketchHeight / 2,
-				Settings::defaultSketchWidth,
-				Settings::defaultSketchHeight);
-	this->setScene(sketchScene);
+	initializeScene();
 
 	//tools initialisation
 	this->selectedTool = nullptr;
@@ -97,7 +92,7 @@ void ViewWidget::loadFromFile(QString file)
 
 	foreach(DrawableObject *obj, loadedObjects)
 	{
-		obj->loadRelations(&loadedObjects);
+		obj->loadRelations(loadedObjects+this->staticObjects);
 	}
 
 	foreach(DrawableObject *obj, loadedObjects)
@@ -153,6 +148,85 @@ void ViewWidget::initializeTools()
 							&this->defaultBrush,
 							&this->defaultPen
 							  );
+}
+
+void ViewWidget::initializeScene()
+{
+	this->sketchScene->setSceneRect(
+				-Settings::sketchSize-2,
+				-Settings::sketchSize-2,
+				2+Settings::sketchSize * 2,
+				2+Settings::sketchSize * 2);
+
+	//edges
+	QPen edgesPen = QPen(Qt::black);
+	edgesPen.setWidth(10);
+
+	//edge lines
+	QGraphicsLineItem *topLine = new QGraphicsLineItem(-Settings::sketchSize,-Settings::sketchSize,Settings::sketchSize,-Settings::sketchSize);
+	QGraphicsLineItem *rightLine = new QGraphicsLineItem(-Settings::sketchSize,-Settings::sketchSize,-Settings::sketchSize,Settings::sketchSize);
+	QGraphicsLineItem *leftLine = new QGraphicsLineItem(Settings::sketchSize,-Settings::sketchSize,Settings::sketchSize,Settings::sketchSize);
+	QGraphicsLineItem *bottomLine = new QGraphicsLineItem(-Settings::sketchSize,Settings::sketchSize,Settings::sketchSize,Settings::sketchSize);
+	topLine->setPen(edgesPen);
+	rightLine->setPen(edgesPen);
+	leftLine->setPen(edgesPen);
+	bottomLine->setPen(edgesPen);
+	this->sketchScene->addItem(topLine);
+	this->sketchScene->addItem(rightLine);
+	this->sketchScene->addItem(leftLine);
+	this->sketchScene->addItem(bottomLine);
+
+	//grid
+	QPen gridPen = QPen(QColor::fromRgb(0,0,0,64));
+	gridPen.setWidthF(0.2);
+	const int gridSize = 100;
+	double count = Settings::sketchSize / gridSize;
+
+	//vertial grid lines
+	for (int i = -count; i < count; i++)
+	{
+		QGraphicsLineItem *line = new QGraphicsLineItem(i*gridSize,-Settings::sketchSize,i*gridSize,Settings::sketchSize);
+		line->setPen(gridPen);
+		this->sketchScene->addItem(line);
+	}
+	//horizontal grid lines
+	for (int i = -count; i < count; i++)
+	{
+		QGraphicsLineItem *line = new QGraphicsLineItem(-Settings::sketchSize, i*gridSize, Settings::sketchSize, i*gridSize);
+		line->setPen(gridPen);
+		this->sketchScene->addItem(line);
+	}
+
+	//axis
+	QPen *axisPen = new QPen(Qt::black);
+	axisPen->setWidth(3);
+
+	Point *topPoint = this->objectFactory->makePoint(0, -Settings::sketchSize);
+	Point *bottomPoint = this->objectFactory->makePoint(0, Settings::sketchSize);
+	Point *leftPoint = this->objectFactory->makePoint(-Settings::sketchSize, 0);
+	Point *rightPoint = this->objectFactory->makePoint(Settings::sketchSize, 0);
+
+	Line *yAxis = this->objectFactory->makeLine(bottomPoint, topPoint);
+	yAxis->setPen(axisPen);
+	yAxis->setId(Y_AXIS_ID);
+	yAxis->setAcceptHoverEvents(true);
+	this->sketchScene->addItem(yAxis);
+	this->staticObjects.append(yAxis);
+
+	Line *xAxis = this->objectFactory->makeLine(leftPoint, rightPoint);
+	xAxis->setPen(axisPen);
+	xAxis->setId(X_AXIS_ID);
+	xAxis->setAcceptHoverEvents(true);
+	this->sketchScene->addItem(xAxis);
+	this->staticObjects.append(xAxis);
+
+	Point *zeroPoint = this->objectFactory->makePoint(0,0);
+	zeroPoint->setId(ZERO_POINT_ID);
+	zeroPoint->setAcceptHoverEvents(true);
+	this->sketchScene->addItem(zeroPoint);
+	this->staticObjects.append(zeroPoint);
+
+	this->setScene(sketchScene);
 }
 
 //----------	events    ----------
