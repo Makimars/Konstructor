@@ -9,17 +9,21 @@ LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Type_L
 
 	calculateEdgePoints();
 
-	double deltaX = this->edgePoints[0]->getX() - this->commonPoint->getX();
-	double deltaY = this->edgePoints[0]->getY() - this->commonPoint->getY();
-	this->angle = qAtan2(deltaY, deltaX);
+	double deltaOneX = this->commonPoint->getX() - this->edgePoints[0]->getX();
+	double deltaOneY = this->commonPoint->getY() - this->edgePoints[0]->getY();
+
+	double deltaTwoX = this->commonPoint->getX() - this->edgePoints[1]->getX();
+	double deltaTwoY = this->commonPoint->getY() - this->edgePoints[1]->getY();
+
+	this->angle = (qAtan2(deltaOneY, deltaOneX) - qAtan2(deltaTwoY, deltaTwoX));
 
 	setGeometryUpdates();
 }
 
 void LinesAngleDimension::calculateEdgePoints()
 {
-	if(this->lines[0]->getStartPoint() == this->lines[1]->getStartPoint()	|
-		this->lines[0]->getStartPoint() == this->lines[1]->getEndPoint()	)
+	if((this->lines[0]->getStartPoint() == this->lines[1]->getStartPoint())	|
+		(this->lines[0]->getStartPoint() == this->lines[1]->getEndPoint())	)
 	{
 		this->commonPoint = this->lines[0]->getStartPoint();
 
@@ -168,10 +172,17 @@ void LinesAngleDimension::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	innerCircle.addEllipse(this->commonPoint->getLocation(),this->distanceFromCenter - 0.5, this->distanceFromCenter - 0.5);
 
 	painter->drawPath(outerCircle.subtracted(innerCircle).intersected(shape()));
-	painter->drawText(this->edgePoints[0]->getLocation(),QString::number(qRadiansToDegrees(this->angle)));
 
-	painter->drawPath(shape());
-	painter->drawRect(boundingRect());
+	QString angleText;
+	if(Settings::angleUnits == AngleUnits::degrees)
+	{
+		angleText = QString::number(qRadiansToDegrees(this->angle));
+	}
+	else
+	{
+		angleText = QString::number(this->angle);
+	}
+	painter->drawText(this->edgePoints[0]->getLocation(), angleText);
 }
 
 //---------     events     ----------
@@ -201,7 +212,14 @@ void LinesAngleDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 
 void LinesAngleDimension::recieveDouble(double value)
 {
-	this->angle = qDegreesToRadians(value);
+	if(Settings::angleUnits == AngleUnits::degrees)
+	{
+		this->angle = qDegreesToRadians(value);
+	}
+	else
+	{
+		this->angle = value;
+	}
 }
 
 void LinesAngleDimension::setGeometryUpdates()

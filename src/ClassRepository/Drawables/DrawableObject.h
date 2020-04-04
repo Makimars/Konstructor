@@ -45,6 +45,8 @@ public:
 	int getType();
 	DrawableObject *setId(int id);
 	int getId();
+	void setLocked(bool value);
+	bool isLocked();
 
 	DrawableObject *setBrush(QBrush * value);
 	QBrush * getBrush();
@@ -97,7 +99,6 @@ protected:
 	QVector<DrawableObject*> fetchRelations(QVector<DrawableObject*> *list, QStringList varNames = QStringList());
 
 	//getters and setters
-	QString getFile();
 	bool isDraging();
 
 	//events
@@ -121,6 +122,7 @@ private:
 	bool highlight = false;
 	bool hidden = false;
 	bool draging = false;
+	bool locked = false;
 
 	//saving
 	QString file;

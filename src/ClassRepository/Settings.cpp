@@ -27,3 +27,4 @@ QKeySequence Settings::quitApp(Qt::CTRL + Qt::Key_Q);
 //environment
 QString Settings::userProjectRoot = QDir::homePath();
 QLocale Settings::locals(QLocale::English, QLocale::UnitedKingdom);
+AngleUnits Settings::angleUnits = AngleUnits::degrees;

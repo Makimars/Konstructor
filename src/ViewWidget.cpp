@@ -22,6 +22,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	DrawablesFactory::initialise(&this->defaultBrush,
 								 &this->defaultPen,
 								 this->objectsInSketch,
+								 &this->staticObjects,
 								 this->sketchScene
 								 );
 	this->objectFactory = DrawablesFactory::getInstance();
@@ -210,8 +211,8 @@ void ViewWidget::initializeScene()
 	QPen *axisPen = new QPen(Qt::black);
 	axisPen->setWidth(3);
 
-	Point *topPoint = this->objectFactory->makePoint(0, -Settings::sketchSize);
-	Point *bottomPoint = this->objectFactory->makePoint(0, Settings::sketchSize);
+	Point *topPoint = this->objectFactory->makePoint(0, Settings::sketchSize);
+	Point *bottomPoint = this->objectFactory->makePoint(0, -Settings::sketchSize);
 	Point *leftPoint = this->objectFactory->makePoint(-Settings::sketchSize, 0);
 	Point *rightPoint = this->objectFactory->makePoint(Settings::sketchSize, 0);
 
@@ -232,6 +233,7 @@ void ViewWidget::initializeScene()
 	Point *zeroPoint = this->objectFactory->makePoint(0,0);
 	zeroPoint->setId(ZERO_POINT_ID);
 	zeroPoint->setAcceptHoverEvents(true);
+	zeroPoint->setLocked(true);
 	this->sketchScene->addItem(zeroPoint);
 	this->staticObjects.append(zeroPoint);
 

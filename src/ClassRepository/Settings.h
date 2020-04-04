@@ -7,6 +7,12 @@
 #include <QMargins>
 #include <QLocale>
 
+
+enum AngleUnits{
+	radians,
+	degrees
+};
+
 class Settings
 {
 public:
@@ -41,8 +47,7 @@ public:
 	//environment
 	static QString userProjectRoot;
 	static QLocale locals;
-
-	//file extensions
+	static AngleUnits angleUnits;
 
 
 private:

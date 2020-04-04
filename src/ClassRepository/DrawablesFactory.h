@@ -9,6 +9,7 @@ public:
 	static void initialise(QBrush *defaultBrush,
 							QPen *defaultPen,
 							QVector<DrawableObject*> *objectList,
+							QVector<DrawableObject*> *staticObjectsList,
 							QGraphicsScene *scene
 							);
 	static DrawablesFactory *getInstance();
@@ -59,12 +60,14 @@ private:
 	DrawablesFactory(QBrush *defaultBrush,
 					 QPen *defaultPen,
 					 QVector<DrawableObject*> *objectList,
+					 QVector<DrawableObject*> *staticObjectsList,
 					 QGraphicsScene *scene
 					 );
 
 	int idCounter = 0;
 
 	QVector<DrawableObject*> *objectList;
+	QVector<DrawableObject*> *staticObjectsList;
 	QGraphicsScene *scene;
 
 	QPen *defaultPen;

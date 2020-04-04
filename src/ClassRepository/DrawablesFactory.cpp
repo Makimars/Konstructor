@@ -5,6 +5,7 @@ DrawablesFactory *DrawablesFactory::instance = nullptr;
 void DrawablesFactory::initialise(QBrush *defaultBrush,
 									QPen *defaultPen,
 									QVector<DrawableObject*> *objectList,
+									QVector<DrawableObject*> *staticObjectsList,
 									QGraphicsScene *scene
 									)
 {
@@ -13,6 +14,7 @@ void DrawablesFactory::initialise(QBrush *defaultBrush,
 		DrawablesFactory::instance = new DrawablesFactory(defaultBrush,
 														  defaultPen,
 														  objectList,
+														  staticObjectsList,
 														  scene
 														  );
 	}
@@ -175,7 +177,7 @@ void DrawablesFactory::addDrawable(DrawableObject *object)
 	object->setPen(this->defaultPen)
 			->setBrush(this->defaultBrush);
 
-	if(!this->objectList->contains(object))
+	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 	{
 		object->setFlags(QGraphicsItem::ItemIsSelectable);
 		object->setAcceptHoverEvents(true);
@@ -189,7 +191,7 @@ void DrawablesFactory::addDrawable(DrawableObject *object)
 
 void DrawablesFactory::tryDeleteDrawable(DrawableObject *object)
 {
-	if(!this->objectList->contains(object))
+	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 		deleteDrawable(object);
 }
 
@@ -231,12 +233,14 @@ void DrawablesFactory::deleteAll()
 DrawablesFactory::DrawablesFactory(QBrush *defaultBrush,
 								   QPen *defaultPen,
 								   QVector<DrawableObject*> *objectList,
+								   QVector<DrawableObject*> *staticObjectsList,
 								   QGraphicsScene *scene
 								   )
 {
 	this->defaultBrush = defaultBrush;
 	this->defaultPen = defaultPen;
 	this->objectList = objectList;
+	this->staticObjectsList = staticObjectsList;
 	this->scene = scene;
 
 	QGraphicsViewUserInput::initialize(scene);

@@ -51,6 +51,8 @@ Point *Point::setLocation(QPointF point)
 
 Point *Point::setLocation(double x, double y)
 {
+	if(isLocked()) return this;
+
 	updateGeometry();
 	this->x = x;
     this->y = y;
@@ -131,7 +133,7 @@ void Point::paint(QPainter *painter,
 
 void Point::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if(this->isDraging())
+	if(this->isDraging() & !isLocked())
 	{
 		this->setLocation(event->pos());
 	}

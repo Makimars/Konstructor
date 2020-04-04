@@ -190,7 +190,7 @@ QVector<DrawableObject*> DrawableObject::fetchRelations(QVector<DrawableObject*>
 	QVector<DrawableObject*> values;
 	values.resize(varNames.length());
 
-	QStringList fileVars = this->getFile().split(',');
+	QStringList fileVars = this->file.split(',');
 	for(int i = 0; i < fileVars.length(); i++)
 	{
 		QStringList parts = fileVars[i].split(":");
@@ -207,14 +207,19 @@ QVector<DrawableObject*> DrawableObject::fetchRelations(QVector<DrawableObject*>
 
 //----------     getters and setters      ----------
 
-QString DrawableObject::getFile()
-{
-	return this->file;
-}
-
 bool DrawableObject::isDraging()
 {
 	return  this->draging;
+}
+
+bool DrawableObject::isLocked()
+{
+	return locked;
+}
+
+void DrawableObject::setLocked(bool value)
+{
+	locked = value;
 }
 
 //----------    array operator    ----------
