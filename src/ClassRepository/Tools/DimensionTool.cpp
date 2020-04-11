@@ -75,6 +75,23 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 				//two lines distance
 			}
 		}
+		else if(object0Type == Type_Circle & object0Type == Type_Circle)
+		{
+			//two circles
+			Circle *circles[] = {
+				dynamic_cast<Circle*>(this->clickedObjects[0]),
+				dynamic_cast<Circle*>(this->clickedObjects[1])
+			};
+
+			if(circles[0]->getCenterPoint() == circles[1]->getCenterPoint())
+			{
+				//common center
+
+				this->objectFactory->addDrawable(
+							this->objectFactory->makeCirclesRadiusDifferenceDimension(circles)
+							);
+			}
+		}
 		else
 		{
 

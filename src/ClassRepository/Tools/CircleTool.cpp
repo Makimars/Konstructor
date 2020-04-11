@@ -91,5 +91,6 @@ void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 void CircleTool::resetTool()
 {
 	this->objectFactory->tryDeleteDrawable(this->previousClickedPoint);
+	this->previousClickedPoint = nullptr;
 	this->circlePreview->setHidden(true);
 }

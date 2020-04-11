@@ -170,6 +170,19 @@ CircleRadiusDimension *DrawablesFactory::makeCircleRadiusDimension(Circle *circl
 	return dimension;
 }
 
+CirclesRadiusDifferenceDimension *DrawablesFactory::makeCirclesRadiusDifferenceDimension(Circle *circles[])
+{
+	CirclesRadiusDifferenceDimension *dimension = new CirclesRadiusDifferenceDimension(circles);
+	dimension->setPen(this->defaultPen)
+			->setBrush(this->defaultBrush);
+
+	QObject::connect(dimension, &UserInputRequester::requestDouble,
+					 this->userInput, &QGraphicsViewUserInput::requestDouble
+					 );
+
+	return dimension;
+}
+
 //----------     object managment     ---------
 
 void DrawablesFactory::addDrawable(DrawableObject *object)

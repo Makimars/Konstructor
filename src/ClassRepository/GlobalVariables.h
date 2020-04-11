@@ -20,7 +20,8 @@ enum Types{
 	Type_Label,
 	Type_LineLengthDimension,
 	Type_LineAngleDimension,
-	Type_CircleRadiusDimension
+	Type_CircleRadiusDimension,
+	Type_CirclesRadiusDifferenceDimension
 };
 
 class Global {

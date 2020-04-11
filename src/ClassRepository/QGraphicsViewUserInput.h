@@ -5,7 +5,7 @@
 #include <QGraphicsProxyWidget>
 #include <QValidator>
 
-#include  "Drawables/Dimensions/CircleRadiusDimension.h"
+#include  "Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
 
 class QGraphicsViewUserInput : public QObject
 {

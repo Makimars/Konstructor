@@ -31,6 +31,7 @@ public:
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2]);
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double distanceFromCenter);
 	CircleRadiusDimension *makeCircleRadiusDimension(Circle *circle);
+	CirclesRadiusDifferenceDimension *makeCirclesRadiusDifferenceDimension(Circle *circles[2]);
 
 	//object managment
 	/**

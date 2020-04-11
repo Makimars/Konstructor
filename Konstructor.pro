@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/ViewWidget.cpp \
@@ -49,6 +50,7 @@ SOURCES += \
     src/ClassRepository/Drawables/Label.cpp
 
 HEADERS += \
+    src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
     src/mainwindow.h \
     src/ViewWidget.h \
     src/ClassRepository/GlobalVariables.h \

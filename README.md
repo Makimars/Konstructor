@@ -18,7 +18,7 @@ This software is linced under EUPL v1.2, other language versions are located in 
 | line length dimension | [X] |
 | lines angle dimension | [X] |
 | circle radius dimension | [X] |
-| circle radius difference dimension | [] |
+| circle radius difference dimension | [X] |
 | new sketch      | [X] |
 | open sketch     | [X] |
 | save sketch     | [X] |
