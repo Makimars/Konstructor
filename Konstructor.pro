@@ -26,6 +26,8 @@ CONFIG += c++11
 
 SOURCES += \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
+    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
+    src/MessagesManager.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/ViewWidget.cpp \
@@ -51,6 +53,8 @@ SOURCES += \
 
 HEADERS += \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
+    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
+    src/MessagesManager.h \
     src/mainwindow.h \
     src/ViewWidget.h \
     src/ClassRepository/GlobalVariables.h \

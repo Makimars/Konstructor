@@ -58,6 +58,7 @@ private:
 
 signals:
     void keyPressed(QKeyEvent *event);
+	void showStatusBarMessage(const QString &message, int timeout = 0);
 
 public slots:
 	void setTool(QString toolName);

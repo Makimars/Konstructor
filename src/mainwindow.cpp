@@ -28,6 +28,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(this, &MainWindow::resetTool,
 			this->ui->mainViewWidget, &ViewWidget::resetTool
 			);
+	connect(this->ui->mainViewWidget, &ViewWidget::showStatusBarMessage,
+			this->ui->statusBar, &QStatusBar::showMessage
+			);
 }
 
 MainWindow::~MainWindow()
