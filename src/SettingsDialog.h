@@ -1,0 +1,34 @@
+#ifndef SETTINGSDIALOG_H
+#define SETTINGSDIALOG_H
+
+#include <QDialog>
+#include <QDoubleValidator>
+
+#include <QDebug>
+#include "ClassRepository/Settings.h"
+
+namespace Ui {
+class SettingsDialog;
+}
+
+class SettingsDialog : public QDialog
+{
+	Q_OBJECT
+
+public:
+	explicit SettingsDialog(QWidget *parent = nullptr);
+	~SettingsDialog();
+
+	int exec() override;
+
+private slots:
+	void on_buttonBox_accepted();
+
+private:
+	Ui::SettingsDialog *ui;
+	QDoubleValidator *validator = new QDoubleValidator;
+
+	void loadSettings();
+};
+
+#endif // SETTINGSDIALOG_H

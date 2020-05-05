@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	this->ui->setupUi(this);
+	this->settingsDialog = new SettingsDialog();
 
 	loadSettings();
 
@@ -123,7 +124,7 @@ void MainWindow::on_printButton_clicked()
 
 void MainWindow::on_settingsButton_clicked()
 {
-
+	this->settingsDialog->exec();
 }
 
 void MainWindow::on_quitButton_clicked()

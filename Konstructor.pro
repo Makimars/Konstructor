@@ -28,6 +28,7 @@ SOURCES += \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
     src/MessagesManager.cpp \
+    src/SettingsDialog.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/ViewWidget.cpp \
@@ -55,6 +56,7 @@ HEADERS += \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
     src/MessagesManager.h \
+    src/SettingsDialog.h \
     src/mainwindow.h \
     src/ViewWidget.h \
     src/ClassRepository/GlobalVariables.h \
@@ -78,6 +80,7 @@ HEADERS += \
     src/ClassRepository/Drawables/Label.h
 
 FORMS += \
+    src/SettingsDialog.ui \
     src/mainwindow.ui
 
 # Default rules for deployment.

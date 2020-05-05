@@ -6,6 +6,7 @@
 #include <QFile>
 
 #include "ClassRepository/Settings.h"
+#include "SettingsDialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,6 +22,7 @@ public:
 
 private:
 	Ui::MainWindow *ui;
+	SettingsDialog *settingsDialog;
 
 	//settings
 	void loadSettings();
