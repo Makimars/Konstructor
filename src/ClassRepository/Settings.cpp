@@ -10,8 +10,9 @@ double Settings::sketchSize  = 4000;
 float Settings::defaultAngleDimensionTextDistance = 200;
 
 
-QMargins Settings::lineAngleArcMargins(10,10,10,10);
 int Settings::pointRenderSize = 2;
+int Settings::lineShapeSize = 5;
+QMargins Settings::lineAngleArcMargins(10,10,10,10);
 QMargins Settings::pointMargin(2,2,2,2);
 
 //keyboad shortcuts

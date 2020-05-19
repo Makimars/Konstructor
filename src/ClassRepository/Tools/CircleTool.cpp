@@ -10,6 +10,8 @@ CircleTool::CircleTool(Point *mousePoint, QGraphicsScene *scene)
 	this->circlePreview = this->objectFactory
 			->makeCircle(this->circlePreviewCentre, mousePoint);
 	this->circlePreview->setHidden(true);
+	this->circlePreview->setAcceptedMouseButtons(Qt::MouseButton::NoButton);
+	this->circlePreview->setAcceptHoverEvents(false);
 
 	scene->addItem(this->circlePreview);
 	this->previousClickedPoint = nullptr;

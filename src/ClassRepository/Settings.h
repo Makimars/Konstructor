@@ -29,6 +29,7 @@ public:
 	static float defaultAngleDimensionTextDistance;
 
 	static int pointRenderSize;
+	static int lineShapeSize;
 	static QMargins lineAngleArcMargins;
 	static QMargins pointMargin;
 

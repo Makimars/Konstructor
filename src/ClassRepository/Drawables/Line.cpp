@@ -127,7 +127,25 @@ double Line::signedDistanceFrom(QPointF location)
 
 QRectF Line::boundingRect() const
 {
-	return QRectF(this->startPoint->getLocation(), this->endPoint->getLocation());
+	QVector2D lineVector = this->getLineVector().normalized();
+	QVector2D normalVector(
+				-lineVector.y(),
+				lineVector.x()
+						);
+	normalVector *= Settings::lineShapeSize;
+	QPointF startPointOne(this->startPoint->getLocation()+normalVector.toPointF());
+	QPointF startPointTwo(this->startPoint->getLocation()-normalVector.toPointF());
+
+	QPointF endPointOne(this->endPoint->getLocation()+normalVector.toPointF());
+	QPointF endPointTwo(this->endPoint->getLocation()-normalVector.toPointF());
+
+	std::vector<qreal> x = {startPointOne.x(), startPointTwo.x(), endPointOne.x(), endPointTwo.x()};
+	std::sort(x.begin(), x.end());
+
+	std::vector<qreal> y = {startPointOne.y(), startPointTwo.y(), endPointOne.y(), endPointTwo.y()};
+	std::sort(y.begin(), y.end());
+
+	return QRectF(QPointF(x.front(), y.front()), QPointF(x.back(), y.back()));
 }
 
 QPainterPath Line::shape() const
@@ -137,7 +155,7 @@ QPainterPath Line::shape() const
 				-lineVector.y(),
 				lineVector.x()
 						);
-	normalVector *= 4;
+	normalVector *= Settings::lineShapeSize;
 	QPointF startPointOne(this->startPoint->getLocation()+normalVector.toPointF());
 	QPointF startPointTwo(this->startPoint->getLocation()-normalVector.toPointF());
 

@@ -13,6 +13,8 @@ LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 	this->linePreview = this->objectFactory
 			->makeLine(this->linePreviewStartPoint, mousePoint);
 	this->linePreview->setHidden(true);
+	this->linePreview->setAcceptedMouseButtons(Qt::MouseButton::NoButton);
+	this->linePreview->setAcceptHoverEvents(false);
 
 	scene->addItem(this->linePreview);
 
@@ -38,6 +40,9 @@ LineTool *LineTool::getInstance()
 void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
 	if(clickedObject == nullptr)
+		clickedObject = mousePoint->clone();
+
+	if(clickedObject->getType() != Type_Point)
 		clickedObject = mousePoint->clone();
 
 	if(clickedObject->getType() == Type_Point)

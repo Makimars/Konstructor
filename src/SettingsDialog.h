@@ -26,7 +26,8 @@ private slots:
 
 private:
 	Ui::SettingsDialog *ui;
-	QDoubleValidator *validator = new QDoubleValidator;
+	QDoubleValidator doubleValidator;
+	QIntValidator intValidator;
 
 	void loadSettings();
 };
