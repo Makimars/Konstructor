@@ -29,6 +29,8 @@ SOURCES += \
     src/ClassRepository/3D/Transform3D.cpp \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
+    src/ClassRepository/Tools3D/DrawTool.cpp \
+    src/ClassRepository/Tools3D/Tool3D.cpp \
     src/MessagesManager.cpp \
     src/SettingsDialog.cpp \
     src/View3DWidget.cpp \
@@ -60,6 +62,8 @@ HEADERS += \
     src/ClassRepository/3D/Vertex.h \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
+    src/ClassRepository/Tools3D/DrawTool.h \
+    src/ClassRepository/Tools3D/Tool3D.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
     src/View3DWidget.h \

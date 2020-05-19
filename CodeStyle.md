@@ -131,12 +131,6 @@ int *class::foo(){
 }
 ```
 
-### Variables and functions in class:
-
-If calling member variable, always use keyword 'this'.
-Only local variables can be used without it.
-Function are always used without keyword 'this'
-
 #### calling many funcions / accessing many members
 
 ```
