@@ -30,6 +30,7 @@ private:
 
 	//Ui handeling
 	void refreshTools(QString toolName);
+	void swapMode(int index);
 
 signals:
 	void setTool(QString toolName);
@@ -47,6 +48,8 @@ private slots:
 	void on_printButton_clicked();
 	void on_settingsButton_clicked();
 	void on_quitButton_clicked();
+		//object tab
+	void on_topTabMenu_currentChanged(int index);
 		//draw tab
 	void on_lineButton_clicked();
 	void on_circleButton_clicked();

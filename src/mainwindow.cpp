@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui->settingsButton->setShortcut(Settings::openSettings);
 	this->ui->quitButton->setShortcut(Settings::quitApp);
 
+	this->ui->view2D->hide();
+
 	connect(this->ui->view2D, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
@@ -55,6 +57,22 @@ void MainWindow::refreshTools(QString toolName)
 		this->ui->dimensionButton->setChecked(false);
 
 	emit setTool(toolName);
+}
+
+void MainWindow::swapMode(int index)
+{
+	qDebug() << index;
+	switch (index)
+	{
+		case 1:
+			ui->view2D->hide();
+			ui->view3D->show();
+			break;
+		case 2:
+			ui->view2D->show();
+			ui->view3D->hide();
+			break;
+	}
 }
 
 //----------	settings    ----------
@@ -186,4 +204,9 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 			break;
 	}
 
+}
+
+void MainWindow::on_topTabMenu_currentChanged(int index)
+{
+	swapMode(index);
 }
