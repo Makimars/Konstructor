@@ -27,46 +27,22 @@ QString Point::toFileString()
 
 //----------	getters and setters    ----------
 
-double Point::getX()
+void Point::setLocation(double x, double y)
 {
-	return this->x;
-}
-
-double Point::getY()
-{
-	return this->y;
-}
-
-QPointF Point::getLocation()
-{
-	return QPointF(this->x,this->y);
-}
-
-Point *Point::setLocation(QPointF point)
-{
-	setLocation(point.x(), point.y());
-
-	return this;
-}
-
-Point *Point::setLocation(double x, double y)
-{
-	if(isLocked()) return this;
+	if(isLocked()) return;
 
 	updateGeometry();
 	this->x = x;
-    this->y = y;
-
-	return this;
+	this->y = y;
 }
 
 Point *Point::clone()
 {
 	Point *p = new Point();
 	p->setLocation(getLocation());
-	p->setName(this->name)
-		->setBrush(this->brush)
-		->setPen(this->pen);
+	p->setName(this->name);
+	p->setBrush(this->brush);
+	p->setPen(this->pen);
 
 	return p;
 }

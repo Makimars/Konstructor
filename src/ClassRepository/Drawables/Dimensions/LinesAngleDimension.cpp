@@ -59,11 +59,6 @@ void LinesAngleDimension::resolveTies()
 			);
 }
 
-void LinesAngleDimension::setValue(double angle)
-{
-	this->angle = angle;
-}
-
 //----------     file handling     ---------
 
 void LinesAngleDimension::loadVariables(QString input)
@@ -103,13 +98,6 @@ void LinesAngleDimension::loadRelations(QVector<DrawableObject*> list)
 
 	calculateEdgePoints();
 	setGeometryUpdates();
-}
-
-//----------    Getters and setters    -----------
-
-void LinesAngleDimension::setDistanceFromCenter(double distance)
-{
-	this->distanceFromCenter = distance;
 }
 
 //----------	QGraphicsItem overrides    ----------

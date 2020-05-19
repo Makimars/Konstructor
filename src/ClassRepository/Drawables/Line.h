@@ -16,8 +16,7 @@ public:
 
 	//getters and setters
 	double getLength();
-	Line  *setLength(float lenght);
-	bool isInView(QGraphicsView *view, Point *origin, double scale);
+	void setLength(float lenght);
 	Point *getStartPoint();
 	Point *getEndPoint();
 	Line *clone() override;
@@ -46,5 +45,8 @@ private:
 	void setGeometryUpdates() override;
 	void unsetGeometryUpdates() override;
 };
+
+//inline getters and setters
+inline double Line::getLength() { return startPoint->distanceFrom(endPoint->getLocation()); }
 
 #endif // LINE_H

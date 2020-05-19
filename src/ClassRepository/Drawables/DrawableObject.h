@@ -40,24 +40,24 @@ public:
 	virtual void loadRelations(QVector<DrawableObject*> list) {}
 
 	//getters and setters
-	DrawableObject *setName(QString name);
+	void setName(QString name);
     QString getName();
 	int getType();
-	DrawableObject *setId(int id);
+	void setId(int id);
 	int getId();
 	void setLocked(bool value);
 	bool isLocked();
 
-	DrawableObject *setBrush(QBrush * value);
-	QBrush * getBrush();
-	DrawableObject *setPen(QPen * value);
-	QPen * getPen();
+	void setBrush(QBrush *brush);
+	QBrush *getBrush();
+	void setPen(QPen *pen);
+	QPen *getPen();
 
-	DrawableObject *setIsConstructional(bool value);
+	void setIsConstructional(bool value);
 	bool isConstructional();
-	DrawableObject *setHighlight(bool value);
+	void setHighlight(bool value);
 	bool isHighlighted();
-	DrawableObject *setHidden(bool value);
+	void setHidden(bool value);
 	bool isHidden();
 
 	virtual DrawableObject *clone(){return nullptr;}
@@ -130,6 +130,43 @@ private:
 	//geometry
 	QVector<DrawableObject*> propagateGeometry;
 };
+
+//inline getters and setters
+inline void DrawableObject::setName(QString name) { this->name = name; }
+inline QString DrawableObject::getName() { return name; }
+inline int DrawableObject::getType() { return type; }
+inline void DrawableObject::setId(int id) { this->id = id; }
+inline int DrawableObject::getId() { return id; }
+inline void DrawableObject::setLocked(bool value) { locked = value; }
+inline bool DrawableObject::isLocked() { return locked; }
+inline void DrawableObject::setBrush(QBrush *brush) { this->brush = brush; }
+inline QBrush *DrawableObject::getBrush() {return brush;}
+inline void DrawableObject::setPen(QPen *pen) { this->pen = pen; }
+inline QPen *DrawableObject::getPen() { return pen; }
+inline void DrawableObject::setIsConstructional(bool value) { constructional = value; }
+inline bool DrawableObject::isConstructional() { return constructional; }
+inline void DrawableObject::setHidden(bool value) { hidden = value; }
+inline bool DrawableObject::isHidden() {return hidden; }
+inline void DrawableObject::setHighlight(bool value) { highlight = value; }
+inline bool DrawableObject::isHighlighted() { return highlight; }
+inline bool DrawableObject::isDraging() { return draging; }
+
+//inline fileAddVar
+
+inline void DrawableObject::fileAddVar(QString variable, QString value)
+{ this->file += variable + ":" + value + ","; }
+
+inline void DrawableObject::fileAddVar(QString variable, double value)
+{ this->fileAddVar(variable, QString::number(value)); }
+
+inline void DrawableObject::fileAddVar(QString variable, int value)
+{ this->fileAddVar(variable, QString::number(value)); }
+
+inline void DrawableObject::fileAddVar(QString variable, long value)
+{ this->fileAddVar(variable, QString::number(value)); }
+
+inline void DrawableObject::fileAddVar(QString variable, bool value)
+{ this->fileAddVar(variable, QString::number(value)); }
 
 #endif // DRAWABLEOBJECT_H
 

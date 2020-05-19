@@ -20,16 +20,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui->settingsButton->setShortcut(Settings::openSettings);
 	this->ui->quitButton->setShortcut(Settings::quitApp);
 
-	connect(this->ui->mainViewWidget, &ViewWidget::keyPressed,
+	connect(this->ui->view2D, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
 	connect(this, &MainWindow::setTool,
-			this->ui->mainViewWidget, &ViewWidget::setTool
+			this->ui->view2D, &ViewWidget::setTool
 			);
 	connect(this, &MainWindow::resetTool,
-			this->ui->mainViewWidget, &ViewWidget::resetTool
+			this->ui->view2D, &ViewWidget::resetTool
 			);
-	connect(this->ui->mainViewWidget, &ViewWidget::showStatusBarMessage,
+	connect(this->ui->view2D, &ViewWidget::showStatusBarMessage,
 			this->ui->statusBar, &QStatusBar::showMessage
 			);
 }
@@ -76,7 +76,7 @@ void MainWindow::saveSettings()
 
 void MainWindow::on_newButton_clicked()
 {
-	this->ui->mainViewWidget->newFile();
+	this->ui->view2D->newFile();
 }
 
 void MainWindow::on_openButton_clicked()
@@ -92,7 +92,7 @@ void MainWindow::on_openButton_clicked()
 	if(file.exists())
 	{
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-			this->ui->mainViewWidget->loadFromFile(file.readAll());
+			this->ui->view2D->loadFromFile(file.readAll());
 	}
 }
 
@@ -104,7 +104,7 @@ void MainWindow::on_saveButton_clicked()
 			Settings::userProjectRoot,
 			Global::konstructorSketch + ";;" + Global::allFiles
 			);
-	this->ui->mainViewWidget->saveToFile(fileName);
+	this->ui->view2D->saveToFile(fileName);
 }
 
 void MainWindow::on_saveAsButton_clicked()

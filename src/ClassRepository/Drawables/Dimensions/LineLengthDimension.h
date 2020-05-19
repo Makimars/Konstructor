@@ -10,7 +10,6 @@ public:
 	LineLengthDimension(Line *line);
 
 	void resolveTies() override;
-	void setValue(double lenght);
 
 	//file handling
 	void loadVariables(QString input) override;
@@ -50,5 +49,9 @@ public slots:
 	//user input requests
 	void recieveDouble(double value) override;
 };
+
+//inline getters and setters
+inline void LineLengthDimension::setDistanceFromLine(double distance) { distanceFromLine = distance; }
+inline void LineLengthDimension::setLineLength(double length) { lengthToSet = length; }
 
 #endif // LINELENGHTDIMENSION_H

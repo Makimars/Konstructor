@@ -55,16 +55,6 @@ void Circle::loadRelations(QVector<DrawableObject*> list)
 
 //----------	getters and setters    ----------
 
-Point *Circle::getCenterPoint()
-{
-	return this->centerPoint;
-}
-
-double Circle::getRadius()
-{
-	return this->radius;
-}
-
 Circle *Circle::setRadius(double value)
 {
 	prepareGeometryChange();

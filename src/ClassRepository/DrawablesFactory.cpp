@@ -30,8 +30,8 @@ DrawablesFactory *DrawablesFactory::getInstance()
 Point *DrawablesFactory::makePoint()
 {
 	Point *point = new Point();
-	point->setBrush(this->defaultBrush)
-			->setPen(this->defaultPen);
+	point->setBrush(this->defaultBrush);
+	point->setPen(this->defaultPen);
 
 	return point;
 }
@@ -47,8 +47,8 @@ Point *DrawablesFactory::makePoint(double x, double y)
 Line *DrawablesFactory::makeLine(Point *startPoint, Point *endPoint)
 {
 	Line *line = new Line(startPoint, endPoint);
-	line->setBrush(this->defaultBrush)
-			->setPen(this->defaultPen);
+	line->setBrush(this->defaultBrush);
+	line->setPen(this->defaultPen);
 
 	return line;
 }
@@ -56,8 +56,8 @@ Line *DrawablesFactory::makeLine(Point *startPoint, Point *endPoint)
 Circle *DrawablesFactory::makeCircle(Point *centerPoint)
 {
 	Circle *circle = new Circle(centerPoint);
-	circle->setBrush(this->defaultBrush)
-			->setPen(this->defaultPen);
+	circle->setBrush(this->defaultBrush);
+	circle->setPen(this->defaultPen);
 
 	return circle;
 }
@@ -82,8 +82,8 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, Point *liesOn)
 Label *DrawablesFactory::makeLabel(QPointF location)
 {
 	Label *label = new Label(location);
-	label->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
+	label->setPen(this->defaultPen);
+	label->setBrush(this->defaultBrush);
 
 	QObject::connect(label, &UserInputRequester::requestString,
 					 this->userInput, &QGraphicsViewUserInput::requestString
@@ -95,8 +95,8 @@ Label *DrawablesFactory::makeLabel(QPointF location)
 Label *DrawablesFactory::makeLabel(QPointF location, QString text)
 {
 	Label *label = new Label(location, text);
-	label->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
+	label->setPen(this->defaultPen);
+	label->setBrush(this->defaultBrush);
 
 	QObject::connect(label, &UserInputRequester::requestString,
 					 this->userInput, &QGraphicsViewUserInput::requestString
@@ -110,8 +110,8 @@ Label *DrawablesFactory::makeLabel(QPointF location, QString text)
 LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line)
 {
 	LineLengthDimension *dimension = new LineLengthDimension(line);
-	dimension->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
+	dimension->setPen(this->defaultPen);
+	dimension->setBrush(this->defaultBrush);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -139,8 +139,8 @@ LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, doubl
 LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[])
 {
 	LinesAngleDimension *dimension = new LinesAngleDimension(lines);
-	dimension->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
+	dimension->setPen(this->defaultPen);
+	dimension->setBrush(this->defaultBrush);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -160,8 +160,8 @@ LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], do
 CircleRadiusDimension *DrawablesFactory::makeCircleRadiusDimension(Circle *circle)
 {
 	CircleRadiusDimension *dimension = new CircleRadiusDimension(circle);
-	dimension->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
+	dimension->setPen(this->defaultPen);
+	dimension->setBrush(this->defaultBrush);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -173,8 +173,8 @@ CircleRadiusDimension *DrawablesFactory::makeCircleRadiusDimension(Circle *circl
 CirclesRadiusDifferenceDimension *DrawablesFactory::makeCirclesRadiusDifferenceDimension(Circle *circles[])
 {
 	CirclesRadiusDifferenceDimension *dimension = new CirclesRadiusDifferenceDimension(circles);
-	dimension->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
+	dimension->setPen(this->defaultPen);
+	dimension->setBrush(this->defaultBrush);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -187,8 +187,8 @@ CirclesRadiusDifferenceDimension *DrawablesFactory::makeCirclesRadiusDifferenceD
 
 void DrawablesFactory::addDrawable(DrawableObject *object)
 {
-	object->setPen(this->defaultPen)
-			->setBrush(this->defaultBrush);
+	object->setPen(this->defaultPen);
+	object->setBrush(this->defaultBrush);
 
 	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 	{

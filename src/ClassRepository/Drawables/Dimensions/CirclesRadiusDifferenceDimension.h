@@ -48,4 +48,8 @@ public slots:
 	void recieveDouble(double value) override;
 };
 
+//inline getters and setters
+inline void CirclesRadiusDifferenceDimension::setRadiusDifference(double value) { radiusDifference = value; }
+inline double CirclesRadiusDifferenceDimension::getRadiusDifference() { return radiusDifference; }
+
 #endif // CIRCLESRADIUSDIFFERENCEDIMENSION_H

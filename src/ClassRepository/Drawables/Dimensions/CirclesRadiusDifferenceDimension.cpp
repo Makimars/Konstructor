@@ -55,18 +55,6 @@ void CirclesRadiusDifferenceDimension::loadRelations(QVector<DrawableObject *> l
 	setGeometryUpdates();
 }
 
-//----------    Getters and setters    -----------
-
-void CirclesRadiusDifferenceDimension::setRadiusDifference(double value)
-{
-	this->radiusDifference = value;
-}
-
-double CirclesRadiusDifferenceDimension::getRadiusDifference()
-{
-	return this->radiusDifference;
-}
-
 //----------	QGraphicsItem overrides    ----------
 
 QRectF CirclesRadiusDifferenceDimension::boundingRect() const

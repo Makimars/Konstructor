@@ -16,8 +16,8 @@ public:
 	double getX();
 	double getY();
 	QPointF getLocation();
-	Point *setLocation(QPointF point);
-	Point *setLocation(double x, double y);
+	void setLocation(QPointF point);
+	void setLocation(double x, double y);
 	Point *clone() override;
 
     //aritmetic functions
@@ -38,5 +38,11 @@ private:
 	//events
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 };
+
+//inline getters and setters
+inline double Point::getX() { return x; }
+inline double Point::getY() { return y; }
+inline QPointF Point::getLocation() { return QPointF(x, y); }
+inline void Point::setLocation(QPointF point) { setLocation(point.x(), point.y()); }
 
 #endif // POINT_H

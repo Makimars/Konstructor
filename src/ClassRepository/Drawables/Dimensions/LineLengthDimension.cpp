@@ -14,21 +14,6 @@ void LineLengthDimension::resolveTies()
 		this->attachedLine->setLength(this->lengthToSet);
 }
 
-void LineLengthDimension::setValue(double length)
-{
-	this->lengthToSet = length;
-}
-
-void LineLengthDimension::setDistanceFromLine(double distance)
-{
-	this->distanceFromLine = distance;
-}
-
-void LineLengthDimension::setLineLength(double length)
-{
-	this->lengthToSet = length;
-}
-
 //---------    file handeling     ---------
 
 void LineLengthDimension::loadVariables(QString input)

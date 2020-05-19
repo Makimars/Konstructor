@@ -7,16 +7,16 @@ class UserInputRequester : public QObject
 {
 	Q_OBJECT
 protected:
-	UserInputRequester();
-	virtual ~UserInputRequester();
+	UserInputRequester(){};
+	virtual ~UserInputRequester(){};
 
 signals:
 	void requestDouble(UserInputRequester *requester);
 	void requestString(UserInputRequester *requeste);
 
 public slots:
-	virtual void recieveDouble(double value);
-	virtual void recieveString(QString value);
+	virtual void recieveDouble(double value){};
+	virtual void recieveString(QString value){};
 
 };
 

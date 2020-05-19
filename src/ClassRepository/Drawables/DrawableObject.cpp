@@ -17,91 +17,6 @@ QString DrawableObject::toFileString()
     return this->file;
 }
 
-//----------	getters and setters    ----------
-
-DrawableObject *DrawableObject::setName(QString name)
-{
-	this->name = name;
-
-	return this;
-}
-
-QString DrawableObject::getName()
-{
-	return this->name;
-}
-
-int DrawableObject::getType()
-{
-	return this->type;
-}
-
-DrawableObject *DrawableObject::setId(int id)
-{
-    this->id = id;
-
-	return this;
-}
-
-int DrawableObject::getId()
-{
-	return this->id;
-}
-
-DrawableObject *DrawableObject::setBrush(QBrush * value)
-{
-	brush = value;
-
-	return this;
-}
-
-QBrush * DrawableObject::getBrush()
-{
-	return brush;
-}
-
-DrawableObject *DrawableObject::setPen(QPen * value)
-{
-	pen = value;
-
-	return this;
-}
-
-QPen * DrawableObject::getPen()
-{
-	return pen;
-}
-
-DrawableObject *DrawableObject::setIsConstructional(bool value)
-{
-	this->constructional = value;
-}
-
-bool DrawableObject::isConstructional()
-{
-	return this->constructional;
-}
-
-DrawableObject *DrawableObject::setHighlight(bool value)
-{
-	this->highlight = value;
-}
-
-bool DrawableObject::isHighlighted()
-{
-	return this->highlight;
-}
-
-DrawableObject *DrawableObject::setHidden(bool value)
-{
-	this->hidden = value;
-}
-
-bool DrawableObject::isHidden()
-{
-	return this->hidden;
-}
-
 //----------	geometry    ----------
 
 void DrawableObject::addGeometryUpdate(DrawableObject *object)
@@ -121,30 +36,6 @@ void DrawableObject::removeGeometryUpdates()
 
 //----------	saving    ----------
 
-void DrawableObject::fileAddVar(QString variable, QString value)
-{
-	this->file += variable + ":" + value + ",";
-}
-
-void DrawableObject::fileAddVar(QString variable, double value)
-{
-    this->fileAddVar(variable, QString::number(value));
-}
-
-void DrawableObject::fileAddVar(QString variable, int value)
-{
-    this->fileAddVar(variable, QString::number(value));
-}
-
-void DrawableObject::fileAddVar(QString variable, long value)
-{
-    this->fileAddVar(variable, QString::number(value));
-}
-
-void DrawableObject::fileAddVar(QString variable, bool value)
-{
-    this->fileAddVar(variable, QString::number(value));
-}
 
 QString DrawableObject::fileFinish()
 {
@@ -203,23 +94,6 @@ QVector<DrawableObject*> DrawableObject::fetchRelations(QVector<DrawableObject*>
 	}
 
 	return values;
-}
-
-//----------     getters and setters      ----------
-
-bool DrawableObject::isDraging()
-{
-	return  this->draging;
-}
-
-bool DrawableObject::isLocked()
-{
-	return locked;
-}
-
-void DrawableObject::setLocked(bool value)
-{
-	locked = value;
 }
 
 //----------    array operator    ----------

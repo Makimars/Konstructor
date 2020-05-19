@@ -46,18 +46,6 @@ void CircleRadiusDimension::loadRelations(QVector<DrawableObject*> list)
 	setGeometryUpdates();
 }
 
-//----------     getters and setters     ----------
-
-void CircleRadiusDimension::setRadius(double value)
-{
-	this->radius = value;
-}
-
-double CircleRadiusDimension::getRadius()
-{
-	return this->radius;
-}
-
 //----------     QGraphicsItem overrides     ----------
 
 QRectF CircleRadiusDimension::boundingRect() const

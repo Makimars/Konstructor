@@ -46,4 +46,8 @@ private:
 	void unsetGeometryUpdates() override;
 };
 
+//inline getters and setters
+inline Point *Circle::getCenterPoint() { return centerPoint; }
+inline double Circle::getRadius() { return radius; }
+
 #endif // CIRCLE_H

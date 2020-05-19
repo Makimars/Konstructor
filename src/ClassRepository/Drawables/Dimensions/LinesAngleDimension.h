@@ -10,14 +10,13 @@ public:
 	LinesAngleDimension(Line *lines[2]);
 
 	void resolveTies() override;
-	void setValue(double angle);
-
 	//file handling
 	void loadVariables(QString input) override;
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
 
 	//getters and setters
+	void setValue(double angle);
 	void setDistanceFromCenter(double distance);
 
 	//QGraphicsItem overrides
@@ -54,5 +53,9 @@ public slots:
 	//user input requests
 	void recieveDouble(double value) override;
 };
+
+//inline getters and setters
+inline void LinesAngleDimension::setValue(double angle) { this->angle = angle; }
+inline void LinesAngleDimension::setDistanceFromCenter(double distance) { distanceFromCenter = distance; }
 
 #endif // LINESANGLEDIMENSION_H

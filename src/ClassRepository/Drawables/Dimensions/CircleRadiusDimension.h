@@ -48,4 +48,7 @@ public slots:
 	void recieveDouble(double value) override;
 };
 
+inline void CircleRadiusDimension::setRadius(double value) { radius = value; }
+inline double CircleRadiusDimension::getRadius() { return radius; }
+
 #endif // CIRCLERADIUSDIMENSION_H

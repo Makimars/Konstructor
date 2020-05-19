@@ -25,10 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    src/ClassRepository/3D/Mesh.cpp \
+    src/ClassRepository/3D/Transform3D.cpp \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
     src/MessagesManager.cpp \
     src/SettingsDialog.cpp \
+    src/View3DWidget.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/ViewWidget.cpp \
@@ -47,16 +50,19 @@ SOURCES += \
     src/ClassRepository/Drawables/Dimensions/LineLengthDimension.cpp \
     src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.cpp \
     src/ClassRepository/Tools/DimensionTool.cpp \
-    src/ClassRepository/UserInputRequester.cpp \
     src/ClassRepository/QGraphicsViewUserInput.cpp \
     src/ClassRepository/Drawables/Dimensions/CircleRadiusDimension.cpp \
     src/ClassRepository/Drawables/Label.cpp
 
 HEADERS += \
+    src/ClassRepository/3D/Mesh.h \
+    src/ClassRepository/3D/Transform3D.h \
+    src/ClassRepository/3D/Vertex.h \
     src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
+    src/View3DWidget.h \
     src/mainwindow.h \
     src/ViewWidget.h \
     src/ClassRepository/GlobalVariables.h \

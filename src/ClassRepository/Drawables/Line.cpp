@@ -41,12 +41,7 @@ void Line::loadRelations(QVector<DrawableObject*> list)
 
 //----------	getters and setters    ----------
 
-double Line::getLength()
-{
-	return this->startPoint->distanceFrom(endPoint->getLocation());
-}
-
-Line *Line::setLength(float lenght)
+void Line::setLength(float lenght)
 {
 	QVector2D newVector = this->getLineVector().normalized() * lenght;
 
@@ -55,8 +50,6 @@ Line *Line::setLength(float lenght)
 				this->startPoint->getX() + newVector.x(),
 				this->startPoint->getY() + newVector.y()
 				);
-
-	return this;
 }
 
 QVector2D Line::getLineVector() const
