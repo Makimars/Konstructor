@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
+    src/PopUpMessage.cpp \
     src/SettingsDialog.cpp \
     src/View3DWidget.cpp \
     src/main.cpp \
@@ -67,6 +68,7 @@ SOURCES += \
 HEADERS += \
     src/MainWindow.h \
     src/MessagesManager.h \
+    src/PopUpMessage.h \
     src/SettingsDialog.h \
     src/View3DWidget.h \
     src/ViewWidget.h \
@@ -110,6 +112,7 @@ HEADERS += \
 
 FORMS += \
     src/MainWindow.ui \
+    src/PopUpMessage.ui \
     src/SettingsDialog.ui
 
 # Default rules for deployment.
