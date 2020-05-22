@@ -15,14 +15,15 @@ class Mesh : private QOpenGLFunctions
 public:
 	Mesh();
 
-	void initializeGl(QOpenGLShaderProgram *program);
-	void render(int modelToWroldAddress, QOpenGLShaderProgram *program);
+	void initializeGl(QOpenGLShaderProgram *program,int modelToWroldAddress);
+	void render(QOpenGLShaderProgram *program);
 
 	void setVertexes(std::vector<Vertex> vertexes);
 	Transform3D *getTransform();
 
 private:
 	std::vector<Vertex> vertexes;
+	int modelToWrold;
 
 	QOpenGLBuffer vertexBuffer;
 	QOpenGLVertexArrayObject vertexBufferObject;

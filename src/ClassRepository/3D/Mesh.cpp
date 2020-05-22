@@ -5,9 +5,10 @@ Mesh::Mesh()
 
 }
 
-void Mesh::initializeGl(QOpenGLShaderProgram *program)
+void Mesh::initializeGl(QOpenGLShaderProgram *program, int modelToWroldAddress)
 {
 	initializeOpenGLFunctions();
+	modelToWrold = modelToWroldAddress;
 
 	vertexBuffer.create();
 	vertexBuffer.bind();
@@ -26,11 +27,11 @@ void Mesh::initializeGl(QOpenGLShaderProgram *program)
 	vertexBuffer.release();
 }
 
-void Mesh::render(int modelToWroldAddress, QOpenGLShaderProgram *program)
+void Mesh::render(QOpenGLShaderProgram *program)
 {
 	vertexBufferObject.bind();
 
-	program->setUniformValue(modelToWroldAddress, transform.toMatrix());
+	program->setUniformValue(modelToWrold, transform.toMatrix());
 	glDrawArrays(GL_TRIANGLES, 0, vertexes.size());
 
 	vertexBufferObject.release();

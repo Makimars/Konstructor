@@ -25,69 +25,83 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    src/ClassRepository/3D/Mesh.cpp \
-    src/ClassRepository/3D/Transform3D.cpp \
-    src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
-    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
-    src/ClassRepository/Tools3D/DrawTool.cpp \
-    src/ClassRepository/Tools3D/Tool3D.cpp \
     src/MessagesManager.cpp \
     src/SettingsDialog.cpp \
     src/View3DWidget.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
     src/ViewWidget.cpp \
+\
     src/ClassRepository/GlobalVariables.cpp \
     src/ClassRepository/Settings.cpp \
-    src/ClassRepository/Drawables/Circle.cpp \
-    src/ClassRepository/Drawables/DrawableObject.cpp \
-    src/ClassRepository/Drawables/Line.cpp \
-    src/ClassRepository/Drawables/Point.cpp \
-    src/ClassRepository/Tools/Tool.cpp \
-    src/ClassRepository/Tools/CircleTool.cpp \
-    src/ClassRepository/Tools/RectangleTool.cpp \
-    src/ClassRepository/Tools/LabelTool.cpp \
-    src/ClassRepository/Tools/LineTool.cpp \
-    src/ClassRepository/DrawablesFactory.cpp \
-    src/ClassRepository/Drawables/Dimensions/LineLengthDimension.cpp \
-    src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.cpp \
-    src/ClassRepository/Tools/DimensionTool.cpp \
-    src/ClassRepository/QGraphicsViewUserInput.cpp \
-    src/ClassRepository/Drawables/Dimensions/CircleRadiusDimension.cpp \
-    src/ClassRepository/Drawables/Label.cpp
+    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
+\
+    src/ClassRepository/2D/DrawablesFactory.cpp \
+    src/ClassRepository/2D/QGraphicsViewUserInput.cpp \
+\
+    src/ClassRepository/2D/Tools/Tool.cpp \
+    src/ClassRepository/2D/Tools/DimensionTool.cpp \
+    src/ClassRepository/2D/Tools/CircleTool.cpp \
+    src/ClassRepository/2D/Tools/RectangleTool.cpp \
+    src/ClassRepository/2D/Tools/LabelTool.cpp \
+    src/ClassRepository/2D/Tools/LineTool.cpp \
+\
+    src/ClassRepository/2D/Drawables/DrawableObject.cpp \
+    src/ClassRepository/2D/Drawables/Circle.cpp \
+    src/ClassRepository/2D/Drawables/Line.cpp \
+    src/ClassRepository/2D/Drawables/Point.cpp \
+    src/ClassRepository/2D/Drawables/Label.cpp \
+\
+    src/ClassRepository/2D/Drawables/Dimensions/CircleRadiusDimension.cpp \
+    src/ClassRepository/2D/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
+    src/ClassRepository/2D/Drawables/Dimensions/LineLengthDimension.cpp \
+    src/ClassRepository/2D/Drawables/Dimensions/LinesAngleDimension.cpp \
+\
+    src/ClassRepository/3D/Mesh.cpp \
+    src/ClassRepository/3D/Transform3D.cpp \
+\
+    src/ClassRepository/3D/Tools/DrawTool.cpp \
+    src/ClassRepository/3D/Tools/Tool3D.cpp
 
 HEADERS += \
-    src/ClassRepository/3D/Mesh.h \
-    src/ClassRepository/3D/Transform3D.h \
-    src/ClassRepository/3D/Vertex.h \
-    src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
-    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
-    src/ClassRepository/Tools3D/DrawTool.h \
-    src/ClassRepository/Tools3D/Tool3D.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
     src/View3DWidget.h \
     src/mainwindow.h \
     src/ViewWidget.h \
+\
     src/ClassRepository/GlobalVariables.h \
     src/ClassRepository/Settings.h \
-    src/ClassRepository/Drawables/Circle.h \
-    src/ClassRepository/Drawables/DrawableObject.h \
-    src/ClassRepository/Drawables/Line.h \
-    src/ClassRepository/Drawables/Point.h \
-    src/ClassRepository/Tools/Tool.h \
-    src/ClassRepository/Tools/LineTool.h \
-    src/ClassRepository/Tools/CircleTool.h \
-    src/ClassRepository/Tools/RectangleTool.h \
-    src/ClassRepository/Tools/LabelTool.h \
-    src/ClassRepository/DrawablesFactory.h \
-    src/ClassRepository/Drawables/Dimensions/LineLengthDimension.h \
-    src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.h \
-    src/ClassRepository/Tools/DimensionTool.h \
-    src/ClassRepository/UserInputRequester.h \
-    src/ClassRepository/QGraphicsViewUserInput.h \
-    src/ClassRepository/Drawables/Dimensions/CircleRadiusDimension.h \
-    src/ClassRepository/Drawables/Label.h
+    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
+\
+    src/ClassRepository/2D/DrawablesFactory.h \
+    src/ClassRepository/2D/UserInputRequester.h \
+    src/ClassRepository/2D/QGraphicsViewUserInput.h \
+\
+    src/ClassRepository/2D/Tools/Tool.h \
+    src/ClassRepository/2D/Tools/LineTool.h \
+    src/ClassRepository/2D/Tools/CircleTool.h \
+    src/ClassRepository/2D/Tools/RectangleTool.h \
+    src/ClassRepository/2D/Tools/DimensionTool.h \
+    src/ClassRepository/2D/Tools/LabelTool.h \
+\
+    src/ClassRepository/2D/Drawables/DrawableObject.h \
+    src/ClassRepository/2D/Drawables/Circle.h \
+    src/ClassRepository/2D/Drawables/Line.h \
+    src/ClassRepository/2D/Drawables/Point.h \
+    src/ClassRepository/2D/Drawables/Label.h \
+\
+    src/ClassRepository/2D/Drawables/Dimensions/CircleRadiusDimension.h \
+    src/ClassRepository/2D/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
+    src/ClassRepository/2D/Drawables/Dimensions/LineLengthDimension.h \
+    src/ClassRepository/2D/Drawables/Dimensions/LinesAngleDimension.h \
+\
+    src/ClassRepository/3D/Mesh.h \
+    src/ClassRepository/3D/Transform3D.h \
+    src/ClassRepository/3D/Vertex.h \
+\
+    src/ClassRepository/3D/Tools/DrawTool.h \
+    src/ClassRepository/3D/Tools/Tool3D.h
 
 FORMS += \
     src/SettingsDialog.ui \
@@ -100,3 +114,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     CodeStyle.md
+
+RESOURCES += \
+    shaders.qrc
