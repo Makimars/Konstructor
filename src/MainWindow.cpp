@@ -1,6 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "ClassRepository/GlobalVariables.h"
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -25,14 +24,34 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(this->ui->view2D, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
+	connect(this->ui->view2D, &ViewWidget::showStatusBarMessage,
+			this->ui->statusBar, &QStatusBar::showMessage
+			);
+
+
 	connect(this, &MainWindow::setTool,
 			this->ui->view2D, &ViewWidget::setTool
+			);
+	connect(this, &MainWindow::setTool,
+			this->ui->view3D, &View3DWidget::setTool
 			);
 	connect(this, &MainWindow::resetTool,
 			this->ui->view2D, &ViewWidget::resetTool
 			);
-	connect(this->ui->view2D, &ViewWidget::showStatusBarMessage,
-			this->ui->statusBar, &QStatusBar::showMessage
+
+	connect(this, &MainWindow::resetTool,
+			this->ui->view3D, &View3DWidget::resetTool
+			);
+
+
+	connect(DrawTool::getInstance(), &DrawTool::requestDrawing,
+			this->ui->view2D, &ViewWidget::requestDrawing
+			);
+	connect(DrawTool::getInstance(), &DrawTool::requestDrawing,
+			this, &MainWindow::setDrawing
+			);
+	connect(this->ui->view2D, &ViewWidget::returnDrawing,
+			DrawTool::getInstance(), &DrawTool::recieveDrawing
 			);
 }
 
@@ -43,36 +62,20 @@ MainWindow::~MainWindow()
 
 //----------    Ui handeling    ---------
 
-void MainWindow::refreshTools(QString toolName)
+void MainWindow::refreshTools(int tool)
 {
-	if(toolName != "Line")
+	if(tool != Global::Tools::Line)
 		this->ui->lineButton->setChecked(false);
-	if(toolName != "Circle")
+	if(tool != Global::Tools::Circle)
 		this->ui->circleButton->setChecked(false);
-	if(toolName != "Rectangle")
+	if(tool != Global::Tools::Rectangle)
 		this->ui->rectangleButton->setChecked(false);
-	if(toolName != "Label")
+	if(tool != Global::Tools::Label)
 		this->ui->labelButton->setChecked(false);
-	if(toolName != "Dimension")
+	if(tool != Global::Tools::Dimension)
 		this->ui->dimensionButton->setChecked(false);
 
-	emit setTool(toolName);
-}
-
-void MainWindow::swapMode(int index)
-{
-	qDebug() << index;
-	switch (index)
-	{
-		case 1:
-			ui->view2D->hide();
-			ui->view3D->show();
-			break;
-		case 2:
-			ui->view2D->show();
-			ui->view3D->hide();
-			break;
-	}
+	emit setTool(tool);
 }
 
 //----------	settings    ----------
@@ -155,49 +158,49 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_lineButton_clicked()
 {
 	if(this->ui->lineButton->isChecked())
-		refreshTools("Line");
+		refreshTools(Global::Tools::Line);
 	else
-		refreshTools("");
+		refreshTools(Global::Tools::None);
 }
 
 void MainWindow::on_circleButton_clicked()
 {
 
 	if(this->ui->circleButton->isChecked())
-		refreshTools("Circle");
+		refreshTools(Global::Tools::Circle);
 	else
-		refreshTools("");
+		refreshTools(Global::Tools::None);
 }
 
 void MainWindow::on_rectangleButton_clicked()
 {
 	if(this->ui->rectangleButton->isChecked())
-		refreshTools("Rectangle");
+		refreshTools(Global::Tools::Rectangle);
 	else
-		refreshTools("");
+		refreshTools(Global::Tools::None);
 }
 
 void MainWindow::on_labelButton_clicked()
 {
 	if(this->ui->labelButton->isChecked())
-		refreshTools("Label");
+		refreshTools(Global::Tools::Label);
 	else
-		refreshTools("");
+		refreshTools(Global::Tools::None);
 }
 
 void MainWindow::on_dimensionButton_clicked()
 {
 	if(this->ui->dimensionButton->isChecked())
-		refreshTools("Dimension");
+		refreshTools(Global::Tools::Dimension);
 	else
-		refreshTools("");
+		refreshTools(Global::Tools::None);
 }
 
 void MainWindow::viewKeyPress(QKeyEvent *event)
 {
 	switch (event->key()) {
 		case Qt::Key::Key_Escape:
-			refreshTools("");
+			refreshTools(Global::Tools::None);
 			break;
 		case Qt::Key::Key_Enter:
 			emit resetTool();
@@ -209,4 +212,32 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 void MainWindow::on_topTabMenu_currentChanged(int index)
 {
 	swapMode(index);
+}
+
+void MainWindow::on_drawButton_clicked()
+{
+	if(this->ui->drawButton->isChecked())
+		refreshTools(Global::Tools::Draw);
+	else
+		refreshTools(Global::Tools::None);
+}
+
+void MainWindow::on_finishDrawingButton_clicked()
+{
+	swapMode(Global::Mode::object);
+}
+
+void MainWindow::swapMode(int index)
+{
+	switch (index)
+	{
+		case Global::Mode::object:
+			ui->view2D->show();
+			ui->view3D->hide();
+			break;
+		case Global::Mode::draw:
+			ui->view2D->hide();
+			ui->view3D->show();
+			break;
+	}
 }

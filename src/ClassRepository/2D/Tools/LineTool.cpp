@@ -42,10 +42,10 @@ void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
 	if(clickedObject == nullptr)
 		clickedObject = mousePoint->clone();
 
-	if(clickedObject->getType() != Type_Point)
+	if(clickedObject->getType() != Global::Type_Point)
 		clickedObject = mousePoint->clone();
 
-	if(clickedObject->getType() == Type_Point)
+	if(clickedObject->getType() == Global::Type_Point)
 	{
 		Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
 

@@ -9,15 +9,22 @@ class DrawTool : public Tool3D
 public:
 	static DrawTool *getInstance();
 
-	void click() override;
+	void click(QPoint pos) override;
 	void resetTool() override;
 
 private:
 	DrawTool();
-	static DrawTool instance;
+	static DrawTool *instance;
+
+	QPointF planePosition;
+	QVector3D planeVector;
 
 signals:
-	void switchMode();
+	void requestDrawing();
+	void addItem(Item *item);
+
+public slots:
+	void recieveDrawing(QVector<DrawableObject*> drawing);
 };
 
 #endif // DRAWTOOL_H

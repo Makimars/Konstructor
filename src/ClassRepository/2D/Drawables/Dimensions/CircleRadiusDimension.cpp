@@ -1,8 +1,8 @@
 #include "CircleRadiusDimension.h"
 
-CircleRadiusDimension::CircleRadiusDimension() : DrawableObject (Type_CircleRadiusDimension){}
+CircleRadiusDimension::CircleRadiusDimension() : DrawableObject (Global::Type_CircleRadiusDimension){}
 
-CircleRadiusDimension::CircleRadiusDimension(Circle *circle) : DrawableObject (Type_CircleRadiusDimension)
+CircleRadiusDimension::CircleRadiusDimension(Circle *circle) : DrawableObject (Global::Type_CircleRadiusDimension)
 {
 	this->circle = circle;
 	this->radius = circle->getRadius();

@@ -5,8 +5,8 @@
 #include <QFileDialog>
 #include <QFile>
 
-#include "ClassRepository/Settings.h"
 #include "SettingsDialog.h"
+#include "ClassRepository/GlobalVariables.h"
 
 namespace Ui {
 class MainWindow;
@@ -29,11 +29,9 @@ private:
 	void saveSettings();
 
 	//Ui handeling
-	void refreshTools(QString toolName);
-	void swapMode(int index);
-
+	void refreshTools(int tool);
 signals:
-	void setTool(QString toolName);
+	void setTool(int tool);
 	void resetTool();
 
 private slots:
@@ -48,16 +46,23 @@ private slots:
 	void on_printButton_clicked();
 	void on_settingsButton_clicked();
 	void on_quitButton_clicked();
-		//object tab
-	void on_topTabMenu_currentChanged(int index);
 		//draw tab
 	void on_lineButton_clicked();
 	void on_circleButton_clicked();
 	void on_rectangleButton_clicked();
 	void on_labelButton_clicked();
 	void on_dimensionButton_clicked();
+		//object tab
+	void on_drawButton_clicked();
+	void on_finishDrawingButton_clicked();
 
 	void viewKeyPress(QKeyEvent *event);
+	void on_topTabMenu_currentChanged(int index);
+
+	void swapMode(int index);
+	void setDrawing();
 };
+
+inline void MainWindow::setDrawing(){ swapMode(Global::Mode::draw); }
 
 #endif // MAINWINDOW_H

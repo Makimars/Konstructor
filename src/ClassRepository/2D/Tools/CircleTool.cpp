@@ -51,7 +51,7 @@ void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 		}
 		else
 		{
-			if(clickedObject->getType() == Type_Point)
+			if(clickedObject->getType() == Global::Type_Point)
 			{
 				Circle *circle = this->objectFactory
 										->makeCircle(this->previousClickedPoint,
@@ -78,7 +78,7 @@ void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 		if(clickedObject == nullptr)
 			clickedObject = mousePoint->clone();
 
-		if(clickedObject->getType() == Type_Point)
+		if(clickedObject->getType() == Global::Type_Point)
 		{
 			Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
 

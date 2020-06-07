@@ -7,7 +7,7 @@
 #include <QGraphicsView>
 #include <QScrollBar>
 
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include "ClassRepository/2D/Tools/DimensionTool.h"
 
 class ViewWidget : public QGraphicsView
@@ -39,7 +39,7 @@ private:
 	QBrush defaultBrush;
 
     //object managment
-	QVector<DrawableObject*> *objectsInSketch;
+	QVector<DrawableObject*> objectsInSketch;
 	QVector<DrawableObject*> staticObjects;
 
 	//draging
@@ -59,11 +59,12 @@ private:
 signals:
     void keyPressed(QKeyEvent *event);
 	void showStatusBarMessage(const QString &message, int timeout = 0);
+	void returnDrawing(QVector<DrawableObject*> drawing);
 
 public slots:
-	void setTool(QString toolName);
+	void setTool(int tool);
 	void resetTool();
-
+	void requestDrawing();
 };
 
 #endif // DRAWINGWIDGET_H

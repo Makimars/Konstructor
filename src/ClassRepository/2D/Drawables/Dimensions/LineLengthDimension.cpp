@@ -1,8 +1,8 @@
 #include "LineLengthDimension.h"
 
-LineLengthDimension::LineLengthDimension() : DrawableObject (Type_LineLengthDimension){}
+LineLengthDimension::LineLengthDimension() : DrawableObject (Global::Type_LineLengthDimension){}
 
-LineLengthDimension::LineLengthDimension(Line *line) : DrawableObject (Type_LineLengthDimension)
+LineLengthDimension::LineLengthDimension(Line *line) : DrawableObject (Global::Type_LineLengthDimension)
 {
 	this->attachedLine = line;
 	setGeometryUpdates();

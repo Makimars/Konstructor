@@ -1,6 +1,6 @@
 #include "Point.h"
 
-Point::Point() : DrawableObject(Type_Point){}
+Point::Point() : DrawableObject(Global::Type_Point){}
 
 //----------	file handling    ----------
 

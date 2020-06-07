@@ -21,7 +21,7 @@ void View3DWidget::mouseReleaseEvent(QMouseEvent *event)
 	QOpenGLWidget::mouseReleaseEvent(event);
 
 	if(this->selectedTool != nullptr)
-		this->selectedTool->click();
+		this->selectedTool->click(event->pos());
 }
 
 void View3DWidget::mouseMoveEvent(QMouseEvent *event)
@@ -73,7 +73,7 @@ void View3DWidget::paintGL()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	program.bind();
-	program.setUniformValue(worldToCamera, 1);
+	program.setUniformValue(worldToCamera, 1/*Camera.toMatrix*/);
 	program.setUniformValue(cameraToView, projection);
 
 	foreach (Mesh *m, objects)
@@ -82,4 +82,30 @@ void View3DWidget::paintGL()
 	}
 
 	program.release();
+}
+
+void View3DWidget::setTool(int tool)
+{
+	if(this->selectedTool != nullptr)
+		this->selectedTool->resetTool();
+	switch(tool)
+	{
+		case Global::Tools::Draw:
+			this->selectedTool = DrawTool::getInstance();
+			break;
+		default:
+			this->selectedTool = nullptr;
+			break;
+	}
+}
+
+void View3DWidget::resetTool()
+{
+	if(this->selectedTool != nullptr)
+		this->selectedTool->resetTool();
+}
+
+void View3DWidget::addItem(Item *item)
+{
+	objectsInSpace.append(item);
 }

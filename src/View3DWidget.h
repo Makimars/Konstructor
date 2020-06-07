@@ -4,18 +4,19 @@
 #include <QOpenGLWidget>
 #include <QOpenGLShaderProgram>
 #include <QFrame>
+#include <QMouseEvent>
 
-#include "ViewWidget.h"
 #include "ClassRepository/3D/Tools/DrawTool.h"
 #include "ClassRepository/3D/Mesh.h"
 
 class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 {
 public:
-		View3DWidget(QFrame *frame);
+	View3DWidget(QFrame *frame);
 
 private:
 	QList<Mesh*> objects;
+	QVector<Item*> objectsInSpace;
 	QMatrix4x4 projection;
 	QOpenGLShaderProgram program;
 
@@ -25,7 +26,7 @@ private:
 	int cameraToView;
 
 	//tools
-	Tool3D *selectedTool;
+	Tool3D *selectedTool = nullptr;
 
 	//events
 	void mousePressEvent(QMouseEvent *event) override;
@@ -39,8 +40,9 @@ private:
 	void paintGL() override;
 
 public slots:
-	void setTool(QString toolName);
+	void setTool(int tool);
 	void resetTool();
+	void addItem(Item *item);
 };
 
 #endif // VIEW3DWIDGET_H
