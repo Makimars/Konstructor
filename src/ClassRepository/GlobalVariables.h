@@ -27,10 +27,12 @@ enum Tools{
 	Rectangle,
 	Label,
 	Dimension,
-	Draw
+	Draw,
+	Extrusion
 };
 
 enum Mode{
+	file,
 	object,
 	draw
 };
@@ -44,6 +46,5 @@ enum Mode{
 	const QString allFiles;
 
 }
-
 
 #endif // GLOBALVARIABLES_H

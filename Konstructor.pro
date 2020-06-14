@@ -25,8 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    src/ClassRepository/2D/Factory.cpp \
-    src/ClassRepository/3D/Item.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
     src/SettingsDialog.cpp \
@@ -37,6 +35,7 @@ SOURCES += \
     src/ClassRepository/Settings.cpp \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
 \
+    src/ClassRepository/2D/Factory.cpp \
     src/ClassRepository/2D/QGraphicsViewUserInput.cpp \
 \
     src/ClassRepository/2D/Tools/DimensionTool.cpp \
@@ -56,15 +55,13 @@ SOURCES += \
     src/ClassRepository/2D/Drawables/Dimensions/LineLengthDimension.cpp \
     src/ClassRepository/2D/Drawables/Dimensions/LinesAngleDimension.cpp \
 \
+    src/ClassRepository/3D/Item.cpp \
     src/ClassRepository/3D/Mesh.cpp \
     src/ClassRepository/3D/Transform3D.cpp \
 \
     src/ClassRepository/3D/Tools/DrawTool.cpp
 
 HEADERS += \
-    src/ClassRepository/2D/Factory.h \
-    src/ClassRepository/3D/Item.h \
-    src/ClassRepository/3D/Tools/Tool.h \
     src/MainWindow.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
@@ -75,6 +72,7 @@ HEADERS += \
     src/ClassRepository/Settings.h \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
 \
+    src/ClassRepository/2D/Factory.h \
     src/ClassRepository/2D/UserInputRequester.h \
     src/ClassRepository/2D/QGraphicsViewUserInput.h \
 \
@@ -96,10 +94,12 @@ HEADERS += \
     src/ClassRepository/2D/Drawables/Dimensions/LineLengthDimension.h \
     src/ClassRepository/2D/Drawables/Dimensions/LinesAngleDimension.h \
 \
+    src/ClassRepository/3D/Item.h \
     src/ClassRepository/3D/Mesh.h \
     src/ClassRepository/3D/Transform3D.h \
     src/ClassRepository/3D/Vertex.h \
 \
+    src/ClassRepository/3D/Tools/Tool.h \
     src/ClassRepository/3D/Tools/DrawTool.h
 
 FORMS += \

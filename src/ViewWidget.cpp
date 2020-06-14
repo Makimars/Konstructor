@@ -366,5 +366,10 @@ void ViewWidget::resetTool()
 
 void ViewWidget::requestDrawing()
 {
+	newFile();
+}
 
+void ViewWidget::finishDrawing()
+{
+	emit returnDrawing(this->objectsInSketch);
 }

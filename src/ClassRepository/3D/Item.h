@@ -11,7 +11,8 @@ class Item
 public:
 	Item(QVector<DrawableObject*> sketchObjects, QPointF planePosition, QVector3D planeVector);
 
-	Mesh *getMesh();
+	void initializeGl(QOpenGLShaderProgram *program,int modelToWroldAddress);
+	void render(QOpenGLShaderProgram *program);
 	Transform3D *getTransform();
 
 private:
@@ -23,7 +24,8 @@ private:
 	void generateVertexes();
 };
 
-inline Mesh *Item::getMesh() { return &mesh; }
+inline void Item::initializeGl(QOpenGLShaderProgram *program,int modelToWroldAddress) { mesh.initializeGl(program, modelToWroldAddress); }
+inline void Item::render(QOpenGLShaderProgram *program) { mesh.render(program); }
 inline Transform3D *Item::getTransform() { return  mesh.getTransform(); }
 
 #endif // ITEM_H

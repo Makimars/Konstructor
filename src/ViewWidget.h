@@ -65,6 +65,7 @@ public slots:
 	void setTool(int tool);
 	void resetTool();
 	void requestDrawing();
+	void finishDrawing();
 };
 
 #endif // DRAWINGWIDGET_H

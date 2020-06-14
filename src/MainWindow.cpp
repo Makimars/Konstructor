@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui->settingsButton->setShortcut(Settings::openSettings);
 	this->ui->quitButton->setShortcut(Settings::quitApp);
 
-	this->ui->view2D->hide();
+	this->swapMode(Global::Mode::object);
 
 	connect(this->ui->view2D, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
@@ -53,6 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(this->ui->view2D, &ViewWidget::returnDrawing,
 			DrawTool::getInstance(), &DrawTool::recieveDrawing
 			);
+	connect(this, &MainWindow::finishDrawing,
+			this->ui->view2D, &ViewWidget::finishDrawing
+			);
 }
 
 MainWindow::~MainWindow()
@@ -74,6 +77,10 @@ void MainWindow::refreshTools(int tool)
 		this->ui->labelButton->setChecked(false);
 	if(tool != Global::Tools::Dimension)
 		this->ui->dimensionButton->setChecked(false);
+	if(tool != Global::Tools::Draw)
+		this->ui->drawButton->setChecked(false);
+	if(tool != Global::Tools::Extrusion)
+		this->ui->extrusionButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -224,20 +231,22 @@ void MainWindow::on_drawButton_clicked()
 
 void MainWindow::on_finishDrawingButton_clicked()
 {
+	emit finishDrawing();
 	swapMode(Global::Mode::object);
 }
 
 void MainWindow::swapMode(int index)
 {
+	ui->topTabMenu->setCurrentIndex(index);
 	switch (index)
 	{
 		case Global::Mode::object:
-			ui->view2D->show();
-			ui->view3D->hide();
-			break;
-		case Global::Mode::draw:
 			ui->view2D->hide();
 			ui->view3D->show();
+			break;
+		case Global::Mode::draw:
+			ui->view2D->show();
+			ui->view3D->hide();
 			break;
 	}
 }

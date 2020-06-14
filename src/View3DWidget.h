@@ -15,7 +15,6 @@ public:
 	View3DWidget(QFrame *frame);
 
 private:
-	QList<Mesh*> objects;
 	QVector<Item*> objectsInSpace;
 	QMatrix4x4 projection;
 	QOpenGLShaderProgram program;

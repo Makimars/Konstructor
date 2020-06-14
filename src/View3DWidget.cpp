@@ -8,6 +8,13 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	format.setVersion(3,3);
 	setFormat(format);
 
+	connect(DrawTool::getInstance(), &DrawTool::addItem,
+			this, &View3DWidget::addItem
+			);
+
+	Item *item = new Item(QVector<DrawableObject*>(), QPointF(), QVector3D());
+	objectsInSpace.append(item);
+
 	setFocus();
 }
 
@@ -54,9 +61,9 @@ void View3DWidget::initializeGL()
 	worldToCamera = program.uniformLocation("worldToCamera");
 	cameraToView = program.uniformLocation("cameraToView");
 
-	foreach (Mesh *m, objects)
+	foreach (Item *item, objectsInSpace)
 	{
-		m->initializeGl(&program, modelToWorld);
+		item->initializeGl(&program, modelToWorld);
 	}
 
 	program.release();
@@ -76,9 +83,9 @@ void View3DWidget::paintGL()
 	program.setUniformValue(worldToCamera, 1/*Camera.toMatrix*/);
 	program.setUniformValue(cameraToView, projection);
 
-	foreach (Mesh *m, objects)
+	foreach (Item *item, objectsInSpace)
 	{
-		m->render(&program);
+		item->render(&program);
 	}
 
 	program.release();
@@ -108,4 +115,10 @@ void View3DWidget::resetTool()
 void View3DWidget::addItem(Item *item)
 {
 	objectsInSpace.append(item);
+	program.link();
+	program.bind();
+
+	item->initializeGl(&program, modelToWorld);
+
+	program.release();
 }

@@ -34,6 +34,8 @@ signals:
 	void setTool(int tool);
 	void resetTool();
 
+	void finishDrawing();
+
 private slots:
 
     //ui events
