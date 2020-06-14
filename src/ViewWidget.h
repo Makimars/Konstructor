@@ -34,7 +34,7 @@ private:
 	Factory *objectFactory;
 
 	//tools
-	Tool *selectedTool;
+	Plane::Tool *selectedTool;
 	QPen defaultPen;
 	QBrush defaultBrush;
 

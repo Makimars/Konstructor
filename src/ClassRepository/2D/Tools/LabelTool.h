@@ -3,7 +3,7 @@
 
 #include "RectangleTool.h"
 
-class LabelTool : public Tool
+class LabelTool : public Plane::Tool
 {
 public:
 	static void initialize(Point *mousePoint,

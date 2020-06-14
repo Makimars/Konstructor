@@ -4,6 +4,8 @@
 #include "../Factory.h"
 #include <QKeyEvent>
 
+namespace Plane {
+
 class Tool
 {
 public:
@@ -29,5 +31,6 @@ inline void Tool::setCurrentBrush(QBrush *value) { currentBrush = value; }
 inline QPen *Tool::getCurrentPen() const { return currentPen; }
 inline void Tool::setCurrentPen(QPen *value) { currentPen = value; }
 
+}
 
 #endif // TOOL_H

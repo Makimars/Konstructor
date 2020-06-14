@@ -3,7 +3,7 @@
 
 #include "LineTool.h"
 
-class CircleTool : public Tool
+class CircleTool : public Plane::Tool
 {
 public:
 	static void initialize(Point *mousePoint,

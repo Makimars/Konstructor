@@ -3,7 +3,7 @@
 
 #include "LabelTool.h"
 
-class DimensionTool : public Tool
+class DimensionTool : public Plane::Tool
 {
 public:
 	static void initialize(Point *mousePoint,
