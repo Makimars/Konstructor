@@ -59,12 +59,12 @@ SOURCES += \
     src/ClassRepository/3D/Mesh.cpp \
     src/ClassRepository/3D/Transform3D.cpp \
 \
-    src/ClassRepository/3D/Tools/DrawTool.cpp \
-    src/ClassRepository/3D/Tools/Tool3D.cpp
+    src/ClassRepository/3D/Tools/DrawTool.cpp
 
 HEADERS += \
     src/ClassRepository/2D/Factory.h \
     src/ClassRepository/3D/Item.h \
+    src/ClassRepository/3D/Tools/Tool.h \
     src/MainWindow.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
@@ -100,8 +100,7 @@ HEADERS += \
     src/ClassRepository/3D/Transform3D.h \
     src/ClassRepository/3D/Vertex.h \
 \
-    src/ClassRepository/3D/Tools/DrawTool.h \
-    src/ClassRepository/3D/Tools/Tool3D.h
+    src/ClassRepository/3D/Tools/DrawTool.h
 
 FORMS += \
     src/MainWindow.ui \

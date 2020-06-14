@@ -1,9 +1,9 @@
 #ifndef DRAWTOOL_H
 #define DRAWTOOL_H
 
-#include "Tool3D.h"
+#include "Tool.h"
 
-class DrawTool : public Tool3D
+class DrawTool : public Space::Tool
 {
 	Q_OBJECT
 public:

@@ -26,7 +26,7 @@ private:
 	int cameraToView;
 
 	//tools
-	Tool3D *selectedTool = nullptr;
+	Space::Tool *selectedTool = nullptr;
 
 	//events
 	void mousePressEvent(QMouseEvent *event) override;
