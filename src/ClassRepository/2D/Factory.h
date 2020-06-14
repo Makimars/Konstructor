@@ -4,7 +4,7 @@
 #include "QGraphicsViewUserInput.h"
 #include "src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h"
 
-class DrawablesFactory
+class Factory
 {
 public:
 	static void initialise(QBrush *defaultBrush,
@@ -13,7 +13,7 @@ public:
 							QVector<DrawableObject*> *staticObjectsList,
 							QGraphicsScene *scene
 							);
-	static DrawablesFactory *getInstance();
+	static Factory *getInstance();
 
 	//object creation
 	Point *makePoint();
@@ -58,8 +58,8 @@ public:
 	void deleteAll();
 
 private:
-	static DrawablesFactory *instance;
-	DrawablesFactory(QBrush *defaultBrush,
+	static Factory *instance;
+	Factory(QBrush *defaultBrush,
 					 QPen *defaultPen,
 					 QVector<DrawableObject*> *objectList,
 					 QVector<DrawableObject*> *staticObjectsList,

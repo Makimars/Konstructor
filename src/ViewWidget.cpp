@@ -18,13 +18,13 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 	this->sketchScene = new QGraphicsScene(this);
 
-	DrawablesFactory::initialise(&this->defaultBrush,
+	Factory::initialise(&this->defaultBrush,
 								 &this->defaultPen,
 								 &this->objectsInSketch,
 								 &this->staticObjects,
 								 this->sketchScene
 								 );
-	this->objectFactory = DrawablesFactory::getInstance();
+	this->objectFactory = Factory::getInstance();
 
 	this->mousePoint = this->objectFactory->makePoint();
 

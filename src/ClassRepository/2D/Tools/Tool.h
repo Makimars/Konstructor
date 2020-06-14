@@ -1,7 +1,7 @@
 #ifndef TOOL_H
 #define TOOL_H
 
-#include "../DrawablesFactory.h"
+#include "../Factory.h"
 #include <QKeyEvent>
 
 class Tool : public QObject
@@ -22,7 +22,7 @@ private:
 protected:
 	Tool();
 
-	DrawablesFactory *objectFactory;
+	Factory *objectFactory;
 
 	QBrush *currentBrush;
 	QPen *currentPen;

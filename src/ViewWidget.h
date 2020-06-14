@@ -31,7 +31,7 @@ private:
 	//tools processing
 	Point *mousePoint;
 
-	DrawablesFactory *objectFactory;
+	Factory *objectFactory;
 
 	//tools
 	Tool *selectedTool;

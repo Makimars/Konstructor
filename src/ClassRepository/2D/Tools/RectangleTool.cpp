@@ -4,7 +4,7 @@ RectangleTool *RectangleTool::instance = nullptr;
 
 RectangleTool::RectangleTool(Point *mousePoint, QGraphicsScene *scene)
 {
-	this->objectFactory = DrawablesFactory::getInstance();
+	this->objectFactory = Factory::getInstance();
 
 }
 

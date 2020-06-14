@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    src/ClassRepository/2D/Factory.cpp \
     src/ClassRepository/3D/Item.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
@@ -36,7 +37,6 @@ SOURCES += \
     src/ClassRepository/Settings.cpp \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
 \
-    src/ClassRepository/2D/DrawablesFactory.cpp \
     src/ClassRepository/2D/QGraphicsViewUserInput.cpp \
 \
     src/ClassRepository/2D/Tools/Tool.cpp \
@@ -64,6 +64,7 @@ SOURCES += \
     src/ClassRepository/3D/Tools/Tool3D.cpp
 
 HEADERS += \
+    src/ClassRepository/2D/Factory.h \
     src/ClassRepository/3D/Item.h \
     src/MainWindow.h \
     src/MessagesManager.h \
@@ -75,7 +76,6 @@ HEADERS += \
     src/ClassRepository/Settings.h \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
 \
-    src/ClassRepository/2D/DrawablesFactory.h \
     src/ClassRepository/2D/UserInputRequester.h \
     src/ClassRepository/2D/QGraphicsViewUserInput.h \
 \

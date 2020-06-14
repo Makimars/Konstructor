@@ -4,7 +4,7 @@ LabelTool *LabelTool::instance = nullptr;
 
 LabelTool::LabelTool(Point *mousePoint, QGraphicsScene *scene)
 {
-	this->objectFactory = DrawablesFactory::getInstance();
+	this->objectFactory = Factory::getInstance();
 }
 
 void LabelTool::initialize(Point *mousePoint,

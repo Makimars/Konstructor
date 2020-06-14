@@ -4,7 +4,7 @@ CircleTool *CircleTool::instance = nullptr;
 
 CircleTool::CircleTool(Point *mousePoint, QGraphicsScene *scene)
 {
-	this->objectFactory = DrawablesFactory::getInstance();
+	this->objectFactory = Factory::getInstance();
 
 	this->circlePreviewCentre = this->objectFactory->makePoint();
 	this->circlePreview = this->objectFactory

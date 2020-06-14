@@ -4,7 +4,7 @@ LineTool *LineTool::instance = nullptr;
 
 LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 {
-	this->objectFactory = DrawablesFactory::getInstance();
+	this->objectFactory = Factory::getInstance();
 
 	//line preview
 	this->linePreviewStartPoint = this->objectFactory

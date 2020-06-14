@@ -1,17 +1,17 @@
-#include "DrawablesFactory.h"
+#include "Factory.h"
 
-DrawablesFactory *DrawablesFactory::instance = nullptr;
+Factory *Factory::instance = nullptr;
 
-void DrawablesFactory::initialise(QBrush *defaultBrush,
+void Factory::initialise(QBrush *defaultBrush,
 									QPen *defaultPen,
 									QVector<DrawableObject*> *objectList,
 									QVector<DrawableObject*> *staticObjectsList,
 									QGraphicsScene *scene
 									)
 {
-	if(DrawablesFactory::instance == nullptr)
+	if(Factory::instance == nullptr)
 	{
-		DrawablesFactory::instance = new DrawablesFactory(defaultBrush,
+		Factory::instance = new Factory(defaultBrush,
 														  defaultPen,
 														  objectList,
 														  staticObjectsList,
@@ -20,14 +20,14 @@ void DrawablesFactory::initialise(QBrush *defaultBrush,
 	}
 }
 
-DrawablesFactory *DrawablesFactory::getInstance()
+Factory *Factory::getInstance()
 {
-	return DrawablesFactory::instance;
+	return Factory::instance;
 }
 
 //----------     object creation     ---------
 
-Point *DrawablesFactory::makePoint()
+Point *Factory::makePoint()
 {
 	Point *point = new Point();
 	point->setBrush(this->defaultBrush);
@@ -36,7 +36,7 @@ Point *DrawablesFactory::makePoint()
 	return point;
 }
 
-Point *DrawablesFactory::makePoint(double x, double y)
+Point *Factory::makePoint(double x, double y)
 {
 	Point *point = makePoint();
 	point->setLocation(x, y);
@@ -44,7 +44,7 @@ Point *DrawablesFactory::makePoint(double x, double y)
 	return point;
 }
 
-Line *DrawablesFactory::makeLine(Point *startPoint, Point *endPoint)
+Line *Factory::makeLine(Point *startPoint, Point *endPoint)
 {
 	Line *line = new Line(startPoint, endPoint);
 	line->setBrush(this->defaultBrush);
@@ -53,7 +53,7 @@ Line *DrawablesFactory::makeLine(Point *startPoint, Point *endPoint)
 	return line;
 }
 
-Circle *DrawablesFactory::makeCircle(Point *centerPoint)
+Circle *Factory::makeCircle(Point *centerPoint)
 {
 	Circle *circle = new Circle(centerPoint);
 	circle->setBrush(this->defaultBrush);
@@ -63,7 +63,7 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint)
 }
 
 
-Circle *DrawablesFactory::makeCircle(Point *centerPoint, double radius)
+Circle *Factory::makeCircle(Point *centerPoint, double radius)
 {
 	Circle *circle = makeCircle(centerPoint);
 	circle->setRadius(radius);
@@ -71,7 +71,7 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, double radius)
 	return circle;
 }
 
-Circle *DrawablesFactory::makeCircle(Point *centerPoint, Point *liesOn)
+Circle *Factory::makeCircle(Point *centerPoint, Point *liesOn)
 {
 	Circle *circle = makeCircle(centerPoint);
 	circle->setRelationLiesOn(liesOn);
@@ -79,7 +79,7 @@ Circle *DrawablesFactory::makeCircle(Point *centerPoint, Point *liesOn)
 	return circle;
 }
 
-Label *DrawablesFactory::makeLabel(QPointF location)
+Label *Factory::makeLabel(QPointF location)
 {
 	Label *label = new Label(location);
 	label->setPen(this->defaultPen);
@@ -92,7 +92,7 @@ Label *DrawablesFactory::makeLabel(QPointF location)
 	return label;
 }
 
-Label *DrawablesFactory::makeLabel(QPointF location, QString text)
+Label *Factory::makeLabel(QPointF location, QString text)
 {
 	Label *label = new Label(location, text);
 	label->setPen(this->defaultPen);
@@ -107,7 +107,7 @@ Label *DrawablesFactory::makeLabel(QPointF location, QString text)
 
 //----------     dimension creation     ---------
 
-LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line)
+LineLengthDimension *Factory::makeLineLengthDimension(Line *line)
 {
 	LineLengthDimension *dimension = new LineLengthDimension(line);
 	dimension->setPen(this->defaultPen);
@@ -120,7 +120,7 @@ LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line)
 	return dimension;
 }
 
-LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, double length)
+LineLengthDimension *Factory::makeLineLengthDimension(Line *line, double length)
 {
 	LineLengthDimension *dimension = makeLineLengthDimension(line);
 	dimension->setLineLength(length);
@@ -128,7 +128,7 @@ LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, doubl
 	return dimension;
 }
 
-LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, double length, double distanceFromLine)
+LineLengthDimension *Factory::makeLineLengthDimension(Line *line, double length, double distanceFromLine)
 {
 	LineLengthDimension *dimension = makeLineLengthDimension(line, length);
 	dimension->setDistanceFromLine(distanceFromLine);
@@ -136,7 +136,7 @@ LineLengthDimension *DrawablesFactory::makeLineLengthDimension(Line *line, doubl
 	return dimension;
 }
 
-LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[])
+LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[])
 {
 	LinesAngleDimension *dimension = new LinesAngleDimension(lines);
 	dimension->setPen(this->defaultPen);
@@ -149,7 +149,7 @@ LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[])
 	return dimension;
 }
 
-LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], double distanceFromCenter)
+LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[], double distanceFromCenter)
 {
 	LinesAngleDimension *dimension = makeLinesAngleDimension(lines);
 	dimension->setDistanceFromCenter(distanceFromCenter);
@@ -157,7 +157,7 @@ LinesAngleDimension *DrawablesFactory::makeLinesAngleDimension(Line *lines[], do
 	return dimension;
 }
 
-CircleRadiusDimension *DrawablesFactory::makeCircleRadiusDimension(Circle *circle)
+CircleRadiusDimension *Factory::makeCircleRadiusDimension(Circle *circle)
 {
 	CircleRadiusDimension *dimension = new CircleRadiusDimension(circle);
 	dimension->setPen(this->defaultPen);
@@ -170,7 +170,7 @@ CircleRadiusDimension *DrawablesFactory::makeCircleRadiusDimension(Circle *circl
 	return dimension;
 }
 
-CirclesRadiusDifferenceDimension *DrawablesFactory::makeCirclesRadiusDifferenceDimension(Circle *circles[])
+CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(Circle *circles[])
 {
 	CirclesRadiusDifferenceDimension *dimension = new CirclesRadiusDifferenceDimension(circles);
 	dimension->setPen(this->defaultPen);
@@ -185,7 +185,7 @@ CirclesRadiusDifferenceDimension *DrawablesFactory::makeCirclesRadiusDifferenceD
 
 //----------     object managment     ---------
 
-void DrawablesFactory::addDrawable(DrawableObject *object)
+void Factory::addDrawable(DrawableObject *object)
 {
 	object->setPen(this->defaultPen);
 	object->setBrush(this->defaultBrush);
@@ -202,13 +202,13 @@ void DrawablesFactory::addDrawable(DrawableObject *object)
 	}
 }
 
-void DrawablesFactory::tryDeleteDrawable(DrawableObject *object)
+void Factory::tryDeleteDrawable(DrawableObject *object)
 {
 	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 		deleteDrawable(object);
 }
 
-void DrawablesFactory::deleteDrawable(DrawableObject *object)
+void Factory::deleteDrawable(DrawableObject *object)
 {
 	removeDrawable(object);
 
@@ -219,7 +219,7 @@ void DrawablesFactory::deleteDrawable(DrawableObject *object)
 	}
 }
 
-void DrawablesFactory::removeDrawable(DrawableObject *object)
+void Factory::removeDrawable(DrawableObject *object)
 {
 	if(objectList->contains(object))
 		this->objectList->removeAll(object);
@@ -227,7 +227,7 @@ void DrawablesFactory::removeDrawable(DrawableObject *object)
 		this->scene->removeItem(object);
 }
 
-void DrawablesFactory::deleteAll()
+void Factory::deleteAll()
 {
 	foreach(DrawableObject *item, *this->objectList)
 	{
@@ -243,7 +243,7 @@ void DrawablesFactory::deleteAll()
 
 //----------     _     ---------
 
-DrawablesFactory::DrawablesFactory(QBrush *defaultBrush,
+Factory::Factory(QBrush *defaultBrush,
 								   QPen *defaultPen,
 								   QVector<DrawableObject*> *objectList,
 								   QVector<DrawableObject*> *staticObjectsList,
