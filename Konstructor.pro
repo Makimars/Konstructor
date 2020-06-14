@@ -39,7 +39,6 @@ SOURCES += \
 \
     src/ClassRepository/2D/QGraphicsViewUserInput.cpp \
 \
-    src/ClassRepository/2D/Tools/Tool.cpp \
     src/ClassRepository/2D/Tools/DimensionTool.cpp \
     src/ClassRepository/2D/Tools/CircleTool.cpp \
     src/ClassRepository/2D/Tools/RectangleTool.cpp \

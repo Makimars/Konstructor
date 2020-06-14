@@ -4,12 +4,11 @@
 #include "../Factory.h"
 #include <QKeyEvent>
 
-class Tool : public QObject
+class Tool
 {
-	Q_OBJECT
 public:
-	virtual void click(DrawableObject *clickedObject, Point *mousePoint){}
-	virtual void resetTool();
+	virtual void click(DrawableObject *clickedObject, Point *mousePoint) = 0;
+	virtual void resetTool() = 0;
 
 	//getters and setters
 	QBrush *getCurrentBrush() const;
@@ -17,16 +16,18 @@ public:
 	QPen *getCurrentPen() const;
 	void setCurrentPen(QPen *value);
 
-private:
-
 protected:
-	Tool();
-
 	Factory *objectFactory;
 
 	QBrush *currentBrush;
 	QPen *currentPen;
 
 };
+
+inline QBrush *Tool::getCurrentBrush() const { return currentBrush; }
+inline void Tool::setCurrentBrush(QBrush *value) { currentBrush = value; }
+inline QPen *Tool::getCurrentPen() const { return currentPen; }
+inline void Tool::setCurrentPen(QPen *value) { currentPen = value; }
+
 
 #endif // TOOL_H
