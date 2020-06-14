@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "src/ClassRepository/2D/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
+#include "src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
 #include "../Item.h"
 
 namespace Space {

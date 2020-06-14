@@ -35,31 +35,31 @@ SOURCES += \
     src/ClassRepository/Settings.cpp \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
 \
-    src/ClassRepository/2D/Factory.cpp \
-    src/ClassRepository/2D/QGraphicsViewUserInput.cpp \
+    src/ClassRepository/Plane/Factory.cpp \
+    src/ClassRepository/Plane/QGraphicsViewUserInput.cpp \
 \
-    src/ClassRepository/2D/Tools/DimensionTool.cpp \
-    src/ClassRepository/2D/Tools/CircleTool.cpp \
-    src/ClassRepository/2D/Tools/RectangleTool.cpp \
-    src/ClassRepository/2D/Tools/LabelTool.cpp \
-    src/ClassRepository/2D/Tools/LineTool.cpp \
+    src/ClassRepository/Plane/Tools/DimensionTool.cpp \
+    src/ClassRepository/Plane/Tools/CircleTool.cpp \
+    src/ClassRepository/Plane/Tools/RectangleTool.cpp \
+    src/ClassRepository/Plane/Tools/LabelTool.cpp \
+    src/ClassRepository/Plane/Tools/LineTool.cpp \
 \
-    src/ClassRepository/2D/Drawables/DrawableObject.cpp \
-    src/ClassRepository/2D/Drawables/Circle.cpp \
-    src/ClassRepository/2D/Drawables/Line.cpp \
-    src/ClassRepository/2D/Drawables/Point.cpp \
-    src/ClassRepository/2D/Drawables/Label.cpp \
+    src/ClassRepository/Plane/Drawables/DrawableObject.cpp \
+    src/ClassRepository/Plane/Drawables/Circle.cpp \
+    src/ClassRepository/Plane/Drawables/Line.cpp \
+    src/ClassRepository/Plane/Drawables/Point.cpp \
+    src/ClassRepository/Plane/Drawables/Label.cpp \
 \
-    src/ClassRepository/2D/Drawables/Dimensions/CircleRadiusDimension.cpp \
-    src/ClassRepository/2D/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
-    src/ClassRepository/2D/Drawables/Dimensions/LineLengthDimension.cpp \
-    src/ClassRepository/2D/Drawables/Dimensions/LinesAngleDimension.cpp \
+    src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.cpp \
+    src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
+    src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
+    src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
 \
-    src/ClassRepository/3D/Item.cpp \
-    src/ClassRepository/3D/Mesh.cpp \
-    src/ClassRepository/3D/Transform3D.cpp \
+    src/ClassRepository/Space/Item.cpp \
+    src/ClassRepository/Space/Mesh.cpp \
+    src/ClassRepository/Space/Transform3D.cpp \
 \
-    src/ClassRepository/3D/Tools/DrawTool.cpp
+    src/ClassRepository/Space/Tools/DrawTool.cpp
 
 HEADERS += \
     src/MainWindow.h \
@@ -72,35 +72,35 @@ HEADERS += \
     src/ClassRepository/Settings.h \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
 \
-    src/ClassRepository/2D/Factory.h \
-    src/ClassRepository/2D/UserInputRequester.h \
-    src/ClassRepository/2D/QGraphicsViewUserInput.h \
+    src/ClassRepository/Plane/Factory.h \
+    src/ClassRepository/Plane/UserInputRequester.h \
+    src/ClassRepository/Plane/QGraphicsViewUserInput.h \
 \
-    src/ClassRepository/2D/Tools/Tool.h \
-    src/ClassRepository/2D/Tools/LineTool.h \
-    src/ClassRepository/2D/Tools/CircleTool.h \
-    src/ClassRepository/2D/Tools/RectangleTool.h \
-    src/ClassRepository/2D/Tools/DimensionTool.h \
-    src/ClassRepository/2D/Tools/LabelTool.h \
+    src/ClassRepository/Plane/Tools/Tool.h \
+    src/ClassRepository/Plane/Tools/LineTool.h \
+    src/ClassRepository/Plane/Tools/CircleTool.h \
+    src/ClassRepository/Plane/Tools/RectangleTool.h \
+    src/ClassRepository/Plane/Tools/DimensionTool.h \
+    src/ClassRepository/Plane/Tools/LabelTool.h \
 \
-    src/ClassRepository/2D/Drawables/DrawableObject.h \
-    src/ClassRepository/2D/Drawables/Circle.h \
-    src/ClassRepository/2D/Drawables/Line.h \
-    src/ClassRepository/2D/Drawables/Point.h \
-    src/ClassRepository/2D/Drawables/Label.h \
+    src/ClassRepository/Plane/Drawables/DrawableObject.h \
+    src/ClassRepository/Plane/Drawables/Circle.h \
+    src/ClassRepository/Plane/Drawables/Line.h \
+    src/ClassRepository/Plane/Drawables/Point.h \
+    src/ClassRepository/Plane/Drawables/Label.h \
 \
-    src/ClassRepository/2D/Drawables/Dimensions/CircleRadiusDimension.h \
-    src/ClassRepository/2D/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
-    src/ClassRepository/2D/Drawables/Dimensions/LineLengthDimension.h \
-    src/ClassRepository/2D/Drawables/Dimensions/LinesAngleDimension.h \
+    src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.h \
+    src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
+    src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.h \
+    src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.h \
 \
-    src/ClassRepository/3D/Item.h \
-    src/ClassRepository/3D/Mesh.h \
-    src/ClassRepository/3D/Transform3D.h \
-    src/ClassRepository/3D/Vertex.h \
+    src/ClassRepository/Space/Item.h \
+    src/ClassRepository/Space/Mesh.h \
+    src/ClassRepository/Space/Transform3D.h \
+    src/ClassRepository/Space/Vertex.h \
 \
-    src/ClassRepository/3D/Tools/Tool.h \
-    src/ClassRepository/3D/Tools/DrawTool.h
+    src/ClassRepository/Space/Tools/Tool.h \
+    src/ClassRepository/Space/Tools/DrawTool.h
 
 FORMS += \
     src/MainWindow.ui \

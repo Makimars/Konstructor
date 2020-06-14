@@ -1,5 +1,13 @@
 #include "View3DWidget.h"
 
+//create coloured triangle
+std::vector<Vertex> triangles_vertexes2 = {
+	VERTEX_1, VERTEX_2, VERTEX_TOP,
+	VERTEX_2, VERTEX_0, VERTEX_TOP,
+	VERTEX_0, VERTEX_1, VERTEX_TOP,
+	VERTEX_2, VERTEX_1, VERTEX_0,
+};
+
 View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 {
 	QSurfaceFormat format;
@@ -14,6 +22,9 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 
 	Item *item = new Item(QVector<DrawableObject*>(), QPointF(), QVector3D());
 	objectsInSpace.append(item);
+
+	//trial
+	mesh.setVertexes(triangles_vertexes2);
 
 	setFocus();
 }
@@ -61,6 +72,9 @@ void View3DWidget::initializeGL()
 	worldToCamera = program.uniformLocation("worldToCamera");
 	cameraToView = program.uniformLocation("cameraToView");
 
+	//trial
+	mesh.initializeGl(&program, modelToWorld);
+
 	foreach (Item *item, objectsInSpace)
 	{
 		item->initializeGl(&program, modelToWorld);
@@ -82,6 +96,9 @@ void View3DWidget::paintGL()
 	program.bind();
 	program.setUniformValue(worldToCamera, 1/*Camera.toMatrix*/);
 	program.setUniformValue(cameraToView, projection);
+
+	//trial
+	mesh.render(&program);
 
 	foreach (Item *item, objectsInSpace)
 	{

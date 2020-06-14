@@ -4,7 +4,16 @@
 #include "Mesh.h"
 #include "Transform3D.h"
 
-#include "src/ClassRepository/2D/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
+#include "src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
+
+
+
+//triangle
+#define VERTEX_0 Vertex( QVector3D( 0.0f,  0.0f,  -0.5f), QVector3D( 1.0f, 0.0f, 0.0f ) )
+#define VERTEX_1 Vertex( QVector3D( -0.5f,  0.0f,  0.5f), QVector3D( 0.0f, 1.0f, 0.0f ) )
+#define VERTEX_2 Vertex( QVector3D( 0.5f,  0.0f,  0.5f), QVector3D( 0.0f, 0.0f, 1.0f ) )
+#define VERTEX_TOP Vertex( QVector3D( 0.0f,  1.0f,  0.0f), QVector3D( 1.0f, 1.0f, 1.0f ) )
+
 
 class Item
 {

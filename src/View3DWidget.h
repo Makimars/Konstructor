@@ -19,6 +19,8 @@ private:
 	QMatrix4x4 projection;
 	QOpenGLShaderProgram program;
 
+	Mesh mesh;
+
 	// Shader Information
 	int modelToWorld;
 	int worldToCamera;
