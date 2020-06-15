@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    src/ClassRepository/Space/Camera.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
     src/SettingsDialog.cpp \
@@ -56,12 +57,12 @@ SOURCES += \
     src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
 \
     src/ClassRepository/Space/Item.cpp \
-    src/ClassRepository/Space/Mesh.cpp \
     src/ClassRepository/Space/Transform3D.cpp \
 \
     src/ClassRepository/Space/Tools/DrawTool.cpp
 
 HEADERS += \
+    src/ClassRepository/Space/Camera.h \
     src/MainWindow.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
@@ -95,7 +96,6 @@ HEADERS += \
     src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.h \
 \
     src/ClassRepository/Space/Item.h \
-    src/ClassRepository/Space/Mesh.h \
     src/ClassRepository/Space/Transform3D.h \
     src/ClassRepository/Space/Vertex.h \
 \

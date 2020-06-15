@@ -14,7 +14,19 @@ Item::Item(QVector<DrawableObject*> sketchObjects, QPointF planePosition, QVecto
 	generateVertexes();
 }
 
+void Item::setVector(std::vector<Vertex*> vector, int itemIndex)
+{
+	vertexes = vector;
+	this->itemIndex = itemIndex;
+
+	for(int i = 0; i < vertexData.size(); i++)
+		*vertexes[i] = vertexData[i];
+}
+
 void Item::generateVertexes()
 {
-	mesh.setVertexes(triangles_vertexes);
+	vertexData = triangles_vertexes;
+
+
+	vertexes.reserve(size());
 }

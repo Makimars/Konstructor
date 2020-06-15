@@ -5,9 +5,13 @@
 #include <QOpenGLShaderProgram>
 #include <QFrame>
 #include <QMouseEvent>
+#include <QOpenGLFunctions>
+#include <QOpenGLBuffer>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLVertexArrayObject>
 
-#include "ClassRepository/3D/Tools/DrawTool.h"
-#include "ClassRepository/3D/Mesh.h"
+#include "ClassRepository/Space/Tools/DrawTool.h"
+#include "ClassRepository/Space/Camera.h"
 
 class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 {
@@ -18,8 +22,11 @@ private:
 	QVector<Item*> objectsInSpace;
 	QMatrix4x4 projection;
 	QOpenGLShaderProgram program;
+	Camera camera;
 
-	Mesh mesh;
+	std::vector<Vertex> vertexData;
+	QOpenGLBuffer vertexBuffer;
+	QOpenGLVertexArrayObject vertexBufferObject;
 
 	// Shader Information
 	int modelToWorld;
