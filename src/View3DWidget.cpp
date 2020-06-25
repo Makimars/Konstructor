@@ -158,7 +158,7 @@ void View3DWidget::setTool(int tool)
 		this->selectedTool->resetTool();
 	switch(tool)
 	{
-		case Global::Tools::Draw:
+		case Global::Tools::DrawTool:
 			this->selectedTool = DrawTool::getInstance();
 			break;
 		default:

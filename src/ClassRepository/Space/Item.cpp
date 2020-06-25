@@ -52,7 +52,7 @@ void Item::convertToIntermediate(QVector<TransferPoint*> *transferPoints, QVecto
 	//generate points
 	foreach (DrawableObject *obj, sketchObjects)
 	{
-		if(obj->getType() == Global::Type_Point)
+		if(obj->getType() == Global::Point)
 		{
 			Point *point = dynamic_cast<Point*>(obj);
 
@@ -63,7 +63,7 @@ void Item::convertToIntermediate(QVector<TransferPoint*> *transferPoints, QVecto
 	//generate lines from Drawable lines
 	foreach (DrawableObject *obj, sketchObjects)
 	{
-		if(obj->getType() == Global::Type_Line)
+		if(obj->getType() == Global::Line)
 		{
 			Line *line = dynamic_cast<Line*>(obj);
 

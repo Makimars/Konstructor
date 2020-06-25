@@ -66,25 +66,25 @@ void ViewWidget::loadFromFile(QString file)
 
 		switch(QVariant::fromValue(type).toInt())
 		{
-			case Global::Type_Point:
+			case Global::Point:
 				createdObj = new Point();
 				break;
-			case Global::Type_Line:
+			case Global::Line:
 				createdObj = new Line();
 				break;
-			case Global::Type_Circle:
+			case Global::Circle:
 				createdObj = new Circle();
 				break;
-			case Global::Type_Label:
+			case Global::Label:
 				createdObj = new Label();
 				break;
-			case Global::Type_LineLengthDimension:
+			case Global::LineLengthDimension:
 				createdObj = new LineLengthDimension();
 				break;
-			case Global::Type_LineAngleDimension:
+			case Global::LineAngleDimension:
 				createdObj = new LinesAngleDimension();
 				break;
-			case Global::Type_CircleRadiusDimension:
+			case Global::CircleRadiusDimension:
 				createdObj = new CircleRadiusDimension();
 				break;
 			default:
@@ -285,7 +285,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 
 	DrawableObject *snapped = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
 	if(snapped != nullptr)
-		if(snapped->getType() == Global::Type_Point)
+		if(snapped->getType() == Global::Point)
 			this->mousePoint->setLocation(dynamic_cast<Point*>(snapped)->getLocation());
 
 	//draging plane
@@ -337,19 +337,19 @@ void ViewWidget::setTool(int tool)
 		this->selectedTool->resetTool();
 	switch(tool)
 	{
-		case Global::Tools::Line:
+		case Global::Tools::LineTool:
 			this->selectedTool = LineTool::getInstance();
 			break;
-		case Global::Tools::Circle:
+		case Global::Tools::CircleTool:
 			this->selectedTool = CircleTool::getInstance();
 			break;
-		case Global::Tools::Rectangle:
+		case Global::Tools::RectangleTool:
 			this->selectedTool = RectangleTool::getInstance();
 			break;
-		case Global::Tools::Label:
+		case Global::Tools::LabelTool:
 			this->selectedTool = LabelTool::getInstance();
 			break;
-		case Global::Tools::Dimension:
+		case Global::Tools::DimensionTool:
 			this->selectedTool = DimensionTool::getInstance();
 			break;
 		default:

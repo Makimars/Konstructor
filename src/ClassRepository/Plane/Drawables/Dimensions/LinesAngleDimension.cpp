@@ -1,8 +1,8 @@
 #include "LinesAngleDimension.h"
 
-LinesAngleDimension::LinesAngleDimension() : DrawableObject (Global::Type_LineAngleDimension){}
+LinesAngleDimension::LinesAngleDimension() : DrawableObject (Global::LineAngleDimension){}
 
-LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Global::Type_LineAngleDimension)
+LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Global::LineAngleDimension)
 {
 	this->lines[0] = lines[0];
 	this->lines[1] = lines[1];

@@ -10,31 +10,31 @@ namespace Global
 {
 
 enum Types{
-	Type_Point,
-	Type_Line,
-	Type_Circle,
-	Type_Label,
-	Type_LineLengthDimension,
-	Type_LineAngleDimension,
-	Type_CircleRadiusDimension,
-	Type_CirclesRadiusDifferenceDimension
+	Point,
+	Line,
+	Circle,
+	Label,
+	LineLengthDimension,
+	LineAngleDimension,
+	CircleRadiusDimension,
+	CirclesRadiusDifferenceDimension
 };
 
 enum Tools{
-	None,
-	Line,
-	Circle,
-	Rectangle,
-	Label,
-	Dimension,
-	Draw,
-	Extrusion
+	NoTool,
+	LineTool,
+	CircleTool,
+	RectangleTool,
+	LabelTool,
+	DimensionTool,
+	DrawTool,
+	ExtrusionTool
 };
 
 enum Mode{
-	file,
-	object,
-	draw
+	File,
+	Object,
+	Draw
 };
 
 	//messages

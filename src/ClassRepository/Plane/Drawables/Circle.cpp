@@ -1,8 +1,8 @@
 #include "Circle.h"
 
-Circle::Circle() : DrawableObject (Global::Type_Circle){}
+Circle::Circle() : DrawableObject (Global::Circle){}
 
-Circle::Circle(Point *center_point) : DrawableObject (Global::Type_Circle)
+Circle::Circle(Point *center_point) : DrawableObject (Global::Circle)
 {
 	this->radius = 0;
 	this->centerPoint = center_point;

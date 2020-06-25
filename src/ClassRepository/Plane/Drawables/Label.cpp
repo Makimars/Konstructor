@@ -1,13 +1,13 @@
 #include "Label.h"
 
-Label::Label() : DrawableObject (Global::Type_Label){}
+Label::Label() : DrawableObject (Global::Label){}
 
-Label::Label(QPointF location) : DrawableObject (Global::Type_Label)
+Label::Label(QPointF location) : DrawableObject (Global::Label)
 {
 	this->location = location;
 }
 
-Label::Label(QPointF location, QString text) : DrawableObject (Global::Type_Label)
+Label::Label(QPointF location, QString text) : DrawableObject (Global::Label)
 {
 	this->location = location;
 	this->text = text;

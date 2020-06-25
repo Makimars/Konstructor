@@ -38,7 +38,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 		int object0Type = this->clickedObjects[0]->getType();
 		int object1Type = this->clickedObjects[1]->getType();
 
-		if(object0Type == Global::Type_Line & object1Type == Global::Type_Line)
+		if(object0Type == Global::Line & object1Type == Global::Line)
 		{
 			// two lines
 
@@ -75,7 +75,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 				//two lines distance
 			}
 		}
-		else if(object0Type == Global::Type_Circle & object0Type == Global::Type_Circle)
+		else if(object0Type == Global::Circle & object0Type == Global::Circle)
 		{
 			//two circles
 			Circle *circles[] = {
@@ -104,7 +104,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 	{
 		// second drawable is null
 
-		if(this->clickedObjects[1]->getType() == Global::Type_Line)
+		if(this->clickedObjects[1]->getType() == Global::Line)
 		{
 			//line and place
 
@@ -120,7 +120,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 							)
 				);
 		}
-		else if(this->clickedObjects[1]->getType() == Global::Type_Circle)
+		else if(this->clickedObjects[1]->getType() == Global::Circle)
 		{
 			Circle *circle = dynamic_cast<Circle*>(this->clickedObjects[1]);
 

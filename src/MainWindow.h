@@ -65,6 +65,6 @@ private slots:
 	void setDrawing();
 };
 
-inline void MainWindow::setDrawing(){ swapMode(Global::Mode::draw); }
+inline void MainWindow::setDrawing(){ swapMode(Global::Mode::Draw); }
 
 #endif // MAINWINDOW_H

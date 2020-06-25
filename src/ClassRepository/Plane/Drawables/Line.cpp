@@ -1,9 +1,9 @@
 #include "Line.h"
 
-Line::Line() : DrawableObject (Global::Type_Line){}
+Line::Line() : DrawableObject (Global::Line){}
 
 
-Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Global::Type_Line)
+Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Global::Line)
 {
 	this->startPoint = startPoint;
 	this->endPoint = endPoint;
