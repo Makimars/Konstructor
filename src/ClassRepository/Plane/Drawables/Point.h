@@ -13,8 +13,8 @@ public:
 	QString toFileString() override;
 
     //getters and setters
-	double getX();
-	double getY();
+	double getX() const;
+	double getY() const;
 	QPointF getLocation();
 	void setLocation(QPointF point);
 	void setLocation(double x, double y);
@@ -40,8 +40,8 @@ private:
 };
 
 //inline getters and setters
-inline double Point::getX() { return x; }
-inline double Point::getY() { return y; }
+inline double Point::getX() const { return x; }
+inline double Point::getY() const { return y; }
 inline QPointF Point::getLocation() { return QPointF(x, y); }
 inline void Point::setLocation(QPointF point) { setLocation(point.x(), point.y()); }
 

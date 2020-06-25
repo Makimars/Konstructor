@@ -12,25 +12,18 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 			this, &View3DWidget::addItem
 			);
 
-	//test
-	Item *item = new Item(QVector<DrawableObject*>(), QPointF(), QVector3D());
-	addItem(item);
-
 	setFocus();
 }
 
 void View3DWidget::mousePressEvent(QMouseEvent *event)
 {
+	lastPos = event->pos();
 	QOpenGLWidget::mousePressEvent(event);
-
-	//test
-	Item *item2 = new Item(QVector<DrawableObject*>(), QPointF(), QVector3D());
-	item2->getTransform()->translate(0,1,1);
-	addItem(item2);
 }
 
 void View3DWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+	lastPos = event->pos();
 	QOpenGLWidget::mouseReleaseEvent(event);
 
 	if(this->selectedTool != nullptr)
@@ -41,17 +34,19 @@ void View3DWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	QOpenGLWidget::mouseMoveEvent(event);
 
-	static const float rotSpeed   = 0.5f;
+	static const float rotSpeed   = 0.1f;
 
-	if(event->button() == Qt::RightButton)
+	if(event->buttons() == Qt::RightButton)
 	{
 		// Handle rotations
-		camera.rotate(-rotSpeed * event->x(), Camera::LocalUp);
-		camera.rotate(-rotSpeed * event->y(), camera.right());
+		camera.rotate(rotSpeed * (lastPos.x() - event->x()), Camera::LocalUp);
+		camera.rotate(rotSpeed * (lastPos.y() - event->y()), camera.right());
 
 		// redraw
 		QOpenGLWidget::update();
 	}
+
+	lastPos = event->pos();
 }
 
 void View3DWidget::wheelEvent(QWheelEvent *event)
@@ -154,6 +149,7 @@ void View3DWidget::paintGL()
 	vertexBufferObject.release();
 
 	program.release();
+
 }
 
 void View3DWidget::setTool(int tool)
@@ -190,7 +186,7 @@ void View3DWidget::addItem(Item *item)
 		itemData.push_back(&vertexData[i]);
 	}
 
-	item->setVector(itemData, newItemIndex);
+	item->setVectorReference(itemData, newItemIndex);
 
 	vertexBuffer.bind();
 	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));

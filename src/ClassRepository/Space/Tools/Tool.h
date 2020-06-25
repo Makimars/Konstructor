@@ -1,5 +1,5 @@
-#ifndef TOOL3D_H
-#define TOOL3D_H
+#ifndef SPACETOOL_H
+#define SPACETOOL_H
 
 #include <QObject>
 
@@ -18,4 +18,4 @@ public:
 
 }
 
-#endif // TOOL3D_H
+#endif // SPACETOOL_H

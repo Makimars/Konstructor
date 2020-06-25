@@ -24,6 +24,7 @@ private:
 	QOpenGLShaderProgram program;
 	Camera camera;
 
+	//copy of all vertexes data
 	std::vector<Vertex> vertexData;
 	QOpenGLBuffer vertexBuffer;
 	QOpenGLVertexArrayObject vertexBufferObject;
@@ -35,6 +36,8 @@ private:
 
 	//tools
 	Space::Tool *selectedTool = nullptr;
+
+	QPoint lastPos;
 
 	//events
 	void mousePressEvent(QMouseEvent *event) override;

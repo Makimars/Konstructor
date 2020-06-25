@@ -16,7 +16,7 @@ private:
 	DrawTool();
 	static DrawTool *instance;
 
-	QPointF planePosition;
+	QVector3D planePosition;
 	QVector3D planeVector;
 
 signals:

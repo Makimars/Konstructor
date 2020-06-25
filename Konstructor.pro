@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    src/ClassRepository/Space/Camera.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
     src/SettingsDialog.cpp \
@@ -58,11 +57,14 @@ SOURCES += \
 \
     src/ClassRepository/Space/Item.cpp \
     src/ClassRepository/Space/Transform3D.cpp \
+    src/ClassRepository/Space/Camera.cpp \
+\
+    src/ClassRepository/Space/IntermediateObjects/TransferLine.cpp \
+    src/ClassRepository/Space/IntermediateObjects/TransferPoint.cpp \
 \
     src/ClassRepository/Space/Tools/DrawTool.cpp
 
 HEADERS += \
-    src/ClassRepository/Space/Camera.h \
     src/MainWindow.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
@@ -98,6 +100,10 @@ HEADERS += \
     src/ClassRepository/Space/Item.h \
     src/ClassRepository/Space/Transform3D.h \
     src/ClassRepository/Space/Vertex.h \
+    src/ClassRepository/Space/Camera.h \
+\
+    src/ClassRepository/Space/IntermediateObjects/TransferLine.h \
+    src/ClassRepository/Space/IntermediateObjects/TransferPoint.h \
 \
     src/ClassRepository/Space/Tools/Tool.h \
     src/ClassRepository/Space/Tools/DrawTool.h

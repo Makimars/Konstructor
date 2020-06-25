@@ -9,7 +9,7 @@ DrawTool *DrawTool::getInstance()
 
 void DrawTool::click(QPoint pos)
 {
-	planePosition = QPointF(0,0);
+	planePosition = QVector3D(1,1,1);
 	planeVector = QVector3D(0,0,0);
 	emit requestDrawing();
 }
