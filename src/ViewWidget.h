@@ -7,8 +7,8 @@
 #include <QGraphicsView>
 #include <QScrollBar>
 
-#include "mainwindow.h"
-#include "ClassRepository/Tools/DimensionTool.h"
+#include "MainWindow.h"
+#include "ClassRepository/Plane/Tools/DimensionTool.h"
 
 class ViewWidget : public QGraphicsView
 {
@@ -31,15 +31,15 @@ private:
 	//tools processing
 	Point *mousePoint;
 
-	DrawablesFactory *objectFactory;
+	Factory *objectFactory;
 
 	//tools
-	Tool *selectedTool;
+	Plane::Tool *selectedTool;
 	QPen defaultPen;
 	QBrush defaultBrush;
 
     //object managment
-	QVector<DrawableObject*> *objectsInSketch;
+	QVector<DrawableObject*> objectsInSketch;
 	QVector<DrawableObject*> staticObjects;
 
 	//draging
@@ -59,11 +59,13 @@ private:
 signals:
     void keyPressed(QKeyEvent *event);
 	void showStatusBarMessage(const QString &message, int timeout = 0);
+	void returnDrawing(QVector<DrawableObject*> drawing);
 
 public slots:
-	void setTool(QString toolName);
+	void setTool(int tool);
 	void resetTool();
-
+	void requestDrawing();
+	void finishDrawing();
 };
 
 #endif // DRAWINGWIDGET_H

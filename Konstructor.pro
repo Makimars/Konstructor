@@ -25,63 +25,92 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-    src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
-    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
+    src/MainWindow.cpp \
     src/MessagesManager.cpp \
     src/SettingsDialog.cpp \
+    src/View3DWidget.cpp \
     src/main.cpp \
-    src/mainwindow.cpp \
     src/ViewWidget.cpp \
-    src/ClassRepository/GlobalVariables.cpp \
+\
     src/ClassRepository/Settings.cpp \
-    src/ClassRepository/Drawables/Circle.cpp \
-    src/ClassRepository/Drawables/DrawableObject.cpp \
-    src/ClassRepository/Drawables/Line.cpp \
-    src/ClassRepository/Drawables/Point.cpp \
-    src/ClassRepository/Tools/Tool.cpp \
-    src/ClassRepository/Tools/CircleTool.cpp \
-    src/ClassRepository/Tools/RectangleTool.cpp \
-    src/ClassRepository/Tools/LabelTool.cpp \
-    src/ClassRepository/Tools/LineTool.cpp \
-    src/ClassRepository/DrawablesFactory.cpp \
-    src/ClassRepository/Drawables/Dimensions/LineLengthDimension.cpp \
-    src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.cpp \
-    src/ClassRepository/Tools/DimensionTool.cpp \
-    src/ClassRepository/UserInputRequester.cpp \
-    src/ClassRepository/QGraphicsViewUserInput.cpp \
-    src/ClassRepository/Drawables/Dimensions/CircleRadiusDimension.cpp \
-    src/ClassRepository/Drawables/Label.cpp
+    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
+\
+    src/ClassRepository/Plane/Factory.cpp \
+    src/ClassRepository/Plane/QGraphicsViewUserInput.cpp \
+\
+    src/ClassRepository/Plane/Tools/DimensionTool.cpp \
+    src/ClassRepository/Plane/Tools/CircleTool.cpp \
+    src/ClassRepository/Plane/Tools/RectangleTool.cpp \
+    src/ClassRepository/Plane/Tools/LabelTool.cpp \
+    src/ClassRepository/Plane/Tools/LineTool.cpp \
+\
+    src/ClassRepository/Plane/Drawables/DrawableObject.cpp \
+    src/ClassRepository/Plane/Drawables/Circle.cpp \
+    src/ClassRepository/Plane/Drawables/Line.cpp \
+    src/ClassRepository/Plane/Drawables/Point.cpp \
+    src/ClassRepository/Plane/Drawables/Label.cpp \
+\
+    src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.cpp \
+    src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
+    src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
+    src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
+\
+    src/ClassRepository/Space/Item.cpp \
+    src/ClassRepository/Space/Transform3D.cpp \
+    src/ClassRepository/Space/Camera.cpp \
+\
+    src/ClassRepository/Space/IntermediateObjects/TransferLine.cpp \
+    src/ClassRepository/Space/IntermediateObjects/TransferPoint.cpp \
+\
+    src/ClassRepository/Space/Tools/DrawTool.cpp
 
 HEADERS += \
-    src/ClassRepository/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
-    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
+    src/MainWindow.h \
     src/MessagesManager.h \
     src/SettingsDialog.h \
-    src/mainwindow.h \
+    src/View3DWidget.h \
     src/ViewWidget.h \
+\
     src/ClassRepository/GlobalVariables.h \
     src/ClassRepository/Settings.h \
-    src/ClassRepository/Drawables/Circle.h \
-    src/ClassRepository/Drawables/DrawableObject.h \
-    src/ClassRepository/Drawables/Line.h \
-    src/ClassRepository/Drawables/Point.h \
-    src/ClassRepository/Tools/Tool.h \
-    src/ClassRepository/Tools/LineTool.h \
-    src/ClassRepository/Tools/CircleTool.h \
-    src/ClassRepository/Tools/RectangleTool.h \
-    src/ClassRepository/Tools/LabelTool.h \
-    src/ClassRepository/DrawablesFactory.h \
-    src/ClassRepository/Drawables/Dimensions/LineLengthDimension.h \
-    src/ClassRepository/Drawables/Dimensions/LinesAngleDimension.h \
-    src/ClassRepository/Tools/DimensionTool.h \
-    src/ClassRepository/UserInputRequester.h \
-    src/ClassRepository/QGraphicsViewUserInput.h \
-    src/ClassRepository/Drawables/Dimensions/CircleRadiusDimension.h \
-    src/ClassRepository/Drawables/Label.h
+    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
+\
+    src/ClassRepository/Plane/Factory.h \
+    src/ClassRepository/Plane/UserInputRequester.h \
+    src/ClassRepository/Plane/QGraphicsViewUserInput.h \
+\
+    src/ClassRepository/Plane/Tools/Tool.h \
+    src/ClassRepository/Plane/Tools/LineTool.h \
+    src/ClassRepository/Plane/Tools/CircleTool.h \
+    src/ClassRepository/Plane/Tools/RectangleTool.h \
+    src/ClassRepository/Plane/Tools/DimensionTool.h \
+    src/ClassRepository/Plane/Tools/LabelTool.h \
+\
+    src/ClassRepository/Plane/Drawables/DrawableObject.h \
+    src/ClassRepository/Plane/Drawables/Circle.h \
+    src/ClassRepository/Plane/Drawables/Line.h \
+    src/ClassRepository/Plane/Drawables/Point.h \
+    src/ClassRepository/Plane/Drawables/Label.h \
+\
+    src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.h \
+    src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
+    src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.h \
+    src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.h \
+\
+    src/ClassRepository/Space/Item.h \
+    src/ClassRepository/Space/Transform3D.h \
+    src/ClassRepository/Space/Vertex.h \
+    src/ClassRepository/Space/Camera.h \
+\
+    src/ClassRepository/Space/IntermediateObjects/TransferLine.h \
+    src/ClassRepository/Space/IntermediateObjects/TransferPoint.h \
+\
+    src/ClassRepository/Space/Tools/Tool.h \
+    src/ClassRepository/Space/Tools/DrawTool.h
 
 FORMS += \
-    src/SettingsDialog.ui \
-    src/mainwindow.ui
+    src/MainWindow.ui \
+    src/SettingsDialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -90,3 +119,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     CodeStyle.md
+
+RESOURCES += \
+    shaders.qrc

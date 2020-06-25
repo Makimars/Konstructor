@@ -17,15 +17,14 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->defaultBrush.setColor(Qt::black);
 
 	this->sketchScene = new QGraphicsScene(this);
-	this->objectsInSketch = new QVector<DrawableObject*>;
 
-	DrawablesFactory::initialise(&this->defaultBrush,
+	Factory::initialise(&this->defaultBrush,
 								 &this->defaultPen,
-								 this->objectsInSketch,
+								 &this->objectsInSketch,
 								 &this->staticObjects,
 								 this->sketchScene
 								 );
-	this->objectFactory = DrawablesFactory::getInstance();
+	this->objectFactory = Factory::getInstance();
 
 	this->mousePoint = this->objectFactory->makePoint();
 
@@ -67,25 +66,25 @@ void ViewWidget::loadFromFile(QString file)
 
 		switch(QVariant::fromValue(type).toInt())
 		{
-			case Type_Point:
+			case Global::Type_Point:
 				createdObj = new Point();
 				break;
-			case Type_Line:
+			case Global::Type_Line:
 				createdObj = new Line();
 				break;
-			case Type_Circle:
+			case Global::Type_Circle:
 				createdObj = new Circle();
 				break;
-			case Type_Label:
+			case Global::Type_Label:
 				createdObj = new Label();
 				break;
-			case Type_LineLengthDimension:
+			case Global::Type_LineLengthDimension:
 				createdObj = new LineLengthDimension();
 				break;
-			case Type_LineAngleDimension:
+			case Global::Type_LineAngleDimension:
 				createdObj = new LinesAngleDimension();
 				break;
-			case Type_CircleRadiusDimension:
+			case Global::Type_CircleRadiusDimension:
 				createdObj = new CircleRadiusDimension();
 				break;
 			default:
@@ -116,11 +115,11 @@ void ViewWidget::saveToFile(QString path)
 	QFile targetFile(path);
 	if(targetFile.open(QIODevice::WriteOnly))
 	{
-		for(int i = 0; i < this->objectsInSketch->length(); i++)
+		for(int i = 0; i < this->objectsInSketch.length(); i++)
 		{
 			targetFile.write(
 						this->objectsInSketch
-						->at(i)
+						.at(i)
 						->toFileString()
 						.toLatin1() + "\n"
 						);
@@ -286,7 +285,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 
 	DrawableObject *snapped = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
 	if(snapped != nullptr)
-		if(snapped->getType() == Type_Point)
+		if(snapped->getType() == Global::Type_Point)
 			this->mousePoint->setLocation(dynamic_cast<Point*>(snapped)->getLocation());
 
 	//draging plane
@@ -332,25 +331,25 @@ void ViewWidget::keyPressEvent(QKeyEvent *event)
 
 //----------	tools    ----------
 
-void ViewWidget::setTool(QString toolName)
+void ViewWidget::setTool(int tool)
 {
 	if(this->selectedTool != nullptr)
 		this->selectedTool->resetTool();
-	switch(Global::toolNames.lastIndexOf(toolName))
+	switch(tool)
 	{
-		case LINE_TOOL:
+		case Global::Tools::Line:
 			this->selectedTool = LineTool::getInstance();
 			break;
-		case CIRCLE_TOOL:
+		case Global::Tools::Circle:
 			this->selectedTool = CircleTool::getInstance();
 			break;
-		case RECTANGLE_TOOL:
+		case Global::Tools::Rectangle:
 			this->selectedTool = RectangleTool::getInstance();
 			break;
-		case LABEL_TOOL:
+		case Global::Tools::Label:
 			this->selectedTool = LabelTool::getInstance();
 			break;
-		case DIMENSION_TOOL:
+		case Global::Tools::Dimension:
 			this->selectedTool = DimensionTool::getInstance();
 			break;
 		default:
@@ -363,4 +362,14 @@ void ViewWidget::resetTool()
 {
 	if(this->selectedTool != nullptr)
 		this->selectedTool->resetTool();
+}
+
+void ViewWidget::requestDrawing()
+{
+	newFile();
+}
+
+void ViewWidget::finishDrawing()
+{
+	emit returnDrawing(this->objectsInSketch);
 }
