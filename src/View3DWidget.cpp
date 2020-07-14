@@ -95,7 +95,7 @@ void View3DWidget::keyPressEvent(QKeyEvent *event)
 void View3DWidget::initializeGL()
 {
 	initializeOpenGLFunctions();
-	glEnable(GL_CULL_FACE);
+	//glEnable(GL_CULL_FACE);
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
 	program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/simple.vert");

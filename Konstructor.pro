@@ -25,6 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    include/delaunator/delaunator.cpp \
+\
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
     src/PopUpMessage.cpp \
@@ -66,6 +68,8 @@ SOURCES += \
     src/ClassRepository/Space/Tools/DrawTool.cpp
 
 HEADERS += \
+    include/delaunator/delaunator.h \
+\
     src/MainWindow.h \
     src/MessagesManager.h \
     src/PopUpMessage.h \
@@ -119,9 +123,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-DISTFILES += \
-    CodeStyle.md
 
 RESOURCES += \
     shaders.qrc

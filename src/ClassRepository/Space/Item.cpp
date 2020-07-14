@@ -90,11 +90,40 @@ void Item::assignNeigbors(QVector<TransferPoint*> *transferPoints, QVector<Trans
 std::vector<Vertex> Item::triangularize(QVector<TransferPoint*> *transferPoints)
 {
 	//generate vertexData from transferPoints
-	std::vector<Vertex> planeVertexes;
-	foreach(TransferPoint *point, *transferPoints)
+
+	std::vector<double> coordinates;
+	for(int i = 0; i < transferPoints->count(); i++)
 	{
-		//100 -> from mm to m
-		planeVertexes.push_back(Vertex(QVector3D(point->getX()/100,point->getY()/100,0)));
+		coordinates.push_back(transferPoints->at(i)->getX());
+		coordinates.push_back(transferPoints->at(i)->getY());
+	}
+
+		/* x0, y0, x1, y1, ... */
+		std::vector<double> coords = {-1, 1, 1, 1, 1, -1, -1, -1};
+
+		//triangulation happens here
+		delaunator::Delaunator dc(coords);
+
+	delaunator::Delaunator d(coordinates);
+	std::vector<Vertex> planeVertexes;
+
+	for(std::size_t i = 0; i < d.triangles.size(); i+=3)
+	{
+		planeVertexes.push_back(Vertex(QVector3D(
+			d.coords[2 * d.triangles[i]],
+			d.coords[2 * d.triangles[i] + 1],
+			0
+		)));
+		planeVertexes.push_back(Vertex(QVector3D(
+			d.coords[2 * d.triangles[i + 1]],
+			d.coords[2 * d.triangles[i + 1] + 1],
+			0
+		)));
+		planeVertexes.push_back(Vertex(QVector3D(
+			d.coords[2 * d.triangles[i + 2]],
+			d.coords[2 * d.triangles[i + 2] + 1],
+			0
+		)));
 	}
 
 	return planeVertexes;

@@ -2,7 +2,11 @@
 
 TransferPoint *TransferPoint::fromDrawablePoint(Point *point)
 {
-	return new TransferPoint(point->getX(), point->getY(), point);
+	return new TransferPoint(
+				point->getX() / Settings::planeToSpaceRatio,
+				point->getY() / Settings::planeToSpaceRatio,
+				point
+				);
 }
 
 TransferPoint::TransferPoint(){}

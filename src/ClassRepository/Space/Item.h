@@ -3,6 +3,7 @@
 
 #include "Vertex.h"
 #include "Transform3D.h"
+#include "include/delaunator/delaunator.h"
 
 #include "IntermediateObjects/TransferLine.h"
 

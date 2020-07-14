@@ -29,3 +29,4 @@ QKeySequence Settings::quitApp(Qt::CTRL + Qt::Key_Q);
 QString Settings::userProjectRoot = QDir::homePath();
 QLocale Settings::locals(QLocale::English, QLocale::UnitedKingdom);
 AngleUnits Settings::angleUnits = AngleUnits::degrees;
+int Settings::planeToSpaceRatio = 100;
