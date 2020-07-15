@@ -7,18 +7,6 @@ DrawTool *DrawTool::getInstance()
 	return instance;
 }
 
-void DrawTool::click(QPoint pos)
-{
-	planePosition = QVector3D(1,1,1);
-	planeVector = QVector3D(0,0,0);
-	emit requestDrawing();
-}
-
-void DrawTool::resetTool()
-{
-
-}
-
 DrawTool::DrawTool()
 {
 
@@ -26,6 +14,14 @@ DrawTool::DrawTool()
 
 void DrawTool::recieveDrawing(QVector<DrawableObject*> drawing)
 {
-	Item *item = new Item(drawing, planePosition, planeVector);
-	emit addItem(item);
+	QTreeWidgetItem *item = emit getPlane();
+
+	if(Space::Plane *plane = dynamic_cast<Space::Plane*>(item))
+	{
+		if(drawing.size() > 0)
+		{
+			Item *item = new Item(drawing, plane);
+			emit addItem(item);
+		}
+	}
 }

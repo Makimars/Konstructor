@@ -50,6 +50,7 @@ public:
 	static QLocale locals;
 	static AngleUnits angleUnits;
 
+	static int planeToSpaceRatio;
 
 private:
 	Settings();

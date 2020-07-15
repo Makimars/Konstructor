@@ -1,19 +1,12 @@
 #include "Item.h"
 
-//create coloured triangle
-std::vector<Vertex> triangles_vertexes = {
-	VERTEX_1, VERTEX_2, VERTEX_TOP,
-	VERTEX_2, VERTEX_0, VERTEX_TOP,
-	VERTEX_0, VERTEX_1, VERTEX_TOP,
-	VERTEX_2, VERTEX_1, VERTEX_0,
-};
-
-Item::Item(QVector<DrawableObject*> sketchObjects, QVector3D planePosition, QVector3D planeVector)
+Item::Item(QVector<DrawableObject*> sketchObjects, Space::Plane *plane)
 {
 	this->sketchObjects = sketchObjects;
-	this->planePosition = planePosition;
-	this->planeVector = planeVector;
-	generateVertexes(planePosition, planeVector);
+	this->basePlane = plane;
+	generateVertexes(plane);
+
+	plane->addChild(this);
 }
 
 void Item::setVectorReference(std::vector<Vertex*> vector, int itemIndex)
@@ -26,7 +19,7 @@ void Item::setVectorReference(std::vector<Vertex*> vector, int itemIndex)
 		*vertexes[i] = vertexData[i];
 }
 
-void Item::generateVertexes(QVector3D planePosition, QVector3D planeVector)
+void Item::generateVertexes(Space::Plane *plane)
 {
 	vertexData.clear();
 	QVector<TransferPoint*> transferPoints;
@@ -42,7 +35,7 @@ void Item::generateVertexes(QVector3D planePosition, QVector3D planeVector)
 	std::vector<Vertex> planeVertexes = triangularize(&transferPoints);
 
 	//convert to space
-	vertexData = pointsToSpaceVertexes(planeVertexes, planePosition, planeVector);
+	vertexData = pointsToSpaceVertexes(planeVertexes, plane);
 
 	vertexes.reserve(size());
 }
@@ -98,12 +91,6 @@ std::vector<Vertex> Item::triangularize(QVector<TransferPoint*> *transferPoints)
 		coordinates.push_back(transferPoints->at(i)->getY());
 	}
 
-		/* x0, y0, x1, y1, ... */
-		std::vector<double> coords = {-1, 1, 1, 1, 1, -1, -1, -1};
-
-		//triangulation happens here
-		delaunator::Delaunator dc(coords);
-
 	delaunator::Delaunator d(coordinates);
 	std::vector<Vertex> planeVertexes;
 
@@ -126,10 +113,15 @@ std::vector<Vertex> Item::triangularize(QVector<TransferPoint*> *transferPoints)
 		)));
 	}
 
+	for(int i = 0; i < planeVertexes.size(); i++)
+	{
+		planeVertexes.at(i).setColor(QVector3D(0.1, 0.1, 0.1));
+	}
+
 	return planeVertexes;
 }
 
-std::vector<Vertex> Item::pointsToSpaceVertexes(std::vector<Vertex> planeVertexes, QVector3D planePosition, QVector3D planeVector)
+std::vector<Vertex> Item::pointsToSpaceVertexes(std::vector<Vertex> planeVertexes, Space::Plane *plane)
 {
 	//generate Space vertexes from points
 
@@ -139,7 +131,7 @@ std::vector<Vertex> Item::pointsToSpaceVertexes(std::vector<Vertex> planeVertexe
 	foreach(Vertex vertex, planeVertexes)
 	{
 		QVector3D pos = vertex.position();
-		vertex.setPosition(pos + planePosition);
+		vertex.setPosition(pos + plane->getPosition());
 	}
 
 	return planeVertexes;

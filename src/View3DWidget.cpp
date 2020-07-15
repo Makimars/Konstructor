@@ -25,9 +25,6 @@ void View3DWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	lastPos = event->pos();
 	QOpenGLWidget::mouseReleaseEvent(event);
-
-	if(this->selectedTool != nullptr)
-		this->selectedTool->click(event->pos());
 }
 
 void View3DWidget::mouseMoveEvent(QMouseEvent *event)
@@ -152,29 +149,10 @@ void View3DWidget::paintGL()
 
 }
 
-void View3DWidget::setTool(int tool)
-{
-	if(this->selectedTool != nullptr)
-		this->selectedTool->resetTool();
-	switch(tool)
-	{
-		case Global::Tools::DrawTool:
-			this->selectedTool = DrawTool::getInstance();
-			break;
-		default:
-			this->selectedTool = nullptr;
-			break;
-	}
-}
-
-void View3DWidget::resetTool()
-{
-	if(this->selectedTool != nullptr)
-		this->selectedTool->resetTool();
-}
-
 void View3DWidget::addItem(Item *item)
 {
+	item->setText(0, "object " + QString::number(objectsInSpace.size()));
+
 	objectsInSpace.append(item);
 
 	int newItemIndex = vertexData.size();

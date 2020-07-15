@@ -27,7 +27,6 @@ enum Tools{
 	RectangleTool,
 	LabelTool,
 	DimensionTool,
-	DrawTool,
 	ExtrusionTool
 };
 

@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	this->ui->setupUi(this);
 	this->settingsDialog = new SettingsDialog();
+	MessagesManager::init();
 
 	loadSettings();
 
@@ -20,6 +21,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->ui->quitButton->setShortcut(Settings::quitApp);
 
 	this->swapMode(Global::Mode::Object);
+	this->ui->objectsTree->setHeaderLabel("origin");
+	this->ui->objectsTree->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+
+	Space::Plane *basePlane = new Space::Plane();
+	basePlane->setVector(QVector3D(0,0,0));
+	basePlane->setPosition(QVector3D(0,0,0));
+	basePlane->setText(0, "origin plane");
+	this->ui->objectsTree->addTopLevelItem(basePlane);
 
 	connect(this->ui->view2D, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
@@ -28,33 +37,23 @@ MainWindow::MainWindow(QWidget *parent) :
 			this->ui->statusBar, &QStatusBar::showMessage
 			);
 
-
+	//tools
 	connect(this, &MainWindow::setTool,
 			this->ui->view2D, &ViewWidget::setTool
-			);
-	connect(this, &MainWindow::setTool,
-			this->ui->view3D, &View3DWidget::setTool
 			);
 	connect(this, &MainWindow::resetTool,
 			this->ui->view2D, &ViewWidget::resetTool
 			);
 
-	connect(this, &MainWindow::resetTool,
-			this->ui->view3D, &View3DWidget::resetTool
-			);
-
-
-	connect(DrawTool::getInstance(), &DrawTool::requestDrawing,
-			this->ui->view2D, &ViewWidget::requestDrawing
-			);
-	connect(DrawTool::getInstance(), &DrawTool::requestDrawing,
-			this, &MainWindow::setDrawing
-			);
+	//drawing
 	connect(this->ui->view2D, &ViewWidget::returnDrawing,
 			DrawTool::getInstance(), &DrawTool::recieveDrawing
 			);
 	connect(this, &MainWindow::finishDrawing,
 			this->ui->view2D, &ViewWidget::finishDrawing
+			);
+	connect(DrawTool::getInstance(), &DrawTool::getPlane,
+			this, &MainWindow::getSelectedPlane
 			);
 }
 
@@ -77,8 +76,6 @@ void MainWindow::refreshTools(int tool)
 		this->ui->labelButton->setChecked(false);
 	if(tool != Global::Tools::DimensionTool)
 		this->ui->dimensionButton->setChecked(false);
-	if(tool != Global::Tools::DrawTool)
-		this->ui->drawButton->setChecked(false);
 	if(tool != Global::Tools::ExtrusionTool)
 		this->ui->extrusionButton->setChecked(false);
 
@@ -216,23 +213,22 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 
 }
 
-void MainWindow::on_topTabMenu_currentChanged(int index)
-{
-	swapMode(index);
-}
-
 void MainWindow::on_drawButton_clicked()
 {
-	if(this->ui->drawButton->isChecked())
-		refreshTools(Global::Tools::DrawTool);
-	else
-		refreshTools(Global::Tools::NoTool);
+	swapMode(Global::Mode::Draw);
+	this->ui->view2D->requestDrawing();
 }
 
 void MainWindow::on_finishDrawingButton_clicked()
 {
-	emit finishDrawing();
+	if(this->ui->objectsTree->currentItem() == nullptr)
+	{
+		if(MessagesManager::showOkCancelForm("No plane selected") == QDialog::Rejected)
+			return;
+	}
+
 	swapMode(Global::Mode::Object);
+	emit finishDrawing();
 }
 
 void MainWindow::swapMode(int index)
@@ -249,4 +245,9 @@ void MainWindow::swapMode(int index)
 			ui->view3D->hide();
 			break;
 	}
+}
+
+QTreeWidgetItem *MainWindow::getSelectedPlane()
+{
+	return this->ui->objectsTree->currentItem();
 }

@@ -15,6 +15,7 @@
 
 class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 {
+	Q_OBJECT
 public:
 	View3DWidget(QFrame *frame);
 
@@ -34,9 +35,6 @@ private:
 	int worldToCamera;
 	int cameraToView;
 
-	//tools
-	Space::Tool *selectedTool = nullptr;
-
 	QPoint lastPos;
 
 	//events
@@ -51,8 +49,6 @@ private:
 	void paintGL() override;
 
 public slots:
-	void setTool(int tool);
-	void resetTool();
 	void addItem(Item *item);
 };
 

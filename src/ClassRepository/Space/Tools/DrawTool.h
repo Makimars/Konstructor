@@ -1,27 +1,23 @@
 #ifndef DRAWTOOL_H
 #define DRAWTOOL_H
 
-#include "Tool.h"
+#include "src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
+#include "../Item.h"
 
-class DrawTool : public Space::Tool
+class DrawTool : public QObject
 {
 	Q_OBJECT
 public:
 	static DrawTool *getInstance();
 
-	void click(QPoint pos) override;
-	void resetTool() override;
-
 private:
 	DrawTool();
 	static DrawTool *instance;
 
-	QVector3D planePosition;
-	QVector3D planeVector;
-
 signals:
 	void requestDrawing();
 	void addItem(Item *item);
+	QTreeWidgetItem *getPlane();
 
 public slots:
 	void recieveDrawing(QVector<DrawableObject*> drawing);

@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
+    src/ClassRepository/Space/Plane.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
     src/PopUpMessage.cpp \
@@ -70,6 +71,7 @@ SOURCES += \
 HEADERS += \
     include/delaunator/delaunator.h \
 \
+    src/ClassRepository/Space/Plane.h \
     src/MainWindow.h \
     src/MessagesManager.h \
     src/PopUpMessage.h \
@@ -111,7 +113,6 @@ HEADERS += \
     src/ClassRepository/Space/IntermediateObjects/TransferLine.h \
     src/ClassRepository/Space/IntermediateObjects/TransferPoint.h \
 \
-    src/ClassRepository/Space/Tools/Tool.h \
     src/ClassRepository/Space/Tools/DrawTool.h
 
 FORMS += \

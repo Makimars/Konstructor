@@ -3,30 +3,27 @@
 
 #include "Vertex.h"
 #include "Transform3D.h"
+#include "Plane.h"
 #include "include/delaunator/delaunator.h"
 
 #include "IntermediateObjects/TransferLine.h"
 
-//triangle
-#define VERTEX_0 Vertex( QVector3D( 0.0f,  0.0f,  -5.5f), QVector3D( 1.0f, 0.0f, 0.0f ) )
-#define VERTEX_1 Vertex( QVector3D( -0.5f,  0.0f,  -4.5f), QVector3D( 0.0f, 1.0f, 0.0f ) )
-#define VERTEX_2 Vertex( QVector3D( 0.5f,  0.0f,  -4.5f), QVector3D( 0.0f, 0.0f, 1.0f ) )
-#define VERTEX_TOP Vertex( QVector3D( 0.0f,  1.0f,  -5.0f), QVector3D( 1.0f, 1.0f, 1.0f ) )
-
-
-class Item
+class Item : public QTreeWidgetItem
 {
 public:
-	Item(QVector<DrawableObject*> sketchObjects, QVector3D planePosition, QVector3D planeVector);
+	Item(QVector<DrawableObject*> sketchObjects, Space::Plane *plane);
 
 	Transform3D *getTransform();
-
 	void setVectorReference(std::vector<Vertex*> vector, int itemIndex);
 
 	int getItemIndex();
 	int size();
 
 private:
+	QString name;
+	Space::Plane *basePlane;
+	QVector<Space::Plane*> planes;
+
 	Transform3D transform;
 
 	//pointers to the global buffer
@@ -35,16 +32,14 @@ private:
 	std::vector<Vertex> vertexData;
 
 	QVector<DrawableObject*> sketchObjects;
-	QVector3D planePosition;
-	QVector3D planeVector;
 
 	int itemIndex;
 
-	void generateVertexes(QVector3D planePosition, QVector3D planeVector);
+	void generateVertexes(Space::Plane *plane);
 		void convertToIntermediate(QVector<TransferPoint*> *transferPoints, QVector<TransferLine*> *transferLines);
 		void assignNeigbors(QVector<TransferPoint*> *transferPoints, QVector<TransferLine*> *transferLines);
 		std::vector<Vertex> triangularize(QVector<TransferPoint*> *transferPoints);
-		std::vector<Vertex> pointsToSpaceVertexes(std::vector<Vertex> planeVertexes, QVector3D planePosition, QVector3D planeVector);
+		std::vector<Vertex> pointsToSpaceVertexes(std::vector<Vertex> planeVertexes, Space::Plane *plane);
 };
 
 inline Transform3D *Item::getTransform() { return &transform; }

@@ -4,9 +4,11 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QFile>
+#include <QTreeWidgetItem>
 
 #include "SettingsDialog.h"
 #include "ClassRepository/GlobalVariables.h"
+#include "ClassRepository/Space/Plane.h"
 
 namespace Ui {
 class MainWindow;
@@ -59,12 +61,9 @@ private slots:
 	void on_finishDrawingButton_clicked();
 
 	void viewKeyPress(QKeyEvent *event);
-	void on_topTabMenu_currentChanged(int index);
 
 	void swapMode(int index);
-	void setDrawing();
+	QTreeWidgetItem *getSelectedPlane();
 };
-
-inline void MainWindow::setDrawing(){ swapMode(Global::Mode::Draw); }
 
 #endif // MAINWINDOW_H
