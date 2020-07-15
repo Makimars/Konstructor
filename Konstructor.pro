@@ -28,6 +28,7 @@ SOURCES += \
     include/delaunator/delaunator.cpp \
 \
     src/ClassRepository/Space/Plane.cpp \
+    src/ExtrusionDialog.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
     src/PopUpMessage.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     include/delaunator/delaunator.h \
 \
     src/ClassRepository/Space/Plane.h \
+    src/ExtrusionDialog.h \
     src/MainWindow.h \
     src/MessagesManager.h \
     src/PopUpMessage.h \
@@ -116,6 +118,7 @@ HEADERS += \
     src/ClassRepository/Space/Tools/DrawTool.h
 
 FORMS += \
+    src/ExtrusionDialog.ui \
     src/MainWindow.ui \
     src/PopUpMessage.ui \
     src/SettingsDialog.ui

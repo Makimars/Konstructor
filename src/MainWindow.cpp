@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	this->ui->setupUi(this);
 	this->settingsDialog = new SettingsDialog();
+	this->extrusionDialog = new ExtrusionDialog();
 	MessagesManager::init();
 
 	loadSettings();
@@ -250,4 +251,9 @@ void MainWindow::swapMode(int index)
 QTreeWidgetItem *MainWindow::getSelectedPlane()
 {
 	return this->ui->objectsTree->currentItem();
+}
+
+void MainWindow::on_extrusionButton_clicked()
+{
+	extrusionDialog->exec(this->ui->objectsTree->currentItem());
 }

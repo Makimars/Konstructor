@@ -7,6 +7,8 @@
 #include <QTreeWidgetItem>
 
 #include "SettingsDialog.h"
+#include "ExtrusionDialog.h"
+
 #include "ClassRepository/GlobalVariables.h"
 #include "ClassRepository/Space/Plane.h"
 
@@ -25,6 +27,7 @@ public:
 private:
 	Ui::MainWindow *ui;
 	SettingsDialog *settingsDialog;
+	ExtrusionDialog *extrusionDialog;
 
 	//settings
 	void loadSettings();
@@ -64,6 +67,7 @@ private slots:
 
 	void swapMode(int index);
 	QTreeWidgetItem *getSelectedPlane();
+	void on_extrusionButton_clicked();
 };
 
 #endif // MAINWINDOW_H
