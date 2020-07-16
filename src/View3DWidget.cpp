@@ -15,6 +15,26 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	setFocus();
 }
 
+void View3DWidget::allocateNewItem(Item *item)
+{
+	int newItemIndex = vertexData.size();
+	vertexData.resize(newItemIndex + item->size());
+
+	std::vector<Vertex*> itemData;
+	for(int i = newItemIndex; i < vertexData.size(); i++)
+	{
+		itemData.push_back(&vertexData[i]);
+	}
+
+	item->setVectorReference(itemData, newItemIndex);
+
+	vertexBuffer.bind();
+	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));
+	vertexBuffer.release();
+
+	update();
+}
+
 void View3DWidget::mousePressEvent(QMouseEvent *event)
 {
 	lastPos = event->pos();
@@ -140,7 +160,7 @@ void View3DWidget::paintGL()
 	vertexBufferObject.bind();
 	foreach (Item *item, objectsInSpace)
 	{
-		program.setUniformValue(modelToWorld, item->getTransform()->toMatrix());
+		//program.setUniformValue(modelToWorld, item->getTransform()->toMatrix());
 		glDrawArrays(GL_TRIANGLES, item->getItemIndex(), item->size());
 	}
 	vertexBufferObject.release();
@@ -154,21 +174,19 @@ void View3DWidget::addItem(Item *item)
 	item->setText(0, "object " + QString::number(objectsInSpace.size()));
 
 	objectsInSpace.append(item);
+	connect(item, &Item::sizeChanged,
+			this, &View3DWidget::reallocateMemory
+			);
 
-	int newItemIndex = vertexData.size();
-	vertexData.resize(newItemIndex + item->size());
+	allocateNewItem(item);
+}
 
-	std::vector<Vertex*> itemData;
-	for(int i = newItemIndex; i < vertexData.size(); i++)
+void View3DWidget::reallocateMemory()
+{
+	vertexData.clear();
+
+	foreach(Item *item, objectsInSpace)
 	{
-		itemData.push_back(&vertexData[i]);
+		allocateNewItem(item);
 	}
-
-	item->setVectorReference(itemData, newItemIndex);
-
-	vertexBuffer.bind();
-	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));
-	vertexBuffer.release();
-
-	update();
 }

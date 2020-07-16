@@ -369,6 +369,12 @@ void ViewWidget::requestDrawing()
 	newFile();
 }
 
+void ViewWidget::requestDrawing(QString sketch)
+{
+	newFile();
+	loadFromFile(sketch);
+}
+
 void ViewWidget::finishDrawing()
 {
 	emit returnDrawing(this->objectsInSketch);

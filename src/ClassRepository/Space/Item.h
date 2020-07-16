@@ -4,45 +4,40 @@
 #include "Vertex.h"
 #include "Transform3D.h"
 #include "Plane.h"
-#include "include/delaunator/delaunator.h"
 
-#include "IntermediateObjects/TransferLine.h"
+#include "src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
 
-class Item : public QTreeWidgetItem
+class Item : public QObject, public QTreeWidgetItem
 {
+	Q_OBJECT
 public:
 	Item(QVector<DrawableObject*> sketchObjects, Space::Plane *plane);
 
-	Transform3D *getTransform();
 	void setVectorReference(std::vector<Vertex*> vector, int itemIndex);
-
+	void setPlaneVertexes(std::vector<Vertex> vertexes);
+	QString getSketch();
 	int getItemIndex();
 	int size();
 
 private:
-	QString name;
 	Space::Plane *basePlane;
 	QVector<Space::Plane*> planes;
-
-	Transform3D transform;
+	QString sketch;
 
 	//pointers to the global buffer
 	std::vector<Vertex*> vertexes;
 	//original vertex data
 	std::vector<Vertex> vertexData;
 
-	QVector<DrawableObject*> sketchObjects;
-
 	int itemIndex;
 
-	void generateVertexes(Space::Plane *plane);
-		void convertToIntermediate(QVector<TransferPoint*> *transferPoints, QVector<TransferLine*> *transferLines);
-		void assignNeigbors(QVector<TransferPoint*> *transferPoints, QVector<TransferLine*> *transferLines);
-		std::vector<Vertex> triangularize(QVector<TransferPoint*> *transferPoints);
-		std::vector<Vertex> pointsToSpaceVertexes(std::vector<Vertex> planeVertexes, Space::Plane *plane);
+	std::vector<Vertex> pointsToSpaceVertexes(std::vector<Vertex> planeVertexes);
+
+signals:
+	void sizeChanged();
 };
 
-inline Transform3D *Item::getTransform() { return &transform; }
+inline QString Item::getSketch() { return sketch; }
 inline int Item::getItemIndex() { return itemIndex; }
 inline int Item::size() { return vertexData.size(); }
 

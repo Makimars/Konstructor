@@ -47,14 +47,14 @@ MainWindow::MainWindow(QWidget *parent) :
 			);
 
 	//drawing
-	connect(this->ui->view2D, &ViewWidget::returnDrawing,
-			DrawTool::getInstance(), &DrawTool::recieveDrawing
+	connect(this, &MainWindow::setTargetItem,
+			DrawTool::getInstance(), &DrawTool::recieveTargetItem
 			);
 	connect(this, &MainWindow::finishDrawing,
 			this->ui->view2D, &ViewWidget::finishDrawing
 			);
-	connect(DrawTool::getInstance(), &DrawTool::getPlane,
-			this, &MainWindow::getSelectedPlane
+	connect(this->ui->view2D, &ViewWidget::returnDrawing,
+			DrawTool::getInstance(), &DrawTool::recieveDrawing
 			);
 }
 
@@ -201,25 +201,6 @@ void MainWindow::on_dimensionButton_clicked()
 		refreshTools(Global::Tools::NoTool);
 }
 
-void MainWindow::viewKeyPress(QKeyEvent *event)
-{
-	switch (event->key()) {
-		case Qt::Key::Key_Escape:
-			refreshTools(Global::Tools::NoTool);
-			break;
-		case Qt::Key::Key_Enter:
-			emit resetTool();
-			break;
-	}
-
-}
-
-void MainWindow::on_drawButton_clicked()
-{
-	swapMode(Global::Mode::Draw);
-	this->ui->view2D->requestDrawing();
-}
-
 void MainWindow::on_finishDrawingButton_clicked()
 {
 	if(this->ui->objectsTree->currentItem() == nullptr)
@@ -230,6 +211,42 @@ void MainWindow::on_finishDrawingButton_clicked()
 
 	swapMode(Global::Mode::Object);
 	emit finishDrawing();
+}
+
+//-----    object tab   -----
+
+void MainWindow::on_extrusionButton_clicked()
+{
+	extrusionDialog->exec(this->ui->objectsTree->currentItem());
+}
+
+//-----    misc slots    -----
+
+void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column)
+{
+	swapMode(Global::Mode::Draw);
+	emit setTargetItem(item);
+
+	if(Item *existingItem = dynamic_cast<Item*>(item))
+	{
+		this->ui->view2D->requestDrawing(existingItem->getSketch());
+	}
+	else
+	{
+		this->ui->view2D->requestDrawing();
+	}
+}
+
+void MainWindow::viewKeyPress(QKeyEvent *event)
+{
+	switch (event->key()) {
+		case Qt::Key::Key_Escape:
+			refreshTools(Global::Tools::NoTool);
+			break;
+		case Qt::Key::Key_Enter:
+			emit resetTool();
+			break;
+	}
 }
 
 void MainWindow::swapMode(int index)
@@ -246,14 +263,4 @@ void MainWindow::swapMode(int index)
 			ui->view3D->hide();
 			break;
 	}
-}
-
-QTreeWidgetItem *MainWindow::getSelectedPlane()
-{
-	return this->ui->objectsTree->currentItem();
-}
-
-void MainWindow::on_extrusionButton_clicked()
-{
-	extrusionDialog->exec(this->ui->objectsTree->currentItem());
 }

@@ -26,6 +26,8 @@ public:
     //axis
 	Line *getAxisLine(int xDirection, int yDirection);
 
+	void requestDrawing();
+	void requestDrawing(QString sketch);
 private:
 	QGraphicsScene *sketchScene;
 
@@ -65,7 +67,6 @@ signals:
 public slots:
 	void setTool(int tool);
 	void resetTool();
-	void requestDrawing();
 	void finishDrawing();
 };
 

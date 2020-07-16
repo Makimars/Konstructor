@@ -37,6 +37,8 @@ private:
 
 	QPoint lastPos;
 
+	void allocateNewItem(Item *item);
+
 	//events
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
@@ -50,6 +52,7 @@ private:
 
 public slots:
 	void addItem(Item *item);
+	void reallocateMemory();
 };
 
 #endif // VIEW3DWIDGET_H

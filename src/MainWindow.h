@@ -40,6 +40,7 @@ signals:
 	void resetTool();
 
 	void finishDrawing();
+	void setTargetItem(QTreeWidgetItem *item);
 
 private slots:
 
@@ -59,15 +60,14 @@ private slots:
 	void on_rectangleButton_clicked();
 	void on_labelButton_clicked();
 	void on_dimensionButton_clicked();
-		//object tab
-	void on_drawButton_clicked();
 	void on_finishDrawingButton_clicked();
+		//object tab
+	void on_extrusionButton_clicked();
+
+	void on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column);
 
 	void viewKeyPress(QKeyEvent *event);
-
 	void swapMode(int index);
-	QTreeWidgetItem *getSelectedPlane();
-	void on_extrusionButton_clicked();
 };
 
 #endif // MAINWINDOW_H
