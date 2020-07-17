@@ -4,10 +4,10 @@ using namespace Space;
 
 Plane::Plane()
 {
-
+	this->setIcon(0, QIcon(":/icons/Plane.png"));
 }
 
-Plane::Plane(QTreeWidgetItem *parent, QVector3D position, QVector3D vector)
+Plane::Plane(QTreeWidgetItem *parent, QVector3D position, QVector3D vector) : Plane()
 {
 	parent->addChild(this);
 	this->position = position;

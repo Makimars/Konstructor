@@ -8,6 +8,7 @@ Item::Item(QVector<DrawableObject*> sketchObjects, Space::Plane *plane)
 
 	this->basePlane = plane;
 
+	this->setIcon(0, QIcon(":/icons/Cube.png"));
 	plane->addChild(this);
 }
 
