@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>882</width>
-    <height>679</height>
+    <height>802</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <locale language="English" country="UnitedKingdom"/>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
     <property name="spacing">
      <number>4</number>
     </property>
@@ -34,9 +34,9 @@
      <number>4</number>
     </property>
     <item>
-     <widget class="QTabWidget" name="topTabMenu">
+     <widget class="QFrame" name="drawFrame">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -50,507 +50,303 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>200</height>
+        <height>16777215</height>
        </size>
       </property>
-      <property name="focusPolicy">
-       <enum>Qt::TabFocus</enum>
-      </property>
-      <property name="locale">
-       <locale language="English" country="UnitedKingdom"/>
-      </property>
-      <property name="currentIndex">
-       <number>1</number>
-      </property>
-      <property name="usesScrollButtons">
-       <bool>true</bool>
-      </property>
-      <widget class="QWidget" name="fileTab">
-       <attribute name="title">
-        <string>File</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="spacing">
-         <number>4</number>
-        </property>
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>4</number>
-        </property>
-        <property name="rightMargin">
-         <number>4</number>
-        </property>
-        <property name="bottomMargin">
-         <number>4</number>
-        </property>
-        <item>
-         <widget class="QToolButton" name="newButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>New</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document-new">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="openButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Open</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document-open">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="shortcut">
-           <string>Ctrl+O</string>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="saveButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Save</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document-save">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="shortcut">
-           <string>Ctrl+S</string>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="saveAsButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Save as</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document-save-as">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="exportButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Export</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document-send">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="printButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Print</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document-print">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="settingsButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Settings</string>
-          </property>
-          <property name="icon">
-           <iconset theme="preferences-system">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="quitButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Quit</string>
-          </property>
-          <property name="icon">
-           <iconset theme="application-exit">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="objectTab">
-       <attribute name="title">
-        <string>Object</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QToolButton" name="extrusionButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Extrusion</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-          <property name="autoRaise">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="drawTab">
-       <attribute name="title">
-        <string>Draw</string>
-       </attribute>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QToolButton" name="lineButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Line</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-          <property name="autoRaise">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="circleButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Circle</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="rectangleButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Rectangle</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="labelButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Label</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="dimensionButton">
-          <property name="text">
-           <string>Dimension</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="finishDrawingButton">
-          <property name="text">
-           <string>Finish</string>
-          </property>
-          <property name="icon">
-           <iconset theme="document">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>32</width>
-            <height>32</height>
-           </size>
-          </property>
-          <property name="checkable">
-           <bool>false</bool>
-          </property>
-          <property name="toolButtonStyle">
-           <enum>Qt::ToolButtonTextUnderIcon</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="frame">
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="spacing">
-        <number>4</number>
-       </property>
-       <property name="leftMargin">
-        <number>4</number>
-       </property>
-       <property name="topMargin">
-        <number>4</number>
-       </property>
-       <property name="rightMargin">
-        <number>4</number>
-       </property>
-       <property name="bottomMargin">
-        <number>4</number>
-       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
-        <widget class="QTreeWidget" name="objectsTree">
-         <property name="maximumSize">
+        <widget class="QToolButton" name="lineButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
           <size>
-           <width>200</width>
-           <height>16777215</height>
+           <width>100</width>
+           <height>0</height>
           </size>
          </property>
-         <column>
-          <property name="text">
-           <string notr="true">1</string>
-          </property>
-         </column>
+         <property name="text">
+          <string>Line</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+         <property name="autoRaise">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="circleButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Circle</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="rectangleButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Rectangle</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="labelButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Label</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="dimensionButton">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Dimension</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="finishDrawingButton">
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Finish</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>32</width>
+           <height>32</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonTextUnderIcon</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QFrame" name="topFrame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>200</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="leftFrame">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QTreeWidget" name="objectsTree">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>300</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <column>
+             <property name="text">
+              <string notr="true">1</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="View3DWidget" name="view3D">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
         </widget>
        </item>
        <item>
@@ -566,19 +362,6 @@
            <width>0</width>
            <height>0</height>
           </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="View3DWidget" name="view3D">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::StrongFocus</enum>
          </property>
         </widget>
        </item>

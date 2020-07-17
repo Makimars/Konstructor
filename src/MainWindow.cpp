@@ -5,31 +5,16 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
+	loadSettings();
+
 	this->ui->setupUi(this);
+	this->setupUi();
+
 	this->settingsDialog = new SettingsDialog();
 	this->extrusionDialog = new ExtrusionDialog();
 	MessagesManager::init();
 
-	loadSettings();
-
-	this->ui->newButton->setShortcut(Settings::newFile);
-	this->ui->openButton->setShortcut(Settings::openFile);
-	this->ui->saveButton->setShortcut(Settings::saveFile);
-	this->ui->saveAsButton->setShortcut(Settings::saveFileAs);
-	this->ui->exportButton->setShortcut(Settings::exportFile);
-	this->ui->printButton->setShortcut(Settings::printFile);
-	this->ui->settingsButton->setShortcut(Settings::openSettings);
-	this->ui->quitButton->setShortcut(Settings::quitApp);
-
 	this->swapMode(Global::Mode::Object);
-	this->ui->objectsTree->setHeaderLabel("origin");
-	this->ui->objectsTree->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
-
-	Space::Plane *basePlane = new Space::Plane();
-	basePlane->setVector(QVector3D(0,0,0));
-	basePlane->setPosition(QVector3D(0,0,0));
-	basePlane->setText(0, "origin plane");
-	this->ui->objectsTree->addTopLevelItem(basePlane);
 
 	connect(this->ui->view2D, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
@@ -63,6 +48,53 @@ MainWindow::~MainWindow()
 	delete this->ui;
 }
 
+void MainWindow::setupUi()
+{
+    QMenuBar *menuBar = new QMenuBar(this->ui->leftFrame);
+	QMenu *fileMenu = menuBar->addMenu(tr("File"));
+    this->ui->leftFrame->layout()->setContentsMargins(4,menuBar->height(),4,4);
+
+	QAction *newAction = fileMenu->addAction(tr("New"));
+	connect(newAction, &QAction::triggered,
+			this, &MainWindow::newFileClicked
+			);
+	QAction *openAction = fileMenu->addAction(tr("Open"));
+	connect(openAction, &QAction::triggered,
+            this, &MainWindow::openFileClicked
+            );
+	QAction *saveAction = fileMenu->addAction(tr("Save"));
+	connect(saveAction, &QAction::triggered,
+            this, &MainWindow::saveFileClicked
+            );
+	QAction *exportAction = fileMenu->addAction(tr("Export"));
+	connect(exportAction, &QAction::triggered,
+            this, &MainWindow::exportFileClicked
+            );
+	QAction *settingsAction = fileMenu->addAction(tr("Settings"));
+	connect(settingsAction, &QAction::triggered,
+            this, &MainWindow::settingsClicked
+            );
+	QAction *QuitAction = fileMenu->addAction(tr("Quit"));
+	connect(QuitAction, &QAction::triggered,
+            this, &MainWindow::quitClicked
+            );
+
+	newAction->setShortcut(Settings::newFile);
+	openAction->setShortcut(Settings::openFile);
+	saveAction->setShortcut(Settings::saveFile);
+	exportAction->setShortcut(Settings::exportFile);
+	settingsAction->setShortcut(Settings::openSettings);
+	QuitAction->setShortcut(Settings::quitApp);
+
+	this->ui->objectsTree->setHeaderHidden(true);
+
+	Space::Plane *basePlane = new Space::Plane();
+	basePlane->setPosition(QVector3D(0,0,0));
+	basePlane->setVector(QVector3D(1,1,1));
+	basePlane->setText(0, "origin plane");
+	this->ui->objectsTree->addTopLevelItem(basePlane);
+}
+
 //----------    Ui handeling    ---------
 
 void MainWindow::refreshTools(int tool)
@@ -77,8 +109,6 @@ void MainWindow::refreshTools(int tool)
 		this->ui->labelButton->setChecked(false);
 	if(tool != Global::Tools::DimensionTool)
 		this->ui->dimensionButton->setChecked(false);
-	if(tool != Global::Tools::ExtrusionTool)
-		this->ui->extrusionButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -100,12 +130,13 @@ void MainWindow::saveSettings()
 
 //-----    file tab    -----
 
-void MainWindow::on_newButton_clicked()
+
+void MainWindow::newFileClicked()
 {
 	this->ui->view2D->newFile();
 }
 
-void MainWindow::on_openButton_clicked()
+void MainWindow::openFileClicked()
 {
 	QString fileName = QFileDialog::getOpenFileName(
 			this,
@@ -122,7 +153,7 @@ void MainWindow::on_openButton_clicked()
 	}
 }
 
-void MainWindow::on_saveButton_clicked()
+void MainWindow::saveFileClicked()
 {
 	QString fileName = QFileDialog::getSaveFileName(
 			this,
@@ -133,27 +164,17 @@ void MainWindow::on_saveButton_clicked()
 	this->ui->view2D->saveToFile(fileName);
 }
 
-void MainWindow::on_saveAsButton_clicked()
+void MainWindow::exportFileClicked()
 {
 
 }
 
-void MainWindow::on_exportButton_clicked()
-{
-
-}
-
-void MainWindow::on_printButton_clicked()
-{
-
-}
-
-void MainWindow::on_settingsButton_clicked()
+void MainWindow::settingsClicked()
 {
 	this->settingsDialog->exec();
 }
 
-void MainWindow::on_quitButton_clicked()
+void MainWindow::quitClicked()
 {
 	this->close();
 }
@@ -213,13 +234,6 @@ void MainWindow::on_finishDrawingButton_clicked()
 	emit finishDrawing();
 }
 
-//-----    object tab   -----
-
-void MainWindow::on_extrusionButton_clicked()
-{
-	extrusionDialog->exec(this->ui->objectsTree->currentItem());
-}
-
 //-----    misc slots    -----
 
 void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column)
@@ -251,16 +265,21 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 
 void MainWindow::swapMode(int index)
 {
-	ui->topTabMenu->setCurrentIndex(index);
 	switch (index)
 	{
 		case Global::Mode::Object:
 			ui->view2D->hide();
+			ui->drawFrame->hide();
+
 			ui->view3D->show();
+            ui->leftFrame->show();
 			break;
 		case Global::Mode::Draw:
 			ui->view2D->show();
+			ui->drawFrame->show();
+
 			ui->view3D->hide();
+            ui->leftFrame->hide();
 			break;
 	}
 }

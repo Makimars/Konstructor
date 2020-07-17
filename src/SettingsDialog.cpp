@@ -44,11 +44,8 @@ void SettingsDialog::on_buttonBox_accepted()
 	Settings::newFile = this->ui->newFileEdit->keySequence();
 	Settings::openFile = this->ui->openFileEdit->keySequence();
 	Settings::saveFile = this->ui->saveFileEdit->keySequence();
-	Settings::saveFileAs = this->ui->saveAsFileEdit->keySequence();
 	Settings::exportFile = this->ui->exportFileEdit->keySequence();
-	Settings::printFile = this->ui->printFileEdit->keySequence();
 	Settings::openSettings = this->ui->settingsEdit->keySequence();
-	Settings::quitApp = this->ui->quitEdit->keySequence();
 }
 
 void SettingsDialog::loadSettings()
@@ -65,9 +62,6 @@ void SettingsDialog::loadSettings()
 	this->ui->newFileEdit->setKeySequence(Settings::newFile);
 	this->ui->openFileEdit->setKeySequence(Settings::openFile);
 	this->ui->saveFileEdit->setKeySequence(Settings::saveFile);
-	this->ui->saveAsFileEdit->setKeySequence(Settings::saveFileAs);
 	this->ui->exportFileEdit->setKeySequence(Settings::exportFile);
-	this->ui->printFileEdit->setKeySequence(Settings::printFile);
 	this->ui->settingsEdit->setKeySequence(Settings::openSettings);
-	this->ui->quitEdit->setKeySequence(Settings::quitApp);
 }

@@ -19,9 +19,7 @@ QMargins Settings::pointMargin(2,2,2,2);
 QKeySequence Settings::newFile(Qt::CTRL + Qt::Key_N);
 QKeySequence Settings::openFile(Qt::CTRL + Qt::Key_O);
 QKeySequence Settings::saveFile(Qt::CTRL + Qt::Key_S);
-QKeySequence Settings::saveFileAs(Qt::CTRL + Qt::SHIFT + Qt::Key_S);
 QKeySequence Settings::exportFile(Qt::CTRL + Qt::Key_E);
-QKeySequence Settings::printFile(Qt::CTRL + Qt::Key_P);
 QKeySequence Settings::openSettings(Qt::CTRL + Qt::SHIFT + Qt::Key_O);
 QKeySequence Settings::quitApp(Qt::CTRL + Qt::Key_Q);
 

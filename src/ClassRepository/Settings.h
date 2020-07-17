@@ -38,9 +38,7 @@ public:
 		newFile,
 		openFile,
 		saveFile,
-		saveFileAs,
 		exportFile,
-		printFile,
 		openSettings,
 		quitApp;
 
