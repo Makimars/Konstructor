@@ -13,12 +13,21 @@ ExtrusionDialog::~ExtrusionDialog()
     delete ui;
 }
 
-int ExtrusionDialog::exec(QTreeWidgetItem *treeItem)
+ExtrusionDialogReturn ExtrusionDialog::exec(Item *item)
 {
-    if(Item *item = dynamic_cast<Item*>(treeItem))
-    {
-        referencedItem = item;
-        return QDialog::exec();
-    }
-    return 0;
+    referencedItem = item;
+
+
+    ExtrusionDialogReturn returnData;
+    returnData.dialogCode = QDialog::exec();
+
+    ExtrusionDirection direction;
+    if(ui->frontButton->isChecked()) direction = ExtrusionDirection::Front;
+    if(ui->frontAndBackButton->isChecked()) direction = ExtrusionDirection::FrontAndBack;
+    if(ui->backButton->isChecked()) direction = ExtrusionDirection::Back;
+    returnData.direction = direction;
+    returnData.length = ui->lengthInput->value();
+    returnData.extrusion = ui->additiveButton->isChecked();
+
+    return returnData;
 }

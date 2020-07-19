@@ -7,6 +7,13 @@
 
 #include "src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
 
+enum ExtrusionDirection
+{
+    Front,
+    FrontAndBack,
+    Back
+};
+
 class Item : public QObject, public QTreeWidgetItem
 {
 	Q_OBJECT
@@ -18,6 +25,8 @@ public:
 	QString getSketch();
 	int getItemIndex();
 	int size();
+
+    void extrude(double length, bool extrusion, ExtrusionDirection direction);
 
 private:
 	Space::Plane *basePlane;

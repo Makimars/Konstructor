@@ -8,6 +8,14 @@ namespace Ui {
 class ExtrusionDialog;
 }
 
+struct ExtrusionDialogReturn
+{
+    double length;
+    bool extrusion;
+    ExtrusionDirection direction;
+    int dialogCode;
+};
+
 class ExtrusionDialog : public QDialog
 {
     Q_OBJECT
@@ -16,7 +24,7 @@ public:
     explicit ExtrusionDialog(QWidget *parent = nullptr);
     ~ExtrusionDialog();
 
-    int exec(QTreeWidgetItem *treeItem);
+    ExtrusionDialogReturn exec(Item *item);
 
 private:
     Ui::ExtrusionDialog *ui;

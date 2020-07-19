@@ -27,7 +27,13 @@ void Item::setPlaneVertexes(std::vector<Vertex> vertexes)
 	vertexData.clear();
 	vertexData = pointsToSpaceVertexes(vertexes);
 	this->vertexes.reserve(size());
-	emit sizeChanged();
+    emit sizeChanged();
+}
+
+void Item::extrude(double length, bool extrusion, ExtrusionDirection direction)
+{
+qDebug() << length;
+qDebug() << extrusion;
 }
 
 std::vector<Vertex> Item::pointsToSpaceVertexes(std::vector<Vertex> planeVertexes)
@@ -43,5 +49,5 @@ std::vector<Vertex> Item::pointsToSpaceVertexes(std::vector<Vertex> planeVertexe
 		vertex.setPosition(pos + basePlane->getPosition());
 	}
 
-	return planeVertexes;
+    return planeVertexes;
 }

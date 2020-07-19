@@ -269,7 +269,9 @@ void MainWindow::openExtrusion()
     if(Item *existingItem = dynamic_cast<Item*>(item))
     {
         this->ui->view2D->requestDrawing(existingItem->getSketch());
-        this->extrusionDialog->exec(item);
+        ExtrusionDialogReturn result = this->extrusionDialog->exec(existingItem);
+
+        existingItem->extrude(result.length, result.extrusion, result.direction);
     }
 }
 
