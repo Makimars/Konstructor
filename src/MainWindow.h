@@ -30,6 +30,11 @@ private:
 	SettingsDialog *settingsDialog;
 	ExtrusionDialog *extrusionDialog;
 
+    QMenu planeContextMenu;
+    QAction drawAction;
+    QMenu objectContextMenu;
+    QAction extrusionAction;
+
 	void setupUi();
 
 	//settings
@@ -65,9 +70,12 @@ private slots:
 	void on_finishDrawingButton_clicked();
 
 	void on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column);
+    void openExtrusion();
+    void openDrawing();
 
 	void viewKeyPress(QKeyEvent *event);
 	void swapMode(int index);
+    void on_objectsTree_customContextMenuRequested(const QPoint &pos);
 };
 
 #endif // MAINWINDOW_H

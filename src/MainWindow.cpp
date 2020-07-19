@@ -50,6 +50,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupUi()
 {
+    //menubar
     QMenuBar *menuBar = new QMenuBar(this->ui->leftFrame);
 	QMenu *fileMenu = menuBar->addMenu(tr("File"));
     this->ui->leftFrame->layout()->setContentsMargins(4,menuBar->height(),4,4);
@@ -86,13 +87,28 @@ void MainWindow::setupUi()
 	settingsAction->setShortcut(Settings::openSettings);
 	QuitAction->setShortcut(Settings::quitApp);
 
+    //object menu
 	this->ui->objectsTree->setHeaderHidden(true);
+    ui->objectsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
 	Space::Plane *basePlane = new Space::Plane();
 	basePlane->setPosition(QVector3D(0,0,0));
 	basePlane->setVector(QVector3D(1,1,1));
 	basePlane->setText(0, "origin plane");
-	this->ui->objectsTree->addTopLevelItem(basePlane);
+    this->ui->objectsTree->addTopLevelItem(basePlane);
+
+    //context menus
+    drawAction.setText(tr("Draw"));
+    connect(&drawAction, &QAction::triggered,
+            this, &MainWindow::openDrawing
+            );
+    planeContextMenu.addAction(&drawAction);
+
+    extrusionAction.setText(tr("Extrude"));
+    connect(&extrusionAction, &QAction::triggered,
+            this, &MainWindow::openExtrusion
+            );
+    objectContextMenu.addAction(&extrusionAction);
 }
 
 //----------    Ui handeling    ---------
@@ -238,17 +254,36 @@ void MainWindow::on_finishDrawingButton_clicked()
 
 void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-	swapMode(Global::Mode::Draw);
-	emit setTargetItem(item);
+    swapMode(Global::Mode::Draw);
+    emit setTargetItem(item);
 
-	if(Item *existingItem = dynamic_cast<Item*>(item))
-	{
-		this->ui->view2D->requestDrawing(existingItem->getSketch());
-	}
-	else
-	{
-		this->ui->view2D->requestDrawing();
-	}
+    if(Item *existingItem = dynamic_cast<Item*>(item))
+    {
+        this->ui->view2D->requestDrawing(existingItem->getSketch());
+    }
+}
+
+void MainWindow::openExtrusion()
+{
+    QTreeWidgetItem *item = ui->objectsTree->currentItem();
+    if(Item *existingItem = dynamic_cast<Item*>(item))
+    {
+        this->ui->view2D->requestDrawing(existingItem->getSketch());
+        this->extrusionDialog->exec(item);
+    }
+}
+
+void MainWindow::openDrawing()
+{
+    QTreeWidgetItem *item = ui->objectsTree->currentItem();
+
+    swapMode(Global::Mode::Draw);
+    emit setTargetItem(item);
+
+    if(Item *existingItem = dynamic_cast<Item*>(item))
+    {
+        this->ui->view2D->requestDrawing(existingItem->getSketch());
+    }
 }
 
 void MainWindow::viewKeyPress(QKeyEvent *event)
@@ -271,6 +306,7 @@ void MainWindow::swapMode(int index)
 			ui->view2D->hide();
 			ui->drawFrame->hide();
 
+            ui->view3D->setFocus();
 			ui->view3D->show();
             ui->leftFrame->show();
 			break;
@@ -282,4 +318,19 @@ void MainWindow::swapMode(int index)
             ui->leftFrame->hide();
 			break;
 	}
+}
+
+void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
+{
+    QModelIndex index = ui->objectsTree->indexAt(pos);
+    if (index.isValid()) {
+        if(dynamic_cast<Item*>(ui->objectsTree->itemAt(pos)))
+        {
+            objectContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
+        }
+        else if (dynamic_cast<Space::Plane*>(ui->objectsTree->itemAt(pos)))
+        {
+            planeContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
+        }
+    }
 }
