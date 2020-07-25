@@ -2,6 +2,11 @@
 
 Point::Point() : DrawableObject(Global::Point){}
 
+Point::Point(double x, double y) : DrawableObject(Global::Point)
+{
+	setLocation(x,y);
+}
+
 //----------	file handling    ----------
 
 void Point::loadVariables(QString input)

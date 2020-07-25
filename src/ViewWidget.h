@@ -67,6 +67,7 @@ signals:
     void keyPressed(QKeyEvent *event);
 	void showStatusBarMessage(const QString &message, int timeout = 0);
 	void returnDrawing(QVector<DrawableObject*> drawing);
+	void mouseMoved(Point *mousePoint);
 
 public slots:
 	void setTool(int tool);

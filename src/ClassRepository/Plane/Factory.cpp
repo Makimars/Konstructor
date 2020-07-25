@@ -183,6 +183,14 @@ CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(
 	return dimension;
 }
 
+void Factory::addToScene(DrawableObject *object)
+{
+	object->setPen(this->defaultPen);
+	object->setBrush(this->defaultBrush);
+
+	scene->addItem(object);
+}
+
 //----------     object managment     ---------
 
 void Factory::addDrawable(DrawableObject *object)

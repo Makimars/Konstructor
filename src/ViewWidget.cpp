@@ -166,6 +166,10 @@ void ViewWidget::initializeTools()
 							&this->defaultBrush,
 							&this->defaultPen
 							  );
+
+	connect(this, &ViewWidget::mouseMoved,
+			RectangleTool::getInstance(), &RectangleTool::mouseMoved
+			);
 }
 
 void ViewWidget::initializeScene()
@@ -291,6 +295,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 
 	//update mouse position
 	this->mousePoint->setLocation(mapToScene(event->pos()));
+	emit mouseMoved(mousePoint);
 
 	DrawableObject *snapped = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
 	if(snapped != nullptr)

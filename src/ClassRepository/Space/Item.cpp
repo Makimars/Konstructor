@@ -10,6 +10,7 @@ Item::Item(QVector<DrawableObject*> sketchObjects, Space::Plane *plane)
 
 	this->setIcon(0, QIcon(":/icons/Cube.png"));
 	plane->addChild(this);
+	plane->setExpanded(true);
 }
 
 void Item::setVectorReference(std::vector<Vertex*> vector, int itemIndex)

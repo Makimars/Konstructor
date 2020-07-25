@@ -6,8 +6,9 @@
 
 namespace Plane {
 
-class Tool
+class Tool : public QObject
 {
+	Q_OBJECT
 public:
 	virtual void click(DrawableObject *clickedObject, Point *mousePoint) = 0;
 	virtual void resetTool() = 0;
@@ -23,7 +24,6 @@ protected:
 
 	QBrush *currentBrush;
 	QPen *currentPen;
-
 };
 
 inline QBrush *Tool::getCurrentBrush() const { return currentBrush; }

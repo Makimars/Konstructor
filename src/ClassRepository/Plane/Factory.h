@@ -35,6 +35,7 @@ public:
 	CirclesRadiusDifferenceDimension *makeCirclesRadiusDifferenceDimension(Circle *circles[2]);
 
 	//object managment
+	void addToScene(DrawableObject *object);
 	/**
 	 * @brief adds drawable to object list and scene
 	 */
