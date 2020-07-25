@@ -10,10 +10,8 @@ This software is linced under EUPL v1.2, other language versions are located in 
 
 ### Drawing
 - arc
-- rectangle
 - better dimensions control
 - fix dimensions collisions
-- save and open sketch to current context
 
 ### Space
 - sketching on basic planes

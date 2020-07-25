@@ -19,15 +19,11 @@ public:
 	~ViewWidget();
 
 	//file operations
-	void newFile();
 	void loadFromFile(QString fileContents);
     void saveToFile(QString file);
 
     //axis
 	Line *getAxisLine(int xDirection, int yDirection);
-
-	void requestDrawing();
-	void requestDrawing(QString sketch);
 private:
 	QGraphicsScene *sketchScene;
 

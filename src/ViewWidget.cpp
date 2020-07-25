@@ -53,11 +53,6 @@ ViewWidget::~ViewWidget()
 	}
 }
 
-void ViewWidget::newFile()
-{
-	this->objectFactory->deleteAll();
-}
-
 //----------	file operations    ----------
 
 void ViewWidget::loadFromFile(QString file)
@@ -378,20 +373,11 @@ void ViewWidget::resetTool()
 		this->selectedTool->resetTool();
 }
 
-void ViewWidget::requestDrawing()
-{
-	newFile();
-}
-
-void ViewWidget::requestDrawing(QString sketch)
-{
-	newFile();
-	loadFromFile(sketch);
-}
-
 void ViewWidget::finishDrawing()
 {
 	emit returnDrawing(this->objectsInSketch);
+
+	objectFactory->deleteAll();
 }
 
 void ViewWidget::customContextMenuRequested(const QPoint &pos)

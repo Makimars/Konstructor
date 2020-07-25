@@ -245,12 +245,9 @@ void Factory::deleteAll()
 {
 	foreach(DrawableObject *item, *this->objectList)
 	{
-		item->removeGeometryUpdates();
+		delete item;
 	}
-	foreach(DrawableObject *item, *this->objectList)
-	{
-		deleteDrawable(item);
-	}
+	objectList->clear();
 	this->idCounter = 0;
 }
 
@@ -258,11 +255,10 @@ void Factory::deleteAll()
 //----------     _     ---------
 
 Factory::Factory(QBrush *defaultBrush,
-								   QPen *defaultPen,
-								   QVector<DrawableObject*> *objectList,
-								   QVector<DrawableObject*> *staticObjectsList,
-								   QGraphicsScene *scene
-								   )
+					QPen *defaultPen,
+					QVector<DrawableObject*> *objectList,
+					QVector<DrawableObject*> *staticObjectsList,
+					QGraphicsScene *scene)
 {
 	this->defaultBrush = defaultBrush;
 	this->defaultPen = defaultPen;

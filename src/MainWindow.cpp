@@ -98,17 +98,13 @@ void MainWindow::setupUi()
     this->ui->objectsTree->addTopLevelItem(basePlane);
 
     //context menus
-    drawAction.setText(tr("Draw"));
-    connect(&drawAction, &QAction::triggered,
-            this, &MainWindow::openDrawing
-            );
+	drawAction.setText(tr("Draw"));
     planeContextMenu.addAction(&drawAction);
 
-    extrusionAction.setText(tr("Extrude"));
-    connect(&extrusionAction, &QAction::triggered,
-            this, &MainWindow::openExtrusion
-            );
-    objectContextMenu.addAction(&extrusionAction);
+	extrusionAction.setText(tr("Extrude"));
+	objectContextMenu.addAction(&extrusionAction);
+	redrawAction.setText(tr("Redraw"));
+	objectContextMenu.addAction(&redrawAction);
 }
 
 //----------    Ui handeling    ---------
@@ -149,7 +145,7 @@ void MainWindow::saveSettings()
 
 void MainWindow::newFileClicked()
 {
-	this->ui->view2D->newFile();
+
 }
 
 void MainWindow::openFileClicked()
@@ -259,33 +255,8 @@ void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int col
 
     if(Item *existingItem = dynamic_cast<Item*>(item))
     {
-        this->ui->view2D->requestDrawing(existingItem->getSketch());
-    }
-}
-
-void MainWindow::openExtrusion()
-{
-    QTreeWidgetItem *item = ui->objectsTree->currentItem();
-    if(Item *existingItem = dynamic_cast<Item*>(item))
-    {
-        this->ui->view2D->requestDrawing(existingItem->getSketch());
-        ExtrusionDialogReturn result = this->extrusionDialog->exec(existingItem);
-
-        existingItem->extrude(result.length, result.extrusion, result.direction);
-    }
-}
-
-void MainWindow::openDrawing()
-{
-    QTreeWidgetItem *item = ui->objectsTree->currentItem();
-
-    swapMode(Global::Mode::Draw);
-    emit setTargetItem(item);
-
-    if(Item *existingItem = dynamic_cast<Item*>(item))
-    {
-        this->ui->view2D->requestDrawing(existingItem->getSketch());
-    }
+		this->ui->view2D->loadFromFile(existingItem->getSketch());
+	}
 }
 
 void MainWindow::viewKeyPress(QKeyEvent *event)
@@ -326,13 +297,58 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 {
     QModelIndex index = ui->objectsTree->indexAt(pos);
     if (index.isValid()) {
-        if(dynamic_cast<Item*>(ui->objectsTree->itemAt(pos)))
+		if(Item *item = dynamic_cast<Item*>(ui->objectsTree->itemAt(pos)))
         {
-            objectContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
+			QAction *selectedAction = objectContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
+			if(selectedAction == &extrusionAction)
+			{
+				ExtrusionDialogReturn result = this->extrusionDialog->exec(item);
+
+				item->extrude(result.length, result.extrusion, result.direction);
+			}
+			else if(selectedAction == &redrawAction)
+			{
+				swapMode(Global::Mode::Draw);
+				emit setTargetItem(item);
+				this->ui->view2D->loadFromFile(item->getSketch());
+			}
         }
-        else if (dynamic_cast<Space::Plane*>(ui->objectsTree->itemAt(pos)))
+		else if(Space::Plane *plane = dynamic_cast<Space::Plane*>(ui->objectsTree->itemAt(pos)))
         {
-            planeContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
+			QAction *selectedAction = planeContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
+			if(selectedAction == &drawAction)
+			{
+				swapMode(Global::Mode::Draw);
+				emit setTargetItem(plane);
+			}
         }
     }
+}
+
+void MainWindow::on_saveSketchButton_clicked()
+{
+	QString fileName = QFileDialog::getSaveFileName(
+			this,
+			Global::saveFile,
+			Settings::userProjectRoot,
+			Global::konstructorSketch + ";;" + Global::allFiles
+			);
+	this->ui->view2D->saveToFile(fileName);
+}
+
+void MainWindow::on_importSketchButton_clicked()
+{
+	QString fileName = QFileDialog::getOpenFileName(
+			this,
+					Global::openFile,
+			Settings::userProjectRoot,
+			Global::konstructorSketch + ";;" + Global::allFiles
+			);
+
+	QFile file(fileName);
+	if(file.exists())
+	{
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+			this->ui->view2D->loadFromFile(file.readAll());
+	}
 }
