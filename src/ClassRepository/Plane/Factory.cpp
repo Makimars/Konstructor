@@ -210,10 +210,10 @@ void Factory::tryDeleteDrawable(DrawableObject *object)
 
 void Factory::deleteDrawable(DrawableObject *object)
 {
-	removeDrawable(object);
-
 	if(object != nullptr)
 	{
+		removeDrawable(object);
+
 		delete object;
 		object = nullptr;
 	}
@@ -221,6 +221,12 @@ void Factory::deleteDrawable(DrawableObject *object)
 
 void Factory::removeDrawable(DrawableObject *object)
 {
+	object->removeGeometryUpdates();
+	for(int i = 0; i < this->objectList->size(); i++)
+	{
+		this->objectList->at(i)->removeGeometryUpdate(object);
+	}
+
 	if(objectList->contains(object))
 		this->objectList->removeAll(object);
 	if(this->scene->items().contains(object))

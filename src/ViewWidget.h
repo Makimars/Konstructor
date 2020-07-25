@@ -31,6 +31,10 @@ public:
 private:
 	QGraphicsScene *sketchScene;
 
+	QMenu contextMenu;
+	QAction constractionalToggle;
+	QAction deleteObjectAction;
+
 	//tools processing
 	Point *mousePoint;
 
@@ -68,6 +72,8 @@ public slots:
 	void setTool(int tool);
 	void resetTool();
 	void finishDrawing();
+
+	void customContextMenuRequested(const QPoint &pos);
 };
 
 #endif // DRAWINGWIDGET_H

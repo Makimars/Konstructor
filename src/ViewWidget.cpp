@@ -4,6 +4,15 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 {
 
 	this->setBackgroundBrush(QBrush(QColor::fromRgb(210,210,210)));
+	this->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
+	connect(this, &QGraphicsView::customContextMenuRequested,
+			this, &ViewWidget::customContextMenuRequested
+			);
+	constractionalToggle.setCheckable(true);
+	constractionalToggle.setText(tr("Constructional"));
+	contextMenu.addAction(&constractionalToggle);
+	deleteObjectAction.setText(tr("Delete"));
+	contextMenu.addAction(&deleteObjectAction);
 
 	this->setAlignment(Qt::AlignCenter);
 	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -208,7 +217,7 @@ void ViewWidget::initializeScene()
 
 	//axis
 	QPen *axisPen = new QPen(Qt::black);
-	axisPen->setWidth(3);
+	axisPen->setWidth(2);
 
 	Point *topPoint = this->objectFactory->makePoint(0, Settings::sketchSize);
 	Point *bottomPoint = this->objectFactory->makePoint(0, -Settings::sketchSize);
@@ -289,7 +298,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 			this->mousePoint->setLocation(dynamic_cast<Point*>(snapped)->getLocation());
 
 	//draging plane
-	if(event->buttons() == Qt::MouseButton::RightButton)
+	if(event->buttons() == Qt::MouseButton::MidButton)
 	{
 		viewport()->setCursor(Qt::CursorShape::ClosedHandCursor);
 
@@ -378,4 +387,22 @@ void ViewWidget::requestDrawing(QString sketch)
 void ViewWidget::finishDrawing()
 {
 	emit returnDrawing(this->objectsInSketch);
+}
+
+void ViewWidget::customContextMenuRequested(const QPoint &pos)
+{
+	if(DrawableObject *obj = dynamic_cast<DrawableObject*>(this->itemAt(pos)))
+	{
+		obj->setHighlight(true);
+		constractionalToggle.setChecked(obj->isConstructional());
+
+		QAction *selectedAction = contextMenu.exec(this->viewport()->mapToGlobal(pos));
+		if(selectedAction == &deleteObjectAction)
+		{
+			objectFactory->deleteDrawable(obj);
+		}
+
+		obj->setIsConstructional(constractionalToggle.isChecked());
+		obj->setHighlight(false);
+	}
 }

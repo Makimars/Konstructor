@@ -122,12 +122,12 @@ void DrawableObject::paint(QPainter *painter,
 {
 	resolveTies();
 
-	if(this->highlight)
-		this->pen->setWidth(2);
-	else
-		this->pen->setWidth(1);
+	QPen currentPen = *pen;
 
-	painter->setPen(*this->pen);
+	if(this->highlight) currentPen.setWidth(pen->width() * 2);
+	if(this->constructional) currentPen.setStyle(Qt::PenStyle::DashLine);
+
+	painter->setPen(currentPen);
 }
 
 //----------     events     ----------
