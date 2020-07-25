@@ -49,5 +49,5 @@ std::vector<Vertex> Item::pointsToSpaceVertexes(std::vector<Vertex> planeVertexe
 		vertex.setPosition(pos + basePlane->getPosition());
 	}
 
-    return planeVertexes;
+	return planeVertexes;
 }

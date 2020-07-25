@@ -3,7 +3,8 @@
 
 #include <vector>
 
-#include "../Item.h"
+#include "../Vertex.h"
+#include "src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
 
 class TransferPoint
 {
@@ -19,6 +20,8 @@ public:
 
 	void addNeighbor(TransferPoint *point);
 	bool isNeighbor(TransferPoint *point);
+
+	Vertex toVertex();
 
 private:
 	double x,y;

@@ -3,7 +3,7 @@
 
 #include "include/delaunator/delaunator.h"
 
-#include "../IntermediateObjects/TransferLine.h"
+#include "../Item.h"
 
 class DrawTool : public QObject
 {

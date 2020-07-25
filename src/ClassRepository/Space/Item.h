@@ -1,11 +1,10 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "Vertex.h"
 #include "Transform3D.h"
 #include "Plane.h"
 
-#include "src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
+#include "IntermediateObjects/TransferLine.h"
 
 enum ExtrusionDirection
 {
@@ -41,6 +40,8 @@ private:
 	int itemIndex;
 
 	std::vector<Vertex> pointsToSpaceVertexes(std::vector<Vertex> planeVertexes);
+
+	std::vector<Vertex> getPolygon(QVector<DrawableObject*> drawing);
 
 signals:
 	void sizeChanged();

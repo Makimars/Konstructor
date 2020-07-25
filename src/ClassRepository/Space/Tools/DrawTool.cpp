@@ -32,7 +32,7 @@ void DrawTool::convertToIntermediate(QVector<DrawableObject*> drawing, QVector<T
 	//generate points
 	foreach (DrawableObject *obj, drawing)
 	{
-		if(obj->getType() == Global::Point)
+		if((obj->getType() == Global::Point) & !obj->isConstructional() & !obj->isHidden())
 		{
 			Point *point = dynamic_cast<Point*>(obj);
 
@@ -43,7 +43,7 @@ void DrawTool::convertToIntermediate(QVector<DrawableObject*> drawing, QVector<T
 	//generate lines from Drawable lines
 	foreach (DrawableObject *obj, drawing)
 	{
-		if(obj->getType() == Global::Line)
+		if((obj->getType() == Global::Line) & !obj->isConstructional() & !obj->isHidden())
 		{
 			Line *line = dynamic_cast<Line*>(obj);
 

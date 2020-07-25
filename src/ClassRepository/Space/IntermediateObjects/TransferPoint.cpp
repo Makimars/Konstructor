@@ -41,3 +41,8 @@ bool TransferPoint::isNeighbor(TransferPoint *point)
 
 	return false;
 }
+
+Vertex TransferPoint::toVertex()
+{
+	return Vertex(QVector3D(x, y, 0));
+}
