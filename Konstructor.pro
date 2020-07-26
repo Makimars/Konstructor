@@ -27,7 +27,9 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/ClassRepository/Space/Plane.cpp \
+    src/ClassRepository/Adapters/LineAdapter.cpp \
+    src/ClassRepository/Adapters/PointAdapter.cpp \
+    src/ClassRepository/Adapters/Polygonator.cpp \
     src/ExtrusionDialog.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
@@ -60,19 +62,19 @@ SOURCES += \
     src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
     src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
 \
+    src/ClassRepository/Space/Plane.cpp \
     src/ClassRepository/Space/Item.cpp \
     src/ClassRepository/Space/Transform3D.cpp \
     src/ClassRepository/Space/Camera.cpp \
-\
-    src/ClassRepository/Space/IntermediateObjects/TransferLine.cpp \
-    src/ClassRepository/Space/IntermediateObjects/TransferPoint.cpp \
 \
     src/ClassRepository/Space/Tools/DrawTool.cpp
 
 HEADERS += \
     include/delaunator/delaunator.h \
 \
-    src/ClassRepository/Space/Plane.h \
+    src/ClassRepository/Adapters/LineAdapter.h \
+    src/ClassRepository/Adapters/PointAdapter.h \
+    src/ClassRepository/Adapters/Polygonator.h \
     src/ExtrusionDialog.h \
     src/MainWindow.h \
     src/MessagesManager.h \
@@ -84,6 +86,8 @@ HEADERS += \
     src/ClassRepository/GlobalVariables.h \
     src/ClassRepository/Settings.h \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
+\
+    src/ClassRepository/Plane/Plane \
 \
     src/ClassRepository/Plane/Factory.h \
     src/ClassRepository/Plane/UserInputRequester.h \
@@ -107,13 +111,13 @@ HEADERS += \
     src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.h \
     src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.h \
 \
+    src/ClassRepository/Space/Space \
+\
+    src/ClassRepository/Space/Plane.h \
     src/ClassRepository/Space/Item.h \
     src/ClassRepository/Space/Transform3D.h \
     src/ClassRepository/Space/Vertex.h \
     src/ClassRepository/Space/Camera.h \
-\
-    src/ClassRepository/Space/IntermediateObjects/TransferLine.h \
-    src/ClassRepository/Space/IntermediateObjects/TransferPoint.h \
 \
     src/ClassRepository/Space/Tools/DrawTool.h
 

@@ -9,9 +9,11 @@
 
 #include "SettingsDialog.h"
 #include "ExtrusionDialog.h"
-
 #include "ClassRepository/GlobalVariables.h"
-#include "ClassRepository/Space/Plane.h"
+
+#include "ClassRepository/Space/Space"
+#include "ClassRepository/Plane/Plane"
+#include "ClassRepository/Adapters/Polygonator.h"
 
 namespace Ui {
 class MainWindow;

@@ -10,8 +10,8 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
 
-#include "ClassRepository/Space/Tools/DrawTool.h"
-#include "ClassRepository/Space/Camera.h"
+#include "ClassRepository/Space/Space"
+#include "MessagesManager.h"
 
 class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 {

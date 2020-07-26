@@ -4,6 +4,7 @@
 #include "include/delaunator/delaunator.h"
 
 #include "../Item.h"
+#include "../../Settings.h"
 
 class DrawTool : public QObject
 {
@@ -17,10 +18,7 @@ private:
 
 	QTreeWidgetItem *targetItem;
 
-	std::vector<Vertex> generateVertexes(QVector<DrawableObject*> drawing);
-		void convertToIntermediate(QVector<DrawableObject*> drawing, QVector<TransferPoint*> *transferPoints, QVector<TransferLine*> *transferLines);
-		void assignNeigbors(QVector<TransferPoint*> *transferPoints, QVector<TransferLine*> *transferLines);
-		std::vector<Vertex> triangularize(QVector<TransferPoint*> *transferPoints);
+	std::vector<Vertex> generateVertexes(std::vector<QPolygonF> polygons);
 
 signals:
 	void addItem(Item *item);
@@ -28,7 +26,7 @@ signals:
 
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);
-	void recieveDrawing(QVector<DrawableObject*> drawing);
+	void recievePolygons(std::vector<QPolygonF> polygons, QString sketch);
 };
 
 inline void DrawTool::recieveTargetItem(QTreeWidgetItem *item) { targetItem = item;}

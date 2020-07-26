@@ -1,0 +1,6 @@
+#ifndef PLANE
+#define PLANE
+
+#include "Tools/DimensionTool.h"
+
+#endif // PLANE

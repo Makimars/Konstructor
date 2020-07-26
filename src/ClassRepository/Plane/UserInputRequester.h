@@ -1,7 +1,8 @@
 #ifndef USERINPUTREQUESTER_H
 #define USERINPUTREQUESTER_H
 
-#include "Drawables/Circle.h"
+#include <QString>
+#include <QObject>
 
 class UserInputRequester : public QObject
 {

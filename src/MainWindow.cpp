@@ -31,7 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
 			this->ui->view2D, &ViewWidget::resetTool
 			);
 
-	//drawing
+	//drawing to Space connection
 	connect(this, &MainWindow::setTargetItem,
 			DrawTool::getInstance(), &DrawTool::recieveTargetItem
 			);
@@ -39,7 +39,10 @@ MainWindow::MainWindow(QWidget *parent) :
 			this->ui->view2D, &ViewWidget::finishDrawing
 			);
 	connect(this->ui->view2D, &ViewWidget::returnDrawing,
-			DrawTool::getInstance(), &DrawTool::recieveDrawing
+			Polygonator::getInstance(), &Polygonator::recieveDrawing
+			);
+	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
+			DrawTool::getInstance(), &DrawTool::recievePolygons
 			);
 }
 

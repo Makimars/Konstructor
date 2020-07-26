@@ -1,7 +1,7 @@
 #ifndef LABEL_H
 #define LABEL_H
 
-#include "../UserInputRequester.h"
+#include "Circle.h"
 
 class Label : public DrawableObject, public UserInputRequester
 {

@@ -1,10 +1,8 @@
 #include "Item.h"
 
-Item::Item(QVector<DrawableObject*> sketchObjects, Space::Plane *plane)
+Item::Item(Space::Plane *plane, QString sketch)
 {
-	sketch = "";
-	for(int i = 0; i < sketchObjects.length(); i++)
-		sketch += sketchObjects.at(i)->toFileString().toLatin1() + "\n";
+	sketch = sketch;
 
 	this->basePlane = plane;
 

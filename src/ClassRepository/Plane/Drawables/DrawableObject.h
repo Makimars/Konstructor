@@ -13,6 +13,7 @@
 
 #include "src/ClassRepository/Settings.h"
 #include "src/ClassRepository/GlobalVariables.h"
+#include "../UserInputRequester.h"
 
 class DrawableObject : public QGraphicsItem
 {

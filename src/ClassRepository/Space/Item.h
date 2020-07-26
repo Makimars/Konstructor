@@ -1,10 +1,10 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "Transform3D.h"
-#include "Plane.h"
+#include <QDebug>
 
-#include "IntermediateObjects/TransferLine.h"
+#include "Plane.h"
+#include "Vertex.h"
 
 enum ExtrusionDirection
 {
@@ -17,7 +17,7 @@ class Item : public QObject, public QTreeWidgetItem
 {
 	Q_OBJECT
 public:
-	Item(QVector<DrawableObject*> sketchObjects, Space::Plane *plane);
+	Item(Space::Plane *plane, QString sketch);
 
 	void setVectorReference(std::vector<Vertex*> vector, int itemIndex);
 	void setPlaneVertexes(std::vector<Vertex> vertexes);
@@ -40,8 +40,6 @@ private:
 	int itemIndex;
 
 	std::vector<Vertex> pointsToSpaceVertexes(std::vector<Vertex> planeVertexes);
-
-	std::vector<Vertex> getPolygon(QVector<DrawableObject*> drawing);
 
 signals:
 	void sizeChanged();

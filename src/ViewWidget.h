@@ -6,10 +6,10 @@
 #include <QMouseEvent>
 #include <QGraphicsView>
 #include <QScrollBar>
+#include <QMenu>
 
-#include "MainWindow.h"
 #include "MessagesManager.h"
-#include "ClassRepository/Plane/Tools/DimensionTool.h"
+#include "ClassRepository/Plane/Plane"
 
 class ViewWidget : public QGraphicsView
 {
