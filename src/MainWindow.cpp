@@ -96,7 +96,7 @@ void MainWindow::setupUi()
 
 	Space::Plane *basePlane = new Space::Plane();
 	basePlane->setPosition(QVector3D(0,0,0));
-	basePlane->setVector(QVector3D(1,1,1));
+	basePlane->setRotation(QQuaternion(0,0,0,0));
 	basePlane->setText(0, "origin plane");
     this->ui->objectsTree->addTopLevelItem(basePlane);
 
@@ -307,7 +307,10 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			{
 				ExtrusionDialogReturn result = this->extrusionDialog->exec(item);
 
-				item->extrude(result.length, result.extrusion, result.direction);
+				foreach (Polygon *poly, extrusionDialog->getSelectedPolygons())
+				{
+					poly->extrude(result.length, result.extrusion, result.direction);
+				}
 			}
 			else if(selectedAction == &redrawAction)
 			{

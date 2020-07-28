@@ -7,29 +7,29 @@ Plane::Plane()
 	this->setIcon(0, QIcon(":/icons/Plane.png"));
 }
 
-Plane::Plane(QTreeWidgetItem *parent, QVector3D position, QVector3D vector) : Plane()
+Plane::Plane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation) : Plane()
 {
 	parent->addChild(this);
-	this->position = position;
-	this->vector = vector;
+	transform.setTranslation(position);
+	transform.setRotation(rotation);
 }
 
 QVector3D Plane::getPosition() const
 {
-	return position;
+	return transform.translation();
 }
 
 void Plane::setPosition(const QVector3D &value)
 {
-	position = value;
+	transform.setTranslation(value);
 }
 
-QVector3D Plane::getVector() const
+QQuaternion Plane::getRotation() const
 {
-	return vector;
+	return transform.rotation();
 }
 
-void Plane::setVector(const QVector3D &value)
+void Plane::setRotation(const QQuaternion &rotation)
 {
-	vector = value;
+	transform.setRotation(rotation);
 }

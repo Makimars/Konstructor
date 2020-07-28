@@ -75,7 +75,7 @@ void View3DWidget::keyPressEvent(QKeyEvent *event)
 {
 	QOpenGLWidget::keyPressEvent(event);
 
-	static const float transSpeed = 0.5f;
+	static const float transSpeed = 0.05f;
 
 	// Handle translations
 	QVector3D translation;
@@ -120,7 +120,7 @@ void View3DWidget::initializeGL()
 	program.link();
 	program.bind();
 
-	modelToWorld = program.uniformLocation("modelToWorld");
+	itemToSpace = program.uniformLocation("itemToSpace");
 	worldToCamera = program.uniformLocation("worldToCamera");
 	cameraToView = program.uniformLocation("cameraToView");
 
@@ -160,7 +160,7 @@ void View3DWidget::paintGL()
 	vertexBufferObject.bind();
 	foreach (Item *item, objectsInSpace)
 	{
-		//program.setUniformValue(modelToWorld, item->getTransform()->toMatrix());
+		program.setUniformValue(itemToSpace, item->toMatrix());
 		glDrawArrays(GL_TRIANGLES, item->getItemIndex(), item->size());
 	}
 	vertexBufferObject.release();

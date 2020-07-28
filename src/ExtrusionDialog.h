@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "ClassRepository/Space/Item.h"
+#include "ClassRepository/Settings.h"
 
 namespace Ui {
 class ExtrusionDialog;
@@ -25,11 +26,15 @@ public:
     ~ExtrusionDialog();
 
     ExtrusionDialogReturn exec(Item *item);
+	std::vector<Polygon*> getSelectedPolygons();
 
 private:
     Ui::ExtrusionDialog *ui;
 
     Item *referencedItem;
+
+public slots:
+	void selectedFaceChanged();
 };
 
 #endif // EXTRUSIONDIALOG_H

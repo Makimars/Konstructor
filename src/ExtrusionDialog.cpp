@@ -6,6 +6,10 @@ ExtrusionDialog::ExtrusionDialog(QWidget *parent) :
 	ui(new Ui::ExtrusionDialog)
 {
 	ui->setupUi(this);
+
+	connect(this->ui->polygonsList, &QListWidget::itemSelectionChanged,
+			this, &ExtrusionDialog::selectedFaceChanged
+			);
 }
 
 ExtrusionDialog::~ExtrusionDialog()
@@ -16,7 +20,10 @@ ExtrusionDialog::~ExtrusionDialog()
 ExtrusionDialogReturn ExtrusionDialog::exec(Item *item)
 {
     referencedItem = item;
-
+	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
+	{
+		this->ui->polygonsList->addItem(referencedItem->getPolygons()->at(i));
+	}
 
     ExtrusionDialogReturn returnData;
     returnData.dialogCode = QDialog::exec();
@@ -29,5 +36,26 @@ ExtrusionDialogReturn ExtrusionDialog::exec(Item *item)
     returnData.length = ui->lengthInput->value();
     returnData.extrusion = ui->additiveButton->isChecked();
 
-    return returnData;
+	return returnData;
+}
+
+std::vector<Polygon*> ExtrusionDialog::getSelectedPolygons()
+{
+	std::vector<Polygon*> polygons;
+	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
+	{
+		Polygon *polygon = referencedItem->getPolygons()->at(i);
+		if(polygon->isSelected()) polygons.push_back(polygon);
+	}
+
+	return polygons;
+}
+
+void ExtrusionDialog::selectedFaceChanged()
+{
+	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
+	{
+		Polygon *polygon = referencedItem->getPolygons()->at(i);
+		if(polygon->isSelected()) polygon->setColor(Settings::selectedFaceColor);
+	}
 }

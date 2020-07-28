@@ -1,17 +1,8 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <QDebug>
-
 #include "Plane.h"
-#include "Vertex.h"
-
-enum ExtrusionDirection
-{
-    Front,
-    FrontAndBack,
-    Back
-};
+#include "Polygon.h"
 
 class Item : public QObject, public QTreeWidgetItem
 {
@@ -20,12 +11,13 @@ public:
 	Item(Space::Plane *plane, QString sketch);
 
 	void setVectorReference(std::vector<Vertex*> vector, int itemIndex);
-	void setPlaneVertexes(std::vector<Vertex> vertexes);
+	void setPolygons(std::vector<Polygon*> polygons);
+	std::vector<Polygon*> *getPolygons();
 	QString getSketch();
 	int getItemIndex();
 	int size();
 
-    void extrude(double length, bool extrusion, ExtrusionDirection direction);
+	QMatrix4x4 toMatrix();
 
 private:
 	Space::Plane *basePlane;
@@ -35,11 +27,9 @@ private:
 	//pointers to the global buffer
 	std::vector<Vertex*> vertexes;
 	//original vertex data
-	std::vector<Vertex> vertexData;
+	std::vector<Polygon*> polygons;
 
 	int itemIndex;
-
-	std::vector<Vertex> pointsToSpaceVertexes(std::vector<Vertex> planeVertexes);
 
 signals:
 	void sizeChanged();
@@ -47,6 +37,6 @@ signals:
 
 inline QString Item::getSketch() { return sketch; }
 inline int Item::getItemIndex() { return itemIndex; }
-inline int Item::size() { return vertexData.size(); }
+inline QMatrix4x4 Item::toMatrix(){ return basePlane->toMatrix(); }
 
 #endif // ITEM_H

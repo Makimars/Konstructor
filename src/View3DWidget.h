@@ -31,7 +31,7 @@ private:
 	QOpenGLVertexArrayObject vertexBufferObject;
 
 	// Shader Information
-	int modelToWorld;
+	int itemToSpace;
 	int worldToCamera;
 	int cameraToView;
 

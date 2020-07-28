@@ -2,7 +2,7 @@
 
 Item::Item(Space::Plane *plane, QString sketch)
 {
-	sketch = sketch;
+	this->sketch = sketch;
 
 	this->basePlane = plane;
 
@@ -16,37 +16,46 @@ void Item::setVectorReference(std::vector<Vertex*> vector, int itemIndex)
 	vertexes = vector;
 	this->itemIndex = itemIndex;
 
+	std::vector<Vertex> vertexData;
+	for(uint32_t i = 0; i < polygons.size(); i++)
+	{
+		vertexData.insert(
+					vertexData.end(),
+					polygons.at(i)->getVertexData()->begin(),
+					polygons.at(i)->getVertexData()->end()
+					);
+	}
+
 	//copy the original data into the global buffer
-	for(int i = 0; i < vertexData.size(); i++)
+	for(uint32_t i = 0; i < vertexData.size(); i++)
 		*vertexes[i] = vertexData[i];
 }
 
-void Item::setPlaneVertexes(std::vector<Vertex> vertexes)
+void Item::setPolygons(std::vector<Polygon*> polygons)
 {
-	vertexData.clear();
-	vertexData = pointsToSpaceVertexes(vertexes);
-	this->vertexes.reserve(size());
-    emit sizeChanged();
-}
-
-void Item::extrude(double length, bool extrusion, ExtrusionDirection direction)
-{
-qDebug() << length;
-qDebug() << extrusion;
-}
-
-std::vector<Vertex> Item::pointsToSpaceVertexes(std::vector<Vertex> planeVertexes)
-{
-	//generate Space vertexes from points
-
-	//multiply by plane vector
-
-	//add plane base
-	foreach(Vertex vertex, planeVertexes)
+	this->polygons = polygons;
+	for(uint32_t i = 0; i < polygons.size(); i++)
 	{
-		QVector3D pos = vertex.position();
-		vertex.setPosition(pos + basePlane->getPosition());
+		connect(polygons.at(i), &Polygon::sizeChanged,
+				this, &Item::sizeChanged
+					);
+	}
+	this->vertexes.reserve(size());
+	emit sizeChanged();
+}
+
+std::vector<Polygon*> *Item::getPolygons()
+{
+	return &polygons;
+}
+
+int Item::size()
+{
+	int size = 0;
+	for(uint32_t i = 0; i < polygons.size(); i++)
+	{
+		size += polygons.at(i)->getVertexData()->size();
 	}
 
-	return planeVertexes;
+	return size;
 }

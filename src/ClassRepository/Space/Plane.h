@@ -4,23 +4,28 @@
 #include <QTreeWidgetItem>
 #include <QVector3D>
 
+#include "Transform3D.h"
+
 namespace Space {
 
 class Plane : public QTreeWidgetItem
 {
 public:
 	Plane();
-	Plane(QTreeWidgetItem *parent, QVector3D position, QVector3D vector);
+	Plane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation);
 
 	QVector3D getPosition() const;
 	void setPosition(const QVector3D &value);
-	QVector3D getVector() const;
-	void setVector(const QVector3D &value);
+	QQuaternion getRotation() const;
+	void setRotation(const QQuaternion &rotation);
+
+	QMatrix4x4 toMatrix();
 
 private:
-	QVector3D position;
-	QVector3D vector;
+	Transform3D transform;
 };
+
+inline QMatrix4x4 Plane::toMatrix(){ return transform.toMatrix(); }
 }
 
 #endif // PLANE_H

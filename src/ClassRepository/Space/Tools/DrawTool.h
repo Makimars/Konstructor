@@ -18,7 +18,7 @@ private:
 
 	QTreeWidgetItem *targetItem;
 
-	std::vector<Vertex> generateVertexes(std::vector<QPolygonF> polygons);
+	std::vector<Vertex> generateVertexes(QPolygonF polygon, std::vector<Vertex> *outerVertexes);
 
 signals:
 	void addItem(Item *item);

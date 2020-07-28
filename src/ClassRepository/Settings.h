@@ -6,7 +6,7 @@
 #include <QKeySequence>
 #include <QMargins>
 #include <QLocale>
-
+#include <QVector3D>
 
 enum AngleUnits{
 	radians,
@@ -49,6 +49,8 @@ public:
 	static AngleUnits angleUnits;
 
 	static int planeToSpaceRatio;
+
+	static QVector3D selectedFaceColor;
 
 private:
 	Settings();

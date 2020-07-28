@@ -62,6 +62,7 @@ SOURCES += \
     src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
     src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
 \
+    src/ClassRepository/Space/Polygon.cpp \
     src/ClassRepository/Space/Plane.cpp \
     src/ClassRepository/Space/Item.cpp \
     src/ClassRepository/Space/Transform3D.cpp \
@@ -113,6 +114,7 @@ HEADERS += \
 \
     src/ClassRepository/Space/Space \
 \
+    src/ClassRepository/Space/Polygon.h \
     src/ClassRepository/Space/Plane.h \
     src/ClassRepository/Space/Item.h \
     src/ClassRepository/Space/Transform3D.h \

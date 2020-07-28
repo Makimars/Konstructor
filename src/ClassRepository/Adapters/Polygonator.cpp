@@ -68,6 +68,7 @@ void Polygonator::assignNeigbors(QVector<PointAdapter*> *transferPoints, QVector
 
 std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> *transferPoints)
 {
+	//TODO: needs top be implemented properly to get polygons from drawing
 	QPolygonF poly;
 	for(int i = 0; i < transferPoints->size(); i++)
 	{
