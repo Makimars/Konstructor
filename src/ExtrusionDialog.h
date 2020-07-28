@@ -25,8 +25,7 @@ public:
     explicit ExtrusionDialog(QWidget *parent = nullptr);
     ~ExtrusionDialog();
 
-    ExtrusionDialogReturn exec(Item *item);
-	std::vector<Polygon*> getSelectedPolygons();
+	void show(Item *item);
 
 private:
     Ui::ExtrusionDialog *ui;
@@ -35,6 +34,7 @@ private:
 
 public slots:
 	void selectedFaceChanged();
+	void accept() override;
 };
 
 #endif // EXTRUSIONDIALOG_H

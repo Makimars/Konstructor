@@ -305,12 +305,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			QAction *selectedAction = objectContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
 			if(selectedAction == &extrusionAction)
 			{
-				ExtrusionDialogReturn result = this->extrusionDialog->exec(item);
-
-				foreach (Polygon *poly, extrusionDialog->getSelectedPolygons())
-				{
-					poly->extrude(result.length, result.extrusion, result.direction);
-				}
+				this->extrusionDialog->show(item);
 			}
 			else if(selectedAction == &redrawAction)
 			{
