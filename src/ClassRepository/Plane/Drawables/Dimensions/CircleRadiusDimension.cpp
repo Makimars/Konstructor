@@ -66,10 +66,9 @@ QPainterPath CircleRadiusDimension::shape() const
 
 void CircleRadiusDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if(this->isHidden())
-		return;
+	if(this->isHidden())return;
 
-	DrawableObject::paint(painter, option, widget);
+	DrawableObject::paint(painter);
 
 	QPointF centerPoint = this->circle->getCenterPoint()->getLocation();
 	QPointF rightPoint(centerPoint.x() + this->radius, centerPoint.y());

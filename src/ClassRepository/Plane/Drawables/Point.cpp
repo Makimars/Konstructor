@@ -83,10 +83,9 @@ void Point::paint(QPainter *painter,
 				  const QStyleOptionGraphicsItem *option,
 				  QWidget *widget)
 {
-	if(this->isHidden())
-		return;
+	if(this->isHidden())return;
 
-	DrawableObject::paint(painter, option, widget);
+	DrawableObject::paint(painter);
 
 	painter->setBrush(this->brush->style());
 	this->brush->setStyle(Qt::BrushStyle::SolidPattern);

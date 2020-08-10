@@ -13,6 +13,7 @@ enum Types{
 	Point,
 	Line,
 	Circle,
+	Arc,
 	Label,
 	LineLengthDimension,
 	LineAngleDimension,

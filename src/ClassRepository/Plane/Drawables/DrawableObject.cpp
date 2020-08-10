@@ -116,9 +116,7 @@ QRectF DrawableObject::boundingRect() const
 	return QRectF();
 }
 
-void DrawableObject::paint(QPainter *painter,
-						   const QStyleOptionGraphicsItem *option,
-						   QWidget *widget)
+void DrawableObject::paint(QPainter *painter)
 {
 	resolveTies();
 

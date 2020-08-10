@@ -30,6 +30,7 @@ SOURCES += \
     src/ClassRepository/Adapters/LineAdapter.cpp \
     src/ClassRepository/Adapters/PointAdapter.cpp \
     src/ClassRepository/Adapters/Polygonator.cpp \
+    src/ClassRepository/Plane/Drawables/Arc.cpp \
     src/ExtrusionDialog.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
     src/ClassRepository/Adapters/LineAdapter.h \
     src/ClassRepository/Adapters/PointAdapter.h \
     src/ClassRepository/Adapters/Polygonator.h \
+    src/ClassRepository/Plane/Drawables/Arc.h \
     src/ExtrusionDialog.h \
     src/MainWindow.h \
     src/MessagesManager.h \

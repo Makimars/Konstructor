@@ -74,10 +74,9 @@ QRectF Label::boundingRect() const
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if(this->isHidden())
-		return;
+	if(this->isHidden())return;
 
-	DrawableObject::paint(painter, option, widget);
+	DrawableObject::paint(painter);
 
 	painter->drawRect(boundingRect());
 	painter->drawText(boundingRect(), this->text);

@@ -168,10 +168,9 @@ void Line::paint(QPainter *painter,
 				 const QStyleOptionGraphicsItem *option,
 				 QWidget *widget)
 {
-	if(this->isHidden())
-		return;
+	if(this->isHidden())return;
 
-	DrawableObject::paint(painter, option, widget);
+	DrawableObject::paint(painter);
 
 	painter->drawLine(this->startPoint->getLocation(),
 						this->endPoint->getLocation()

@@ -148,10 +148,9 @@ QPainterPath LinesAngleDimension::shape() const
 
 void LinesAngleDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	if(this->isHidden())
-		return;
+	if(this->isHidden())return;
 
-	DrawableObject::paint(painter, option, widget);
+	DrawableObject::paint(painter);
 
 	QPainterPath outerCircle;
 	outerCircle.addEllipse(this->commonPoint->getLocation(),this->distanceFromCenter, this->distanceFromCenter);

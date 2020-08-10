@@ -76,7 +76,7 @@ void CirclesRadiusDifferenceDimension::paint(QPainter *painter, const QStyleOpti
 {
 	if(isHidden()) return;
 
-	DrawableObject::paint(painter, option, widget);
+	DrawableObject::paint(painter);
 
 	QPointF firstPoint = this->circles[0]->getCenterPoint()->getLocation() + QPointF(0,this->circles[0]->getRadius()/2);
 	QPointF secondPoint = firstPoint + QPointF(0, this->radiusDifference/2);

@@ -13,7 +13,6 @@ private:
 	Polygonator();
 	static Polygonator *instance;
 
-
 	void convertToIntermediate(QVector<DrawableObject*> drawing, QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines);
 	void assignNeigbors(QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines);
 	std::vector<QPolygonF> generatePolygons(QVector<PointAdapter*> *transferPoints);
