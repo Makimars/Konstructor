@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	//drawing to Space connection
 	connect(this, &MainWindow::setTargetItem,
-			DrawTool::getInstance(), &DrawTool::recieveTargetItem
+			this->ui->view3D, &View3DWidget::recieveTargetItem
 			);
 	connect(this, &MainWindow::finishDrawing,
 			this->ui->view2D, &ViewWidget::finishDrawing
@@ -42,7 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
 			Polygonator::getInstance(), &Polygonator::recieveDrawing
 			);
 	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
-			DrawTool::getInstance(), &DrawTool::recievePolygons
+			this->ui->view3D, &View3DWidget::addItem
 			);
 }
 
@@ -320,6 +320,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			if(selectedAction == &drawAction)
 			{
 				swapMode(Global::Mode::Draw);
+
 				emit setTargetItem(plane);
 			}
         }

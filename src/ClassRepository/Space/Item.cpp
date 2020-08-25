@@ -1,10 +1,18 @@
 #include "Item.h"
 
-Item::Item(Space::Plane *plane, QString sketch)
+Item::Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
 {
 	this->sketch = sketch;
-
 	this->basePlane = plane;
+
+	foreach(QPolygonF polygon, polygons)
+	{
+		this->polygons.push_back(new Polygon(polygon));
+
+		connect(this->polygons.at(polygons.size()-1), &Polygon::sizeChanged,
+				this, &Item::sizeChanged
+				);
+	}
 
 	this->setIcon(0, QIcon(":/icons/Cube.png"));
 	plane->addChild(this);
@@ -31,15 +39,17 @@ void Item::setVectorReference(std::vector<Vertex*> vector, int itemIndex)
 		*vertexes[i] = vertexData[i];
 }
 
-void Item::setPolygons(std::vector<Polygon*> polygons)
+void Item::setPolygons(std::vector<QPolygonF> polygons)
 {
-	this->polygons = polygons;
-	for(uint32_t i = 0; i < polygons.size(); i++)
+	foreach(QPolygonF polygon, polygons)
 	{
-		connect(polygons.at(i), &Polygon::sizeChanged,
+		this->polygons.push_back(new Polygon(polygon));
+
+		connect(this->polygons.at(polygons.size()-1), &Polygon::sizeChanged,
 				this, &Item::sizeChanged
-					);
+				);
 	}
+
 	this->vertexes.reserve(size());
 	emit sizeChanged();
 }

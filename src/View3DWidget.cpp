@@ -8,10 +8,6 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	format.setVersion(3,3);
 	setFormat(format);
 
-	connect(DrawTool::getInstance(), &DrawTool::addItem,
-			this, &View3DWidget::addItem
-			);
-
 	setFocus();
 }
 
@@ -75,7 +71,7 @@ void View3DWidget::keyPressEvent(QKeyEvent *event)
 {
 	QOpenGLWidget::keyPressEvent(event);
 
-	static const float transSpeed = 0.05f;
+	static const float transSpeed = 0.01f;
 
 	// Handle translations
 	QVector3D translation;
@@ -169,16 +165,30 @@ void View3DWidget::paintGL()
 
 }
 
-void View3DWidget::addItem(Item *item)
+void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
 {
-	item->setText(0, "object " + QString::number(objectsInSpace.size()));
+	if(Space::Plane *plane = dynamic_cast<Space::Plane*>(targetItem))
+	{
+		Item *item = new Item(plane, polygons, sketch);
 
-	objectsInSpace.append(item);
-	connect(item, &Item::sizeChanged,
-			this, &View3DWidget::reallocateMemory
-			);
+		item->setText(0, "object " + QString::number(objectsInSpace.size()));
 
-	allocateNewItem(item);
+		objectsInSpace.append(item);
+		connect(item, &Item::sizeChanged,
+				this, &View3DWidget::reallocateMemory
+				);
+
+		allocateNewItem(item);
+	}
+	else if(Item *item = dynamic_cast<Item*>(targetItem))
+	{
+		item->setPolygons(polygons);
+	}
+}
+
+void View3DWidget::recieveTargetItem(QTreeWidgetItem *item)
+{
+	targetItem = item;
 }
 
 void View3DWidget::reallocateMemory()

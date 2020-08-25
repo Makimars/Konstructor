@@ -67,9 +67,8 @@ SOURCES += \
     src/ClassRepository/Space/Plane.cpp \
     src/ClassRepository/Space/Item.cpp \
     src/ClassRepository/Space/Transform3D.cpp \
-    src/ClassRepository/Space/Camera.cpp \
-\
-    src/ClassRepository/Space/Tools/DrawTool.cpp
+    src/ClassRepository/Space/Camera.cpp
+
 
 HEADERS += \
     include/delaunator/delaunator.h \
@@ -121,9 +120,8 @@ HEADERS += \
     src/ClassRepository/Space/Item.h \
     src/ClassRepository/Space/Transform3D.h \
     src/ClassRepository/Space/Vertex.h \
-    src/ClassRepository/Space/Camera.h \
-\
-    src/ClassRepository/Space/Tools/DrawTool.h
+    src/ClassRepository/Space/Camera.h
+
 
 FORMS += \
     src/ExtrusionDialog.ui \

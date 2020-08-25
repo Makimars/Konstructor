@@ -30,6 +30,8 @@ private:
 	QOpenGLBuffer vertexBuffer;
 	QOpenGLVertexArrayObject vertexBufferObject;
 
+	QTreeWidgetItem *targetItem;
+
 	// Shader Information
 	int itemToSpace;
 	int worldToCamera;
@@ -51,7 +53,8 @@ private:
 	void paintGL() override;
 
 public slots:
-	void addItem(Item *item);
+	void addItem(std::vector<QPolygonF> polygons, QString sketch);
+	void recieveTargetItem(QTreeWidgetItem *item);
 	void reallocateMemory();
 };
 

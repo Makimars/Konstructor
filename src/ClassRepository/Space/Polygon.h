@@ -5,7 +5,9 @@
 
 #include <QDebug>
 
+#include "src/ClassRepository/Settings.h"
 #include "Vertex.h"
+#include "include/delaunator/delaunator.h"
 
 enum ExtrusionDirection
 {
@@ -18,7 +20,7 @@ class Polygon : public QObject, public QListWidgetItem
 {
 	Q_OBJECT
 public:
-	Polygon(std::vector<Vertex> outerPoints, std::vector<Vertex> vertexData);
+	Polygon(QPolygonF polygon);
 
 	std::vector<Vertex> *getOuterPoints();
 	std::vector<Vertex> *getVertexData();
@@ -30,7 +32,7 @@ public:
 	void extrude(double length, bool extrusion, ExtrusionDirection direction);
 
 private:
-	std::vector<Vertex> outerPoints;
+	std::vector<Vertex> outerVertexes;
 	std::vector<Vertex> vertexData;
 
 	bool hidden = false;
