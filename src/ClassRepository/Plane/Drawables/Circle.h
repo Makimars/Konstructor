@@ -44,6 +44,9 @@ private:
 	//geometry
 	void setGeometryUpdates() override;
 	void unsetGeometryUpdates() override;
+
+	//events
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 //inline getters and setters

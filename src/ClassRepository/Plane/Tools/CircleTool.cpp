@@ -38,6 +38,7 @@ void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
 	if(this->previousClickedPoint != nullptr)
 	{
+		qDebug() << "second click";
 		this->objectFactory->addDrawable(this->previousClickedPoint);
 
 		if(clickedObject == nullptr)
@@ -78,15 +79,16 @@ void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 		if(clickedObject == nullptr)
 			clickedObject = mousePoint->clone();
 
-		if(clickedObject->getType() == Global::Point)
+		if(clickedObject->getType() != Global::Point)
 		{
-			Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
-
-			this->previousClickedPoint = clickedPoint;
-			this->circlePreviewCentre->setLocation(clickedPoint->getLocation());
-			this->circlePreview->setHidden(false);
+			clickedObject = mousePoint->clone();
 		}
 
+		Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
+
+		this->previousClickedPoint = clickedPoint;
+		this->circlePreviewCentre->setLocation(clickedPoint->getLocation());
+		this->circlePreview->setHidden(false);
 	}
 }
 

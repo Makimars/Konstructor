@@ -15,7 +15,6 @@ LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 	this->linePreview->setHidden(true);
 	this->linePreview->setAcceptedMouseButtons(Qt::MouseButton::NoButton);
 	this->linePreview->setAcceptHoverEvents(false);
-
 	scene->addItem(this->linePreview);
 
 }

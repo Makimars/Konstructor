@@ -129,3 +129,8 @@ void Circle::unsetGeometryUpdates()
 {
 	this->centerPoint->removeGeometryUpdate(this);
 }
+
+void Circle::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	this->setRadius(centerPoint->distanceFrom(event->pos()));
+}

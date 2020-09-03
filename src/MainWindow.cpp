@@ -56,7 +56,7 @@ void MainWindow::setupUi()
     //menubar
     QMenuBar *menuBar = new QMenuBar(this->ui->leftFrame);
 	QMenu *fileMenu = menuBar->addMenu(tr("File"));
-    this->ui->leftFrame->layout()->setContentsMargins(4,menuBar->height(),4,4);
+	this->ui->leftFrame->layout()->setContentsMargins(0,menuBar->height(),0,0);
 
 	QAction *newAction = fileMenu->addAction(tr("New"));
 	connect(newAction, &QAction::triggered,

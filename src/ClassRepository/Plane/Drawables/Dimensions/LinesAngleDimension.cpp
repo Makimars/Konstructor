@@ -18,6 +18,11 @@ LinesAngleDimension::LinesAngleDimension(Line *lines[]) : DrawableObject (Global
 	this->angle = (qAtan2(deltaOneY, deltaOneX) - qAtan2(deltaTwoY, deltaTwoX));
 
 	setGeometryUpdates();
+
+	if(lines[0]->getLength() > lines[1]->getLength())
+		setDistanceFromCenter(lines[1]->getLength()-1);
+	else
+		setDistanceFromCenter(lines[0]->getLength()-1);
 }
 
 void LinesAngleDimension::calculateEdgePoints()

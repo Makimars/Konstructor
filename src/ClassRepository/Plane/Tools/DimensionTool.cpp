@@ -27,7 +27,12 @@ DimensionTool *DimensionTool::getInstance()
 void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
 	if(clickedObject != nullptr)
+	{
 		clickedObject->setHighlight(true);
+
+		if(clickedObject->getId() <= 0) clickedObject = nullptr;
+	}
+
 	this->clickedObjects[1] = this->clickedObjects[0];
 	this->clickedObjects[0] = clickedObject;
 
@@ -63,10 +68,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 
 				//two lines angle
 				this->objectFactory->addDrawable(
-							this->objectFactory->makeLinesAngleDimension(
-								lines,
-								Settings::defaultAngleDimensionTextDistance
-								)
+							this->objectFactory->makeLinesAngleDimension(lines)
 							);
 			}
 			else
@@ -107,7 +109,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 		if(this->clickedObjects[1]->getType() == Global::Line)
 		{
 			//line and place
-
+qDebug() << "line and location";
 			Line *line = dynamic_cast<Line*>(this->clickedObjects[1]);
 
 			double distanceFromLine = -line->signedDistanceFrom(mousePoint->getLocation());
