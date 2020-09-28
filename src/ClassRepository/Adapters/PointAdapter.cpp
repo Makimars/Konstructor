@@ -23,6 +23,11 @@ Point *PointAdapter::getOriginalPoint() const
 	return originalPoint;
 }
 
+int PointAdapter::getNeighborCount() const
+{
+	return neighborPoints.count();
+}
+
 void PointAdapter::addNeighbor(PointAdapter *point)
 {
 	if(point != nullptr)
@@ -45,4 +50,9 @@ bool PointAdapter::isNeighbor(PointAdapter *point)
 QPointF PointAdapter::toPoint()
 {
 	return QPointF(x,y);
+}
+
+QVector<PointAdapter *> PointAdapter::getNeighborPoints() const
+{
+	return neighborPoints;
 }

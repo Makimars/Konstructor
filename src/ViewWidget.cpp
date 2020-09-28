@@ -46,11 +46,6 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 ViewWidget::~ViewWidget()
 {
-	QList<QGraphicsItem*> items = this->sketchScene->items();
-	foreach(QGraphicsItem *item, items)
-	{
-		delete item;
-	}
 }
 
 //----------	file operations    ----------
@@ -376,8 +371,6 @@ void ViewWidget::resetTool()
 void ViewWidget::finishDrawing()
 {
 	emit returnDrawing(this->objectsInSketch);
-
-	objectFactory->deleteAll();
 }
 
 void ViewWidget::customContextMenuRequested(const QPoint &pos)

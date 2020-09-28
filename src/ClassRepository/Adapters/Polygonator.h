@@ -1,6 +1,8 @@
 #ifndef POLYGONATOR_H
 #define POLYGONATOR_H
 
+#include <queue>
+
 #include "LineAdapter.h"
 
 class Polygonator : public QObject
@@ -15,7 +17,7 @@ private:
 
 	void convertToIntermediate(QVector<DrawableObject*> drawing, QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines);
 	void assignNeigbors(QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines);
-	std::vector<QPolygonF> generatePolygons(QVector<PointAdapter*> *transferPoints);
+	std::vector<QPolygonF> generatePolygons(QVector<PointAdapter*> transferPoints);
 
 public slots:
 	void recieveDrawing(QVector<DrawableObject*> drawing);
