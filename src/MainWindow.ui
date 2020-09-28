@@ -349,8 +349,8 @@
              <string>Line</string>
             </property>
             <property name="icon">
-             <iconset theme="document">
-              <normaloff>.</normaloff>.</iconset>
+             <iconset resource="../icons.qrc">
+              <normaloff>:/icons/Line.png</normaloff>:/icons/Line.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -387,8 +387,8 @@
              <string>Circle</string>
             </property>
             <property name="icon">
-             <iconset theme="document">
-              <normaloff>.</normaloff>.</iconset>
+             <iconset resource="../icons.qrc">
+              <normaloff>:/icons/Circle.png</normaloff>:/icons/Circle.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -422,8 +422,8 @@
              <string>Rectangle</string>
             </property>
             <property name="icon">
-             <iconset theme="document">
-              <normaloff>.</normaloff>.</iconset>
+             <iconset resource="../icons.qrc">
+              <normaloff>:/icons/Rectangle.png</normaloff>:/icons/Rectangle.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -457,8 +457,8 @@
              <string>Label</string>
             </property>
             <property name="icon">
-             <iconset theme="document">
-              <normaloff>.</normaloff>.</iconset>
+             <iconset resource="../icons.qrc">
+              <normaloff>:/icons/Label.png</normaloff>:/icons/Label.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -812,6 +812,8 @@
    <header>src/View3DWidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../icons.qrc"/>
+ </resources>
  <connections/>
 </ui>
