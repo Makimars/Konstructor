@@ -71,6 +71,9 @@ public slots:
 	void finishDrawing();
 
 	void customContextMenuRequested(const QPoint &pos);
+
+	void newSketchButtonClicked();
+	void closeSketchButtonClicked();
 };
 
 #endif // DRAWINGWIDGET_H

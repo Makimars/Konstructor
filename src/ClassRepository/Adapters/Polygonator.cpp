@@ -12,6 +12,8 @@ Polygonator *Polygonator::getInstance()
 
 void Polygonator::recieveDrawing(QVector<DrawableObject*> drawing)
 {
+	if(drawing.size() < 1) return;
+
 	QString sketch;
 	for(int i = 0; i < drawing.count(); i++)
 	{
@@ -31,8 +33,6 @@ void Polygonator::recieveDrawing(QVector<DrawableObject*> drawing)
 		delete point;
 	foreach(LineAdapter *line, transferLines)
 		delete line;
-	foreach(DrawableObject *obj, drawing)
-		delete obj;
 
 	emit sendPolygons(polygons, sketch);
 }

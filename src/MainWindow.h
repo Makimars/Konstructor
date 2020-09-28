@@ -56,29 +56,31 @@ signals:
 
 private slots:
 
-    //ui events
-		//file tab
-	void newFileClicked();
-	void openFileClicked();
-	void saveFileClicked();
-	void exportFileClicked();
-	void settingsClicked();
-	void quitClicked();
-		//draw tab
+	//file tab
+	void on_newObjectFile_clicked();
+	void on_openObjectFile_clicked();
+	void on_saveObjectButton_clicked();
+	void on_exportObjectButton_clicked();
+	void on_settingsButton_clicked();
+	void on_quitButton_clicked();
+	//sketch files
+	void on_saveSketchButton_clicked();
+	void on_importSketchButton_clicked();
+	void on_closeSketchButton_clicked();
+	//sketch tools
 	void on_lineButton_clicked();
 	void on_circleButton_clicked();
 	void on_rectangleButton_clicked();
 	void on_labelButton_clicked();
+	//constrains
 	void on_dimensionButton_clicked();
+	//finish drawing
 	void on_finishDrawingButton_clicked();
 
 	void on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column);
-
 	void viewKeyPress(QKeyEvent *event);
 	void swapMode(int index);
-    void on_objectsTree_customContextMenuRequested(const QPoint &pos);
-	void on_saveSketchButton_clicked();
-	void on_importSketchButton_clicked();
+	void on_objectsTree_customContextMenuRequested(const QPoint &pos);
 };
 
 #endif // MAINWINDOW_H

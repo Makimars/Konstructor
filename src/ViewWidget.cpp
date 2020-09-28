@@ -371,6 +371,8 @@ void ViewWidget::resetTool()
 void ViewWidget::finishDrawing()
 {
 	emit returnDrawing(this->objectsInSketch);
+
+	objectFactory->deleteAll();
 }
 
 void ViewWidget::customContextMenuRequested(const QPoint &pos)
@@ -389,4 +391,15 @@ void ViewWidget::customContextMenuRequested(const QPoint &pos)
 		obj->setIsConstructional(constractionalToggle.isChecked());
 		obj->setHighlight(false);
 	}
+}
+
+void ViewWidget::newSketchButtonClicked()
+{
+	this->objectFactory->deleteAll();
+}
+
+void ViewWidget::closeSketchButtonClicked()
+{
+	objectFactory->deleteAll();
+	emit returnDrawing(QVector<DrawableObject*>());
 }

@@ -31,7 +31,15 @@ MainWindow::MainWindow(QWidget *parent) :
 			this->ui->view2D, &ViewWidget::resetTool
 			);
 
-	//drawing to Space connection
+	//sketch file
+	connect(this->ui->newSketchButton, &QToolButton::clicked,
+			this->ui->view2D, &ViewWidget::newSketchButtonClicked
+			);
+	connect(this->ui->closeSketchButton, &QToolButton::clicked,
+			this->ui->view2D, &ViewWidget::closeSketchButtonClicked
+			);
+
+	//Plane to Space connection
 	connect(this, &MainWindow::setTargetItem,
 			this->ui->view3D, &View3DWidget::recieveTargetItem
 			);
@@ -54,7 +62,7 @@ MainWindow::~MainWindow()
 void MainWindow::setupUi()
 {
     //menubar
-    QMenuBar *menuBar = new QMenuBar(this->ui->leftFrame);
+   /* QMenuBar *menuBar = new QMenuBar(this->ui->leftFrame);
 	QMenu *fileMenu = menuBar->addMenu(tr("File"));
 	this->ui->leftFrame->layout()->setContentsMargins(0,menuBar->height(),0,0);
 
@@ -89,7 +97,7 @@ void MainWindow::setupUi()
 	exportAction->setShortcut(Settings::exportFile);
 	settingsAction->setShortcut(Settings::openSettings);
 	QuitAction->setShortcut(Settings::quitApp);
-
+*/
     //object menu
 	this->ui->objectsTree->setHeaderHidden(true);
     ui->objectsTree->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -142,16 +150,58 @@ void MainWindow::saveSettings()
 
 
 //----------	ui signals reciever    ----------
-
 //-----    file tab    -----
 
 
-void MainWindow::newFileClicked()
+void MainWindow::on_newObjectFile_clicked()
 {
 
 }
 
-void MainWindow::openFileClicked()
+void MainWindow::on_openObjectFile_clicked()
+{
+
+}
+
+void MainWindow::on_saveObjectButton_clicked()
+{
+
+}
+
+void MainWindow::on_exportObjectButton_clicked()
+{
+
+}
+
+void MainWindow::on_settingsButton_clicked()
+{
+	this->settingsDialog->exec();
+}
+
+void MainWindow::on_quitButton_clicked()
+{
+	this->close();
+}
+
+//-----    sketch files    -----
+
+void MainWindow::on_closeSketchButton_clicked()
+{
+	swapMode(Global::Mode::Object);
+}
+
+void MainWindow::on_saveSketchButton_clicked()
+{
+	QString fileName = QFileDialog::getSaveFileName(
+			this,
+			Global::saveFile,
+			Settings::userProjectRoot,
+			Global::konstructorSketch + ";;" + Global::allFiles
+			);
+	this->ui->view2D->saveToFile(fileName);
+}
+
+void MainWindow::on_importSketchButton_clicked()
 {
 	QString fileName = QFileDialog::getOpenFileName(
 			this,
@@ -168,33 +218,7 @@ void MainWindow::openFileClicked()
 	}
 }
 
-void MainWindow::saveFileClicked()
-{
-	QString fileName = QFileDialog::getSaveFileName(
-			this,
-			Global::saveFile,
-			Settings::userProjectRoot,
-			Global::konstructorSketch + ";;" + Global::allFiles
-			);
-	this->ui->view2D->saveToFile(fileName);
-}
-
-void MainWindow::exportFileClicked()
-{
-
-}
-
-void MainWindow::settingsClicked()
-{
-	this->settingsDialog->exec();
-}
-
-void MainWindow::quitClicked()
-{
-	this->close();
-}
-
-//-----    draw tab    -----
+//-----    sketch tools    -----
 
 void MainWindow::on_lineButton_clicked()
 {
@@ -229,6 +253,8 @@ void MainWindow::on_labelButton_clicked()
 		refreshTools(Global::Tools::NoTool);
 }
 
+//-----    constrains    -----
+
 void MainWindow::on_dimensionButton_clicked()
 {
 	if(this->ui->dimensionButton->isChecked())
@@ -236,6 +262,8 @@ void MainWindow::on_dimensionButton_clicked()
 	else
 		refreshTools(Global::Tools::NoTool);
 }
+
+//-----    finish drawing    -----
 
 void MainWindow::on_finishDrawingButton_clicked()
 {
@@ -291,7 +319,7 @@ void MainWindow::swapMode(int index)
 			ui->drawFrame->show();
 
 			ui->view3D->hide();
-            ui->leftFrame->hide();
+			ui->leftFrame->hide();
 			break;
 	}
 }
@@ -325,32 +353,4 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			}
         }
     }
-}
-
-void MainWindow::on_saveSketchButton_clicked()
-{
-	QString fileName = QFileDialog::getSaveFileName(
-			this,
-			Global::saveFile,
-			Settings::userProjectRoot,
-			Global::konstructorSketch + ";;" + Global::allFiles
-			);
-	this->ui->view2D->saveToFile(fileName);
-}
-
-void MainWindow::on_importSketchButton_clicked()
-{
-	QString fileName = QFileDialog::getOpenFileName(
-			this,
-					Global::openFile,
-			Settings::userProjectRoot,
-			Global::konstructorSketch + ";;" + Global::allFiles
-			);
-
-	QFile file(fileName);
-	if(file.exists())
-	{
-		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-			this->ui->view2D->loadFromFile(file.readAll());
-	}
 }
