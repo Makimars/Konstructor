@@ -78,18 +78,17 @@ void Polygonator::assignNeigbors(QVector<PointAdapter*> *transferPoints, QVector
 
 std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transferPoints)
 {
-	//remove edge points
-	foreach(PointAdapter *point, transferPoints)
-	{
-		if(point->getNeighborCount() < 2) transferPoints.removeAll(point);
-	}
-
 	std::vector<QPolygonF> paths;
 
 	//for each point
-	//for(int i = 0; i < transferPoints.size(); i++)
 	while(transferPoints.size() > 0)
 	{
+		//remove dead ends
+		foreach(PointAdapter *point, transferPoints)
+		{
+			if(point->getNeighborCount() < 2) transferPoints.removeAll(point);
+		}
+		
 		foreach(PointAdapter *point, transferPoints)
 			point->setVisited(false);
 
