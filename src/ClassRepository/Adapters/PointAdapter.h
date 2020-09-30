@@ -17,10 +17,11 @@ public:
 	double getY() const;
 	Point *getOriginalPoint() const;
 	int getNeighborCount() const;
-	QVector<PointAdapter *> getNeighborPoints() const;
+	QVector<PointAdapter*> getNeighborPoints() const;
 
 	void addNeighbor(PointAdapter *point);
 	bool isNeighbor(PointAdapter *point);
+	void removeNeigbor(PointAdapter *point);
 
 	QPointF toPoint();
 

@@ -47,6 +47,11 @@ bool PointAdapter::isNeighbor(PointAdapter *point)
 	return false;
 }
 
+void PointAdapter::removeNeigbor(PointAdapter *point)
+{
+	neighborPoints.removeAll(point);
+}
+
 QPointF PointAdapter::toPoint()
 {
 	return QPointF(x,y);

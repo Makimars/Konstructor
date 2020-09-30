@@ -5,14 +5,7 @@ Item::Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
 	this->sketch = sketch;
 	this->basePlane = plane;
 
-	foreach(QPolygonF polygon, polygons)
-	{
-		this->polygons.push_back(new Polygon(polygon));
-
-		connect(this->polygons.at(polygons.size()-1), &Polygon::sizeChanged,
-				this, &Item::sizeChanged
-				);
-	}
+	setPolygons(polygons);
 
 	this->setIcon(0, QIcon(":/icons/Cube.png"));
 	plane->addChild(this);
@@ -43,11 +36,12 @@ void Item::setPolygons(std::vector<QPolygonF> polygons)
 {
 	foreach(QPolygonF polygon, polygons)
 	{
-		this->polygons.push_back(new Polygon(polygon));
+		Polygon *finalPolygon = new Polygon(polygon);
 
-		connect(this->polygons.at(polygons.size()-1), &Polygon::sizeChanged,
+		connect(finalPolygon, &Polygon::sizeChanged,
 				this, &Item::sizeChanged
 				);
+		this->polygons.push_back(new Polygon(polygon));
 	}
 
 	this->vertexes.reserve(size());

@@ -86,6 +86,7 @@ std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> tran
 		//remove dead ends
 		foreach(PointAdapter *point, transferPoints)
 			if(point->getNeighborCount() < 2) transferPoints.removeAll(point);
+		if(transferPoints.size() < 2) break;
 
 		std::queue<QVector<PointAdapter*>> jobs;
 
@@ -95,58 +96,82 @@ std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> tran
 		while(jobs.size() > 0)
 		{
 			QVector<PointAdapter*> workingPath = jobs.front();
-
 			QVector<PointAdapter*> currentNeighbors = workingPath.last()->getNeighborPoints();
-			if(workingPath.size() > 1)
-				currentNeighbors.removeAll(workingPath.at(workingPath.size()-2));
 
+			//remove already visited points from neigbor array
+			foreach(PointAdapter *visitedPoint, workingPath)
+				currentNeighbors.removeAll(visitedPoint);
+
+			//if no neighbors, pop the job, and break loop
+			if(currentNeighbors.size() == 0)
+			{
+				jobs.pop();
+				continue;
+			}
+
+			//new possible paths
 			std::vector<PointAdapter*> newPaths;
+			bool finished = false;
+			//for each naighbor
 			foreach(PointAdapter *neighbor, currentNeighbors)
 			{
-				//if this point is not in the path already
-				if(workingPath.lastIndexOf(neighbor) == -1 & transferPoints.size() > 0)
+				//if the neighbor is connected to start point, finish this path
+				if(neighbor->isNeighbor(workingPath.at(0)) && workingPath.size() > 1)
 				{
-					//finishes this path
-					if(neighbor->isNeighbor(workingPath.at(0)) && workingPath.size() > 1)
+					//create a polygon
+					QPolygonF finalPolygon;
+
+					workingPath.append(neighbor);
+
+					foreach(PointAdapter *pathPoint, workingPath)
+						finalPolygon << pathPoint->toPoint();
+
+					paths.push_back(finalPolygon);
+
+					//remove used points
+					std::vector<PointAdapter*> depleted;
+					foreach(PointAdapter *pathPoint, workingPath)
 					{
-						//create a polygon
-						QPolygonF finalPolygon;
-
-						foreach(PointAdapter *pathPoint, workingPath)
-							finalPolygon << pathPoint->toPoint();
-						finalPolygon << neighbor->toPoint();
-
-						paths.push_back(finalPolygon);
-
-						//remove used points
-						std::vector<PointAdapter*> depleted;
-						foreach(PointAdapter *pathPoint, workingPath)
+						// if the point has only two paths and has been already added to polygon, mark as depleted
+						if(pathPoint->getNeighborCount() < 3)
 						{
-							// if the point has only two paths and has been already added to polygon, mark as depleted
-							if(pathPoint->getNeighborCount() < 3)
-								depleted.push_back(pathPoint);
+							depleted.push_back(pathPoint);
 						}
-						if(neighbor->getNeighborCount() < 3)
-							depleted.push_back(neighbor);
-
-						foreach(PointAdapter *pathPoint, depleted)
-							transferPoints.removeAll(pathPoint);
 					}
-					else
+					foreach(PointAdapter *pathPoint, depleted)
 					{
-						newPaths.push_back(neighbor);
+						//remove point from neighbors
+						foreach(PointAdapter *p, pathPoint->getNeighborPoints())
+							p->removeNeigbor(pathPoint);
+						transferPoints.removeAll(pathPoint);
 					}
+
+					jobs.empty();
+					finished = true;
+					break;
+				}
+				else //add neigbor to list of new paths
+				{
+					newPaths.push_back(neighbor);
 				}
 			}
-			foreach(PointAdapter *newPoint, newPaths)
-			{
-				QVector<PointAdapter*> newPath = workingPath;
-				newPath.append(newPoint);
-				jobs.push(newPath);
-			}
 
-			//close this job
-			jobs.pop();
+			if(!finished)
+			{
+				// if at least one new point, add it to current job
+				if(newPaths.size() > 0)
+					jobs.front().append(newPaths.at(0));
+				else
+					jobs.pop();
+
+				//for every other point, add it to job queue
+				for(int i = 1; i < newPaths.size(); i++)
+				{
+					QVector<PointAdapter*> newPath = workingPath;
+					newPath.append(newPaths.at(i));
+					jobs.push(newPath);
+				}
+			}
 		}
 	}
 
