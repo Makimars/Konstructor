@@ -354,3 +354,8 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
         }
     }
 }
+
+void MainWindow::on_objectsTree_itemSelectionChanged()
+{
+	this->ui->view3D->update();
+}

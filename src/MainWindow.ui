@@ -766,6 +766,18 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectItems</enum>
+            </property>
+            <property name="indentation">
+             <number>10</number>
+            </property>
+            <property name="uniformRowHeights">
+             <bool>false</bool>
+            </property>
             <column>
              <property name="text">
               <string notr="true">1</string>

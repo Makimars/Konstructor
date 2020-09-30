@@ -36,7 +36,7 @@ private:
     QAction drawAction;
     QMenu objectContextMenu;
 	QAction redrawAction;
-    QAction extrusionAction;
+	QAction extrusionAction;
 
 	void setupUi();
 
@@ -81,6 +81,7 @@ private slots:
 	void viewKeyPress(QKeyEvent *event);
 	void swapMode(int index);
 	void on_objectsTree_customContextMenuRequested(const QPoint &pos);
+	void on_objectsTree_itemSelectionChanged();
 };
 
 #endif // MAINWINDOW_H

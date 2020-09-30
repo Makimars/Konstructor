@@ -120,6 +120,9 @@ void View3DWidget::initializeGL()
 	worldToCamera = program.uniformLocation("worldToCamera");
 	cameraToView = program.uniformLocation("cameraToView");
 
+	selectedItemColor = program.uniformLocation("selectedItemColor");
+	itemIsSelected = program.uniformLocation("itemIsSelected");
+
 	vertexBuffer.create();
 	vertexBuffer.bind();
 	vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
@@ -152,17 +155,18 @@ void View3DWidget::paintGL()
 	program.bind();
 	program.setUniformValue(worldToCamera, camera.toMatrix());
 	program.setUniformValue(cameraToView, projection);
+	program.setUniformValue(selectedItemColor, Settings::selectedFaceColor);
 
 	vertexBufferObject.bind();
 	foreach (Item *item, objectsInSpace)
 	{
 		program.setUniformValue(itemToSpace, item->toMatrix());
+		program.setUniformValue(itemIsSelected, item->isSelected());
 		glDrawArrays(GL_TRIANGLES, item->getItemIndex(), item->size());
 	}
 	vertexBufferObject.release();
 
 	program.release();
-
 }
 
 void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
@@ -174,7 +178,7 @@ void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
 		item->setText(0, "object " + QString::number(objectsInSpace.size()));
 
 		objectsInSpace.append(item);
-		connect(item, &Item::sizeChanged,
+		connect(item, &Item::updateData,
 				this, &View3DWidget::reallocateMemory
 				);
 

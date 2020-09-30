@@ -49,10 +49,11 @@ std::vector<Vertex> *Polygon::getVertexData()
 
 void Polygon::setColor(QVector3D color)
 {
-	foreach (Vertex vertex, vertexData)
+	for(uint32_t i = 0; i < vertexData.size(); i++)
 	{
-		vertex.setColor(color);
+		vertexData.at(i).setColor(color);
 	}
+	emit updateData();
 }
 
 void Polygon::setHidden(bool hidden)
@@ -130,7 +131,7 @@ void Polygon::extrude(double length, bool extrusion, ExtrusionDirection directio
 		vertexData.push_back(copyVertex);
 	}
 
-	emit sizeChanged();
+	emit updateData();
 }
 
 std::vector<Vertex> *Polygon::getOuterPoints()

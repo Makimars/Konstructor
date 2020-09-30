@@ -32,7 +32,8 @@ private:
 	int itemIndex;
 
 signals:
-	void sizeChanged();
+	void updateData();
+
 };
 
 inline QString Item::getSketch() { return sketch; }

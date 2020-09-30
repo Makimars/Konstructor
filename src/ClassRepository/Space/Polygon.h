@@ -37,7 +37,7 @@ private:
 
 	bool hidden = false;
 signals:
-	void sizeChanged();
+	void updateData();
 };
 
 #endif // POLYGON_H

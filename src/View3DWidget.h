@@ -37,6 +37,9 @@ private:
 	int worldToCamera;
 	int cameraToView;
 
+	int selectedItemColor;
+	int itemIsSelected;
+
 	QPoint lastPos;
 
 	void allocateNewItem(Item *item);

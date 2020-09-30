@@ -38,14 +38,15 @@ void Item::setPolygons(std::vector<QPolygonF> polygons)
 	{
 		Polygon *finalPolygon = new Polygon(polygon);
 
-		connect(finalPolygon, &Polygon::sizeChanged,
-				this, &Item::sizeChanged
+		connect(finalPolygon, &Polygon::updateData,
+				this, &Item::updateData
 				);
-		this->polygons.push_back(new Polygon(polygon));
+
+		this->polygons.push_back(finalPolygon);
 	}
 
 	this->vertexes.reserve(size());
-	emit sizeChanged();
+	emit updateData();
 }
 
 std::vector<Polygon*> *Item::getPolygons()
