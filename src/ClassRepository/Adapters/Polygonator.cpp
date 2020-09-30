@@ -85,12 +85,7 @@ std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> tran
 	{
 		//remove dead ends
 		foreach(PointAdapter *point, transferPoints)
-		{
 			if(point->getNeighborCount() < 2) transferPoints.removeAll(point);
-		}
-		
-		foreach(PointAdapter *point, transferPoints)
-			point->setVisited(false);
 
 		std::queue<QVector<PointAdapter*>> jobs;
 
@@ -112,7 +107,7 @@ std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> tran
 				if(workingPath.lastIndexOf(neighbor) == -1 & transferPoints.size() > 0)
 				{
 					//finishes this path
-					if(neighbor->isNeighbor(transferPoints.at(0)) && workingPath.size() > 1)
+					if(neighbor->isNeighbor(workingPath.at(0)) && workingPath.size() > 1)
 					{
 						//create a polygon
 						QPolygonF finalPolygon;

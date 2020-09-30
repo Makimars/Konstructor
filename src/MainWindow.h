@@ -65,7 +65,7 @@ private slots:
 	void on_quitButton_clicked();
 	//sketch files
 	void on_saveSketchButton_clicked();
-	void on_importSketchButton_clicked();
+	void on_openSketchButton_clicked();
 	void on_closeSketchButton_clicked();
 	//sketch tools
 	void on_lineButton_clicked();

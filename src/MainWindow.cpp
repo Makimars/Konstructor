@@ -201,7 +201,7 @@ void MainWindow::on_saveSketchButton_clicked()
 	this->ui->view2D->saveToFile(fileName);
 }
 
-void MainWindow::on_importSketchButton_clicked()
+void MainWindow::on_openSketchButton_clicked()
 {
 	QString fileName = QFileDialog::getOpenFileName(
 			this,

@@ -15,8 +15,6 @@ public:
 
 	double getX() const;
 	double getY() const;
-	bool visited() const;
-	void setVisited(bool value);
 	Point *getOriginalPoint() const;
 	int getNeighborCount() const;
 	QVector<PointAdapter *> getNeighborPoints() const;
@@ -29,7 +27,6 @@ public:
 
 private:
 	double x,y;
-	bool m_visited;
 	QVector<PointAdapter*> neighborPoints;
 
 	Point *originalPoint;
@@ -37,7 +34,5 @@ private:
 
 inline double PointAdapter::getX() const { return x; }
 inline double PointAdapter::getY() const { return y; }
-inline bool PointAdapter::visited() const { return m_visited; }
-inline void PointAdapter::setVisited(bool value) { m_visited = value; }
 
 #endif // TRANSFERPOINT_H
