@@ -6,15 +6,16 @@ The purpose of this project is to create simple free and open source CAD with su
 
 This software is linced under EUPL v1.2, other language versions are located in folder LICENCE, and are equally valid.
 
-## TODO list for release 0.1 beta
+## current TODO list
 
-### Drawing
-- arc
-- better dimensions control
-- fix dimensions collisions
+# Plane
+- rework constrains
+- implement arc
 
-### Space
-- sketching on basic planes
-- extrusion
-- save object
-- sketching on extruded planes
+# Space
+- rework camera movement
+- implement face visibility (GL_CULL_FACE)
+- polygon higlighting
+- visible planes
+- extruding on created planes
+- save and load Project files

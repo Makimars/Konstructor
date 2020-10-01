@@ -27,9 +27,6 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/ClassRepository/Adapters/PointAdapter.cpp \
-    src/ClassRepository/Adapters/Polygonator.cpp \
-    src/ClassRepository/Plane/Drawables/Arc.cpp \
     src/ExtrusionDialog.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
@@ -56,11 +53,15 @@ SOURCES += \
     src/ClassRepository/Plane/Drawables/Line.cpp \
     src/ClassRepository/Plane/Drawables/Point.cpp \
     src/ClassRepository/Plane/Drawables/Label.cpp \
+    src/ClassRepository/Plane/Drawables/Arc.cpp \
 \
     src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.cpp \
     src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
     src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
     src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
+\
+    src/ClassRepository/Adapters/PointAdapter.cpp \
+    src/ClassRepository/Adapters/Polygonator.cpp \
 \
     src/ClassRepository/Space/Polygon.cpp \
     src/ClassRepository/Space/Plane.cpp \
@@ -72,9 +73,6 @@ SOURCES += \
 HEADERS += \
     include/delaunator/delaunator.h \
 \
-    src/ClassRepository/Adapters/PointAdapter.h \
-    src/ClassRepository/Adapters/Polygonator.h \
-    src/ClassRepository/Plane/Drawables/Arc.h \
     src/ExtrusionDialog.h \
     src/MainWindow.h \
     src/MessagesManager.h \
@@ -105,11 +103,15 @@ HEADERS += \
     src/ClassRepository/Plane/Drawables/Line.h \
     src/ClassRepository/Plane/Drawables/Point.h \
     src/ClassRepository/Plane/Drawables/Label.h \
+    src/ClassRepository/Plane/Drawables/Arc.h \
 \
     src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.h \
     src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
     src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.h \
     src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.h \
+\
+    src/ClassRepository/Adapters/PointAdapter.h \
+    src/ClassRepository/Adapters/Polygonator.h \
 \
     src/ClassRepository/Space/Space \
 \
