@@ -15,7 +15,6 @@ This software is linced under EUPL v1.2, other language versions are located in 
 # Space
 - rework camera movement
 - implement face visibility (GL_CULL_FACE)
-- polygon higlighting
 - visible planes
 - extruding on created planes
 - save and load Project files

@@ -66,6 +66,11 @@ bool Polygon::isHidden()
 	return hidden;
 }
 
+int Polygon::size()
+{
+	return vertexData.size();
+}
+
 void Polygon::extrude(double length, bool extrusion, ExtrusionDirection direction)
 {
 	if(direction == ExtrusionDirection::Back)

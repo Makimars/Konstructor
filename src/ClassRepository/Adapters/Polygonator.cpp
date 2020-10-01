@@ -72,6 +72,8 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 
 			double radius = circle->getRadius();
 			int pointsPerCircle = (int)(radius / Settings::pointPerRadiusCoeficient);
+			if(pointsPerCircle < 8) pointsPerCircle = 8;
+
 			double anglePerPoint = M_PI / pointsPerCircle * 2;
 
 			for(int i = 0; i < pointsPerCircle; i++)

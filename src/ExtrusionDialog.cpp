@@ -8,7 +8,7 @@ ExtrusionDialog::ExtrusionDialog(QWidget *parent) :
 	ui->setupUi(this);
 
 	connect(this->ui->polygonsList, &QListWidget::itemSelectionChanged,
-			this, &ExtrusionDialog::selectedFaceChanged
+			this, &ExtrusionDialog::selectionChanged
 			);
 }
 
@@ -25,15 +25,6 @@ void ExtrusionDialog::show(Item *item)
 		this->ui->polygonsList->addItem(referencedItem->getPolygons()->at(i));
 	}
 	QDialog::show();
-}
-
-void ExtrusionDialog::selectedFaceChanged()
-{
-	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
-	{
-		Polygon *polygon = referencedItem->getPolygons()->at(i);
-		if(polygon->isSelected()) polygon->setColor(Settings::selectedFaceColor);
-	}
 }
 
 void ExtrusionDialog::accept()

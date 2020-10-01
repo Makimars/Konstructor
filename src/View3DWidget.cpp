@@ -124,6 +124,7 @@ void View3DWidget::initializeGL()
 
 	selectedItemColor = program.uniformLocation("selectedItemColor");
 	itemIsSelected = program.uniformLocation("itemIsSelected");
+	polygonIsSelected = program.uniformLocation("polygonIsSelected");
 
 	vertexBuffer.create();
 	vertexBuffer.bind();
@@ -162,9 +163,16 @@ void View3DWidget::paintGL()
 	vertexBufferObject.bind();
 	foreach (Item *item, objectsInSpace)
 	{
+		int currentIndex = item->getItemIndex();
 		program.setUniformValue(itemToSpace, item->toMatrix());
 		program.setUniformValue(itemIsSelected, item->isSelected());
-		glDrawArrays(GL_TRIANGLES, item->getItemIndex(), item->size());
+
+		for(uint32_t i = 0; i < item->getPolygons()->size(); i++)
+		{
+			program.setUniformValue(polygonIsSelected, item->getPolygons()->at(i)->isSelected());
+			glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->size());
+			currentIndex += item->getPolygons()->at(i)->size();
+		}
 	}
 	vertexBufferObject.release();
 

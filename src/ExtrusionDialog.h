@@ -32,8 +32,10 @@ private:
 
     Item *referencedItem;
 
+signals:
+	void selectionChanged();
+
 public slots:
-	void selectedFaceChanged();
 	void accept() override;
 };
 

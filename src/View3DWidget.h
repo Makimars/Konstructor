@@ -39,6 +39,7 @@ private:
 
 	int selectedItemColor;
 	int itemIsSelected;
+	int polygonIsSelected;
 
 	QPoint lastPos;
 
@@ -59,6 +60,9 @@ public slots:
 	void addItem(std::vector<QPolygonF> polygons, QString sketch);
 	void recieveTargetItem(QTreeWidgetItem *item);
 	void reallocateMemory();
+	void update();
 };
+
+inline void View3DWidget::update() { QOpenGLWidget::update(); }
 
 #endif // VIEW3DWIDGET_H

@@ -28,6 +28,7 @@ public:
 	void setColor(QVector3D color);
 	void setHidden(bool hidden);
 	bool isHidden();
+	int size();
 
 	void extrude(double length, bool extrusion, ExtrusionDirection direction);
 

@@ -8,13 +8,13 @@ MainWindow::MainWindow(QWidget *parent) :
 	loadSettings();
 
 	this->ui->setupUi(this);
-	this->setupUi();
-	this->setupConnections();
 
 	this->settingsDialog = new SettingsDialog();
 	this->extrusionDialog = new ExtrusionDialog();
 	MessagesManager::init();
 
+	this->setupUi();
+	this->setupConnections();
 	this->swapMode(Global::Mode::Object);
 }
 
@@ -88,6 +88,11 @@ void MainWindow::setupConnections()
 	//sends polygons from polygonator to View3DWidget
 	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
 			this->ui->view3D, &View3DWidget::addItem
+			);
+
+	//connect extrusionDialog to screen update
+	connect(extrusionDialog, &ExtrusionDialog::selectionChanged,
+			this->ui->view3D, &View3DWidget::update
 			);
 }
 
@@ -306,6 +311,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			QAction *selectedAction = objectContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
 			if(selectedAction == &extrusionAction)
 			{
+				item->setSelected(false);
 				this->extrusionDialog->show(item);
 			}
 			else if(selectedAction == &redrawAction)
