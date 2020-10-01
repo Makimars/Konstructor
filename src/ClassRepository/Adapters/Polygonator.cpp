@@ -65,6 +65,35 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 			pointOne->addNeighbor(pointTwo);
 			pointTwo->addNeighbor(pointOne);
 		}
+		else if(obj->getType() == Global::Circle)
+		{
+			Circle *circle = dynamic_cast<Circle*>(obj);
+			QVector<PointAdapter*> points;
+
+			double radius = circle->getRadius();
+			int pointsPerCircle = (int)(radius / Settings::pointPerRadiusCoeficient);
+			double anglePerPoint = M_PI / pointsPerCircle * 2;
+
+			for(int i = 0; i < pointsPerCircle; i++)
+			{
+				double x = circle->getCenterPoint()->getX() + (cos(i*anglePerPoint) * radius);
+				double y = circle->getCenterPoint()->getY() + (sin(i*anglePerPoint) * radius);
+
+				PointAdapter *point = new PointAdapter(x, y);
+				points.append(point);
+
+				if(i > 0){
+					points.at(i-1)->addNeighbor(point);
+					point->addNeighbor(points.at(i-1));
+				}
+				if(i == pointsPerCircle-1){
+					point->addNeighbor(points.at(0));
+					points.at(0)->addNeighbor(point);
+				}
+			}
+
+			pointAdapters.append(points);
+		}
 	}
 
 	return pointAdapters;

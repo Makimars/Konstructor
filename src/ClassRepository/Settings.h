@@ -42,6 +42,8 @@ public:
 		openSettings,
 		quitApp;
 
+	//3D
+	static int pointPerRadiusCoeficient;
 
 	//environment
 	static QString userProjectRoot;

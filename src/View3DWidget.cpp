@@ -8,6 +8,8 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	format.setVersion(3,3);
 	setFormat(format);
 
+	camera.translate(-camera.forward()*Settings::planeToSpaceRatio);
+
 	setFocus();
 }
 
@@ -71,7 +73,7 @@ void View3DWidget::keyPressEvent(QKeyEvent *event)
 {
 	QOpenGLWidget::keyPressEvent(event);
 
-	static const float transSpeed = 0.01f;
+	static const float transSpeed = 0.5f;
 
 	// Handle translations
 	QVector3D translation;

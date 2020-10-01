@@ -38,7 +38,6 @@ void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
 {
 	if(this->previousClickedPoint != nullptr)
 	{
-		qDebug() << "second click";
 		this->objectFactory->addDrawable(this->previousClickedPoint);
 
 		if(clickedObject == nullptr)
