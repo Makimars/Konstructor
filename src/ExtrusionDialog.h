@@ -32,11 +32,13 @@ private:
 
     Item *referencedItem;
 
+
 signals:
 	void selectionChanged();
 
 public slots:
 	void accept() override;
+	void finished(int result);
 };
 
 #endif // EXTRUSIONDIALOG_H

@@ -10,6 +10,9 @@ ExtrusionDialog::ExtrusionDialog(QWidget *parent) :
 	connect(this->ui->polygonsList, &QListWidget::itemSelectionChanged,
 			this, &ExtrusionDialog::selectionChanged
 			);
+	connect(this, &QDialog::finished,
+			this, &ExtrusionDialog::finished
+			);
 }
 
 ExtrusionDialog::~ExtrusionDialog()
@@ -45,4 +48,15 @@ void ExtrusionDialog::accept()
 	}
 
 	QDialog::accept();
+}
+
+void ExtrusionDialog::finished(int result)
+{
+	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
+	{
+		Polygon *polygon = referencedItem->getPolygons()->at(i);
+		polygon->setSelected(false);
+		this->ui->polygonsList->takeItem(ui->polygonsList->row(polygon));
+	}
+	qDebug() << "removed";
 }
