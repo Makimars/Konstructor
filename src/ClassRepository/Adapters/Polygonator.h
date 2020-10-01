@@ -3,7 +3,8 @@
 
 #include <queue>
 
-#include "LineAdapter.h"
+#include "../Plane/Plane"
+#include "PointAdapter.h"
 
 class Polygonator : public QObject
 {
@@ -15,9 +16,8 @@ private:
 	Polygonator();
 	static Polygonator *instance;
 
-	void convertToIntermediate(QVector<DrawableObject*> drawing, QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines);
-	void assignNeigbors(QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines);
-	std::vector<QPolygonF> generatePolygons(QVector<PointAdapter*> transferPoints);
+	QVector<PointAdapter*> generateAdapters(QVector<DrawableObject*> drawing);
+	QVector<QPolygonF> generatePolygons(QVector<PointAdapter*> transferPoints);
 
 public slots:
 	void recieveDrawing(QVector<DrawableObject*> drawing);

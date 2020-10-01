@@ -1,26 +1,11 @@
 #include "PointAdapter.h"
 
-PointAdapter *PointAdapter::fromDrawablePoint(Point *point)
-{
-	return new PointAdapter(
-				point->getX() / Settings::planeToSpaceRatio,
-				point->getY() / Settings::planeToSpaceRatio,
-				point
-				);
-}
-
 PointAdapter::PointAdapter(){}
 
-PointAdapter::PointAdapter(double x, double y, Point *point)
+PointAdapter::PointAdapter(double x, double y)
 {
 	this->x = x;
 	this->y = y;
-	originalPoint = point;
-}
-
-Point *PointAdapter::getOriginalPoint() const
-{
-	return originalPoint;
 }
 
 int PointAdapter::getNeighborCount() const

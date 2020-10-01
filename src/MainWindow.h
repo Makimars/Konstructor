@@ -39,6 +39,7 @@ private:
 	QAction extrusionAction;
 
 	void setupUi();
+	void setupConnections();
 
 	//settings
 	void loadSettings();

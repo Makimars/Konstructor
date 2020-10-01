@@ -1,12 +1,11 @@
 #include "Polygonator.h"
 
-Polygonator *Polygonator::instance = nullptr;
+Polygonator *Polygonator::instance = new Polygonator();
 
 Polygonator::Polygonator(){}
 
 Polygonator *Polygonator::getInstance()
 {
-	if(instance == nullptr) instance = new Polygonator();
 	return instance;
 }
 
@@ -19,66 +18,61 @@ void Polygonator::recieveDrawing(QVector<DrawableObject*> drawing)
 	{
 		sketch.append(drawing.at(i)->toFileString().toLatin1() + "\n");
 	}
-
-	QVector<PointAdapter*> transferPoints;
-	QVector<LineAdapter*> transferLines;
-
-	convertToIntermediate(drawing, &transferPoints, &transferLines);
-	assignNeigbors(&transferPoints, &transferLines);
-
-	std::vector<QPolygonF> polygons = generatePolygons(transferPoints);
-
-	//delete transfer poins and lines
-	foreach(PointAdapter *point, transferPoints)
-		delete point;
-	foreach(LineAdapter *line, transferLines)
-		delete line;
-
-	emit sendPolygons(polygons, sketch);
-}
-
-void Polygonator::convertToIntermediate(QVector<DrawableObject*> drawing, QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines)
-{
-	//convert points
 	foreach (DrawableObject *obj, drawing)
 	{
-		if((obj->getType() == Global::Point) & !obj->isConstructional() & !obj->isHidden())
+		if((obj->isConstructional() | obj->isHidden()))
+		{
+			drawing.removeAll(obj);
+		}
+	}
+
+	QVector<PointAdapter*> transferPoints = generateAdapters(drawing);
+	QVector<QPolygonF> polygons = generatePolygons(transferPoints);
+
+	//delete adapter poins
+	foreach(PointAdapter *point, transferPoints)
+		delete point;
+
+	emit sendPolygons(polygons.toStdVector(), sketch);
+}
+
+QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> drawing)
+{
+	QVector<PointAdapter*> pointAdapters;
+	QVector<Point*> originalPoints;
+
+	//generate points
+	foreach (DrawableObject *obj, drawing)
+	{
+		if(obj->getType() == Global::Point)
 		{
 			Point *point = dynamic_cast<Point*>(obj);
 
-			transferPoints->push_back(PointAdapter::fromDrawablePoint(point));
+			originalPoints.append(point);
+			pointAdapters.append(new PointAdapter(point->getX(), point->getY()));
 		}
 	}
-
-	//convert lines from Drawable lines
+	//generate connections
 	foreach (DrawableObject *obj, drawing)
 	{
-		if((obj->getType() == Global::Line) & !obj->isConstructional() & !obj->isHidden())
+		if((obj->getType() == Global::Line))
 		{
 			Line *line = dynamic_cast<Line*>(obj);
 
-			transferLines->push_back(LineAdapter::fromDrawableLine(line, transferPoints));
+			PointAdapter *pointOne = pointAdapters.at(originalPoints.indexOf(line->getStartPoint()));
+			PointAdapter *pointTwo = pointAdapters.at(originalPoints.indexOf(line->getEndPoint()));
+
+			pointOne->addNeighbor(pointTwo);
+			pointTwo->addNeighbor(pointOne);
 		}
 	}
 
-	//generate lines from circles, arc
+	return pointAdapters;
 }
 
-void Polygonator::assignNeigbors(QVector<PointAdapter*> *transferPoints, QVector<LineAdapter*> *transferLines)
+QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transferPoints)
 {
-	foreach(PointAdapter *point, *transferPoints)
-	{
-		foreach(LineAdapter *line, *transferLines)
-		{
-			if(line->hasPoint(point))
-				point->addNeighbor(line->getOtherPoint(point));
-		}
-	}
-}
-
-std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transferPoints)
-{
-	std::vector<QPolygonF> paths;
+	QVector<QPolygonF> paths;
 
 	//for each point
 	while(transferPoints.size() > 0)
@@ -126,7 +120,7 @@ std::vector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> tran
 					foreach(PointAdapter *pathPoint, workingPath)
 						finalPolygon << pathPoint->toPoint();
 
-					paths.push_back(finalPolygon);
+					paths.append(finalPolygon);
 
 					//remove used points
 					std::vector<PointAdapter*> depleted;

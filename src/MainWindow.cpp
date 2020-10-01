@@ -9,16 +9,49 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->ui->setupUi(this);
 	this->setupUi();
+	this->setupConnections();
 
 	this->settingsDialog = new SettingsDialog();
 	this->extrusionDialog = new ExtrusionDialog();
 	MessagesManager::init();
 
 	this->swapMode(Global::Mode::Object);
+}
 
+MainWindow::~MainWindow()
+{
+	delete this->ui;
+}
+
+void MainWindow::setupUi()
+{
+    //object menu
+	this->ui->objectsTree->setHeaderHidden(true);
+    ui->objectsTree->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	Space::Plane *basePlane = new Space::Plane();
+	basePlane->setPosition(QVector3D(0,0,0));
+	basePlane->setRotation(QQuaternion(0,0,0,0));
+	basePlane->setText(0, "origin plane");
+    this->ui->objectsTree->addTopLevelItem(basePlane);
+
+    //context menus
+	drawAction.setText(tr("Draw"));
+    planeContextMenu.addAction(&drawAction);
+
+	extrusionAction.setText(tr("Extrude"));
+	objectContextMenu.addAction(&extrusionAction);
+	redrawAction.setText(tr("Redraw"));
+	objectContextMenu.addAction(&redrawAction);
+}
+
+void MainWindow::setupConnections()
+{
+	//forward keypresses to ViewWidget
 	connect(this->ui->view2D, &ViewWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
+	//forwards statusBar messages from VieewWidget
 	connect(this->ui->view2D, &ViewWidget::showStatusBarMessage,
 			this->ui->statusBar, &QStatusBar::showMessage
 			);
@@ -40,82 +73,22 @@ MainWindow::MainWindow(QWidget *parent) :
 			);
 
 	//Plane to Space connection
+	//set item on which to draw
 	connect(this, &MainWindow::setTargetItem,
 			this->ui->view3D, &View3DWidget::recieveTargetItem
 			);
+	//send finishWarning signal to ViewWidget
 	connect(this, &MainWindow::finishDrawing,
 			this->ui->view2D, &ViewWidget::finishDrawing
 			);
+	//sends drawing to polygonator
 	connect(this->ui->view2D, &ViewWidget::returnDrawing,
 			Polygonator::getInstance(), &Polygonator::recieveDrawing
 			);
+	//sends polygons from polygonator to View3DWidget
 	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
 			this->ui->view3D, &View3DWidget::addItem
 			);
-}
-
-MainWindow::~MainWindow()
-{
-	delete this->ui;
-}
-
-void MainWindow::setupUi()
-{
-    //menubar
-   /* QMenuBar *menuBar = new QMenuBar(this->ui->leftFrame);
-	QMenu *fileMenu = menuBar->addMenu(tr("File"));
-	this->ui->leftFrame->layout()->setContentsMargins(0,menuBar->height(),0,0);
-
-	QAction *newAction = fileMenu->addAction(tr("New"));
-	connect(newAction, &QAction::triggered,
-			this, &MainWindow::newFileClicked
-			);
-	QAction *openAction = fileMenu->addAction(tr("Open"));
-	connect(openAction, &QAction::triggered,
-            this, &MainWindow::openFileClicked
-            );
-	QAction *saveAction = fileMenu->addAction(tr("Save"));
-	connect(saveAction, &QAction::triggered,
-            this, &MainWindow::saveFileClicked
-            );
-	QAction *exportAction = fileMenu->addAction(tr("Export"));
-	connect(exportAction, &QAction::triggered,
-            this, &MainWindow::exportFileClicked
-            );
-	QAction *settingsAction = fileMenu->addAction(tr("Settings"));
-	connect(settingsAction, &QAction::triggered,
-            this, &MainWindow::settingsClicked
-            );
-	QAction *QuitAction = fileMenu->addAction(tr("Quit"));
-	connect(QuitAction, &QAction::triggered,
-            this, &MainWindow::quitClicked
-            );
-
-	newAction->setShortcut(Settings::newFile);
-	openAction->setShortcut(Settings::openFile);
-	saveAction->setShortcut(Settings::saveFile);
-	exportAction->setShortcut(Settings::exportFile);
-	settingsAction->setShortcut(Settings::openSettings);
-	QuitAction->setShortcut(Settings::quitApp);
-*/
-    //object menu
-	this->ui->objectsTree->setHeaderHidden(true);
-    ui->objectsTree->setContextMenuPolicy(Qt::CustomContextMenu);
-
-	Space::Plane *basePlane = new Space::Plane();
-	basePlane->setPosition(QVector3D(0,0,0));
-	basePlane->setRotation(QQuaternion(0,0,0,0));
-	basePlane->setText(0, "origin plane");
-    this->ui->objectsTree->addTopLevelItem(basePlane);
-
-    //context menus
-	drawAction.setText(tr("Draw"));
-    planeContextMenu.addAction(&drawAction);
-
-	extrusionAction.setText(tr("Extrude"));
-	objectContextMenu.addAction(&extrusionAction);
-	redrawAction.setText(tr("Redraw"));
-	objectContextMenu.addAction(&redrawAction);
 }
 
 //----------    Ui handeling    ---------

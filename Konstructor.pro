@@ -27,7 +27,6 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/ClassRepository/Adapters/LineAdapter.cpp \
     src/ClassRepository/Adapters/PointAdapter.cpp \
     src/ClassRepository/Adapters/Polygonator.cpp \
     src/ClassRepository/Plane/Drawables/Arc.cpp \
@@ -73,7 +72,6 @@ SOURCES += \
 HEADERS += \
     include/delaunator/delaunator.h \
 \
-    src/ClassRepository/Adapters/LineAdapter.h \
     src/ClassRepository/Adapters/PointAdapter.h \
     src/ClassRepository/Adapters/Polygonator.h \
     src/ClassRepository/Plane/Drawables/Arc.h \

@@ -97,7 +97,7 @@ Line *Line::clone()
 
 double Line::distanceFrom(QPointF location)
 {
-	return abs(signedDistanceFrom(location));
+	return abs((long int)signedDistanceFrom(location));
 }
 
 double Line::signedDistanceFrom(QPointF location)

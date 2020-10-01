@@ -1,21 +1,18 @@
 #ifndef TRANSFERPOINT_H
 #define TRANSFERPOINT_H
 
-#include <vector>
-
-#include "../Plane/Plane"
+#include <QVector>
+#include <QPointF>
 
 class PointAdapter
 {
 public:
-	static PointAdapter *fromDrawablePoint(Point *point);
 
 	PointAdapter();
-	PointAdapter(double x, double y, Point *point);
+	PointAdapter(double x, double y);
 
 	double getX() const;
 	double getY() const;
-	Point *getOriginalPoint() const;
 	int getNeighborCount() const;
 	QVector<PointAdapter*> getNeighborPoints() const;
 
@@ -29,8 +26,6 @@ public:
 private:
 	double x,y;
 	QVector<PointAdapter*> neighborPoints;
-
-	Point *originalPoint;
 };
 
 inline double PointAdapter::getX() const { return x; }

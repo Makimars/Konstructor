@@ -25,6 +25,7 @@ int SettingsDialog::exec()
 {
 	QDialog::exec();
 	loadSettings();
+	return 0;
 }
 
 void SettingsDialog::on_buttonBox_accepted()
