@@ -22,6 +22,7 @@ public:
 private:
 	QVector<Item*> objectsInSpace;
 	QMatrix4x4 projection;
+	QQuaternion itemRotation;
 	QOpenGLShaderProgram program;
 	Camera camera;
 
@@ -36,6 +37,7 @@ private:
 	int itemToSpace;
 	int worldToCamera;
 	int cameraToView;
+	int itemToRotate;
 
 	int selectedItemColor;
 	int itemIsSelected;
