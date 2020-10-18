@@ -3,21 +3,16 @@
 
 #include "Tool.h"
 
-class LineTool : public Plane::Tool
+class LineTool : public Tool
 {
 public:
-	static void initialize(Point *mousePoint,
-						   QGraphicsScene *scene,
-						   QBrush *defaultBrush,
-						   QPen *defaultPen
-						   );
 	static LineTool *getInstance();
 
-	void click(DrawableObject *clickedObject, Point *mousePoint) override;
+	void click(DrawableObject *clickedObject, QPointF pos) override;
 	void resetTool() override;
 
 private:
-	LineTool(Point *mousePoint, QGraphicsScene *scene);
+	LineTool();
 	static LineTool *instance;
 
 	//working variables

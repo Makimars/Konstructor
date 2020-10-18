@@ -41,17 +41,6 @@ void Point::setLocation(double x, double y)
 	this->y = y;
 }
 
-Point *Point::clone()
-{
-	Point *p = new Point();
-	p->setLocation(getLocation());
-	p->setName(this->name);
-	p->setBrush(this->brush);
-	p->setPen(this->pen);
-
-	return p;
-}
-
 //----------	aritmetic functions    ----------
 
 double Point::distanceFrom(QPointF point)

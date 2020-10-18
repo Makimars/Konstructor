@@ -20,7 +20,6 @@ public:
 	Point *getCenterPoint();
 	double getRadius();
 	Circle *setRadius(double value);
-	Circle *clone() override;
 
 	//relations
 	void setRelationLiesOn(Point *point);

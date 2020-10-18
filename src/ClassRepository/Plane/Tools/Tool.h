@@ -4,33 +4,27 @@
 #include "../Factory.h"
 #include <QKeyEvent>
 
-namespace Plane {
-
 class Tool : public QObject
 {
 	Q_OBJECT
 public:
-	virtual void click(DrawableObject *clickedObject, Point *mousePoint) = 0;
-	virtual void resetTool() = 0;
-
-	//getters and setters
-	QBrush *getCurrentBrush() const;
-	void setCurrentBrush(QBrush *value);
-	QPen *getCurrentPen() const;
-	void setCurrentPen(QPen *value);
+	virtual void click(DrawableObject *clickedObject, QPointF pos);
+	virtual void resetTool();
 
 protected:
+	Tool();
+
 	Factory *objectFactory;
 
-	QBrush *currentBrush;
-	QPen *currentPen;
+	//getters and setters
+	void setCurrentBrush(QBrush *value);
+	void setCurrentPen(QPen *value);
 };
 
-inline QBrush *Tool::getCurrentBrush() const { return currentBrush; }
-inline void Tool::setCurrentBrush(QBrush *value) { currentBrush = value; }
-inline QPen *Tool::getCurrentPen() const { return currentPen; }
-inline void Tool::setCurrentPen(QPen *value) { currentPen = value; }
-
+inline Tool::Tool()
+{
+	this->objectFactory = Factory::getInstance();
 }
+
 
 #endif // TOOL_H

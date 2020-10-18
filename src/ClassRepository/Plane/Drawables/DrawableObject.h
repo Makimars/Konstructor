@@ -61,8 +61,6 @@ public:
 	void setHidden(bool value);
 	bool isHidden();
 
-	virtual DrawableObject *clone(){return nullptr;}
-
 	//geometry
 	void addGeometryUpdate(DrawableObject *object);
 	void removeGeometryUpdate(DrawableObject *object);

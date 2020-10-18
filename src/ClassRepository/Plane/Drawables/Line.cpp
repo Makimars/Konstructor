@@ -85,14 +85,6 @@ Point *Line::getEndPoint()
 	return this->endPoint;
 }
 
-Line *Line::clone()
-{
-	Line *l = new Line(this->startPoint, this->endPoint);
-	l->setName(this->getName());
-
-	return l;
-}
-
 //----------     Distance    ----------
 
 double Line::distanceFrom(QPointF location)

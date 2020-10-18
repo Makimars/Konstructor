@@ -83,6 +83,7 @@ private slots:
 	void swapMode(int index);
 	void on_objectsTree_customContextMenuRequested(const QPoint &pos);
 	void on_objectsTree_itemSelectionChanged();
+	void on_arcButton_clicked();
 };
 
 #endif // MAINWINDOW_H

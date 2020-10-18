@@ -2,25 +2,14 @@
 
 DimensionTool *DimensionTool::instance = nullptr;
 
-DimensionTool::DimensionTool(Point *mousePoint, QGraphicsScene *scene)
+DimensionTool::DimensionTool() : Tool()
 {
-	this->objectFactory = Factory::getInstance();
-}
-
-void DimensionTool::initialize(Point *mousePoint,
-							QGraphicsScene *scene,
-							QBrush *defaultBrush,
-							QPen *defaultPen)
-{
-	if(DimensionTool::instance == nullptr)
-		DimensionTool::instance = new DimensionTool(mousePoint, scene);
-
-	DimensionTool::instance->setCurrentPen(defaultPen);
-	DimensionTool::instance->setCurrentBrush(defaultBrush);
 }
 
 DimensionTool *DimensionTool::getInstance()
 {
+	if(DimensionTool::instance == nullptr)
+		DimensionTool::instance = new DimensionTool();
 	return DimensionTool::instance;
 }
 

@@ -2,7 +2,7 @@
 
 CircleTool *CircleTool::instance = nullptr;
 
-CircleTool::CircleTool(Point *mousePoint, QGraphicsScene *scene)
+CircleTool::CircleTool() : Tool()
 {
 	this->objectFactory = Factory::getInstance();
 
@@ -17,20 +17,10 @@ CircleTool::CircleTool(Point *mousePoint, QGraphicsScene *scene)
 	this->previousClickedPoint = nullptr;
 }
 
-void CircleTool::initialize(Point *mousePoint,
-							QGraphicsScene *scene,
-							QBrush *defaultBrush,
-							QPen *defaultPen)
-{
-	if(CircleTool::instance == nullptr)
-		CircleTool::instance = new CircleTool(mousePoint, scene);
-
-	CircleTool::instance->setCurrentPen(defaultPen);
-	CircleTool::instance->setCurrentBrush(defaultBrush);
-}
-
 CircleTool *CircleTool::getInstance()
 {
+	if(CircleTool::instance == nullptr)
+		CircleTool::instance = new CircleTool();
 	return CircleTool::instance;
 }
 

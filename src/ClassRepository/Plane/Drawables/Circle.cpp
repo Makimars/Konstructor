@@ -64,15 +64,6 @@ Circle *Circle::setRadius(double value)
 	return this;
 }
 
-Circle *Circle::clone()
-{
-	Circle *circle = new Circle(this->centerPoint);
-	circle->setRadius(this->radius);
-	circle->setRelationLiesOn(this->liesOn);
-
-	return circle;
-}
-
 //----------	Relations    ----------
 
 void Circle::setRelationLiesOn(Point *object)

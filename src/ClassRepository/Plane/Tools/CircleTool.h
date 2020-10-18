@@ -3,21 +3,16 @@
 
 #include "LineTool.h"
 
-class CircleTool : public Plane::Tool
+class CircleTool : public Tool
 {
 public:
-	static void initialize(Point *mousePoint,
-						   QGraphicsScene *scene,
-						   QBrush *defaultBrush,
-						   QPen *defaultPen
-						   );
 	static CircleTool *getInstance();
 
-	void click(DrawableObject *clickedObject, Point *mousePoint) override;
+	void click(DrawableObject *clickedObject, QPointF pos) override;
 	void resetTool() override;
 
 private:
-	CircleTool(Point *mousePoint, QGraphicsScene *scene);
+	CircleTool();
 	static CircleTool *instance;
 
 	//working variables

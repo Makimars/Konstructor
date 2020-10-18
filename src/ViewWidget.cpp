@@ -35,8 +35,6 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 								 );
 	this->objectFactory = Factory::getInstance();
 
-	this->mousePoint = this->objectFactory->makePoint();
-
 	initializeScene();
 
 	//tools initialisation
@@ -131,34 +129,33 @@ void ViewWidget::saveToFile(QString path)
 
 void ViewWidget::initializeTools()
 {
-	LineTool::initialize(this->mousePoint,
-						this->sketchScene,
+	LineTool::initialize(this->sketchScene,
 						&this->defaultBrush,
 						&this->defaultPen
 						 );
-	CircleTool::initialize(this->mousePoint,
-						this->sketchScene,
+	CircleTool::initialize(this->sketchScene,
 						&this->defaultBrush,
 						&this->defaultPen
 						 );
-	LabelTool::initialize(this->mousePoint,
-						this->sketchScene,
+	LabelTool::initialize(this->sketchScene,
 						&this->defaultBrush,
 						&this->defaultPen
 						 );
-	RectangleTool::initialize(this->mousePoint,
-							this->sketchScene,
+	RectangleTool::initialize(this->sketchScene,
 							&this->defaultBrush,
 							&this->defaultPen
 							 );
-	DimensionTool::initialize(this->mousePoint,
-							this->sketchScene,
+	DimensionTool::initialize(this->sketchScene,
 							&this->defaultBrush,
 							&this->defaultPen
 							  );
+	ArcTool::initialize(this->sketchScene,
+						&this->defaultBrush,
+						&this->defaultPen
+						  );
 
 	connect(this, &ViewWidget::mouseMoved,
-			RectangleTool::getInstance(), &RectangleTool::mouseMoved
+			RectangleTool::getInstance(), &RectangleTool::mouseMoveEvent
 			);
 }
 
@@ -249,7 +246,7 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 	QGraphicsView::mousePressEvent(event);
 
 	QGraphicsViewUserInput *userInput = QGraphicsViewUserInput::getInstance();
-	userInput->setInputBoxLocation(this->mousePoint->getLocation());
+	userInput->setInputBoxLocation(event->pos());
 	if(!userInput->isFocused())
 		userInput->closeInputBox();
 
@@ -267,7 +264,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 		try
 		{
 			if(this->selectedTool != nullptr)
-				this->selectedTool->click(dynamic_cast<DrawableObject*>(this->itemAt(event->pos())), this->mousePoint);
+				this->selectedTool->click(dynamic_cast<DrawableObject*>(this->itemAt(event->pos())), event->pos());
 		}
 		catch (DrawableAlreadyRestrainedException e)
 		{
@@ -282,15 +279,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseMoveEvent(event);
-
-	//update mouse position
-	this->mousePoint->setLocation(mapToScene(event->pos()));
-	emit mouseMoved(mousePoint);
-
-	DrawableObject *snapped = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
-	if(snapped != nullptr)
-		if(snapped->getType() == Global::Point)
-			this->mousePoint->setLocation(dynamic_cast<Point*>(snapped)->getLocation());
+	emit mouseMoved(event);
 
 	//draging plane
 	if(event->buttons() == Qt::MouseButton::MidButton)
@@ -355,6 +344,9 @@ void ViewWidget::setTool(int tool)
 			break;
 		case Global::Tools::DimensionTool:
 			this->selectedTool = DimensionTool::getInstance();
+			break;
+		case Global::Tools::ArcTool:
+			this->selectedTool = ArcTool::getInstance();
 			break;
 		default:
 			this->selectedTool = nullptr;

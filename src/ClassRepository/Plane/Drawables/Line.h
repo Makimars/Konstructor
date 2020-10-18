@@ -19,7 +19,6 @@ public:
 	void setLength(float lenght);
 	Point *getStartPoint();
 	Point *getEndPoint();
-	Line *clone() override;
 
 	//Geometry
 	QVector2D getLineVector() const;

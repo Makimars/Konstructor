@@ -2,10 +2,8 @@
 
 LineTool *LineTool::instance = nullptr;
 
-LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
+LineTool::LineTool() : Tool()
 {
-	this->objectFactory = Factory::getInstance();
-
 	//line preview
 	this->linePreviewStartPoint = this->objectFactory
 			->makePoint();
@@ -19,20 +17,10 @@ LineTool::LineTool(Point *mousePoint, QGraphicsScene *scene)
 
 }
 
-void LineTool::initialize(Point *mousePoint,
-							QGraphicsScene *scene,
-							QBrush *defaultBrush,
-							QPen *defaultPen)
-{
-	if(LineTool::instance == nullptr)
-		LineTool::instance = new LineTool(mousePoint, scene);
-
-	LineTool::instance->setCurrentPen(defaultPen);
-	LineTool::instance->setCurrentBrush(defaultBrush);
-}
-
 LineTool *LineTool::getInstance()
 {
+	if(LineTool::instance == nullptr)
+		LineTool::instance = new LineTool();
 	return LineTool::instance;
 }
 

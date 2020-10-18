@@ -31,9 +31,6 @@ private:
 	QAction constractionalToggle;
 	QAction deleteObjectAction;
 
-	//tools processing
-	Point *mousePoint;
-
 	Factory *objectFactory;
 
 	//tools
@@ -63,7 +60,7 @@ signals:
     void keyPressed(QKeyEvent *event);
 	void showStatusBarMessage(const QString &message, int timeout = 0);
 	void returnDrawing(QVector<DrawableObject*> drawing);
-	void mouseMoved(Point *mousePoint);
+	void mouseMoved(QMouseEvent *event);
 
 public slots:
 	void setTool(int tool);

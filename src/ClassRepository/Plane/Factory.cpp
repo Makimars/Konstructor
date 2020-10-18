@@ -44,6 +44,14 @@ Point *Factory::makePoint(double x, double y)
 	return point;
 }
 
+Point *Factory::copyPoint(Point *point)
+{
+	Point *newPoint = makePoint();
+	newPoint->setLocation(point->getLocation());
+
+	return newPoint;
+}
+
 Line *Factory::makeLine(Point *startPoint, Point *endPoint)
 {
 	Line *line = new Line(startPoint, endPoint);

@@ -28,7 +28,7 @@ enum Tools{
 	RectangleTool,
 	LabelTool,
 	DimensionTool,
-	ExtrusionTool
+	ArcTool
 };
 
 enum Mode{

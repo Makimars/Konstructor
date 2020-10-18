@@ -15,15 +15,20 @@ public:
 							);
 	static Factory *getInstance();
 
+	QBrush *getCurrentBrush();
+	QPen *getCurrentPen();
+
 	//object creation
 	Point *makePoint();
 	Point *makePoint(double x, double y);
+	Point *copyPoint(Point *point);
 	Line *makeLine(Point *startPoint, Point *endPoint);
 	Circle *makeCircle(Point *centerPoint);
 	Circle *makeCircle(Point *centerPoint, double radius);
 	Circle *makeCircle(Point *centerPoint, Point *liesOn);
 	Label *makeLabel(QPointF location);
 	Label *makeLabel(QPointF location, QString text);
+	Arc *makeArc(Point *points[3]);
 
 	//dimension creation
 	LineLengthDimension *makeLineLengthDimension(Line *line);
@@ -73,8 +78,8 @@ private:
 	QVector<DrawableObject*> *staticObjectsList;
 	QGraphicsScene *scene;
 
-	QPen *defaultPen;
-	QBrush *defaultBrush;
+	QPen *currentPen;
+	QBrush *currentBrush;
 
 	QGraphicsViewUserInput *userInput;
 

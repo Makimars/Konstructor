@@ -3,21 +3,20 @@
 
 #include "CircleTool.h"
 
-class RectangleTool : public Plane::Tool
+class RectangleTool : public Tool
 {
 public:
-	static void initialize(Point *mousePoint,
-						   QGraphicsScene *scene,
-						   QBrush *defaultBrush,
-						   QPen *defaultPen
-						   );
 	static RectangleTool *getInstance();
 
-	void click(DrawableObject *clickedPoint, Point *mousePoint) override;
+	void click(DrawableObject *clickedObject, QPointF pos) override;
 	void resetTool() override;
 
+public slots:
+	void mouseMoveEvent(QMouseEvent *event);
+
 private:
-	RectangleTool(Point *mousePoint, QGraphicsScene *scene);
+	RectangleTool();
+	static RectangleTool *instance;
 
 	/**
 	 * p0  l0 p1
@@ -28,15 +27,7 @@ private:
 	 */
 	Line *linesPreview[4];
 	Point *pointsPreview[4];
-
-	Point *mousePoint;
-
 	int clickCounter;
-
-	static RectangleTool *instance;
-
-public slots:
-	void mouseMoved(Point *mousePoint);
 };
 
 #endif // RECTANGLETOOL_H

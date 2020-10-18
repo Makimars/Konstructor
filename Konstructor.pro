@@ -27,6 +27,7 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
+    src/ClassRepository/Plane/Tools/ArcTool.cpp \
     src/ExtrusionDialog.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
@@ -73,6 +74,7 @@ SOURCES += \
 HEADERS += \
     include/delaunator/delaunator.h \
 \
+    src/ClassRepository/Plane/Tools/ArcTool.h \
     src/ExtrusionDialog.h \
     src/MainWindow.h \
     src/MessagesManager.h \

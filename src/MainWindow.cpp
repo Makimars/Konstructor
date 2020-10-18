@@ -231,6 +231,14 @@ void MainWindow::on_labelButton_clicked()
 		refreshTools(Global::Tools::NoTool);
 }
 
+void MainWindow::on_arcButton_clicked()
+{
+	if(this->ui->arcButton->isChecked())
+		refreshTools(Global::Tools::ArcTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
 //-----    constrains    -----
 
 void MainWindow::on_dimensionButton_clicked()

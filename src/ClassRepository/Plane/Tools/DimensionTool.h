@@ -3,21 +3,16 @@
 
 #include "LabelTool.h"
 
-class DimensionTool : public Plane::Tool
+class DimensionTool : public Tool
 {
 public:
-	static void initialize(Point *mousePoint,
-						   QGraphicsScene *scene,
-						   QBrush *defaultBrush,
-						   QPen *defaultPen
-						   );
 	static DimensionTool *getInstance();
 
-	void click(DrawableObject *clickedObject, Point *mousePoint) override;
+	void click(DrawableObject *clickedObject, QPointF pos) override;
 	void resetTool() override;
 
 private:
-	DimensionTool(Point *mousePoint, QGraphicsScene *scene);
+	DimensionTool();
 	static DimensionTool *instance;
 
 	//working variables
