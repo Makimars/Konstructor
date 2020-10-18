@@ -9,6 +9,7 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	setFormat(format);
 
 	camera.translate(-camera.forward()*Settings::planeToSpaceRatio);
+	itemRotation.setScalar(1);
 
 	setFocus();
 }
@@ -49,13 +50,16 @@ void View3DWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	QOpenGLWidget::mouseMoveEvent(event);
 
-	static const float rotSpeed   = 0.1f;
+	static const float rotSpeed   = 0.01f;
 
 	if(event->buttons() == Qt::RightButton)
 	{
 		// Handle rotations
-		camera.rotate(rotSpeed * (lastPos.x() - event->x()), Camera::LocalUp);
-		camera.rotate(rotSpeed * (lastPos.y() - event->y()), camera.right());
+		itemRotation.setX(itemRotation.x() + (lastPos.y() - event->y()));
+		itemRotation.setY(itemRotation.y() + (lastPos.x() - event->x()));
+
+		float scalar = std::sqrt((event->x() * event->x()) + (event->y() * event->y())) * 0.0001;
+		itemRotation.setScalar(itemRotation.scalar() + scalar);
 
 		// redraw
 		QOpenGLWidget::update();
@@ -67,44 +71,18 @@ void View3DWidget::mouseMoveEvent(QMouseEvent *event)
 void View3DWidget::wheelEvent(QWheelEvent *event)
 {
 	QOpenGLWidget::wheelEvent(event);
+
+	QVector3D translation = camera.forward() * event->delta();
+	static const float transSpeed = 0.05f;
+	camera.translate(transSpeed * translation);
+
+	// redraw
+	QOpenGLWidget::update();
 }
 
 void View3DWidget::keyPressEvent(QKeyEvent *event)
 {
 	QOpenGLWidget::keyPressEvent(event);
-
-	static const float transSpeed = 0.5f;
-
-	// Handle translations
-	QVector3D translation;
-	if (event->key() == Qt::Key_W)
-	{
-	  translation += camera.forward();
-	}
-	if (event->key() == Qt::Key_S)
-	{
-	  translation -= camera.forward();
-	}
-	if (event->key() == Qt::Key_A)
-	{
-	  translation -= camera.right();
-	}
-	if (event->key() == Qt::Key_D)
-	{
-	  translation += camera.right();
-	}
-	if (event->key() == Qt::Key_Q)
-	{
-	  translation -= camera.up();
-	}
-	if (event->key() == Qt::Key_E)
-	{
-	  translation += camera.up();
-	}
-	camera.translate(transSpeed * translation);
-
-	// redraw
-	QOpenGLWidget::update();
 }
 
 void View3DWidget::initializeGL()
@@ -121,6 +99,7 @@ void View3DWidget::initializeGL()
 	itemToSpace = program.uniformLocation("itemToSpace");
 	worldToCamera = program.uniformLocation("worldToCamera");
 	cameraToView = program.uniformLocation("cameraToView");
+	itemToRotate = program.uniformLocation("itemToRotate");
 
 	selectedItemColor = program.uniformLocation("selectedItemColor");
 	itemIsSelected = program.uniformLocation("itemIsSelected");
@@ -159,6 +138,10 @@ void View3DWidget::paintGL()
 	program.setUniformValue(worldToCamera, camera.toMatrix());
 	program.setUniformValue(cameraToView, projection);
 	program.setUniformValue(selectedItemColor, Settings::selectedFaceColor);
+
+	QMatrix4x4 mtr;
+	mtr.rotate(itemRotation.normalized());
+	program.setUniformValue(itemToRotate, mtr);
 
 	vertexBufferObject.bind();
 	foreach (Item *item, objectsInSpace)

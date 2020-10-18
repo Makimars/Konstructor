@@ -58,5 +58,4 @@ void ExtrusionDialog::finished(int result)
 		polygon->setSelected(false);
 		this->ui->polygonsList->takeItem(ui->polygonsList->row(polygon));
 	}
-	qDebug() << "removed";
 }
