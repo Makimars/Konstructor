@@ -3,17 +3,16 @@
 //view widgets
 double Settings::mouseWheelZoomFactor = 1.15;
 bool Settings::mouseWheelInvertedZoom = false;
-double Settings::snappingDistance = 10;
 
 double Settings::sketchSize  = 4000;
 
 float Settings::defaultAngleDimensionTextDistance = 200;
 
 
-int Settings::pointRenderSize = 2;
-int Settings::lineShapeSize = 5;
+int Settings::pointRenderSize = 4;
+int Settings::lineShapeSize = 3;
 QMargins Settings::lineAngleArcMargins(10,10,10,10);
-QMargins Settings::pointMargin(2,2,2,2);
+QMargins Settings::pointMargin(4,4,4,4);
 
 //keyboad shortcuts
 QKeySequence Settings::newFile(Qt::CTRL + Qt::Key_N);

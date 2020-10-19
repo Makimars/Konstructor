@@ -8,12 +8,16 @@ class Tool : public QObject
 {
 	Q_OBJECT
 public:
-	virtual void click(DrawableObject *clickedObject, QPointF pos);
-	virtual void resetTool();
+	virtual void click(DrawableObject *clickedObject, QPointF pos) = 0;
+	virtual void resetTool() = 0;
+
+public slots:
+	virtual void mouseMoveEvent(QPointF pos) = 0;
 
 protected:
 	Tool();
 
+	int clickCounter;
 	Factory *objectFactory;
 
 	//getters and setters
@@ -24,6 +28,7 @@ protected:
 inline Tool::Tool()
 {
 	this->objectFactory = Factory::getInstance();
+	clickCounter = 0;
 }
 
 

@@ -13,7 +13,7 @@ DimensionTool *DimensionTool::getInstance()
 	return DimensionTool::instance;
 }
 
-void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
+void DimensionTool::click(DrawableObject *clickedObject, QPointF pos)
 {
 	if(clickedObject != nullptr)
 	{
@@ -101,7 +101,7 @@ void DimensionTool::click(DrawableObject *clickedObject, Point *mousePoint)
 qDebug() << "line and location";
 			Line *line = dynamic_cast<Line*>(this->clickedObjects[1]);
 
-			double distanceFromLine = -line->signedDistanceFrom(mousePoint->getLocation());
+			double distanceFromLine = -line->signedDistanceFrom(pos);
 
 			this->objectFactory->addDrawable(
 				this->objectFactory->makeLineLengthDimension(
@@ -142,4 +142,9 @@ void DimensionTool::resetTool()
 		this->clickedObjects[1]->setHighlight(false);
 		this->clickedObjects[1] = nullptr;
 	}
+}
+
+void DimensionTool::mouseMoveEvent(QPointF pos)
+{
+
 }

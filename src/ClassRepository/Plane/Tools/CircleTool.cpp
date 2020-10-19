@@ -8,13 +8,13 @@ CircleTool::CircleTool() : Tool()
 
 	this->circlePreviewCentre = this->objectFactory->makePoint();
 	this->circlePreview = this->objectFactory
-			->makeCircle(this->circlePreviewCentre, mousePoint);
-	this->circlePreview->setHidden(true);
-	this->circlePreview->setAcceptedMouseButtons(Qt::MouseButton::NoButton);
-	this->circlePreview->setAcceptHoverEvents(false);
+			->makeCircle(this->circlePreviewCentre);
 
-	scene->addItem(this->circlePreview);
-	this->previousClickedPoint = nullptr;
+	this->circlePreview->setHidden(true);
+	this->circlePreviewCentre->setHidden(true);
+
+	objectFactory->addToScene(circlePreview);
+	objectFactory->addToScene(circlePreviewCentre);
 }
 
 CircleTool *CircleTool::getInstance()
@@ -24,66 +24,52 @@ CircleTool *CircleTool::getInstance()
 	return CircleTool::instance;
 }
 
-void CircleTool::click(DrawableObject *clickedObject, Point *mousePoint)
+void CircleTool::click(DrawableObject *clickedObject, QPointF pos)
 {
-	if(this->previousClickedPoint != nullptr)
-	{
-		this->objectFactory->addDrawable(this->previousClickedPoint);
+	clickCounter++;
 
-		if(clickedObject == nullptr)
+	if(clickCounter == 1)
+	{
+		//returns nullptr if it fails
+		this->clickedPoint = dynamic_cast<Point*>(clickedObject);
+
+		this->circlePreview->setHidden(false);
+		this->circlePreviewCentre->setHidden(false);
+
+		circlePreviewCentre->setLocation(pos);
+	}
+	else if (clickCounter == 2)
+	{
+		Point *centrePoint;
+		if(clickedPoint != nullptr)
 		{
-			Point *clickedPoint = mousePoint->clone();
-			Circle *circle = this->objectFactory
-									->makeCircle(this->previousClickedPoint,
-												this->previousClickedPoint->distanceFrom(clickedPoint->getLocation())
-												);
-			this->objectFactory->addDrawable(circle);
+			centrePoint = clickedPoint;
 		}
 		else
 		{
-			if(clickedObject->getType() == Global::Point)
-			{
-				Circle *circle = this->objectFactory
-										->makeCircle(this->previousClickedPoint,
-													 dynamic_cast<Point*>(clickedObject)
-													 );
-				this->objectFactory->addDrawable(circle);
-			}
-			else if (clickedObject == this->circlePreview)
-			{
-				Point *clickedPoint = mousePoint->clone();
-				Circle *circle = this->objectFactory
-										->makeCircle(this->previousClickedPoint,
-													this->previousClickedPoint->distanceFrom(clickedPoint->getLocation())
-													);
-				this->objectFactory->addDrawable(circle);
-			}
+			centrePoint = objectFactory->copyPoint(circlePreviewCentre);
+			objectFactory->addDrawable(centrePoint);
 		}
 
-		this->circlePreview->setHidden(true);
-		this->previousClickedPoint = nullptr;
-	}
-	else
-	{
-		if(clickedObject == nullptr)
-			clickedObject = mousePoint->clone();
+		objectFactory->addDrawable(
+					objectFactory->makeCircle(centrePoint, circlePreview->getRadius())
+					);
 
-		if(clickedObject->getType() != Global::Point)
-		{
-			clickedObject = mousePoint->clone();
-		}
-
-		Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
-
-		this->previousClickedPoint = clickedPoint;
-		this->circlePreviewCentre->setLocation(clickedPoint->getLocation());
-		this->circlePreview->setHidden(false);
+		resetTool();
 	}
 }
 
 void CircleTool::resetTool()
 {
-	this->objectFactory->tryDeleteDrawable(this->previousClickedPoint);
-	this->previousClickedPoint = nullptr;
+	clickCounter = 0;
 	this->circlePreview->setHidden(true);
+	this->circlePreviewCentre->setHidden(true);
+}
+
+void CircleTool::mouseMoveEvent(QPointF pos)
+{
+	if(clickCounter == 1)
+	{
+		circlePreview->setRadius(circlePreviewCentre->distanceFrom(pos));
+	}
 }

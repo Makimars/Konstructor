@@ -17,6 +17,11 @@ void ArcTool::resetTool()
 
 }
 
+void ArcTool::mouseMoveEvent(QPointF pos)
+{
+
+}
+
 ArcTool::ArcTool() : Tool()
 {
 	//preview

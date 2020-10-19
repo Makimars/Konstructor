@@ -20,15 +20,15 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	this->setDragMode(DragMode::NoDrag);
 
-	this->defaultPen = QPen(Qt::PenStyle::SolidLine);
-	this->defaultPen.setColor(Qt::black);
-	this->defaultBrush = QBrush(Qt::BrushStyle::TexturePattern);
-	this->defaultBrush.setColor(Qt::black);
+	this->currentPen = QPen(Qt::PenStyle::SolidLine);
+	this->currentPen.setColor(Qt::black);
+	this->currentBrush = QBrush(Qt::BrushStyle::TexturePattern);
+	this->currentBrush.setColor(Qt::black);
 
 	this->sketchScene = new QGraphicsScene(this);
 
-	Factory::initialise(&this->defaultBrush,
-								 &this->defaultPen,
+	Factory::initialise(&this->currentBrush,
+								 &this->currentPen,
 								 &this->objectsInSketch,
 								 &this->staticObjects,
 								 this->sketchScene
@@ -129,33 +129,23 @@ void ViewWidget::saveToFile(QString path)
 
 void ViewWidget::initializeTools()
 {
-	LineTool::initialize(this->sketchScene,
-						&this->defaultBrush,
-						&this->defaultPen
-						 );
-	CircleTool::initialize(this->sketchScene,
-						&this->defaultBrush,
-						&this->defaultPen
-						 );
-	LabelTool::initialize(this->sketchScene,
-						&this->defaultBrush,
-						&this->defaultPen
-						 );
-	RectangleTool::initialize(this->sketchScene,
-							&this->defaultBrush,
-							&this->defaultPen
-							 );
-	DimensionTool::initialize(this->sketchScene,
-							&this->defaultBrush,
-							&this->defaultPen
-							  );
-	ArcTool::initialize(this->sketchScene,
-						&this->defaultBrush,
-						&this->defaultPen
-						  );
-
 	connect(this, &ViewWidget::mouseMoved,
-			RectangleTool::getInstance(), &RectangleTool::mouseMoveEvent
+			ArcTool::getInstance(), &Tool::mouseMoveEvent
+			);
+	connect(this, &ViewWidget::mouseMoved,
+			CircleTool::getInstance(), &Tool::mouseMoveEvent
+			);
+	connect(this, &ViewWidget::mouseMoved,
+			DimensionTool::getInstance(), &Tool::mouseMoveEvent
+			);
+	connect(this, &ViewWidget::mouseMoved,
+			LabelTool::getInstance(), &Tool::mouseMoveEvent
+			);
+	connect(this, &ViewWidget::mouseMoved,
+			LineTool::getInstance(), &Tool::mouseMoveEvent
+			);
+	connect(this, &ViewWidget::mouseMoved,
+			RectangleTool::getInstance(), &Tool::mouseMoveEvent
 			);
 }
 
@@ -264,7 +254,12 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 		try
 		{
 			if(this->selectedTool != nullptr)
-				this->selectedTool->click(dynamic_cast<DrawableObject*>(this->itemAt(event->pos())), event->pos());
+			{
+				DrawableObject *clickedObject = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
+				if(clickedObject == nullptr || !objectsInSketch.contains(clickedObject))
+					clickedObject = nullptr;
+				this->selectedTool->click(clickedObject, mapToScene(event->pos()));
+			}
 		}
 		catch (DrawableAlreadyRestrainedException e)
 		{
@@ -279,7 +274,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseMoveEvent(event);
-	emit mouseMoved(event);
+	emit mouseMoved(mapToScene(event->pos()));
 
 	//draging plane
 	if(event->buttons() == Qt::MouseButton::MidButton)

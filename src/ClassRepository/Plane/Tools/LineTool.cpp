@@ -4,17 +4,20 @@ LineTool *LineTool::instance = nullptr;
 
 LineTool::LineTool() : Tool()
 {
+	clickCounter = 0;
+
 	//line preview
-	this->linePreviewStartPoint = this->objectFactory
-			->makePoint();
+	this->previewPoints[0] = this->objectFactory->makePoint();
+	this->previewPoints[1] = this->objectFactory->makePoint();
+	this->linePreview = this->objectFactory->makeLine(previewPoints[0], previewPoints[1]);
 
-	this->linePreview = this->objectFactory
-			->makeLine(this->linePreviewStartPoint, mousePoint);
-	this->linePreview->setHidden(true);
-	this->linePreview->setAcceptedMouseButtons(Qt::MouseButton::NoButton);
-	this->linePreview->setAcceptHoverEvents(false);
-	scene->addItem(this->linePreview);
+	previewPoints[0]->setHidden(true);
+	previewPoints[1]->setHidden(true);
+	linePreview->setHidden(true);
 
+	objectFactory->addToScene(previewPoints[0]);
+	objectFactory->addToScene(previewPoints[1]);
+	objectFactory->addToScene(linePreview);
 }
 
 LineTool *LineTool::getInstance()
@@ -24,45 +27,62 @@ LineTool *LineTool::getInstance()
 	return LineTool::instance;
 }
 
-void LineTool::click(DrawableObject *clickedObject, Point *mousePoint)
+void LineTool::click(DrawableObject *clickedObject, QPointF pos)
 {
-	if(clickedObject == nullptr)
-		clickedObject = mousePoint->clone();
+	clickCounter++;
 
-	if(clickedObject->getType() != Global::Point)
-		clickedObject = mousePoint->clone();
-
-	if(clickedObject->getType() == Global::Point)
+	if(clickCounter == 1)
 	{
-		Point *clickedPoint = dynamic_cast<Point*>(clickedObject);
+		//returns nullptr if it fails
+		clickedPoints[0] = dynamic_cast<Point*>(clickedObject);
 
-		this->clickedPoints[1] = this->clickedPoints[0];
-		this->clickedPoints[0] = clickedPoint;
+		previewPoints[0]->setHidden(false);
+		previewPoints[1]->setHidden(false);
+		linePreview->setHidden(false);
 
-		this->linePreview->setHidden(false);
-		this->linePreviewStartPoint->setLocation(this->clickedPoints[0]->getLocation());
+		previewPoints[0]->setLocation(pos);
+	}
+	else if(clickCounter == 2)
+	{
+		//returns nullptr if it fails
+		clickedPoints[1] = dynamic_cast<Point*>(clickedObject);
 
-		if(this->clickedPoints[1] != nullptr)
+		Point *points[2];
+		for(int i = 0; i < 2; i++)
 		{
-			this->objectFactory->addDrawable(this->clickedPoints[0]);
-			this->objectFactory->addDrawable(this->clickedPoints[1]);
-
-			Line *line = this->objectFactory
-					->makeLine(this->clickedPoints[1], this->clickedPoints[0]);
-			this->objectFactory->addDrawable(line);
-
-			this->clickedPoints[1] = nullptr;
+			if(clickedPoints[i] != nullptr)
+			{
+				points[i] = clickedPoints[i];
+			}
+			else
+			{
+				points[i] = objectFactory->copyPoint(previewPoints[i]);
+				objectFactory->addDrawable(points[i]);
+			}
 		}
+		objectFactory->addDrawable(
+					objectFactory->makeLine(points[0],points[1])
+					);
+
+		resetTool();
 	}
 }
 
 void LineTool::resetTool()
 {
-	this->objectFactory->tryDeleteDrawable(this->clickedPoints[0]);
+	clickCounter = 0;
+	previewPoints[0]->setHidden(true);
+	previewPoints[1]->setHidden(true);
+	linePreview->setHidden(true);
+
 	this->clickedPoints[0] = nullptr;
-
-	this->objectFactory->tryDeleteDrawable(this->clickedPoints[1]);
 	this->clickedPoints[1] = nullptr;
+}
 
-	this->linePreview->setHidden(true);
+void LineTool::mouseMoveEvent(QPointF pos)
+{
+	if(clickCounter == 1)
+	{
+		previewPoints[1]->setLocation(pos);
+	}
 }

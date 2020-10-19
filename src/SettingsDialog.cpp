@@ -32,8 +32,6 @@ void SettingsDialog::on_buttonBox_accepted()
 {
 	Settings::mouseWheelInvertedZoom = this->ui->invertMouseWheel->isChecked();
 
-	Settings::snappingDistance = QVariant(this->ui->snappingDistanceLine->text()).toDouble();
-
 	double pointSize =  QVariant(this->ui->pointSizeLine->text()).toDouble();
 	Settings::pointMargin = QMargins(pointSize,pointSize,pointSize,pointSize);
 	Settings::lineShapeSize = QVariant(this->ui->lineShapeSizeLine->text()).toDouble();
@@ -53,7 +51,6 @@ void SettingsDialog::loadSettings()
 {
 	this->ui->invertMouseWheel->setChecked(Settings::mouseWheelInvertedZoom);
 
-	this->ui->snappingDistanceLine->setText(QString::number(Settings::snappingDistance));
 	this->ui->pointSizeLine->setText(QString::number(Settings::pointMargin.top()));
 	this->ui->sketchSizeLine->setText(QString::number(Settings::sketchSize));
 	this->ui->lineShapeSizeLine->setText(QString::number(Settings::lineShapeSize));

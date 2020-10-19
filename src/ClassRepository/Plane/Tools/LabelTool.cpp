@@ -2,9 +2,7 @@
 
 LabelTool *LabelTool::instance = nullptr;
 
-LabelTool::LabelTool() : Tool()
-{
-}
+LabelTool::LabelTool() : Tool(){}
 
 LabelTool *LabelTool::getInstance()
 {
@@ -15,12 +13,11 @@ LabelTool *LabelTool::getInstance()
 
 void LabelTool::click(DrawableObject *clickedObject, QPointF pos)
 {
-	Label *label = this->objectFactory->makeLabel(mousePoint->getLocation());
+	Label *label = this->objectFactory->makeLabel(pos);
 	this->objectFactory->addDrawable(label);
 	label->requestText();
 }
 
-void LabelTool::resetTool()
-{
+void LabelTool::resetTool(){}
 
-}
+void LabelTool::mouseMoveEvent(QPointF pos){}

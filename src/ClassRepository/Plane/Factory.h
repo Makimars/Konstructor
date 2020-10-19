@@ -7,8 +7,8 @@
 class Factory
 {
 public:
-	static void initialise(QBrush *defaultBrush,
-							QPen *defaultPen,
+	static void initialise(QBrush *currentBrush,
+							QPen *currentPen,
 							QVector<DrawableObject*> *objectList,
 							QVector<DrawableObject*> *staticObjectsList,
 							QGraphicsScene *scene
@@ -21,7 +21,7 @@ public:
 	//object creation
 	Point *makePoint();
 	Point *makePoint(double x, double y);
-	Point *copyPoint(Point *point);
+	Point *copyPoint(const Point *point);
 	Line *makeLine(Point *startPoint, Point *endPoint);
 	Circle *makeCircle(Point *centerPoint);
 	Circle *makeCircle(Point *centerPoint, double radius);

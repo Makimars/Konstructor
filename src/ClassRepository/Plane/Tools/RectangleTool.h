@@ -12,7 +12,7 @@ public:
 	void resetTool() override;
 
 public slots:
-	void mouseMoveEvent(QMouseEvent *event);
+	void mouseMoveEvent(QPointF pos) override;
 
 private:
 	RectangleTool();
@@ -27,7 +27,8 @@ private:
 	 */
 	Line *linesPreview[4];
 	Point *pointsPreview[4];
-	int clickCounter;
+
+	Point *clickedPoints[2];
 };
 
 #endif // RECTANGLETOOL_H

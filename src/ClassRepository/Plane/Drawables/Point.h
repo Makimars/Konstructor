@@ -18,7 +18,7 @@ public:
 	void setX(double x);
 	double getY() const;
 	void setY(double y);
-	QPointF getLocation();
+	QPointF getLocation() const;
 	void setLocation(QPointF point);
 	void setLocation(double x, double y);
 
@@ -46,7 +46,7 @@ inline double Point::getX() const { return x; }
 inline void Point::setX(double x) { this->x = x; }
 inline double Point::getY() const { return y; }
 inline void Point::setY(double y) { this->y = y; }
-inline QPointF Point::getLocation() { return QPointF(x, y); }
+inline QPointF Point::getLocation() const { return QPointF(x, y); }
 inline void Point::setLocation(QPointF point) { setLocation(point.x(), point.y()); }
 
 #endif // POINT_H

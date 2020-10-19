@@ -83,7 +83,12 @@ void Point::paint(QPainter *painter,
 
 	if(this->isHighlighted())
 	{
-		rect = boundingRect();
+		rect = QRectF(
+					this->x - Settings::pointRenderSize,
+					this->y - Settings::pointRenderSize,
+					Settings::pointRenderSize * 2,
+					Settings::pointRenderSize * 2
+					);
 	}
 	else
 	{

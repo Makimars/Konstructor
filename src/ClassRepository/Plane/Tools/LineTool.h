@@ -11,16 +11,20 @@ public:
 	void click(DrawableObject *clickedObject, QPointF pos) override;
 	void resetTool() override;
 
+public slots:
+	void mouseMoveEvent(QPointF pos) override;
+
 private:
 	LineTool();
 	static LineTool *instance;
 
 	//working variables
-	Point *clickedPoints[2] = {nullptr, nullptr};
+	Point *clickedPoints[2];
+	int clickCounter;
 
 	//preview
 	Line *linePreview;
-	Point *linePreviewStartPoint;
+	Point *previewPoints[2];
 
 };
 

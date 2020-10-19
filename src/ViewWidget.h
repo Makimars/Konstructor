@@ -34,9 +34,10 @@ private:
 	Factory *objectFactory;
 
 	//tools
-	Plane::Tool *selectedTool;
-	QPen defaultPen;
-	QBrush defaultBrush;
+	Tool *selectedTool;
+
+	QPen currentPen;
+	QBrush currentBrush;
 
     //object managment
 	QVector<DrawableObject*> objectsInSketch;
@@ -60,7 +61,7 @@ signals:
     void keyPressed(QKeyEvent *event);
 	void showStatusBarMessage(const QString &message, int timeout = 0);
 	void returnDrawing(QVector<DrawableObject*> drawing);
-	void mouseMoved(QMouseEvent *event);
+	void mouseMoved(QPointF pos);
 
 public slots:
 	void setTool(int tool);

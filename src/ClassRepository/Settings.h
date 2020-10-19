@@ -22,7 +22,6 @@ public:
 	//view widget
 	static double mouseWheelZoomFactor;
 	static bool mouseWheelInvertedZoom;
-	static double snappingDistance;
 
 	static double sketchSize;
 
