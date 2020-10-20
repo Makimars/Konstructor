@@ -7,8 +7,7 @@
 class Factory
 {
 public:
-	static void initialise(QBrush *currentBrush,
-							QPen *currentPen,
+	static void initialise(const Style *defaultStyle,
 							QVector<DrawableObject*> *objectList,
 							QVector<DrawableObject*> *staticObjectsList,
 							QGraphicsScene *scene
@@ -65,12 +64,11 @@ public:
 
 private:
 	static Factory *instance;
-	Factory(QBrush *defaultBrush,
-					 QPen *defaultPen,
-					 QVector<DrawableObject*> *objectList,
-					 QVector<DrawableObject*> *staticObjectsList,
-					 QGraphicsScene *scene
-					 );
+	Factory(const Style *defaultStyle,
+				QVector<DrawableObject*> *objectList,
+				QVector<DrawableObject*> *staticObjectsList,
+				QGraphicsScene *scene
+				);
 
 	int idCounter = 0;
 
@@ -78,8 +76,7 @@ private:
 	QVector<DrawableObject*> *staticObjectsList;
 	QGraphicsScene *scene;
 
-	QPen *currentPen;
-	QBrush *currentBrush;
+	const Style *currentStyle;
 
 	QGraphicsViewUserInput *userInput;
 

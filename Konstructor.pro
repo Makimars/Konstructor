@@ -74,6 +74,7 @@ SOURCES += \
 HEADERS += \
     include/delaunator/delaunator.h \
 \
+    src/ClassRepository/Plane/Style.h \
     src/ClassRepository/Plane/Tools/ArcTool.h \
     src/ExtrusionDialog.h \
     src/MainWindow.h \

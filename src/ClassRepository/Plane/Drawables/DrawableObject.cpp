@@ -13,7 +13,7 @@ QString DrawableObject::toFileString()
     this->file = "";
 	this->fileAddVar("id", this->getId());
 	this->fileAddVar("constructional", this->constructional);
-    return this->file;
+	return this->file;
 }
 
 //----------	geometry    ----------
@@ -108,21 +108,17 @@ DrawableObject *DrawableObject::getById(QVector<DrawableObject *> *list, int id)
 
 //----------	QGraphicsItem overrides    ----------
 
-QRectF DrawableObject::boundingRect() const
-{
-	return QRectF();
-}
-
 void DrawableObject::paint(QPainter *painter)
 {
 	resolveTies();
 
-	QPen currentPen = *pen;
+	QPen currentPen = style->pen;
 
-	if(this->highlight) currentPen.setWidth(pen->width() * 2);
+	if(this->highlight) currentPen.setWidth(currentPen.width() * 2);
 	if(this->constructional) currentPen.setStyle(Qt::PenStyle::DashLine);
 
 	painter->setPen(currentPen);
+	painter->setBrush(style->brush);
 }
 
 //----------     events     ----------

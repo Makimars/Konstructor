@@ -36,8 +36,7 @@ private:
 	//tools
 	Tool *selectedTool;
 
-	QPen currentPen;
-	QBrush currentBrush;
+	QVector<Style> styles;
 
     //object managment
 	QVector<DrawableObject*> objectsInSketch;

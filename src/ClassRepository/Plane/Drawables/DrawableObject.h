@@ -14,6 +14,7 @@
 #include "src/ClassRepository/Settings.h"
 #include "src/ClassRepository/GlobalVariables.h"
 #include "../UserInputRequester.h"
+#include "../Style.h"
 
 class DrawableObject : public QGraphicsItem
 {
@@ -41,18 +42,13 @@ public:
 	virtual void loadRelations(QVector<DrawableObject*> list) {}
 
 	//getters and setters
-	void setName(QString name);
-    QString getName();
 	int getType();
 	void setId(int id);
 	int getId();
 	void setLocked(bool value);
 	bool isLocked();
 
-	void setBrush(QBrush *brush);
-	QBrush *getBrush();
-	void setPen(QPen *pen);
-	QPen *getPen();
+	void setStyle(const Style *style);
 
 	void setIsConstructional(bool value);
 	bool isConstructional();
@@ -66,18 +62,8 @@ public:
 	void removeGeometryUpdate(DrawableObject *object);
 	void removeGeometryUpdates();
 
-    //array operator
-	static DrawableObject *getById(QVector<DrawableObject*> *list, int id);
-
-	//QGraphicsItem overrides
-	QRectF boundingRect() const override;
-	void paint(QPainter *painter);
-
 protected:
 	DrawableObject(int type);
-
-	QBrush *brush;
-	QPen *pen;
 
 	//saving objects
 	void fileAddVar(QString variable, QString value);
@@ -105,7 +91,11 @@ protected:
 	virtual void setGeometryUpdates(){}
 	virtual void unsetGeometryUpdates(){}
 
+	void paint(QPainter *painter);
+
 private:
+	const Style *style;
+
 	//defining variables
 	int id;
 	int type;
@@ -122,6 +112,9 @@ private:
 
 	//geometry
 	QVector<DrawableObject*> propagateGeometry;
+
+	//array operator
+	static DrawableObject *getById(QVector<DrawableObject*> *list, int id);
 };
 
 //inline getters and setters
@@ -130,10 +123,8 @@ inline void DrawableObject::setId(int id) { this->id = id; }
 inline int DrawableObject::getId() { return id; }
 inline void DrawableObject::setLocked(bool value) { locked = value; }
 inline bool DrawableObject::isLocked() { return locked; }
-inline void DrawableObject::setBrush(QBrush *brush) { this->brush = brush; }
-inline QBrush *DrawableObject::getBrush() {return brush;}
-inline void DrawableObject::setPen(QPen *pen) { this->pen = pen; }
-inline QPen *DrawableObject::getPen() { return pen; }
+
+inline void DrawableObject::setStyle(const Style *style) { this->style = style; }
 inline void DrawableObject::setIsConstructional(bool value) { constructional = value; }
 inline bool DrawableObject::isConstructional() { return constructional; }
 inline void DrawableObject::setHidden(bool value) { hidden = value; }

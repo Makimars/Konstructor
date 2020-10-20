@@ -76,29 +76,15 @@ void Point::paint(QPainter *painter,
 
 	DrawableObject::paint(painter);
 
-	painter->setBrush(this->brush->style());
-	this->brush->setStyle(Qt::BrushStyle::SolidPattern);
-
-	QRectF rect;
+	QRectF rect = QRectF(
+				this->x - Settings::pointRenderSize,
+				this->y - Settings::pointRenderSize,
+				Settings::pointRenderSize * 2,
+				Settings::pointRenderSize * 2
+				);
 
 	if(this->isHighlighted())
-	{
-		rect = QRectF(
-					this->x - Settings::pointRenderSize,
-					this->y - Settings::pointRenderSize,
-					Settings::pointRenderSize * 2,
-					Settings::pointRenderSize * 2
-					);
-	}
-	else
-	{
-		rect = QRectF(
-					this->x-Settings::pointRenderSize,
-					this->y-Settings::pointRenderSize,
-					Settings::pointRenderSize * 2,
-					Settings::pointRenderSize * 2
-					);
-	}
+		rect += Settings::pointMargin;
 
 	painter->drawEllipse(rect);
 }

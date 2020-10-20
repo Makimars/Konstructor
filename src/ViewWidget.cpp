@@ -20,15 +20,14 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	this->setDragMode(DragMode::NoDrag);
 
-	this->currentPen = QPen(Qt::PenStyle::SolidLine);
-	this->currentPen.setColor(Qt::black);
-	this->currentBrush = QBrush(Qt::BrushStyle::TexturePattern);
-	this->currentBrush.setColor(Qt::black);
+	QPen pen(Qt::PenStyle::SolidLine);
+	pen.setColor(Qt::black);
+	QBrush brush(Qt::black, Qt::BrushStyle::SolidPattern);
+	styles.append(Style(pen, brush));
 
 	this->sketchScene = new QGraphicsScene(this);
 
-	Factory::initialise(&this->currentBrush,
-								 &this->currentPen,
+	Factory::initialise(&styles.at(0),
 								 &this->objectsInSketch,
 								 &this->staticObjects,
 								 this->sketchScene
@@ -197,8 +196,11 @@ void ViewWidget::initializeScene()
 	}
 
 	//axis
-	QPen *axisPen = new QPen(Qt::black);
-	axisPen->setWidth(2);
+	QPen axisPen(Qt::black);
+	axisPen.setWidth(2);
+	QBrush brush(Qt::black);
+	Style axisStyle(axisPen, brush);
+	styles.append(axisStyle);
 
 	Point *topPoint = this->objectFactory->makePoint(0, Settings::sketchSize);
 	Point *bottomPoint = this->objectFactory->makePoint(0, -Settings::sketchSize);
@@ -206,14 +208,14 @@ void ViewWidget::initializeScene()
 	Point *rightPoint = this->objectFactory->makePoint(Settings::sketchSize, 0);
 
 	Line *yAxis = this->objectFactory->makeLine(bottomPoint, topPoint);
-	yAxis->setPen(axisPen);
+	yAxis->setStyle(&styles.last());
 	yAxis->setId(Y_AXIS_ID);
 	yAxis->setAcceptHoverEvents(true);
 	this->sketchScene->addItem(yAxis);
 	this->staticObjects.append(yAxis);
 
 	Line *xAxis = this->objectFactory->makeLine(leftPoint, rightPoint);
-	xAxis->setPen(axisPen);
+	xAxis->setStyle(&styles.last());
 	xAxis->setId(X_AXIS_ID);
 	xAxis->setAcceptHoverEvents(true);
 	this->sketchScene->addItem(xAxis);

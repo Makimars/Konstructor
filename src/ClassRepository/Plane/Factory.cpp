@@ -2,8 +2,7 @@
 
 Factory *Factory::instance = nullptr;
 
-void Factory::initialise(QBrush *currentBrush,
-									QPen *currentPen,
+void Factory::initialise(const Style *defaultStyle,
 									QVector<DrawableObject*> *objectList,
 									QVector<DrawableObject*> *staticObjectsList,
 									QGraphicsScene *scene
@@ -11,12 +10,7 @@ void Factory::initialise(QBrush *currentBrush,
 {
 	if(Factory::instance == nullptr)
 	{
-		Factory::instance = new Factory(currentBrush,
-														  currentPen,
-														  objectList,
-														  staticObjectsList,
-														  scene
-														  );
+		Factory::instance = new Factory(defaultStyle, objectList, staticObjectsList, scene);
 	}
 }
 
@@ -30,8 +24,7 @@ Factory *Factory::getInstance()
 Point *Factory::makePoint()
 {
 	Point *point = new Point();
-	point->setBrush(this->currentBrush);
-	point->setPen(this->currentPen);
+	point->setStyle(currentStyle);
 
 	return point;
 }
@@ -55,8 +48,7 @@ Point *Factory::copyPoint(const Point *point)
 Line *Factory::makeLine(Point *startPoint, Point *endPoint)
 {
 	Line *line = new Line(startPoint, endPoint);
-	line->setBrush(this->currentBrush);
-	line->setPen(this->currentPen);
+	line->setStyle(currentStyle);
 
 	return line;
 }
@@ -64,8 +56,7 @@ Line *Factory::makeLine(Point *startPoint, Point *endPoint)
 Circle *Factory::makeCircle(Point *centerPoint)
 {
 	Circle *circle = new Circle(centerPoint);
-	circle->setBrush(this->currentBrush);
-	circle->setPen(this->currentPen);
+	circle->setStyle(currentStyle);
 
 	return circle;
 }
@@ -90,8 +81,7 @@ Circle *Factory::makeCircle(Point *centerPoint, Point *liesOn)
 Label *Factory::makeLabel(QPointF location)
 {
 	Label *label = new Label(location);
-	label->setPen(this->currentPen);
-	label->setBrush(this->currentBrush);
+	label->setStyle(currentStyle);
 
 	QObject::connect(label, &UserInputRequester::requestString,
 					 this->userInput, &QGraphicsViewUserInput::requestString
@@ -103,8 +93,7 @@ Label *Factory::makeLabel(QPointF location)
 Label *Factory::makeLabel(QPointF location, QString text)
 {
 	Label *label = new Label(location, text);
-	label->setPen(this->currentPen);
-	label->setBrush(this->currentBrush);
+	label->setStyle(currentStyle);
 
 	QObject::connect(label, &UserInputRequester::requestString,
 					 this->userInput, &QGraphicsViewUserInput::requestString
@@ -123,8 +112,7 @@ Arc *Factory::makeArc(Point *points[])
 LineLengthDimension *Factory::makeLineLengthDimension(Line *line)
 {
 	LineLengthDimension *dimension = new LineLengthDimension(line);
-	dimension->setPen(this->currentPen);
-	dimension->setBrush(this->currentBrush);
+	dimension->setStyle(currentStyle);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -152,8 +140,7 @@ LineLengthDimension *Factory::makeLineLengthDimension(Line *line, double length,
 LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[])
 {
 	LinesAngleDimension *dimension = new LinesAngleDimension(lines);
-	dimension->setPen(this->currentPen);
-	dimension->setBrush(this->currentBrush);
+	dimension->setStyle(currentStyle);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -173,8 +160,7 @@ LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[], double dist
 CircleRadiusDimension *Factory::makeCircleRadiusDimension(Circle *circle)
 {
 	CircleRadiusDimension *dimension = new CircleRadiusDimension(circle);
-	dimension->setPen(this->currentPen);
-	dimension->setBrush(this->currentBrush);
+	dimension->setStyle(currentStyle);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -186,8 +172,7 @@ CircleRadiusDimension *Factory::makeCircleRadiusDimension(Circle *circle)
 CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(Circle *circles[])
 {
 	CirclesRadiusDifferenceDimension *dimension = new CirclesRadiusDifferenceDimension(circles);
-	dimension->setPen(this->currentPen);
-	dimension->setBrush(this->currentBrush);
+	dimension->setStyle(currentStyle);
 
 	QObject::connect(dimension, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -198,8 +183,7 @@ CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(
 
 void Factory::addToScene(DrawableObject *object)
 {
-	object->setPen(this->currentPen);
-	object->setBrush(this->currentBrush);
+	object->setStyle(currentStyle);
 
 	scene->addItem(object);
 }
@@ -208,8 +192,7 @@ void Factory::addToScene(DrawableObject *object)
 
 void Factory::addDrawable(DrawableObject *object)
 {
-	object->setPen(this->currentPen);
-	object->setBrush(this->currentBrush);
+	object->setStyle(currentStyle);
 
 	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 	{
@@ -267,14 +250,12 @@ void Factory::deleteAll()
 
 //----------     _     ---------
 
-Factory::Factory(QBrush *currentBrush,
-					QPen *currentPen,
+Factory::Factory(const Style *defaultStyle,
 					QVector<DrawableObject*> *objectList,
 					QVector<DrawableObject*> *staticObjectsList,
 					QGraphicsScene *scene)
 {
-	this->currentBrush = currentBrush;
-	this->currentPen = currentPen;
+	this->currentStyle = defaultStyle;
 	this->objectList = objectList;
 	this->staticObjectsList = staticObjectsList;
 	this->scene = scene;
