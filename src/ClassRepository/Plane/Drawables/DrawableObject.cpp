@@ -11,8 +11,7 @@ DrawableObject::DrawableObject(int type)
 QString DrawableObject::toFileString()
 {
     this->file = "";
-    this->fileAddVar("id", this->getId());
-    this->fileAddVar("name", this->getName());
+	this->fileAddVar("id", this->getId());
 	this->fileAddVar("constructional", this->constructional);
     return this->file;
 }
@@ -51,7 +50,6 @@ QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varN
 
 	int startIndex = varNames.length();
 	varNames.append("id");
-	varNames.append("name");
 	varNames.append("constructional");
 
 	QVector<QVariant> values;
@@ -70,8 +68,7 @@ QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varN
 	}
 
 	this->id = values[startIndex].toInt();
-	this->name = values[startIndex + 1].toString();
-	this->constructional = values[startIndex + 2].toBool();
+	this->constructional = values[startIndex + 1].toBool();
 
 	return values;
 }

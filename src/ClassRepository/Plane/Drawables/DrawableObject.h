@@ -76,9 +76,6 @@ public:
 protected:
 	DrawableObject(int type);
 
-	//defining variables
-	QString name;
-
 	QBrush *brush;
 	QPen *pen;
 
@@ -128,8 +125,6 @@ private:
 };
 
 //inline getters and setters
-inline void DrawableObject::setName(QString name) { this->name = name; }
-inline QString DrawableObject::getName() { return name; }
 inline int DrawableObject::getType() { return type; }
 inline void DrawableObject::setId(int id) { this->id = id; }
 inline int DrawableObject::getId() { return id; }
