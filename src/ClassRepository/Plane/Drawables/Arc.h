@@ -16,7 +16,7 @@ public:
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
 
-	double getRadius();
+	double getRadius() const;
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -29,6 +29,7 @@ public:
 private:
 	Point *centerPoint;
 	Point *edgePoints[2];
+	double radius;
 
 	//geometry
 	void setGeometryUpdates() override;

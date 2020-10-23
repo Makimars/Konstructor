@@ -89,6 +89,8 @@ void View3DWidget::initializeGL()
 {
 	initializeOpenGLFunctions();
 	//glEnable(GL_CULL_FACE);
+	//glEnable(GL_DEPTH_TEST);
+	//glDepthFunc(GL_LESS);
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
 	program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/simple.vert");
@@ -144,6 +146,7 @@ void View3DWidget::paintGL()
 	program.setUniformValue(itemToRotate, mtr);
 
 	vertexBufferObject.bind();
+	//glClear(GL_DEPTH_BUFFER_BIT);
 	foreach (Item *item, objectsInSpace)
 	{
 		int currentIndex = item->getItemIndex();

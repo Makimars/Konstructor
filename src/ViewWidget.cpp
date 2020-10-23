@@ -22,7 +22,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 	QPen pen(Qt::PenStyle::SolidLine);
 	pen.setColor(Qt::black);
-	QBrush brush(Qt::black, Qt::BrushStyle::SolidPattern);
+	QBrush brush(Qt::black, Qt::BrushStyle::NoBrush);
 	styles.append(Style(pen, brush));
 
 	this->sketchScene = new QGraphicsScene(this);

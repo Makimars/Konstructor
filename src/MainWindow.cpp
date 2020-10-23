@@ -110,6 +110,8 @@ void MainWindow::refreshTools(int tool)
 		this->ui->labelButton->setChecked(false);
 	if(tool != Global::Tools::DimensionTool)
 		this->ui->dimensionButton->setChecked(false);
+	if(tool != Global::Tools::ArcTool)
+		this->ui->arcButton->setChecked(false);
 
 	emit setTool(tool);
 }

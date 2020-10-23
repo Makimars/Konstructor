@@ -6,7 +6,7 @@
 class ArcTool : public Tool
 {
 public:
-	static DimensionTool *getInstance();
+	static ArcTool *getInstance();
 
 	void click(DrawableObject *clickedObject, QPointF pos) override;
 	void resetTool() override;
@@ -19,7 +19,7 @@ private:
 	static ArcTool *instance;
 
 	//working variables
-	Point *clickedPoints[2] = {nullptr, nullptr};
+	Point *clickedPoints[3] = {nullptr, nullptr, nullptr};
 	Arc *preview;
 	Point *previewPoints[3];
 };

@@ -27,6 +27,7 @@ public:
 	Circle *makeCircle(Point *centerPoint, Point *liesOn);
 	Label *makeLabel(QPointF location);
 	Label *makeLabel(QPointF location, QString text);
+	// 0 and 1 edge points, 2 center
 	Arc *makeArc(Point *points[3]);
 
 	//dimension creation

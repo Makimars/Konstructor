@@ -104,7 +104,10 @@ Label *Factory::makeLabel(QPointF location, QString text)
 
 Arc *Factory::makeArc(Point *points[])
 {
+	Arc *arc = new Arc(points[0], points[1], points[2]);
+	arc->setStyle(currentStyle);
 
+	return arc;
 }
 
 //----------     dimension creation     ---------

@@ -118,7 +118,12 @@ void DrawableObject::paint(QPainter *painter)
 	if(this->constructional) currentPen.setStyle(Qt::PenStyle::DashLine);
 
 	painter->setPen(currentPen);
-	painter->setBrush(style->brush);
+
+	QBrush currentBrush = style->brush;
+	if(type == Global::Types::Point)
+		currentBrush.setStyle(Qt::BrushStyle::SolidPattern);
+
+	painter->setBrush(currentBrush);
 }
 
 //----------     events     ----------
