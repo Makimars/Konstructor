@@ -9,12 +9,13 @@ This software is linced under EUPL v1.2, other language versions are located in 
 ## current TODO list
 
 # Plane
-- rework constrains
-- implement arc
+
+- rework constrains and dimensions
 
 # Space
-- rework camera movement
+
 - implement face visibility (GL_CULL_FACE)
 - visible planes
 - extruding on created planes
 - save and load Project files
+- subtractive extrusion
