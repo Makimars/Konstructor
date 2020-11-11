@@ -15,7 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setupUi();
 	this->setupConnections();
-	this->swapMode(Global::Mode::Object);
+
+	//set draw mode
+	emit setTargetItem(this->ui->objectsTree->topLevelItem(0));
+	this->ui->objectsTree->setCurrentItem(this->ui->objectsTree->topLevelItem(0));
+	this->swapMode(Global::Mode::Draw);
 }
 
 MainWindow::~MainWindow()
