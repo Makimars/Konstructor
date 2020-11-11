@@ -43,7 +43,13 @@ void ExtrusionDialog::accept()
 		Polygon *polygon = referencedItem->getPolygons()->at(i);
 		if(polygon->isSelected())
 		{
-			polygon->extrude(ui->lengthInput->value(), ui->additiveButton->isChecked(), direction);
+			Extrusion extrusion;
+			extrusion.length = ui->lengthInput->value();
+			extrusion.additive = ui->additiveButton->isChecked();
+			extrusion.direction = direction;
+
+			polygon->setExtrusion(extrusion);
+			polygon->extrude();
 		}
 	}
 

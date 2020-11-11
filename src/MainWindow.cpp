@@ -38,6 +38,7 @@ void MainWindow::setupUi()
 	basePlane->setRotation(QQuaternion(0,0,0,0));
 	basePlane->setText(0, "origin plane");
     this->ui->objectsTree->addTopLevelItem(basePlane);
+	this->ui->view3D->setTopPlane(basePlane);
 
     //context menus
 	drawAction.setText(tr("Draw"));

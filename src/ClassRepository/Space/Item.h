@@ -21,7 +21,7 @@ public:
 
 private:
 	Space::Plane *basePlane;
-	QVector<Space::Plane*> planes;
+	QVector<Space::Plane> planes;
 	QString sketch;
 
 	//pointers to the global buffer

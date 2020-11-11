@@ -9,7 +9,7 @@ uniform bool polygonIsSelected;
 void main()
 {
     if(itemIsSelected || polygonIsSelected)
-	fColor = vec4(selectedItemColor,1);
+	fColor = vec4(selectedItemColor, 1);
     else
 	fColor = vColor;
 }

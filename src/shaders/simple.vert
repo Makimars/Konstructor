@@ -7,9 +7,10 @@ uniform mat4 itemToSpace;
 uniform mat4 worldToCamera;
 uniform mat4 cameraToView;
 uniform mat4 itemToRotate;
+uniform float transparentColorValue;
 
 void main()
 {
     gl_Position = cameraToView * worldToCamera * itemToRotate * itemToSpace * vec4(position, 1.0);
-    vColor = vec4(color, 1.0);
+    vColor = vec4(color, transparentColorValue);
 }

@@ -16,6 +16,13 @@ enum ExtrusionDirection
 	Back
 };
 
+struct Extrusion{
+	double length;
+	bool additive;
+	ExtrusionDirection direction;
+};
+
+
 class Polygon : public QObject, public QListWidgetItem
 {
 	Q_OBJECT
@@ -30,12 +37,16 @@ public:
 	bool isHidden();
 	int size();
 
-	void extrude(double length, bool extrusion, ExtrusionDirection direction);
+	void extrude();
+	void setExtrusion(Extrusion extrusion);
 
 private:
-	std::vector<Vertex> outerVertexes;
+	std::vector<Vertex> baseEdgeVertexes;
+	std::vector<Vertex> baseVertexes;
+
 	std::vector<Vertex> vertexData;
 
+	Extrusion extrusion;
 	bool hidden = false;
 signals:
 	void updateData();

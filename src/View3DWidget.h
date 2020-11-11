@@ -19,12 +19,15 @@ class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 public:
 	View3DWidget(QFrame *frame);
 
+	void setTopPlane(Space::Plane *plane);
+
 private:
 	QVector<Item*> objectsInSpace;
 	QMatrix4x4 projection;
 	QQuaternion itemRotation;
-	QOpenGLShaderProgram program;
 	Camera camera;
+
+	QOpenGLShaderProgram vertexProgram;
 
 	//copy of all vertexes data
 	std::vector<Vertex> vertexData;
@@ -32,6 +35,10 @@ private:
 	QOpenGLVertexArrayObject vertexBufferObject;
 
 	QTreeWidgetItem *targetItem;
+
+	//plane data
+	std::vector<Space::Plane*> planes;
+	std::vector<Vertex> planeVertexData;
 
 	// Shader Information
 	int itemToSpace;
@@ -43,9 +50,12 @@ private:
 	int itemIsSelected;
 	int polygonIsSelected;
 
+	int transparentColorValue;
+
 	QPoint lastPos;
 
 	void allocateNewItem(Item *item);
+	void generatePlaneVertexes();
 
 	//events
 	void mousePressEvent(QMouseEvent *event) override;

@@ -12,7 +12,7 @@ Polygon::Polygon(QPolygonF polygon)
 		coordinates.push_back(points.at(i).x() / Settings::planeToSpaceRatio);
 		coordinates.push_back(points.at(i).y() / Settings::planeToSpaceRatio);
 
-		outerVertexes.push_back(Vertex(QVector3D(points.at(i).x() / Settings::planeToSpaceRatio, points.at(i).y() / Settings::planeToSpaceRatio, 0)));
+		baseEdgeVertexes.push_back(Vertex(QVector3D(points.at(i).x() / Settings::planeToSpaceRatio, points.at(i).y() / Settings::planeToSpaceRatio, 0)));
 	}
 
 	delaunator::Delaunator d(coordinates);
@@ -40,6 +40,7 @@ Polygon::Polygon(QPolygonF polygon)
 		vertexData.at(i).setColor(QVector3D(0.1, 0.1, 0.1));
 	}
 
+	baseVertexes = vertexData;
 }
 
 std::vector<Vertex> *Polygon::getVertexData()
@@ -71,13 +72,15 @@ int Polygon::size()
 	return vertexData.size();
 }
 
-void Polygon::extrude(double length, bool extrusion, ExtrusionDirection direction)
+void Polygon::extrude()
 {
-	if(direction == ExtrusionDirection::Back)
+	double length = extrusion.length;
+
+	if(extrusion.direction == ExtrusionDirection::Back)
 	{
 		length = -length;
 	}
-	else if (direction == ExtrusionDirection::FrontAndBack)
+	else if (extrusion.direction == ExtrusionDirection::FrontAndBack)
 	{
 		length *= 0.5;
 
@@ -85,53 +88,56 @@ void Polygon::extrude(double length, bool extrusion, ExtrusionDirection directio
 		{
 			vertexData.at(i).setZ(-length);
 		}
-		for (int i = 0; i < outerVertexes.size(); i++)
+		for (int i = 0; i < baseEdgeVertexes.size(); i++)
 		{
-			outerVertexes.at(i).setZ(-length);
+			baseEdgeVertexes.at(i).setZ(-length);
 		}
 	}
 
 	int count = vertexData.size();
 	for (int i = 0; i < count; i++)
 	{
-		Vertex vertex = vertexData.at(i);
+		Vertex vertex = baseVertexes.at(i);
 		vertex.setPosition(QVector3D(vertex.position().x(), vertex.position().y(), length));
 
 		vertexData.push_back(vertex);
 	}
-	for (int i = 0; i < outerVertexes.size() - 1; i++)
+
+	//edges
+	for (int i = 0; i < baseEdgeVertexes.size() - 1; i++)
 	{
 		Vertex copyVertex;
 
-		vertexData.push_back(outerVertexes.at(i));
-		vertexData.push_back(outerVertexes.at(i + 1));
-		copyVertex = outerVertexes.at(i);
+		vertexData.push_back(baseEdgeVertexes.at(i));
+		vertexData.push_back(baseEdgeVertexes.at(i + 1));
+		copyVertex = baseEdgeVertexes.at(i);
 		copyVertex.setZ(length);
 		vertexData.push_back(copyVertex);
 
-		copyVertex = outerVertexes.at(i);
+		copyVertex = baseEdgeVertexes.at(i);
 		copyVertex.setZ(length);
 		vertexData.push_back(copyVertex);
-		vertexData.push_back(outerVertexes.at(i + 1));
-		copyVertex = outerVertexes.at(i + 1);
+		vertexData.push_back(baseEdgeVertexes.at(i + 1));
+		copyVertex = baseEdgeVertexes.at(i + 1);
 		copyVertex.setZ(length);
 		vertexData.push_back(copyVertex);
 	}
+
 	{
 		Vertex copyVertex;
-		int lastOuterIndex = outerVertexes.size() - 1;
+		int lastOuterIndex = baseEdgeVertexes.size() - 1;
 
-		vertexData.push_back(outerVertexes.at(lastOuterIndex));
-		vertexData.push_back(outerVertexes.at(0));
-		copyVertex = outerVertexes.at(lastOuterIndex);
+		vertexData.push_back(baseEdgeVertexes.at(lastOuterIndex));
+		vertexData.push_back(baseEdgeVertexes.at(0));
+		copyVertex = baseEdgeVertexes.at(lastOuterIndex);
 		copyVertex.setZ(length);
 		vertexData.push_back(copyVertex);
 
-		copyVertex = outerVertexes.at(lastOuterIndex);
+		copyVertex = baseEdgeVertexes.at(lastOuterIndex);
 		copyVertex.setZ(length);
 		vertexData.push_back(copyVertex);
-		vertexData.push_back(outerVertexes.at(0));
-		copyVertex = outerVertexes.at(0);
+		vertexData.push_back(baseEdgeVertexes.at(0));
+		copyVertex = baseEdgeVertexes.at(0);
 		copyVertex.setZ(length);
 		vertexData.push_back(copyVertex);
 	}
@@ -139,7 +145,12 @@ void Polygon::extrude(double length, bool extrusion, ExtrusionDirection directio
 	emit updateData();
 }
 
+void Polygon::setExtrusion(Extrusion extrusion)
+{
+	this->extrusion = extrusion;
+}
+
 std::vector<Vertex> *Polygon::getOuterPoints()
 {
-	return &outerVertexes;
+	return &baseEdgeVertexes;
 }
