@@ -220,11 +220,20 @@ void View3DWidget::paintGL()
 		vertexProgram.setUniformValue(itemToSpace, item->toMatrix());
 		vertexProgram.setUniformValue(itemIsSelected, item->isSelected());
 
-		for(uint32_t i = 0; i < item->getPolygons()->size(); i++)
+		if(item->isExtruded())
 		{
-			vertexProgram.setUniformValue(polygonIsSelected, item->getPolygons()->at(i)->isSelected());
-			glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->size());
-			currentIndex += item->getPolygons()->at(i)->size();
+			vertexProgram.setUniformValue(polygonIsSelected, false);
+			glDrawArrays(GL_TRIANGLES, currentIndex, item->size());
+			currentIndex += item->size();
+		}
+		else
+		{
+			for(uint32_t i = 0; i < item->getPolygons()->size(); i++)
+			{
+				vertexProgram.setUniformValue(polygonIsSelected, item->getPolygons()->at(i)->isSelected());
+				glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->size());
+				currentIndex += item->getPolygons()->at(i)->size();
+			}
 		}
 	}
 	vertexBufferObject.release();

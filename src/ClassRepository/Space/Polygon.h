@@ -23,22 +23,19 @@ struct Extrusion{
 };
 
 
-class Polygon : public QObject, public QListWidgetItem
+class Polygon : public QListWidgetItem
 {
-	Q_OBJECT
 public:
 	Polygon(QPolygonF polygon);
 
 	std::vector<Vertex> *getOuterPoints();
 	std::vector<Vertex> *getVertexData();
+	Vertex getVertexAt(int i);
 
 	void setColor(QVector3D color);
 	void setHidden(bool hidden);
 	bool isHidden();
 	int size();
-
-	void extrude();
-	void setExtrusion(Extrusion extrusion);
 
 private:
 	std::vector<Vertex> baseEdgeVertexes;
@@ -48,8 +45,6 @@ private:
 
 	Extrusion extrusion;
 	bool hidden = false;
-signals:
-	void updateData();
 };
 
 #endif // POLYGON_H

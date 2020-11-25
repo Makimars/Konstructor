@@ -54,7 +54,6 @@ void Polygon::setColor(QVector3D color)
 	{
 		vertexData.at(i).setColor(color);
 	}
-	emit updateData();
 }
 
 void Polygon::setHidden(bool hidden)
@@ -72,85 +71,12 @@ int Polygon::size()
 	return vertexData.size();
 }
 
-void Polygon::extrude()
-{
-	double length = extrusion.length;
-
-	if(extrusion.direction == ExtrusionDirection::Back)
-	{
-		length = -length;
-	}
-	else if (extrusion.direction == ExtrusionDirection::FrontAndBack)
-	{
-		length *= 0.5;
-
-		for (int i = 0; i < vertexData.size(); i++)
-		{
-			vertexData.at(i).setZ(-length);
-		}
-		for (int i = 0; i < baseEdgeVertexes.size(); i++)
-		{
-			baseEdgeVertexes.at(i).setZ(-length);
-		}
-	}
-
-	int count = vertexData.size();
-	for (int i = 0; i < count; i++)
-	{
-		Vertex vertex = baseVertexes.at(i);
-		vertex.setPosition(QVector3D(vertex.position().x(), vertex.position().y(), length));
-
-		vertexData.push_back(vertex);
-	}
-
-	//edges
-	for (int i = 0; i < baseEdgeVertexes.size() - 1; i++)
-	{
-		Vertex copyVertex;
-
-		vertexData.push_back(baseEdgeVertexes.at(i));
-		vertexData.push_back(baseEdgeVertexes.at(i + 1));
-		copyVertex = baseEdgeVertexes.at(i);
-		copyVertex.setZ(length);
-		vertexData.push_back(copyVertex);
-
-		copyVertex = baseEdgeVertexes.at(i);
-		copyVertex.setZ(length);
-		vertexData.push_back(copyVertex);
-		vertexData.push_back(baseEdgeVertexes.at(i + 1));
-		copyVertex = baseEdgeVertexes.at(i + 1);
-		copyVertex.setZ(length);
-		vertexData.push_back(copyVertex);
-	}
-
-	{
-		Vertex copyVertex;
-		int lastOuterIndex = baseEdgeVertexes.size() - 1;
-
-		vertexData.push_back(baseEdgeVertexes.at(lastOuterIndex));
-		vertexData.push_back(baseEdgeVertexes.at(0));
-		copyVertex = baseEdgeVertexes.at(lastOuterIndex);
-		copyVertex.setZ(length);
-		vertexData.push_back(copyVertex);
-
-		copyVertex = baseEdgeVertexes.at(lastOuterIndex);
-		copyVertex.setZ(length);
-		vertexData.push_back(copyVertex);
-		vertexData.push_back(baseEdgeVertexes.at(0));
-		copyVertex = baseEdgeVertexes.at(0);
-		copyVertex.setZ(length);
-		vertexData.push_back(copyVertex);
-	}
-
-	emit updateData();
-}
-
-void Polygon::setExtrusion(Extrusion extrusion)
-{
-	this->extrusion = extrusion;
-}
-
 std::vector<Vertex> *Polygon::getOuterPoints()
 {
 	return &baseEdgeVertexes;
+}
+
+Vertex Polygon::getVertexAt(int i)
+{
+	return vertexData.at(i);
 }

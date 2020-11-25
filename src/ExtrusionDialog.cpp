@@ -48,8 +48,7 @@ void ExtrusionDialog::accept()
 			extrusion.additive = ui->additiveButton->isChecked();
 			extrusion.direction = direction;
 
-			polygon->setExtrusion(extrusion);
-			polygon->extrude();
+			referencedItem->extrude(extrusion, polygon);
 		}
 	}
 

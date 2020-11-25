@@ -14,38 +14,37 @@ Item::Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
 
 void Item::copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex)
 {
-	vertexes = vector;
-	this->itemIndex = itemIndex;
+	targetVertexBuffer = vector;
+		this->itemIndex = itemIndex;
 
-	std::vector<Vertex> vertexData;
-	for(uint32_t i = 0; i < polygons.size(); i++)
-	{
-		vertexData.insert(
-					vertexData.end(),
-					polygons.at(i)->getVertexData()->begin(),
-					polygons.at(i)->getVertexData()->end()
-					);
-	}
-
-	//copy the original data into the global buffer
-	for(uint32_t i = 0; i < vertexData.size(); i++)
-		*vertexes[i] = vertexData[i];
+		if(extruded)
+		{
+			for(uint32_t i = 0; i < vertexBuffer.size(); i++)
+			{
+				*targetVertexBuffer.at(i) = vertexBuffer.at(i);
+			}
+		}
+		else
+		{
+			//copy polygons to global vertex
+			for(uint32_t i = 0; i < polygons.size(); i++)
+			{
+				for(int a = 0; a < polygons.at(i)->size(); a++)
+				{
+					*targetVertexBuffer.at(i+a) = polygons.at(i)->getVertexAt(a);
+				}
+			}
+		}
 }
 
 void Item::setPolygons(std::vector<QPolygonF> polygons)
 {
 	foreach(QPolygonF polygon, polygons)
 	{
-		Polygon *finalPolygon = new Polygon(polygon);
-
-		connect(finalPolygon, &Polygon::updateData,
-				this, &Item::updateData
-				);
-
-		this->polygons.push_back(finalPolygon);
+		this->polygons.push_back(new Polygon(polygon));
 	}
 
-	this->vertexes.reserve(size());
+	this->targetVertexBuffer.reserve(size());
 	emit updateData();
 }
 
@@ -54,13 +53,115 @@ std::vector<Polygon*> *Item::getPolygons()
 	return &polygons;
 }
 
+void Item::setSketch(QString sketch)
+{
+	this->sketch = sketch;
+}
+
 int Item::size()
 {
-	int size = 0;
-	for(uint32_t i = 0; i < polygons.size(); i++)
+	if(extruded)
 	{
-		size += polygons.at(i)->getVertexData()->size();
+		return vertexBuffer.size();
+	}
+	else
+	{
+		int size = 0;
+		for(uint32_t i = 0; i < polygons.size(); i++)
+		{
+			size += polygons.at(i)->size();
+		}
+
+		return size;
+	}
+}
+
+bool Item::isExtruded()
+{
+	return extruded;
+}
+
+void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
+{
+	extruded = true;
+	this->extrudedPolygon = targetPolygon;
+	this->extrusion = extrusion;
+
+	//copy polygon vertexes
+	vertexBuffer = *targetPolygon->getVertexData();
+	std::vector<Vertex> originalEdges = *targetPolygon->getOuterPoints();
+
+	//calculate length
+	double length = extrusion.length;
+
+	if(extrusion.direction == ExtrusionDirection::Back)
+	{
+		length = -length;
+	}
+	else if (extrusion.direction == ExtrusionDirection::FrontAndBack)
+	{
+		length *= 0.5;
+
+		for (uint32_t i = 0; i < vertexBuffer.size(); i++)
+		{
+			vertexBuffer.at(i).setZ(-length);
+		}
+		for (uint32_t i = 0; i < originalEdges.size(); i++)
+		{
+			originalEdges.at(i).setZ(-length);
+		}
 	}
 
-	return size;
+	//calculate second base
+	int count = vertexBuffer.size();
+	for (int i = 0; i < count; i++)
+	{
+		Vertex vertex = vertexBuffer.at(i);
+		vertex.setPosition(QVector3D(vertex.position().x(), vertex.position().y(), length));
+
+		vertexBuffer.push_back(vertex);
+	}
+	//TODO add plane
+
+	//calculate faces
+	for (uint32_t i = 0; i < originalEdges.size() - 1; i++)
+	{
+		Vertex copyVertex;
+
+		vertexBuffer.push_back(originalEdges.at(i));
+		vertexBuffer.push_back(originalEdges.at(i + 1));
+		copyVertex = originalEdges.at(i);
+		copyVertex.setZ(length);
+		vertexBuffer.push_back(copyVertex);
+
+		copyVertex = originalEdges.at(i);
+		copyVertex.setZ(length);
+		vertexBuffer.push_back(copyVertex);
+		vertexBuffer.push_back(originalEdges.at(i + 1));
+		copyVertex = originalEdges.at(i + 1);
+		copyVertex.setZ(length);
+		vertexBuffer.push_back(copyVertex);
+	}
+	//calculate closing faces
+	{
+		Vertex copyVertex;
+		int lastOuterIndex = originalEdges.size() - 1;
+
+		vertexBuffer.push_back(originalEdges.at(lastOuterIndex));
+		vertexBuffer.push_back(originalEdges.at(0));
+		copyVertex = originalEdges.at(lastOuterIndex);
+		copyVertex.setZ(length);
+		vertexBuffer.push_back(copyVertex);
+
+		copyVertex = originalEdges.at(lastOuterIndex);
+		copyVertex.setZ(length);
+		vertexBuffer.push_back(copyVertex);
+		vertexBuffer.push_back(originalEdges.at(0));
+		copyVertex = originalEdges.at(0);
+		copyVertex.setZ(length);
+		vertexBuffer.push_back(copyVertex);
+	}
+	//TODO add planes for faces
+
+	updateData();
 }
