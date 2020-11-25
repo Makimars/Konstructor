@@ -121,7 +121,7 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 
 		vertexBuffer.push_back(vertex);
 	}
-	//TODO add plane
+	addPlane(this, basePlane->getPosition() + QVector3D(0,0,0), basePlane->getRotation());
 
 	//calculate faces
 	for (uint32_t i = 0; i < originalEdges.size() - 1; i++)
@@ -164,4 +164,11 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 	//TODO add planes for faces
 
 	updateData();
+}
+
+void Item::addPlane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation)
+{
+	Space::Plane *newPlane = new Space::Plane(parent, position, rotation);
+	addChild(newPlane);
+	emit planeAdded(newPlane);
 }

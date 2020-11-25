@@ -43,9 +43,11 @@ private:
 
 	int itemIndex;
 
+	void addPlane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation);
+
 signals:
 	void updateData();
-
+	void planeAdded(Space::Plane *plane);
 };
 
 inline QString Item::getSketch() { return sketch; }

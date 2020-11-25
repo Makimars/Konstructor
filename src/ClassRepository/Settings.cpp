@@ -30,4 +30,6 @@ QString Settings::userProjectRoot = QDir::homePath();
 QLocale Settings::locals(QLocale::English, QLocale::UnitedKingdom);
 AngleUnits Settings::angleUnits = AngleUnits::degrees;
 int Settings::planeToSpaceRatio = 50;
+
 QVector3D Settings::selectedFaceColor = QVector3D(0.1, 0.1, 1);
+QVector3D Settings::planeColor = QVector3D(1, 0, 0);

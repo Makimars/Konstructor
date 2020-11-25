@@ -23,6 +23,7 @@ public:
 
 private:
 	Transform3D transform;
+
 };
 
 inline QMatrix4x4 Plane::toMatrix(){ return transform.toMatrix(); }

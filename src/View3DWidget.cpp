@@ -43,7 +43,7 @@ void View3DWidget::allocateNewItem(Item *item)
 void View3DWidget::generatePlaneVertexes()
 {
 	planeVertexData.clear();
-	QVector3D planeColor = QVector3D(1, 0, 0);
+	QVector3D planeColor = Settings::planeColor;
 	double planeSize = 20;
 
 	for(uint32_t i = 0; i < planes.size(); i++ )
@@ -142,10 +142,10 @@ void View3DWidget::initializeGL()
 	itemToRotate = vertexProgram.uniformLocation("itemToRotate");
 
 	selectedItemColor = vertexProgram.uniformLocation("selectedItemColor");
-	itemIsSelected = vertexProgram.uniformLocation("itemIsSelected");
-	polygonIsSelected = vertexProgram.uniformLocation("polygonIsSelected");
+	isSelected = vertexProgram.uniformLocation("isSelected");
 
 	transparentColorValue = vertexProgram.uniformLocation("transparentColorValue");
+	selectedTransparentValue = vertexProgram.uniformLocation("selectedTransparentValue");
 
 	vertexProgram.release();
 
@@ -213,16 +213,16 @@ void View3DWidget::paintGL()
 	//items
 	vertexBufferObject.bind();
 	vertexProgram.setUniformValue(transparentColorValue, 1.0f);
+	vertexProgram.setUniformValue(selectedTransparentValue, 1.0f);
 
 	foreach (Item *item, objectsInSpace)
 	{
 		int currentIndex = item->getItemIndex();
 		vertexProgram.setUniformValue(itemToSpace, item->toMatrix());
-		vertexProgram.setUniformValue(itemIsSelected, item->isSelected());
 
 		if(item->isExtruded())
 		{
-			vertexProgram.setUniformValue(polygonIsSelected, false);
+			vertexProgram.setUniformValue(isSelected, item->isSelected());
 			glDrawArrays(GL_TRIANGLES, currentIndex, item->size());
 			currentIndex += item->size();
 		}
@@ -230,7 +230,7 @@ void View3DWidget::paintGL()
 		{
 			for(uint32_t i = 0; i < item->getPolygons()->size(); i++)
 			{
-				vertexProgram.setUniformValue(polygonIsSelected, item->getPolygons()->at(i)->isSelected());
+				vertexProgram.setUniformValue(isSelected, item->isSelected() || item->getPolygons()->at(i)->isSelected());
 				glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->size());
 				currentIndex += item->getPolygons()->at(i)->size();
 			}
@@ -240,15 +240,19 @@ void View3DWidget::paintGL()
 
 	//planes
 	planeBufferObject.bind();
-	vertexProgram.setUniformValue(itemIsSelected, false);
-	vertexProgram.setUniformValue(polygonIsSelected, false);
-	vertexProgram.setUniformValue(transparentColorValue, 0.3f);
+	vertexProgram.setUniformValue(transparentColorValue, 0.0f);
+	vertexProgram.setUniformValue(selectedTransparentValue, 0.3f);
+	vertexProgram.setUniformValue(selectedItemColor, Settings::planeColor);
 
 	for(uint32_t i = 0; i < planes.size(); i++)
 	{
+		vertexProgram.setUniformValue(isSelected, planes.at(i)->checkState(0) == Qt::Checked);
 		vertexProgram.setUniformValue(itemToSpace, planes.at(i)->toMatrix());
 		glDrawArrays(GL_TRIANGLES, i * 6, 6);
+		qDebug() << i;
+		qDebug() << (planes.at(i)->checkState(0) == Qt::Checked);
 	}
+	qDebug() << planeVertexData.size();
 
 	planeBufferObject.release();
 
@@ -266,6 +270,9 @@ void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
 		objectsInSpace.append(item);
 		connect(item, &Item::updateData,
 				this, &View3DWidget::reallocateMemory
+				);
+		connect(item, &Item::planeAdded,
+				this, &View3DWidget::addPlane
 				);
 
 		allocateNewItem(item);
@@ -289,4 +296,10 @@ void View3DWidget::reallocateMemory()
 	{
 		allocateNewItem(item);
 	}
+}
+
+void View3DWidget::addPlane(Space::Plane *plane)
+{
+	planes.push_back(plane);
+	generatePlaneVertexes();
 }

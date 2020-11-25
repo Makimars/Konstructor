@@ -35,7 +35,7 @@ void MainWindow::setupUi()
 
 	Space::Plane *basePlane = new Space::Plane();
 	basePlane->setPosition(QVector3D(0,0,0));
-	basePlane->setRotation(QQuaternion(0,0,0,0));
+	basePlane->setRotation(QQuaternion(1,0,0,0));
 	basePlane->setText(0, "origin plane");
     this->ui->objectsTree->addTopLevelItem(basePlane);
 	this->ui->view3D->setTopPlane(basePlane);

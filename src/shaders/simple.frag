@@ -3,13 +3,13 @@ in vec4 vColor;
 out vec4 fColor;
 
 uniform vec3 selectedItemColor;
-uniform bool itemIsSelected;
-uniform bool polygonIsSelected;
+uniform bool isSelected;
+uniform float selectedTransparentValue;
 
 void main()
 {
-    if(itemIsSelected || polygonIsSelected)
-	fColor = vec4(selectedItemColor, 1);
+    if(isSelected)
+	fColor = vec4(selectedItemColor, selectedTransparentValue);
     else
 	fColor = vColor;
 }

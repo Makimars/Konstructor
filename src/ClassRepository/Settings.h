@@ -52,6 +52,7 @@ public:
 	static int planeToSpaceRatio;
 
 	static QVector3D selectedFaceColor;
+	static QVector3D planeColor;
 
 private:
 	Settings();

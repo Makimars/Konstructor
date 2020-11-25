@@ -5,6 +5,7 @@ using namespace Space;
 Plane::Plane()
 {
 	this->setIcon(0, QIcon(":/icons/Plane.png"));
+	setCheckState(0,Qt::CheckState::Checked);
 }
 
 Plane::Plane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation) : Plane()

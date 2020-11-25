@@ -50,10 +50,10 @@ private:
 	int itemToRotate;
 
 	int selectedItemColor;
-	int itemIsSelected;
-	int polygonIsSelected;
+	int isSelected;
 
 	int transparentColorValue;
+	int selectedTransparentValue;
 
 	QPoint lastPos;
 
@@ -76,6 +76,7 @@ public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);
 	void reallocateMemory();
 	void update();
+	void addPlane(Space::Plane *plane);
 };
 
 inline void View3DWidget::update() { QOpenGLWidget::update(); }
