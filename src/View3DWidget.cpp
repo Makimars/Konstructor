@@ -87,8 +87,6 @@ void View3DWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	QOpenGLWidget::mouseMoveEvent(event);
 
-	static const float rotSpeed   = 0.01f;
-
 	if(event->buttons() == Qt::RightButton)
 	{
 		// Handle rotations
@@ -125,10 +123,10 @@ void View3DWidget::keyPressEvent(QKeyEvent *event)
 void View3DWidget::initializeGL()
 {
 	initializeOpenGLFunctions();
-	//glEnable(GL_CULL_FACE);
-	//glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LESS);
-	glEnable (GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
+	glEnable(GL_BLEND);
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
@@ -192,8 +190,11 @@ void View3DWidget::initializeGL()
 
 void View3DWidget::resizeGL(int width, int height)
 {
+	static float near = 0.1;
+	static float far = 1000;
+
 	projection.setToIdentity();
-	projection.perspective(45.0f, width / float(height), 0.0f, 1000.0f);
+	projection.perspective(45.0f, width / float(height), near, far);
 }
 
 void View3DWidget::paintGL()
@@ -205,25 +206,9 @@ void View3DWidget::paintGL()
 	vertexProgram.setUniformValue(cameraToView, projection);
 	vertexProgram.setUniformValue(selectedItemColor, Settings::selectedFaceColor);
 
-	vertexProgram.setUniformValue(itemIsSelected, false);
-	vertexProgram.setUniformValue(polygonIsSelected, false);
-
 	QMatrix4x4 mtr;
 	mtr.rotate(itemRotation.normalized());
 	vertexProgram.setUniformValue(itemToRotate, mtr);
-	//glClear(GL_DEPTH_BUFFER_BIT);
-
-	//planes
-	planeBufferObject.bind();
-	vertexProgram.setUniformValue(transparentColorValue, 0.3f);
-
-	for(uint32_t i = 0; i < planes.size(); i++)
-	{
-		vertexProgram.setUniformValue(itemToSpace, planes.at(i)->toMatrix());
-		glDrawArrays(GL_TRIANGLES, i * 6, 6);
-	}
-
-	planeBufferObject.release();
 
 	//items
 	vertexBufferObject.bind();
@@ -243,6 +228,20 @@ void View3DWidget::paintGL()
 		}
 	}
 	vertexBufferObject.release();
+
+	//planes
+	planeBufferObject.bind();
+	vertexProgram.setUniformValue(itemIsSelected, false);
+	vertexProgram.setUniformValue(polygonIsSelected, false);
+	vertexProgram.setUniformValue(transparentColorValue, 0.3f);
+
+	for(uint32_t i = 0; i < planes.size(); i++)
+	{
+		vertexProgram.setUniformValue(itemToSpace, planes.at(i)->toMatrix());
+		glDrawArrays(GL_TRIANGLES, i * 6, 6);
+	}
+
+	planeBufferObject.release();
 
 	vertexProgram.release();
 }
