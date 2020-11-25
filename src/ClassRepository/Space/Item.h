@@ -10,7 +10,7 @@ class Item : public QObject, public QTreeWidgetItem
 public:
 	Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch);
 
-	void setVectorReference(std::vector<Vertex*> vector, int itemIndex);
+	void copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex);
 	void setPolygons(std::vector<QPolygonF> polygons);
 	std::vector<Polygon*> *getPolygons();
 	QString getSketch();

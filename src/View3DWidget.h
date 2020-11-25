@@ -39,6 +39,9 @@ private:
 	//plane data
 	std::vector<Space::Plane*> planes;
 	std::vector<Vertex> planeVertexData;
+	QOpenGLBuffer planeBuffer;
+	QOpenGLVertexArrayObject planeBufferObject;
+
 
 	// Shader Information
 	int itemToSpace;

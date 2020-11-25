@@ -12,7 +12,7 @@ Item::Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
 	plane->setExpanded(true);
 }
 
-void Item::setVectorReference(std::vector<Vertex*> vector, int itemIndex)
+void Item::copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex)
 {
 	vertexes = vector;
 	this->itemIndex = itemIndex;

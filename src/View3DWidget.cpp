@@ -26,25 +26,15 @@ void View3DWidget::allocateNewItem(Item *item)
 	vertexData.resize(newItemIndex + item->size());
 
 	std::vector<Vertex*> itemData;
-	for(int i = newItemIndex; i < vertexData.size(); i++)
+	for(uint32_t i = newItemIndex; i < vertexData.size(); i++)
 	{
 		itemData.push_back(&vertexData[i]);
 	}
 
-	item->setVectorReference(itemData, newItemIndex);
-
-	std::vector<Vertex> globalbuffer;
-	for(uint32_t i = 0; i < planeVertexData.size(); i++)
-	{
-		globalbuffer.push_back(planeVertexData.at(i));
-	}
-	for(uint32_t i = 0; i < vertexData.size(); i++)
-	{
-		globalbuffer.push_back(vertexData.at(i));
-	}
+	item->copyVertexesToReference(itemData, newItemIndex);
 
 	vertexBuffer.bind();
-	vertexBuffer.allocate(globalbuffer.data(), globalbuffer.size() * sizeof(Vertex));
+	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));
 	vertexBuffer.release();
 
 	update();
@@ -77,6 +67,8 @@ void View3DWidget::generatePlaneVertexes()
 					Vertex(QVector3D(-planeSize, -planeSize, 0), planeColor)
 					);
 	}
+
+	planeBuffer.allocate(planeVertexData.data(), planeVertexData.size() * sizeof(Vertex));
 }
 
 void View3DWidget::mousePressEvent(QMouseEvent *event)
@@ -157,6 +149,10 @@ void View3DWidget::initializeGL()
 
 	transparentColorValue = vertexProgram.uniformLocation("transparentColorValue");
 
+	vertexProgram.release();
+
+	//item buffer
+
 	vertexBuffer.create();
 	vertexBuffer.bind();
 	vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
@@ -173,7 +169,25 @@ void View3DWidget::initializeGL()
 	vertexBufferObject.release();
 	vertexBuffer.release();
 
-	vertexProgram.release();
+
+	//planes buffer
+
+	planeBuffer.create();
+	planeBuffer.bind();
+	planeBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+	planeBuffer.allocate(planeVertexData.data(), planeVertexData.size() * sizeof(Vertex));
+
+	planeBufferObject.create();
+	planeBufferObject.bind();
+
+	vertexProgram.enableAttributeArray(0);
+	vertexProgram.enableAttributeArray(1);
+	vertexProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
+	vertexProgram.setAttributeBuffer(1, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
+
+	planeBuffer.release();
+	planeBufferObject.release();
+
 }
 
 void View3DWidget::resizeGL(int width, int height)
@@ -191,31 +205,33 @@ void View3DWidget::paintGL()
 	vertexProgram.setUniformValue(cameraToView, projection);
 	vertexProgram.setUniformValue(selectedItemColor, Settings::selectedFaceColor);
 
+	vertexProgram.setUniformValue(itemIsSelected, false);
+	vertexProgram.setUniformValue(polygonIsSelected, false);
+
 	QMatrix4x4 mtr;
 	mtr.rotate(itemRotation.normalized());
 	vertexProgram.setUniformValue(itemToRotate, mtr);
-
-	vertexBufferObject.bind();
 	//glClear(GL_DEPTH_BUFFER_BIT);
 
-	//draw planes
-
-	vertexProgram.setUniformValue(itemIsSelected, false);
-	vertexProgram.setUniformValue(polygonIsSelected, false);
+	//planes
+	planeBufferObject.bind();
 	vertexProgram.setUniformValue(transparentColorValue, 0.3f);
 
-	int planeIndex = 0;
 	for(uint32_t i = 0; i < planes.size(); i++)
 	{
 		vertexProgram.setUniformValue(itemToSpace, planes.at(i)->toMatrix());
-		glDrawArrays(GL_TRIANGLES, planeIndex, 6);
-		planeIndex += 6;
+		glDrawArrays(GL_TRIANGLES, i * 6, 6);
 	}
 
+	planeBufferObject.release();
+
+	//items
+	vertexBufferObject.bind();
 	vertexProgram.setUniformValue(transparentColorValue, 1.0f);
+
 	foreach (Item *item, objectsInSpace)
 	{
-		int currentIndex = item->getItemIndex() + planeIndex;
+		int currentIndex = item->getItemIndex();
 		vertexProgram.setUniformValue(itemToSpace, item->toMatrix());
 		vertexProgram.setUniformValue(itemIsSelected, item->isSelected());
 
