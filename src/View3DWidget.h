@@ -19,7 +19,7 @@ class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 public:
 	View3DWidget(QFrame *frame);
 
-	void setTopPlane(Space::Plane *plane);
+	void setTopPlane(Plane *plane);
 
 private:
 	QVector<Item*> objectsInSpace;
@@ -37,7 +37,7 @@ private:
 	QTreeWidgetItem *targetItem;
 
 	//plane data
-	std::vector<Space::Plane*> planes;
+	std::vector<Plane*> planes;
 	std::vector<Vertex> planeVertexData;
 	QOpenGLBuffer planeBuffer;
 	QOpenGLVertexArrayObject planeBufferObject;
@@ -73,10 +73,12 @@ private:
 
 public slots:
 	void addItem(std::vector<QPolygonF> polygons, QString sketch);
+	void deleteItem(Item *item);
 	void recieveTargetItem(QTreeWidgetItem *item);
 	void reallocateMemory();
 	void update();
-	void addPlane(Space::Plane *plane);
+	void addPlane(Plane *plane);
+	void removePlane(Plane *plane);
 };
 
 inline void View3DWidget::update() { QOpenGLWidget::update(); }

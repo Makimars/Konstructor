@@ -14,7 +14,7 @@ This software is linced under EUPL v1.2, other language versions are located in 
 
 # Space
 
-- implement face visibility (GL_CULL_FACE)
 - extruding on created planes
 - save and load Project files
 - subtractive extrusion
+- cube in the right top corner to select view

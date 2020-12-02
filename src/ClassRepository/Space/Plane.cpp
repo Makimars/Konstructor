@@ -1,7 +1,5 @@
 #include "Plane.h"
 
-using namespace Space;
-
 Plane::Plane()
 {
 	this->setIcon(0, QIcon(":/icons/Plane.png"));

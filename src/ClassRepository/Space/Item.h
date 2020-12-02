@@ -8,7 +8,8 @@ class Item : public QObject, public QTreeWidgetItem
 {
 	Q_OBJECT
 public:
-	Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch);
+	Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch);
+	~Item();
 
 	void copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex);
 	void setPolygons(std::vector<QPolygonF> polygons);
@@ -24,8 +25,8 @@ public:
 	QMatrix4x4 toMatrix();
 
 private:
-	Space::Plane *basePlane;
-	QVector<Space::Plane> planes;
+	Plane *basePlane;
+	std::vector<Plane*> planes;
 	QString sketch;
 
 	//pointers to the global buffer
@@ -43,11 +44,13 @@ private:
 
 	int itemIndex;
 
-	void addPlane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation);
+	void addPlane(int index, QVector3D position, QQuaternion rotation);
 
 signals:
 	void updateData();
-	void planeAdded(Space::Plane *plane);
+
+	void planeAdded(Plane *plane);
+	void removePlane(Plane *plane);
 };
 
 inline QString Item::getSketch() { return sketch; }

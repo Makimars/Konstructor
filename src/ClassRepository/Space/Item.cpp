@@ -1,6 +1,6 @@
 #include "Item.h"
 
-Item::Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
+Item::Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
 {
 	this->sketch = sketch;
 	this->basePlane = plane;
@@ -10,6 +10,14 @@ Item::Item(Space::Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
 	this->setIcon(0, QIcon(":/icons/Cube.png"));
 	plane->addChild(this);
 	plane->setExpanded(true);
+}
+
+Item::~Item()
+{
+	for (uint32_t i = 0; i < planes.size(); i++ )
+	{
+		emit removePlane(planes.at(i));
+	}
 }
 
 void Item::copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex)
@@ -110,6 +118,7 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 		{
 			originalEdges.at(i).setZ(-length);
 		}
+		addPlane(0, basePlane->getPosition() + QVector3D(0,0,-length), basePlane->getRotation());
 	}
 
 	//calculate second base
@@ -121,7 +130,7 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 
 		vertexBuffer.push_back(vertex);
 	}
-	addPlane(this, basePlane->getPosition() + QVector3D(0,0,0), basePlane->getRotation());
+	addPlane(1, basePlane->getPosition() + QVector3D(0,0,length), basePlane->getRotation());
 
 	//calculate faces
 	for (uint32_t i = 0; i < originalEdges.size() - 1; i++)
@@ -166,9 +175,30 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 	updateData();
 }
 
-void Item::addPlane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation)
+void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 {
-	Space::Plane *newPlane = new Space::Plane(parent, position, rotation);
-	addChild(newPlane);
-	emit planeAdded(newPlane);
+	if(planes.size() < index)
+	{
+		for (int i = planes.size(); i <= index; i++)
+		{
+			planes.push_back(nullptr);
+		}
+	}
+
+	if(planes.at(index) == nullptr)
+	{
+		Plane *newPlane = new Plane(this, position, rotation);
+
+		//adds to local vector
+		planes.at(index) = newPlane;
+		//adds to tree
+		addChild(newPlane);
+		//adds to buffer (view)
+		emit planeAdded(newPlane);
+	}
+	else
+	{
+		//rewrite plane
+		*planes.at(index) =  Plane(this, position, rotation);
+	}
 }

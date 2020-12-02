@@ -14,7 +14,7 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	setFocus();
 }
 
-void View3DWidget::setTopPlane(Space::Plane *plane)
+void View3DWidget::setTopPlane(Plane *plane)
 {
 	planes.push_back(plane);
 	generatePlaneVertexes();
@@ -249,10 +249,7 @@ void View3DWidget::paintGL()
 		vertexProgram.setUniformValue(isSelected, planes.at(i)->checkState(0) == Qt::Checked);
 		vertexProgram.setUniformValue(itemToSpace, planes.at(i)->toMatrix());
 		glDrawArrays(GL_TRIANGLES, i * 6, 6);
-		qDebug() << i;
-		qDebug() << (planes.at(i)->checkState(0) == Qt::Checked);
 	}
-	qDebug() << planeVertexData.size();
 
 	planeBufferObject.release();
 
@@ -261,7 +258,7 @@ void View3DWidget::paintGL()
 
 void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
 {
-	if(Space::Plane *plane = dynamic_cast<Space::Plane*>(targetItem))
+	if(Plane *plane = dynamic_cast<Plane*>(targetItem))
 	{
 		Item *item = new Item(plane, polygons, sketch);
 
@@ -274,6 +271,9 @@ void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
 		connect(item, &Item::planeAdded,
 				this, &View3DWidget::addPlane
 				);
+		connect(item, &Item::removePlane,
+				this, &View3DWidget::removePlane
+				);
 
 		allocateNewItem(item);
 	}
@@ -281,6 +281,13 @@ void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
 	{
 		item->setPolygons(polygons);
 	}
+}
+
+void View3DWidget::deleteItem(Item *item)
+{
+	objectsInSpace.remove(objectsInSpace.indexOf(item));
+	delete item;
+	reallocateMemory();
 }
 
 void View3DWidget::recieveTargetItem(QTreeWidgetItem *item)
@@ -298,8 +305,17 @@ void View3DWidget::reallocateMemory()
 	}
 }
 
-void View3DWidget::addPlane(Space::Plane *plane)
+void View3DWidget::addPlane(Plane *plane)
 {
 	planes.push_back(plane);
 	generatePlaneVertexes();
+}
+
+void View3DWidget::removePlane(Plane *plane)
+{
+	foreach(QTreeWidgetItem *treeItem, plane->takeChildren())
+	{
+		if(Item *item = dynamic_cast<Item*>(treeItem))
+			deleteItem(item);
+	}
 }

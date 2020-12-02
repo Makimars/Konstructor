@@ -6,8 +6,6 @@
 
 #include "Transform3D.h"
 
-namespace Space {
-
 class Plane : public QTreeWidgetItem
 {
 public:
@@ -27,6 +25,5 @@ private:
 };
 
 inline QMatrix4x4 Plane::toMatrix(){ return transform.toMatrix(); }
-}
 
 #endif // PLANE_H
