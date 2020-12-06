@@ -33,7 +33,7 @@ void MainWindow::setupUi()
 	this->ui->objectsTree->setHeaderHidden(true);
     ui->objectsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
-	Space::Plane *basePlane = new Space::Plane();
+	Plane *basePlane = new Plane();
 	basePlane->setPosition(QVector3D(0,0,0));
 	basePlane->setRotation(QQuaternion(1,0,0,0));
 	basePlane->setText(0, "origin plane");
@@ -48,6 +48,8 @@ void MainWindow::setupUi()
 	objectContextMenu.addAction(&extrusionAction);
 	redrawAction.setText(tr("Redraw"));
 	objectContextMenu.addAction(&redrawAction);
+	deleteAction.setText(tr("Delete"));
+	objectContextMenu.addAction(&deleteAction);
 }
 
 void MainWindow::setupConnections()
@@ -335,8 +337,12 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 				emit setTargetItem(item);
 				this->ui->view2D->loadFromFile(item->getSketch());
 			}
+			else if(selectedAction == &deleteAction)
+			{
+				this->ui->view3D->deleteItem(item);
+			}
         }
-		else if(Space::Plane *plane = dynamic_cast<Space::Plane*>(ui->objectsTree->itemAt(pos)))
+		else if(Plane *plane = dynamic_cast<Plane*>(ui->objectsTree->itemAt(pos)))
         {
 			QAction *selectedAction = planeContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
 			if(selectedAction == &drawAction)

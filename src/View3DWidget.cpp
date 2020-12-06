@@ -313,9 +313,15 @@ void View3DWidget::addPlane(Plane *plane)
 
 void View3DWidget::removePlane(Plane *plane)
 {
-	foreach(QTreeWidgetItem *treeItem, plane->takeChildren())
+	if(plane == nullptr) return;
+
+	for (int i = 0; i < plane->childCount(); i++)
 	{
-		if(Item *item = dynamic_cast<Item*>(treeItem))
+		if(Item *item = dynamic_cast<Item*>(plane->child(i)))
 			deleteItem(item);
 	}
+
+	planes.removeAll(plane);
+
+	generatePlaneVertexes();
 }

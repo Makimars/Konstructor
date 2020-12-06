@@ -37,7 +37,7 @@ private:
 	QTreeWidgetItem *targetItem;
 
 	//plane data
-	std::vector<Plane*> planes;
+	QVector<Plane*> planes;
 	std::vector<Vertex> planeVertexData;
 	QOpenGLBuffer planeBuffer;
 	QOpenGLVertexArrayObject planeBufferObject;

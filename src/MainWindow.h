@@ -37,6 +37,7 @@ private:
     QMenu objectContextMenu;
 	QAction redrawAction;
 	QAction extrusionAction;
+	QAction deleteAction;
 
 	void setupUi();
 	void setupConnections();
