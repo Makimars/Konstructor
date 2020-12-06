@@ -117,7 +117,7 @@ void ViewWidget::saveToFile(QString path)
 						this->objectsInSketch
 						.at(i)
 						->toFileString()
-						.toLatin1() + "\n"
+						.toUtf8() + "\n"
 						);
 		}
 	}

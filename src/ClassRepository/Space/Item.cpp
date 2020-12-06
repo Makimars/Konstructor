@@ -174,6 +174,32 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 	//TODO add planes for faces
 
 	updateData();
+	setExpanded(true);
+}
+
+nlohmann::json Item::toJson()
+{
+	nlohmann::json file;
+
+	file["sketch"] = this->sketch.toStdString();
+
+	if(extruded == true)
+	{
+
+		file["extrusionPolygon"] = polygons.indexOf(extrudedPolygon);
+
+		file["extrusion"]["length"] = extrusion.length;
+		file["extrusion"]["additive"] = extrusion.additive;
+		file["extrusion"]["length"] = extrusion.direction;
+	}
+	else
+	{
+		file["extrusionPolygon"] = -1;
+	}
+
+	file["basePlane"] = 1; //sdjfoishfioshofiů NOT IMPLEMENTED
+
+	return file;
 }
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation)

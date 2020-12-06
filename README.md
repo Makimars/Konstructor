@@ -6,13 +6,16 @@ The purpose of this project is to create simple free and open source CAD with su
 
 This software is linced under EUPL v1.2, other language versions are located in folder LICENCE, and are equally valid.
 
+## Dependencies
+- nlohmann (json library)
+
 ## current TODO list
 
-# Plane
+### Plane
 
 - rework constrains and dimensions
 
-# Space
+### Space
 
 - extruding on created planes
 - save and load Project files

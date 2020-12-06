@@ -35,6 +35,28 @@ void View3DWidget::setTopPlane(Plane *plane)
 	reallocatePlanes();
 }
 
+void View3DWidget::loadFromFile(QString fileContents)
+{
+
+}
+
+void View3DWidget::saveToFile(QString file)
+{
+	QFile targetFile(file);
+	if(targetFile.open(QIODevice::WriteOnly))
+	{
+		targetFile.write("[");
+
+		for(int i = 0; i < this->objectsInSpace.length(); i++)
+		{
+			std::string s = objectsInSpace.at(i)->toJson().dump() + ",";
+			targetFile.write(QString::fromStdString(s).toUtf8());
+		}
+
+		targetFile.write("]");
+	}
+}
+
 void View3DWidget::reallocateItems()
 {
 	vertexData.clear();

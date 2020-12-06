@@ -42,7 +42,8 @@ enum Mode{
 	const QString saveFile = "Save File";
 
 	//file types
-	const QString konstructorSketch;
+	const QString konstructorSketch = "Konstructor sketch (*.kosk)";
+	const QString konstructorProject = "Konstructor project (*.kopr)";
 	const QString allFiles;
 
 }

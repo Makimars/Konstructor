@@ -21,6 +21,10 @@ public:
 
 	void setTopPlane(Plane *plane);
 
+	//file operations
+	void loadFromFile(QString fileContents);
+	void saveToFile(QString file);
+
 public slots:
 	void reallocateItems();
 	void allocateNewItem(Item *item);

@@ -1,6 +1,8 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <nlohmann/json.hpp>
+
 #include "Plane.h"
 #include "Polygon.h"
 
@@ -21,6 +23,7 @@ public:
 	bool isExtruded();
 
 	void extrude(Extrusion extrusion, Polygon *targetPolygon);
+	nlohmann::json toJson();
 
 	QMatrix4x4 toMatrix();
 

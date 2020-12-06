@@ -152,7 +152,13 @@ void MainWindow::on_openObjectFile_clicked()
 
 void MainWindow::on_saveObjectButton_clicked()
 {
-
+	QString fileName = QFileDialog::getSaveFileName(
+			this,
+			Global::saveFile,
+			Settings::userProjectRoot,
+			Global::konstructorProject + ";;" + Global::allFiles
+			);
+	this->ui->view3D->saveToFile(fileName);
 }
 
 void MainWindow::on_exportObjectButton_clicked()
