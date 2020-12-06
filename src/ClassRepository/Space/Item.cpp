@@ -188,6 +188,7 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 	if(planes.at(index) == nullptr)
 	{
 		Plane *newPlane = new Plane(this, position, rotation);
+		newPlane->setText(0, tr("plane"));
 
 		//adds to local vector
 		planes.at(index) = newPlane;
@@ -201,4 +202,6 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 		//rewrite plane
 		*planes.at(index) =  Plane(this, position, rotation);
 	}
+
+	setExpanded(true);
 }

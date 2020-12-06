@@ -83,8 +83,8 @@ private slots:
 	void viewKeyPress(QKeyEvent *event);
 	void swapMode(int index);
 	void on_objectsTree_customContextMenuRequested(const QPoint &pos);
-	void on_objectsTree_itemSelectionChanged();
 	void on_arcButton_clicked();
+	void on_objectsTree_itemClicked(QTreeWidgetItem *item, int column);
 };
 
 #endif // MAINWINDOW_H

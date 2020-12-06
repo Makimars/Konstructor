@@ -353,9 +353,11 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			}
         }
     }
+
+	this->ui->view3D->update();
 }
 
-void MainWindow::on_objectsTree_itemSelectionChanged()
+void MainWindow::on_objectsTree_itemClicked(QTreeWidgetItem *item, int column)
 {
 	this->ui->view3D->update();
 }

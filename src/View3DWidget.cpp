@@ -46,7 +46,7 @@ void View3DWidget::generatePlaneVertexes()
 	QVector3D planeColor = Settings::planeColor;
 	double planeSize = 20;
 
-	for(uint32_t i = 0; i < planes.size(); i++ )
+	for(int i = 0; i < planes.size(); i++ )
 	{
 		planeVertexData.push_back(
 					Vertex(QVector3D(planeSize, planeSize, 0), planeColor)
@@ -68,7 +68,9 @@ void View3DWidget::generatePlaneVertexes()
 					);
 	}
 
+	planeBuffer.bind();
 	planeBuffer.allocate(planeVertexData.data(), planeVertexData.size() * sizeof(Vertex));
+	planeBuffer.release();
 }
 
 void View3DWidget::mousePressEvent(QMouseEvent *event)
@@ -244,7 +246,7 @@ void View3DWidget::paintGL()
 	vertexProgram.setUniformValue(selectedTransparentValue, 0.3f);
 	vertexProgram.setUniformValue(selectedItemColor, Settings::planeColor);
 
-	for(uint32_t i = 0; i < planes.size(); i++)
+	for(int i = 0; i < planes.size(); i++)
 	{
 		vertexProgram.setUniformValue(isSelected, planes.at(i)->checkState(0) == Qt::Checked);
 		vertexProgram.setUniformValue(itemToSpace, planes.at(i)->toMatrix());
