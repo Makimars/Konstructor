@@ -13,7 +13,7 @@ public:
 
 	void copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex);
 	void setPolygons(std::vector<QPolygonF> polygons);
-	std::vector<Polygon*> *getPolygons();
+	QVector<Polygon*> *getPolygons();
 	void setSketch(QString sketch);
 	QString getSketch();
 	int getItemIndex();
@@ -32,7 +32,7 @@ private:
 	//pointers to the global buffer
 	std::vector<Vertex*> targetVertexBuffer;
 	//original polygons
-	std::vector<Polygon*> polygons;
+	QVector<Polygon*> polygons;
 
 	//extrusion info
 	bool extruded = false;
@@ -49,8 +49,8 @@ private:
 signals:
 	void updateData();
 
+	void deletePlane(Plane *plane);
 	void planeAdded(Plane *plane);
-	void removePlane(Plane *plane);
 };
 
 inline QString Item::getSketch() { return sketch; }

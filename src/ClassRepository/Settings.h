@@ -53,11 +53,6 @@ public:
 
 	static QVector3D selectedFaceColor;
 	static QVector3D planeColor;
-
-private:
-	Settings();
-	~Settings();
-
 };
 
 #endif // SETTINGS_H

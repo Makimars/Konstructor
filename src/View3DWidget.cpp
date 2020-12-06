@@ -12,12 +12,37 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	itemRotation.setScalar(1);
 
 	setFocus();
+
+	SpaceFactory::init(&objectsInSpace, &planes, this);
+	factory = SpaceFactory::getInstance();
+	connect(factory, &SpaceFactory::reallocateItems,
+			this, &View3DWidget::reallocateItems
+			);
+	connect(factory, &SpaceFactory::allocateNewItem,
+			this, &View3DWidget::allocateNewItem
+			);
+	connect(factory, &SpaceFactory::reallocatePlanes,
+			this, &View3DWidget::reallocatePlanes
+			);
+	connect(factory, &SpaceFactory::allocateNewPlane,
+			this, &View3DWidget::allocateNewPlane
+			);
 }
 
 void View3DWidget::setTopPlane(Plane *plane)
 {
 	planes.push_back(plane);
-	generatePlaneVertexes();
+	reallocatePlanes();
+}
+
+void View3DWidget::reallocateItems()
+{
+	vertexData.clear();
+
+	foreach(Item *item, objectsInSpace)
+	{
+		allocateNewItem(item);
+	}
 }
 
 void View3DWidget::allocateNewItem(Item *item)
@@ -40,33 +65,39 @@ void View3DWidget::allocateNewItem(Item *item)
 	update();
 }
 
-void View3DWidget::generatePlaneVertexes()
+void View3DWidget::reallocatePlanes()
 {
 	planeVertexData.clear();
-	QVector3D planeColor = Settings::planeColor;
-	double planeSize = 20;
 
 	for(int i = 0; i < planes.size(); i++ )
 	{
-		planeVertexData.push_back(
-					Vertex(QVector3D(planeSize, planeSize, 0), planeColor)
-					);
-		planeVertexData.push_back(
-					Vertex(QVector3D(planeSize, -planeSize, 0), planeColor)
-					);
-		planeVertexData.push_back(
-					Vertex(QVector3D(-planeSize, -planeSize, 0), planeColor)
-					);
-		planeVertexData.push_back(
-					Vertex(QVector3D(planeSize, planeSize, 0), planeColor)
-					);
-		planeVertexData.push_back(
-					Vertex(QVector3D(-planeSize, planeSize, 0), planeColor)
-					);
-		planeVertexData.push_back(
-					Vertex(QVector3D(-planeSize, -planeSize, 0), planeColor)
-					);
+		allocateNewPlane();
 	}
+}
+
+void View3DWidget::allocateNewPlane()
+{
+	QVector3D planeColor = Settings::planeColor;
+	double planeSize = 20;
+
+	planeVertexData.push_back(
+				Vertex(QVector3D(planeSize, planeSize, 0), planeColor)
+				);
+	planeVertexData.push_back(
+				Vertex(QVector3D(planeSize, -planeSize, 0), planeColor)
+				);
+	planeVertexData.push_back(
+				Vertex(QVector3D(-planeSize, -planeSize, 0), planeColor)
+				);
+	planeVertexData.push_back(
+				Vertex(QVector3D(planeSize, planeSize, 0), planeColor)
+				);
+	planeVertexData.push_back(
+				Vertex(QVector3D(-planeSize, planeSize, 0), planeColor)
+				);
+	planeVertexData.push_back(
+				Vertex(QVector3D(-planeSize, -planeSize, 0), planeColor)
+				);
 
 	planeBuffer.bind();
 	planeBuffer.allocate(planeVertexData.data(), planeVertexData.size() * sizeof(Vertex));
@@ -91,12 +122,14 @@ void View3DWidget::mouseMoveEvent(QMouseEvent *event)
 
 	if(event->buttons() == Qt::RightButton)
 	{
+		static float rotSpeed = 0.001;
+
 		// Handle rotations
 		itemRotation.setX(itemRotation.x() + (lastPos.y() - event->y()));
 		itemRotation.setY(itemRotation.y() + (lastPos.x() - event->x()));
 
-		float scalar = std::sqrt((event->x() * event->x()) + (event->y() * event->y())) * 0.0001;
-		itemRotation.setScalar(itemRotation.scalar() + scalar);
+		float scalar = std::sqrt((event->x() * event->x()) + (event->y() * event->y()));
+		itemRotation.setScalar(itemRotation.scalar() + scalar*rotSpeed);
 
 		// redraw
 		QOpenGLWidget::update();
@@ -256,74 +289,4 @@ void View3DWidget::paintGL()
 	planeBufferObject.release();
 
 	vertexProgram.release();
-}
-
-void View3DWidget::addItem(std::vector<QPolygonF> polygons, QString sketch)
-{
-	if(Plane *plane = dynamic_cast<Plane*>(targetItem))
-	{
-		Item *item = new Item(plane, polygons, sketch);
-
-		item->setText(0, "object " + QString::number(objectsInSpace.size()));
-
-		objectsInSpace.append(item);
-		connect(item, &Item::updateData,
-				this, &View3DWidget::reallocateMemory
-				);
-		connect(item, &Item::planeAdded,
-				this, &View3DWidget::addPlane
-				);
-		connect(item, &Item::removePlane,
-				this, &View3DWidget::removePlane
-				);
-
-		allocateNewItem(item);
-	}
-	else if(Item *item = dynamic_cast<Item*>(targetItem))
-	{
-		item->setPolygons(polygons);
-	}
-}
-
-void View3DWidget::deleteItem(Item *item)
-{
-	objectsInSpace.remove(objectsInSpace.indexOf(item));
-	delete item;
-	reallocateMemory();
-}
-
-void View3DWidget::recieveTargetItem(QTreeWidgetItem *item)
-{
-	targetItem = item;
-}
-
-void View3DWidget::reallocateMemory()
-{
-	vertexData.clear();
-
-	foreach(Item *item, objectsInSpace)
-	{
-		allocateNewItem(item);
-	}
-}
-
-void View3DWidget::addPlane(Plane *plane)
-{
-	planes.push_back(plane);
-	generatePlaneVertexes();
-}
-
-void View3DWidget::removePlane(Plane *plane)
-{
-	if(plane == nullptr) return;
-
-	for (int i = 0; i < plane->childCount(); i++)
-	{
-		if(Item *item = dynamic_cast<Item*>(plane->child(i)))
-			deleteItem(item);
-	}
-
-	planes.removeAll(plane);
-
-	generatePlaneVertexes();
 }

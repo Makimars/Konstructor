@@ -82,7 +82,7 @@ void MainWindow::setupConnections()
 	//Plane to Space connection
 	//set item on which to draw
 	connect(this, &MainWindow::setTargetItem,
-			this->ui->view3D, &View3DWidget::recieveTargetItem
+			SpaceFactory::getInstance(), &SpaceFactory::recieveTargetItem
 			);
 	//send finishWarning signal to ViewWidget
 	connect(this, &MainWindow::finishDrawing,
@@ -94,7 +94,7 @@ void MainWindow::setupConnections()
 			);
 	//sends polygons from polygonator to View3DWidget
 	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
-			this->ui->view3D, &View3DWidget::addItem
+			SpaceFactory::getInstance(), &SpaceFactory::addItem
 			);
 
 	//connect extrusionDialog to screen update
@@ -339,7 +339,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			}
 			else if(selectedAction == &deleteAction)
 			{
-				this->ui->view3D->deleteItem(item);
+				SpaceFactory::getInstance()->deleteItem(item);
 			}
         }
 		else if(Plane *plane = dynamic_cast<Plane*>(ui->objectsTree->itemAt(pos)))

@@ -21,20 +21,26 @@ public:
 
 	void setTopPlane(Plane *plane);
 
+public slots:
+	void reallocateItems();
+	void allocateNewItem(Item *item);
+	void reallocatePlanes();
+	void allocateNewPlane();
+	void update();
+
 private:
-	QVector<Item*> objectsInSpace;
-	QMatrix4x4 projection;
 	QQuaternion itemRotation;
 	Camera camera;
+	QMatrix4x4 projection;
+	SpaceFactory *factory;
 
+	QVector<Item*> objectsInSpace;
 	QOpenGLShaderProgram vertexProgram;
 
 	//copy of all vertexes data
 	std::vector<Vertex> vertexData;
 	QOpenGLBuffer vertexBuffer;
 	QOpenGLVertexArrayObject vertexBufferObject;
-
-	QTreeWidgetItem *targetItem;
 
 	//plane data
 	QVector<Plane*> planes;
@@ -57,9 +63,6 @@ private:
 
 	QPoint lastPos;
 
-	void allocateNewItem(Item *item);
-	void generatePlaneVertexes();
-
 	//events
 	void mousePressEvent(QMouseEvent *event) override;
 	void mouseReleaseEvent(QMouseEvent *event) override;
@@ -70,15 +73,6 @@ private:
 	void initializeGL() override;
 	void resizeGL(int width, int height) override;
 	void paintGL() override;
-
-public slots:
-	void addItem(std::vector<QPolygonF> polygons, QString sketch);
-	void deleteItem(Item *item);
-	void recieveTargetItem(QTreeWidgetItem *item);
-	void reallocateMemory();
-	void update();
-	void addPlane(Plane *plane);
-	void removePlane(Plane *plane);
 };
 
 inline void View3DWidget::update() { QOpenGLWidget::update(); }

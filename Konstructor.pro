@@ -28,6 +28,7 @@ SOURCES += \
     include/delaunator/delaunator.cpp \
 \
     src/ClassRepository/Plane/Tools/ArcTool.cpp \
+    src/ClassRepository/Space/SpaceFactory.cpp \
     src/ExtrusionDialog.cpp \
     src/MainWindow.cpp \
     src/MessagesManager.cpp \
@@ -76,6 +77,7 @@ HEADERS += \
 \
     src/ClassRepository/Plane/Style.h \
     src/ClassRepository/Plane/Tools/ArcTool.h \
+    src/ClassRepository/Space/SpaceFactory.h \
     src/ExtrusionDialog.h \
     src/MainWindow.h \
     src/MessagesManager.h \

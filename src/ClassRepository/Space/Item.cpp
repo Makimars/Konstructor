@@ -16,7 +16,7 @@ Item::~Item()
 {
 	for (uint32_t i = 0; i < planes.size(); i++ )
 	{
-		emit removePlane(planes.at(i));
+		emit deletePlane(planes.at(i));
 	}
 }
 
@@ -35,7 +35,7 @@ void Item::copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex)
 		else
 		{
 			//copy polygons to global vertex
-			for(uint32_t i = 0; i < polygons.size(); i++)
+			for(int i = 0; i < polygons.size(); i++)
 			{
 				for(int a = 0; a < polygons.at(i)->size(); a++)
 				{
@@ -56,7 +56,7 @@ void Item::setPolygons(std::vector<QPolygonF> polygons)
 	emit updateData();
 }
 
-std::vector<Polygon*> *Item::getPolygons()
+QVector<Polygon*> *Item::getPolygons()
 {
 	return &polygons;
 }
@@ -75,7 +75,7 @@ int Item::size()
 	else
 	{
 		int size = 0;
-		for(uint32_t i = 0; i < polygons.size(); i++)
+		for(int i = 0; i < polygons.size(); i++)
 		{
 			size += polygons.at(i)->size();
 		}
@@ -119,6 +119,7 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 			originalEdges.at(i).setZ(-length);
 		}
 		addPlane(0, basePlane->getPosition() + QVector3D(0,0,-length), basePlane->getRotation());
+
 	}
 
 	//calculate second base
@@ -177,6 +178,7 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 {
+	// ensures that the vector has either nullptr or an instance
 	if(planes.size() < index)
 	{
 		for (int i = planes.size(); i <= index; i++)
@@ -185,6 +187,7 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 		}
 	}
 
+	//if an index is nullptr, create a new plane. if not, update
 	if(planes.at(index) == nullptr)
 	{
 		Plane *newPlane = new Plane(this, position, rotation);
@@ -202,6 +205,4 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 		//rewrite plane
 		*planes.at(index) =  Plane(this, position, rotation);
 	}
-
-	setExpanded(true);
 }
