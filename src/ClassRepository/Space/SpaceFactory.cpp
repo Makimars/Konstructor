@@ -58,6 +58,8 @@ void SpaceFactory::deleteItem(Item *item)
 void SpaceFactory::addPlane(Plane *plane)
 {
 	planes->append(plane);
+	plane->setItemIndex(objectsInSpace->indexOf(dynamic_cast<Item*>(plane->parent())));
+
 	emit allocateNewPlane();
 }
 

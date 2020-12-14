@@ -4,6 +4,8 @@ Plane::Plane()
 {
 	this->setIcon(0, QIcon(":/icons/Plane.png"));
 	setCheckState(0,Qt::CheckState::Checked);
+	itemIndex = -1;
+	planeIndex = 0;
 }
 
 Plane::Plane(QTreeWidgetItem *parent, QVector3D position, QQuaternion rotation) : Plane()
@@ -31,4 +33,19 @@ QQuaternion Plane::getRotation() const
 void Plane::setRotation(const QQuaternion &rotation)
 {
 	transform.setRotation(rotation);
+}
+
+QString Plane::getId()
+{
+	return QString::number(itemIndex) + ":" + QString::number(planeIndex);
+}
+
+void Plane::setItemIndex(int i)
+{
+	itemIndex = i;
+}
+
+void Plane::setPlaneIndex(int i)
+{
+	planeIndex = i;
 }

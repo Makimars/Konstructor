@@ -197,7 +197,7 @@ nlohmann::json Item::toJson()
 		file["extrusionPolygon"] = -1;
 	}
 
-	file["basePlane"] = 1; //sdjfoishfioshofiů NOT IMPLEMENTED
+	file["basePlane"] = basePlane->getId().toStdString();
 
 	return file;
 }
@@ -205,7 +205,7 @@ nlohmann::json Item::toJson()
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 {
 	// ensures that the vector has either nullptr or an instance
-	if(planes.size() < index)
+	if(planes.size() < index + 1)
 	{
 		for (int i = planes.size(); i <= index; i++)
 		{
@@ -225,6 +225,8 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 		addChild(newPlane);
 		//adds to buffer (view)
 		emit planeAdded(newPlane);
+
+		newPlane->setPlaneIndex(index);
 	}
 	else
 	{
