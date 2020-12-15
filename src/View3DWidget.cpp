@@ -37,23 +37,37 @@ void View3DWidget::setTopPlane(Plane *plane)
 
 void View3DWidget::loadFromFile(QString fileContents)
 {
+	nlohmann::json input = nlohmann::json::parse(fileContents.toStdString());
 
+	std::vector<std::string> objects = input["objects"];
+	std::vector<Item*> items;
+
+	for (uint32_t i = 0; i < objects.size(); i++)
+	{
+		items.push_back(new Item(objects.at(i)));
+	}
+
+	for (uint32_t i = 0; i < items.size(); i++)
+	{
+		items.at(i)->loadRelations(items);
+	}
 }
 
 void View3DWidget::saveToFile(QString file)
 {
+	std::vector<std::string> objects;
+	for(int i = 0; i < this->objectsInSpace.length(); i++)
+	{
+		std::string s = objectsInSpace.at(i)->toJson().dump();
+		objects.push_back(s);
+	}
+
 	QFile targetFile(file);
 	if(targetFile.open(QIODevice::WriteOnly))
 	{
-		targetFile.write("[");
-
-		for(int i = 0; i < this->objectsInSpace.length(); i++)
-		{
-			std::string s = objectsInSpace.at(i)->toJson().dump() + ",";
-			targetFile.write(QString::fromStdString(s).toUtf8());
-		}
-
-		targetFile.write("]");
+		nlohmann::json json;
+		json["objects"] = objects;
+		targetFile.write(QString::fromStdString(std::string(json.dump())).toUtf8());
 	}
 }
 

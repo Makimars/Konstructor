@@ -1,13 +1,38 @@
 #include "Item.h"
 
-Item::Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch)
+Item::Item()
+{
+	this->setIcon(0, QIcon(":/icons/Cube.png"));
+}
+
+Item::Item(std::string file) : Item()
+{
+	nlohmann::json input = nlohmann::json::parse(file);
+	sketch = QString::fromStdString(input["sketch"]);
+	setPolygons(generatePolygons(sketch));
+
+	int polygon = input["extrusionPolygon"];
+	if(polygon == -1)
+	{
+		extrudedPolygon = nullptr;
+	}
+	else
+	{
+		extrudedPolygon = polygons.at(input["extrusionPolygon"]);
+
+		extrusion.length = input["extrusion"]["length"];
+		extrusion.additive = input["extrusion"]["additive"];
+		extrusion.direction = input["extrusion"]["direction"];
+	}
+}
+
+Item::Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch) : Item()
 {
 	this->sketch = sketch;
 	this->basePlane = plane;
 
 	setPolygons(polygons);
 
-	this->setIcon(0, QIcon(":/icons/Cube.png"));
 	plane->addChild(this);
 	plane->setExpanded(true);
 }
@@ -87,6 +112,11 @@ int Item::size()
 bool Item::isExtruded()
 {
 	return extruded;
+}
+
+Plane *Item::getPlane(int index)
+{
+	return planes.at(index);
 }
 
 void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
@@ -190,7 +220,7 @@ nlohmann::json Item::toJson()
 
 		file["extrusion"]["length"] = extrusion.length;
 		file["extrusion"]["additive"] = extrusion.additive;
-		file["extrusion"]["length"] = extrusion.direction;
+		file["extrusion"]["direction"] = extrusion.direction;
 	}
 	else
 	{
@@ -200,6 +230,11 @@ nlohmann::json Item::toJson()
 	file["basePlane"] = basePlane->getId().toStdString();
 
 	return file;
+}
+
+void Item::loadRelations(std::vector<Item *> list)
+{
+
 }
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation)

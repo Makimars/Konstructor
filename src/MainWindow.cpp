@@ -147,7 +147,19 @@ void MainWindow::on_newObjectFile_clicked()
 
 void MainWindow::on_openObjectFile_clicked()
 {
+	QString fileName = QFileDialog::getOpenFileName(
+			this,
+			Global::openFile,
+			Settings::userProjectRoot,
+			Global::konstructorProject + ";;" + Global::allFiles
+			);
 
+	QFile file(fileName);
+	if(file.exists())
+	{
+		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+			this->ui->view3D->loadFromFile(file.readAll());
+	}
 }
 
 void MainWindow::on_saveObjectButton_clicked()

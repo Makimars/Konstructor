@@ -13,8 +13,6 @@ public:
 						);
 	static SpaceFactory *getInstance();
 
-	void loadFromFile(QString file);
-
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);
 
