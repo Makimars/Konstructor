@@ -63,6 +63,8 @@ public:
 	 */
 	void deleteAll();
 
+	QVector<DrawableObject*> generateListFromSketch(QString sketch);
+
 private:
 	static Factory *instance;
 	Factory(const Style *defaultStyle,

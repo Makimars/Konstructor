@@ -11,7 +11,6 @@ class Item : public QObject, public QTreeWidgetItem
 	Q_OBJECT
 public:
 	Item();
-	Item(std::string file);
 	Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch);
 	~Item();
 
@@ -25,8 +24,11 @@ public:
 	bool isExtruded();
 	Plane *getPlane(int index);
 
+	void extrude();
 	void extrude(Extrusion extrusion, Polygon *targetPolygon);
+
 	nlohmann::json toJson();
+	void loadData(QString basePlaneId, Extrusion extrusion, bool extruded, int extrudedPolygon);
 	void loadRelations(std::vector<Item*> list);
 
 	QMatrix4x4 toMatrix();
@@ -50,15 +52,17 @@ private:
 	std::vector<Vertex> vertexBuffer;
 
 	int itemIndex;
+	QString basePlaneId;
 
 	void addPlane(int index, QVector3D position, QQuaternion rotation);
 
 signals:
 	void updateData();
-	std::vector<QPolygonF> generatePolygons(QString sketch);
 
 	void deletePlane(Plane *plane);
 	void planeAdded(Plane *plane);
+
+	Plane *getBasePlane();
 };
 
 inline QString Item::getSketch() { return sketch; }

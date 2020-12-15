@@ -32,6 +32,8 @@ public slots:
 	void allocateNewPlane();
 	void update();
 
+	Plane *getBasePlane();
+
 private:
 	QQuaternion itemRotation;
 	Camera camera;

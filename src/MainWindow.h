@@ -85,6 +85,8 @@ private slots:
 	void on_objectsTree_customContextMenuRequested(const QPoint &pos);
 	void on_arcButton_clicked();
 	void on_objectsTree_itemClicked(QTreeWidgetItem *item, int column);
+
+	std::vector<QPolygonF> getPolygonsForItem(QString sketch);
 };
 
 #endif // MAINWINDOW_H

@@ -5,27 +5,6 @@ Item::Item()
 	this->setIcon(0, QIcon(":/icons/Cube.png"));
 }
 
-Item::Item(std::string file) : Item()
-{
-	nlohmann::json input = nlohmann::json::parse(file);
-	sketch = QString::fromStdString(input["sketch"]);
-	setPolygons(generatePolygons(sketch));
-
-	int polygon = input["extrusionPolygon"];
-	if(polygon == -1)
-	{
-		extrudedPolygon = nullptr;
-	}
-	else
-	{
-		extrudedPolygon = polygons.at(input["extrusionPolygon"]);
-
-		extrusion.length = input["extrusion"]["length"];
-		extrusion.additive = input["extrusion"]["additive"];
-		extrusion.direction = input["extrusion"]["direction"];
-	}
-}
-
 Item::Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch) : Item()
 {
 	this->sketch = sketch;
@@ -119,15 +98,11 @@ Plane *Item::getPlane(int index)
 	return planes.at(index);
 }
 
-void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
+void Item::extrude()
 {
-	extruded = true;
-	this->extrudedPolygon = targetPolygon;
-	this->extrusion = extrusion;
-
 	//copy polygon vertexes
-	vertexBuffer = *targetPolygon->getVertexData();
-	std::vector<Vertex> originalEdges = *targetPolygon->getOuterPoints();
+	vertexBuffer = *extrudedPolygon->getVertexData();
+	std::vector<Vertex> originalEdges = *extrudedPolygon->getOuterPoints();
 
 	//calculate length
 	double length = extrusion.length;
@@ -207,6 +182,15 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 	setExpanded(true);
 }
 
+void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
+{
+	extruded = true;
+	this->extrudedPolygon = targetPolygon;
+	this->extrusion = extrusion;
+
+	extrude();
+}
+
 nlohmann::json Item::toJson()
 {
 	nlohmann::json file;
@@ -232,9 +216,31 @@ nlohmann::json Item::toJson()
 	return file;
 }
 
-void Item::loadRelations(std::vector<Item *> list)
+void Item::loadData(QString basePlaneId, Extrusion extrusion, bool extruded, int extrudedPolygon)
 {
+	this->basePlaneId = basePlaneId;
+	this->extrusion = extrusion;
+	this->extruded = extruded;
 
+	this->extrudedPolygon = polygons.at(extrudedPolygon);
+}
+
+void Item::loadRelations(std::vector<Item*> list)
+{
+	QStringList Ids = basePlaneId.split(":");
+	int itemId = QVariant(Ids[0]).toInt();
+	int planeId = QVariant(Ids[1]).toInt();
+
+	if(itemId == -1)
+	{
+		basePlane = emit getBasePlane();
+	}
+	else
+	{
+		basePlane = list.at(itemId)->getPlane(planeId);
+	}
+
+	basePlane->addChild(this);
 }
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation)

@@ -94,12 +94,17 @@ void MainWindow::setupConnections()
 			);
 	//sends polygons from polygonator to View3DWidget
 	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
-			SpaceFactory::getInstance(), &SpaceFactory::addItem
+			SpaceFactory::getInstance(), &SpaceFactory::addNewItem
 			);
 
 	//connect extrusionDialog to screen update
 	connect(extrusionDialog, &ExtrusionDialog::selectionChanged,
 			this->ui->view3D, &View3DWidget::update
+			);
+
+	//generating drawables for loading items
+	connect(SpaceFactory::getInstance(), &SpaceFactory::generatePolygons,
+			this, &MainWindow::getPolygonsForItem
 			);
 }
 
@@ -378,4 +383,11 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 void MainWindow::on_objectsTree_itemClicked(QTreeWidgetItem *item, int column)
 {
 	this->ui->view3D->update();
+}
+
+std::vector<QPolygonF> MainWindow::getPolygonsForItem(QString sketch)
+{
+	QVector<DrawableObject*> loadedObjects = Factory::getInstance()->generateListFromSketch(sketch);
+
+	return Polygonator::getInstance()->generatePolygons(loadedObjects);
 }

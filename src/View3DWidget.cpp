@@ -27,6 +27,10 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	connect(factory, &SpaceFactory::allocateNewPlane,
 			this, &View3DWidget::allocateNewPlane
 			);
+
+	connect(factory, &SpaceFactory::getBasePlane,
+			this, &View3DWidget::getBasePlane
+			);
 }
 
 void View3DWidget::setTopPlane(Plane *plane)
@@ -44,12 +48,22 @@ void View3DWidget::loadFromFile(QString fileContents)
 
 	for (uint32_t i = 0; i < objects.size(); i++)
 	{
-		items.push_back(new Item(objects.at(i)));
+		//load static data
+		items.push_back(factory->loadItem(objects.at(i)));
 	}
 
 	for (uint32_t i = 0; i < items.size(); i++)
 	{
+		//link base planes
 		items.at(i)->loadRelations(items);
+		if(items.at(i)->isExtruded())
+		{
+			items.at(i)->extrude();
+		}
+	}
+	for (uint32_t i = 0; i < items.size(); i++)
+	{
+		factory->addItem(items.at(i));
 	}
 }
 
@@ -138,6 +152,11 @@ void View3DWidget::allocateNewPlane()
 	planeBuffer.bind();
 	planeBuffer.allocate(planeVertexData.data(), planeVertexData.size() * sizeof(Vertex));
 	planeBuffer.release();
+}
+
+Plane *View3DWidget::getBasePlane()
+{
+	return planes.at(0);
 }
 
 void View3DWidget::mousePressEvent(QMouseEvent *event)
