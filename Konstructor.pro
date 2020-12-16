@@ -35,6 +35,7 @@ SOURCES += \
     src/PopUpMessage.cpp \
     src/SettingsDialog.cpp \
     src/View3DWidget.cpp \
+    src/WelcomeDialog.cpp \
     src/main.cpp \
     src/ViewWidget.cpp \
 \
@@ -125,14 +126,16 @@ HEADERS += \
     src/ClassRepository/Space/Item.h \
     src/ClassRepository/Space/Transform3D.h \
     src/ClassRepository/Space/Vertex.h \
-    src/ClassRepository/Space/Camera.h
+    src/ClassRepository/Space/Camera.h \
+    src/WelcomeDialog.h
 
 
 FORMS += \
     src/ExtrusionDialog.ui \
     src/MainWindow.ui \
     src/PopUpMessage.ui \
-    src/SettingsDialog.ui
+    src/SettingsDialog.ui \
+    src/WelcomeDialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

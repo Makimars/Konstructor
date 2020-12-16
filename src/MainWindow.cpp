@@ -16,10 +16,27 @@ MainWindow::MainWindow(QWidget *parent) :
 	this->setupUi();
 	this->setupConnections();
 
-	//set draw mode
-	emit setTargetItem(this->ui->objectsTree->topLevelItem(0));
-	this->ui->objectsTree->setCurrentItem(this->ui->objectsTree->topLevelItem(0));
-	this->swapMode(Global::Mode::Draw);
+	//welcome screen
+	WelcomeDialog *welcomeDialog = new WelcomeDialog(this);
+	welcomeDialog->exec();
+	switch (welcomeDialog->action)
+	{
+		case 1:
+			//new Project
+			emit setTargetItem(this->ui->objectsTree->topLevelItem(0));
+			this->ui->objectsTree->setCurrentItem(this->ui->objectsTree->topLevelItem(0));
+			this->setMode(Global::Mode::Draw);
+			break;
+		case 2:
+			//open Project
+			on_openObjectFile_clicked();
+			this->setMode(Global::Mode::Object);
+			break;
+		default:
+			this->close();
+			QApplication::exit();
+			break;
+	}
 }
 
 MainWindow::~MainWindow()
@@ -198,7 +215,7 @@ void MainWindow::on_quitButton_clicked()
 
 void MainWindow::on_closeSketchButton_clicked()
 {
-	swapMode(Global::Mode::Object);
+	setMode(Global::Mode::Object);
 }
 
 void MainWindow::on_saveSketchButton_clicked()
@@ -292,7 +309,7 @@ void MainWindow::on_finishDrawingButton_clicked()
 			return;
 	}
 
-	swapMode(Global::Mode::Object);
+	setMode(Global::Mode::Object);
 	emit finishDrawing();
 }
 
@@ -300,7 +317,7 @@ void MainWindow::on_finishDrawingButton_clicked()
 
 void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
-    swapMode(Global::Mode::Draw);
+	setMode(Global::Mode::Draw);
     emit setTargetItem(item);
 
     if(Item *existingItem = dynamic_cast<Item*>(item))
@@ -321,7 +338,7 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 	}
 }
 
-void MainWindow::swapMode(int index)
+void MainWindow::setMode(int index)
 {
 	switch (index)
 	{
@@ -357,7 +374,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			}
 			else if(selectedAction == &redrawAction)
 			{
-				swapMode(Global::Mode::Draw);
+				setMode(Global::Mode::Draw);
 				emit setTargetItem(item);
 				this->ui->view2D->loadFromFile(item->getSketch());
 			}
@@ -371,7 +388,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			QAction *selectedAction = planeContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
 			if(selectedAction == &drawAction)
 			{
-				swapMode(Global::Mode::Draw);
+				setMode(Global::Mode::Draw);
 
 				emit setTargetItem(plane);
 			}

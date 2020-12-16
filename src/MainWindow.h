@@ -9,6 +9,7 @@
 
 #include "SettingsDialog.h"
 #include "ExtrusionDialog.h"
+#include "WelcomeDialog.h"
 #include "ClassRepository/GlobalVariables.h"
 
 #include "ClassRepository/Space/Space"
@@ -81,7 +82,7 @@ private slots:
 
 	void on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int column);
 	void viewKeyPress(QKeyEvent *event);
-	void swapMode(int index);
+	void setMode(int index);
 	void on_objectsTree_customContextMenuRequested(const QPoint &pos);
 	void on_arcButton_clicked();
 	void on_objectsTree_itemClicked(QTreeWidgetItem *item, int column);
