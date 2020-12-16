@@ -85,6 +85,16 @@ void View3DWidget::saveToFile(QString file)
 	}
 }
 
+void View3DWidget::reset()
+{
+	Plane *basePlane = planes.at(0);
+	planes.clear();
+	setTopPlane(basePlane);
+
+	factory->deleteAllItems();
+	update();
+}
+
 void View3DWidget::reallocateItems()
 {
 	vertexData.clear();

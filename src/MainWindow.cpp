@@ -147,11 +147,12 @@ void MainWindow::saveSettings()
 
 void MainWindow::on_newObjectFile_clicked()
 {
-
+	this->ui->view3D->reset();
 }
 
 void MainWindow::on_openObjectFile_clicked()
 {
+	this->ui->view3D->reset();
 	QString fileName = QFileDialog::getOpenFileName(
 			this,
 			Global::openFile,

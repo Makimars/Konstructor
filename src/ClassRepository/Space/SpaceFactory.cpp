@@ -43,6 +43,12 @@ Item *SpaceFactory::loadItem(std::string file)
 	connect(newItem, &Item::getBasePlane,
 			this, &SpaceFactory::getBasePlane
 			);
+	connect(newItem, &Item::planeAdded,
+			this, &SpaceFactory::addPlane
+			);
+	connect(newItem, &Item::deletePlane,
+			this, &SpaceFactory::deletePlane
+			);
 
 	return newItem;
 }
@@ -54,6 +60,13 @@ void SpaceFactory::addNewItem(std::vector<QPolygonF> polygons, QString sketch)
 		Item *item = new Item(plane, polygons, sketch);
 
 		item->setText(0, "object " + QString::number(objectsInSpace->size()));
+
+		connect(item, &Item::planeAdded,
+				this, &SpaceFactory::addPlane
+				);
+		connect(item, &Item::deletePlane,
+				this, &SpaceFactory::deletePlane
+				);
 
 		addItem(item);
 	}
@@ -73,12 +86,6 @@ void SpaceFactory::addItem(Item *item)
 	connect(item, &Item::updateData,
 			this, &SpaceFactory::reallocateItems
 			);
-	connect(item, &Item::planeAdded,
-			this, &SpaceFactory::addPlane
-			);
-	connect(item, &Item::deletePlane,
-			this, &SpaceFactory::deletePlane
-			);
 
 	emit allocateNewItem(item);
 }
@@ -87,6 +94,15 @@ void SpaceFactory::deleteItem(Item *item)
 {
 	objectsInSpace->remove(objectsInSpace->indexOf(item));
 	delete item;
+	emit reallocateItems();
+}
+
+void SpaceFactory::deleteAllItems()
+{
+	for (int i = objectsInSpace->size()-1; i >= 0; i--)
+	{
+		deleteItem(objectsInSpace->at(i));
+	}
 	emit reallocateItems();
 }
 

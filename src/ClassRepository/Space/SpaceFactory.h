@@ -21,6 +21,7 @@ public slots:
 	void addNewItem(std::vector<QPolygonF> polygons, QString sketch);
 	void addItem(Item *item);
 	void deleteItem(Item *item);
+	void deleteAllItems();
 
 	void addPlane(Plane *plane);
 	void deletePlane(Plane *plane);
