@@ -17,7 +17,43 @@ void SpaceFactory::recieveTargetItem(QTreeWidgetItem *item)
 	targetItem = item;
 }
 
-void SpaceFactory::addItem(std::vector<QPolygonF> polygons, QString sketch)
+Item *SpaceFactory::loadItem(std::string file)
+{
+	nlohmann::json input = nlohmann::json::parse(file);
+
+	QString sketch = QString::fromStdString(input["sketch"]);
+
+	Item *newItem = new Item();
+
+	newItem->setPolygons(emit generatePolygons(sketch));
+
+	int polygon = input["extrusionPolygon"];
+	Extrusion extrusion;
+	bool extruded = false;
+	if(polygon != -1)
+	{
+		extruded = true;
+		extrusion.length = input["extrusion"]["length"];
+		extrusion.additive = input["extrusion"]["additive"];
+		extrusion.direction = input["extrusion"]["direction"];
+	}
+
+	newItem->loadData(QString::fromStdString(input["basePlane"]), extrusion, extruded, polygon);
+
+	connect(newItem, &Item::getBasePlane,
+			this, &SpaceFactory::getBasePlane
+			);
+	connect(newItem, &Item::planeAdded,
+			this, &SpaceFactory::addPlane
+			);
+	connect(newItem, &Item::deletePlane,
+			this, &SpaceFactory::deletePlane
+			);
+
+	return newItem;
+}
+
+void SpaceFactory::addNewItem(std::vector<QPolygonF> polygons, QString sketch)
 {
 	if(Plane *plane = dynamic_cast<Plane*>(targetItem))
 	{
@@ -25,11 +61,6 @@ void SpaceFactory::addItem(std::vector<QPolygonF> polygons, QString sketch)
 
 		item->setText(0, "object " + QString::number(objectsInSpace->size()));
 
-		objectsInSpace->append(item);
-
-		connect(item, &Item::updateData,
-				this, &SpaceFactory::reallocateItems
-				);
 		connect(item, &Item::planeAdded,
 				this, &SpaceFactory::addPlane
 				);
@@ -37,7 +68,7 @@ void SpaceFactory::addItem(std::vector<QPolygonF> polygons, QString sketch)
 				this, &SpaceFactory::deletePlane
 				);
 
-		emit allocateNewItem(item);
+		addItem(item);
 	}
 	else if(Item *item = dynamic_cast<Item*>(targetItem))
 	{
@@ -48,6 +79,17 @@ void SpaceFactory::addItem(std::vector<QPolygonF> polygons, QString sketch)
 	}
 }
 
+void SpaceFactory::addItem(Item *item)
+{
+	objectsInSpace->append(item);
+
+	connect(item, &Item::updateData,
+			this, &SpaceFactory::reallocateItems
+			);
+
+	emit allocateNewItem(item);
+}
+
 void SpaceFactory::deleteItem(Item *item)
 {
 	objectsInSpace->remove(objectsInSpace->indexOf(item));
@@ -55,9 +97,20 @@ void SpaceFactory::deleteItem(Item *item)
 	emit reallocateItems();
 }
 
+void SpaceFactory::deleteAllItems()
+{
+	for (int i = objectsInSpace->size()-1; i >= 0; i--)
+	{
+		deleteItem(objectsInSpace->at(i));
+	}
+	emit reallocateItems();
+}
+
 void SpaceFactory::addPlane(Plane *plane)
 {
 	planes->append(plane);
+	plane->setItemIndex(objectsInSpace->indexOf(dynamic_cast<Item*>(plane->parent())));
+
 	emit allocateNewPlane();
 }
 

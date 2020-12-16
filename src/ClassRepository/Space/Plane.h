@@ -16,12 +16,15 @@ public:
 	void setPosition(const QVector3D &value);
 	QQuaternion getRotation() const;
 	void setRotation(const QQuaternion &rotation);
+	QString getId();
+	void setItemIndex(int i);
+	void setPlaneIndex(int i);
 
 	QMatrix4x4 toMatrix();
 
 private:
 	Transform3D transform;
-
+	int itemIndex, planeIndex;
 };
 
 inline QMatrix4x4 Plane::toMatrix(){ return transform.toMatrix(); }

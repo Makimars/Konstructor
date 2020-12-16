@@ -12,6 +12,8 @@ class Polygonator : public QObject
 public:
 	static Polygonator *getInstance();
 
+	std::vector<QPolygonF> generatePolygons(QVector<DrawableObject*> drawing);
+
 private:
 	Polygonator();
 	static Polygonator *instance;

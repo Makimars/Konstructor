@@ -13,13 +13,15 @@ public:
 						);
 	static SpaceFactory *getInstance();
 
-	void loadFromFile(QString file);
-
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);
 
-	void addItem(std::vector<QPolygonF> polygons, QString sketch);
+	Item *loadItem(std::string file);
+
+	void addNewItem(std::vector<QPolygonF> polygons, QString sketch);
+	void addItem(Item *item);
 	void deleteItem(Item *item);
+	void deleteAllItems();
 
 	void addPlane(Plane *plane);
 	void deletePlane(Plane *plane);
@@ -42,6 +44,9 @@ signals:
 	void allocateNewItem(Item *item);
 	void reallocatePlanes();
 	void allocateNewPlane();
+
+	std::vector<QPolygonF> generatePolygons(QString sketch);
+	Plane *getBasePlane();
 };
 
 #endif // SPACEFACTORY_H

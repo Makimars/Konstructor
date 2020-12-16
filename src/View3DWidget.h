@@ -21,12 +21,20 @@ public:
 
 	void setTopPlane(Plane *plane);
 
+	//file operations
+	void loadFromFile(QString fileContents);
+	void saveToFile(QString file);
+
+	void reset();
+
 public slots:
 	void reallocateItems();
 	void allocateNewItem(Item *item);
 	void reallocatePlanes();
 	void allocateNewPlane();
 	void update();
+
+	Plane *getBasePlane();
 
 private:
 	QQuaternion itemRotation;
@@ -37,7 +45,7 @@ private:
 	QVector<Item*> objectsInSpace;
 	QOpenGLShaderProgram vertexProgram;
 
-	//copy of all vertexes data
+	//copy of all item vertexes data
 	std::vector<Vertex> vertexData;
 	QOpenGLBuffer vertexBuffer;
 	QOpenGLVertexArrayObject vertexBufferObject;

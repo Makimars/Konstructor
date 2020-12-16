@@ -9,15 +9,10 @@ Polygonator *Polygonator::getInstance()
 	return instance;
 }
 
-void Polygonator::recieveDrawing(QVector<DrawableObject*> drawing)
+std::vector<QPolygonF> Polygonator::generatePolygons(QVector<DrawableObject*> drawing)
 {
-	if(drawing.size() < 1) return;
+	if(drawing.size() < 1) return std::vector<QPolygonF>();
 
-	QString sketch;
-	for(int i = 0; i < drawing.count(); i++)
-	{
-		sketch.append(drawing.at(i)->toFileString().toLatin1() + "\n");
-	}
 	foreach (DrawableObject *obj, drawing)
 	{
 		if((obj->isConstructional() | obj->isHidden()))
@@ -33,7 +28,18 @@ void Polygonator::recieveDrawing(QVector<DrawableObject*> drawing)
 	foreach(PointAdapter *point, transferPoints)
 		delete point;
 
-	emit sendPolygons(polygons.toStdVector(), sketch);
+	return polygons.toStdVector();
+}
+
+void Polygonator::recieveDrawing(QVector<DrawableObject*> drawing)
+{
+	QString sketch;
+	for(int i = 0; i < drawing.count(); i++)
+	{
+		sketch.append(drawing.at(i)->toFileString().toLatin1() + "\n");
+	}
+
+	emit sendPolygons(generatePolygons(drawing), sketch);
 }
 
 QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> drawing)
@@ -57,6 +63,8 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 	{
 		if((obj->getType() == Global::Line))
 		{
+			//Lines
+
 			Line *line = dynamic_cast<Line*>(obj);
 
 			PointAdapter *pointOne = pointAdapters.at(originalPoints.indexOf(line->getStartPoint()));
@@ -67,6 +75,8 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 		}
 		else if(obj->getType() == Global::Circle)
 		{
+			//Circles
+
 			Circle *circle = dynamic_cast<Circle*>(obj);
 			QVector<PointAdapter*> points;
 

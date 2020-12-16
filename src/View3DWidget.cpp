@@ -27,12 +27,72 @@ View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
 	connect(factory, &SpaceFactory::allocateNewPlane,
 			this, &View3DWidget::allocateNewPlane
 			);
+
+	connect(factory, &SpaceFactory::getBasePlane,
+			this, &View3DWidget::getBasePlane
+			);
 }
 
 void View3DWidget::setTopPlane(Plane *plane)
 {
 	planes.push_back(plane);
 	reallocatePlanes();
+}
+
+void View3DWidget::loadFromFile(QString fileContents)
+{
+	nlohmann::json input = nlohmann::json::parse(fileContents.toStdString());
+
+	std::vector<std::string> objects = input["objects"];
+	std::vector<Item*> items;
+
+	for (uint32_t i = 0; i < objects.size(); i++)
+	{
+		//load static data
+		items.push_back(factory->loadItem(objects.at(i)));
+	}
+
+	for (uint32_t i = 0; i < items.size(); i++)
+	{
+		//link base planes
+		items.at(i)->loadRelations(items);
+		if(items.at(i)->isExtruded())
+		{
+			items.at(i)->extrude();
+		}
+	}
+	for (uint32_t i = 0; i < items.size(); i++)
+	{
+		factory->addItem(items.at(i));
+	}
+}
+
+void View3DWidget::saveToFile(QString file)
+{
+	std::vector<std::string> objects;
+	for(int i = 0; i < this->objectsInSpace.length(); i++)
+	{
+		std::string s = objectsInSpace.at(i)->toJson().dump();
+		objects.push_back(s);
+	}
+
+	QFile targetFile(file);
+	if(targetFile.open(QIODevice::WriteOnly))
+	{
+		nlohmann::json json;
+		json["objects"] = objects;
+		targetFile.write(QString::fromStdString(std::string(json.dump())).toUtf8());
+	}
+}
+
+void View3DWidget::reset()
+{
+	Plane *basePlane = planes.at(0);
+	planes.clear();
+	setTopPlane(basePlane);
+
+	factory->deleteAllItems();
+	update();
 }
 
 void View3DWidget::reallocateItems()
@@ -102,6 +162,11 @@ void View3DWidget::allocateNewPlane()
 	planeBuffer.bind();
 	planeBuffer.allocate(planeVertexData.data(), planeVertexData.size() * sizeof(Vertex));
 	planeBuffer.release();
+}
+
+Plane *View3DWidget::getBasePlane()
+{
+	return planes.at(0);
 }
 
 void View3DWidget::mousePressEvent(QMouseEvent *event)

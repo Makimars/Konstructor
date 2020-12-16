@@ -49,56 +49,7 @@ ViewWidget::~ViewWidget()
 
 void ViewWidget::loadFromFile(QString file)
 {
-	QStringList splited = file.trimmed().replace('\n',"").split(";");
-	splited.removeAt(splited.length()-1);
-
-	QVector<DrawableObject*> loadedObjects;
-
-	foreach(QString line, splited)
-	{
-		QString type = line.section('{',0,0).trimmed();
-		QString content = line.section('{',1,1).section('}',0,0);
-		DrawableObject *createdObj;
-
-		switch(QVariant::fromValue(type).toInt())
-		{
-			case Global::Point:
-				createdObj = new Point();
-				break;
-			case Global::Line:
-				createdObj = new Line();
-				break;
-			case Global::Circle:
-				createdObj = new Circle();
-				break;
-			case Global::Label:
-				createdObj = new Label();
-				break;
-			case Global::LineLengthDimension:
-				createdObj = new LineLengthDimension();
-				break;
-			case Global::LineAngleDimension:
-				createdObj = new LinesAngleDimension();
-				break;
-			case Global::CircleRadiusDimension:
-				createdObj = new CircleRadiusDimension();
-				break;
-			default:
-				createdObj = nullptr;
-				break;
-		}
-
-		if(createdObj != nullptr)
-		{
-			createdObj->loadVariables(content);
-			loadedObjects.append(createdObj);
-		}
-	}
-
-	foreach(DrawableObject *obj, loadedObjects)
-	{
-		obj->loadRelations(loadedObjects+this->staticObjects);
-	}
+	QVector<DrawableObject*> loadedObjects = objectFactory->generateListFromSketch(file);
 
 	foreach(DrawableObject *obj, loadedObjects)
     {
@@ -117,7 +68,7 @@ void ViewWidget::saveToFile(QString path)
 						this->objectsInSketch
 						.at(i)
 						->toFileString()
-						.toLatin1() + "\n"
+						.toUtf8() + "\n"
 						);
 		}
 	}
