@@ -7,6 +7,13 @@ namespace Ui {
 class WelcomeDialog;
 }
 
+enum WelcomeScreenResult{
+	OpenProject,
+	NewProject,
+	About,
+	Exit
+};
+
 class WelcomeDialog : public QDialog
 {
 	Q_OBJECT
@@ -15,7 +22,7 @@ public:
 	explicit WelcomeDialog(QWidget *parent = nullptr);
 	~WelcomeDialog();
 
-	int action = 0;
+	WelcomeScreenResult action;
 
 private slots:
 	void on_exitButton_clicked();

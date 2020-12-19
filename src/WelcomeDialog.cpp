@@ -15,22 +15,24 @@ WelcomeDialog::~WelcomeDialog()
 
 void WelcomeDialog::on_newProjectButton_clicked()
 {
-	action = 1;
+	action = WelcomeScreenResult::NewProject;
 	close();
 }
 
 void WelcomeDialog::on_openProjectButton_clicked()
 {
-	action = 2;
+	action = WelcomeScreenResult::OpenProject;
 	close();
 }
 
 void WelcomeDialog::on_aboutButton_clicked()
 {
-
+	action = WelcomeScreenResult::About;
+	close();
 }
 
 void WelcomeDialog::on_exitButton_clicked()
 {
+	action = WelcomeScreenResult::Exit;
 	close();
 }

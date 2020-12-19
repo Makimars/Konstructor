@@ -15,33 +15,44 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setupUi();
 	this->setupConnections();
-
-	//welcome screen
-	WelcomeDialog *welcomeDialog = new WelcomeDialog(this);
-	welcomeDialog->exec();
-	switch (welcomeDialog->action)
-	{
-		case 1:
-			//new Project
-			emit setTargetItem(this->ui->objectsTree->topLevelItem(0));
-			this->ui->objectsTree->setCurrentItem(this->ui->objectsTree->topLevelItem(0));
-			this->setMode(Global::Mode::Draw);
-			break;
-		case 2:
-			//open Project
-			on_openObjectFile_clicked();
-			this->setMode(Global::Mode::Object);
-			break;
-		default:
-			this->close();
-			QApplication::exit();
-			break;
-	}
 }
 
 MainWindow::~MainWindow()
 {
 	delete this->ui;
+}
+
+void MainWindow::show()
+{
+	//welcome screen
+	WelcomeDialog *welcomeDialog = new WelcomeDialog(this);
+	welcomeDialog->exec();
+
+	switch (welcomeDialog->action)
+	{
+		case WelcomeScreenResult::NewProject:
+			//new Project
+			emit setTargetItem(this->ui->objectsTree->topLevelItem(0));
+			this->ui->objectsTree->setCurrentItem(this->ui->objectsTree->topLevelItem(0));
+			this->setMode(Global::Mode::Draw);
+			break;
+		case WelcomeScreenResult::OpenProject:
+			//open Project
+			on_openObjectFile_clicked();
+			this->setMode(Global::Mode::Object);
+			break;
+		case WelcomeScreenResult::About:
+			break;
+		case WelcomeScreenResult::Exit:
+		default:
+			this->close();
+			this->hide();
+			QApplication::closeAllWindows();
+			QApplication::quit();
+			break;
+	}
+
+	QMainWindow::show();
 }
 
 void MainWindow::setupUi()

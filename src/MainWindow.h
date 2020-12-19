@@ -7,9 +7,9 @@
 #include <QTreeWidgetItem>
 #include <QMenuBar>
 
+#include "WelcomeDialog.h"
 #include "SettingsDialog.h"
 #include "ExtrusionDialog.h"
-#include "WelcomeDialog.h"
 #include "ClassRepository/GlobalVariables.h"
 
 #include "ClassRepository/Space/Space"
@@ -27,6 +27,8 @@ class MainWindow : public QMainWindow
 public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
+
+	void show();
 
 private:
 	Ui::MainWindow *ui;
