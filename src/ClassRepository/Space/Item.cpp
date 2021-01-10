@@ -24,39 +24,14 @@ Item::~Item()
 	}
 }
 
-void Item::copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex)
-{
-	targetVertexBuffer = vector;
-		this->itemIndex = itemIndex;
-
-		if(extruded)
-		{
-			for(uint32_t i = 0; i < vertexBuffer.size(); i++)
-			{
-				*targetVertexBuffer.at(i) = vertexBuffer.at(i);
-			}
-		}
-		else
-		{
-			//copy polygons to global vertex
-			for(int i = 0; i < polygons.size(); i++)
-			{
-				for(int a = 0; a < polygons.at(i)->size(); a++)
-				{
-					*targetVertexBuffer.at(i+a) = polygons.at(i)->getVertexAt(a);
-				}
-			}
-		}
-}
-
 void Item::setPolygons(std::vector<QPolygonF> polygons)
 {
+	this->polygons.clear();
 	foreach(QPolygonF polygon, polygons)
 	{
 		this->polygons.push_back(new Polygon(polygon));
 	}
 
-	this->targetVertexBuffer.reserve(size());
 	emit updateData();
 }
 
@@ -65,23 +40,33 @@ QVector<Polygon*> *Item::getPolygons()
 	return &polygons;
 }
 
+void Item::setItemIndex(int index)
+{
+	itemIndex = index;
+}
+
+void Item::setDataSize(int size)
+{
+	extrudedDataSize = size;
+}
+
 void Item::setSketch(QString sketch)
 {
 	this->sketch = sketch;
 }
 
-int Item::size()
+int Item::getDataSize()
 {
 	if(extruded)
 	{
-		return vertexBuffer.size();
+		return extrudedDataSize;
 	}
 	else
 	{
 		int size = 0;
 		for(int i = 0; i < polygons.size(); i++)
 		{
-			size += polygons.at(i)->size();
+			size += polygons.at(i)->getDataSize();
 		}
 
 		return size;
@@ -100,9 +85,15 @@ Plane *Item::getPlane(int index)
 
 void Item::extrude()
 {
-	//copy polygon vertexes
-	vertexBuffer = *extrudedPolygon->getVertexData();
-	std::vector<Vertex> originalEdges = *extrudedPolygon->getOuterPoints();
+	std::vector<QPointF> polygonPoints = extrudedPolygon->getPoints();
+	for (u_int32_t i = 0; i < polygonPoints.size(); i++)
+	{
+		extrudedVertexes.push_back(
+					Vertex(
+						QVector3D(polygonPoints.at(i).x(), polygonPoints.at(i).y(), 0),
+						QVector3D(extrudedPolygon->getColor())
+						));
+	}
 
 	//calculate length
 	double length = extrusion.length;
@@ -115,70 +106,28 @@ void Item::extrude()
 	{
 		length *= 0.5;
 
-		for (uint32_t i = 0; i < vertexBuffer.size(); i++)
+		for (uint32_t i = 0; i < extrudedVertexes.size(); i++)
 		{
-			vertexBuffer.at(i).setZ(-length);
-		}
-		for (uint32_t i = 0; i < originalEdges.size(); i++)
-		{
-			originalEdges.at(i).setZ(-length);
+			extrudedVertexes.at(i).setZ(-length);
 		}
 		addPlane(0, basePlane->getPosition() + QVector3D(0,0,-length), basePlane->getRotation());
 
 	}
 
 	//calculate second base
-	int count = vertexBuffer.size();
+	int count = extrudedVertexes.size();
 	for (int i = 0; i < count; i++)
 	{
-		Vertex vertex = vertexBuffer.at(i);
+		Vertex vertex = extrudedVertexes.at(i);
 		vertex.setPosition(QVector3D(vertex.position().x(), vertex.position().y(), length));
 
-		vertexBuffer.push_back(vertex);
+		extrudedVertexes.push_back(vertex);
 	}
 	addPlane(1, basePlane->getPosition() + QVector3D(0,0,length), basePlane->getRotation());
 
-	//calculate faces
-	for (uint32_t i = 0; i < originalEdges.size() - 1; i++)
-	{
-		Vertex copyVertex;
+	//TODO calculate planes for faces
 
-		vertexBuffer.push_back(originalEdges.at(i));
-		vertexBuffer.push_back(originalEdges.at(i + 1));
-		copyVertex = originalEdges.at(i);
-		copyVertex.setZ(length);
-		vertexBuffer.push_back(copyVertex);
-
-		copyVertex = originalEdges.at(i);
-		copyVertex.setZ(length);
-		vertexBuffer.push_back(copyVertex);
-		vertexBuffer.push_back(originalEdges.at(i + 1));
-		copyVertex = originalEdges.at(i + 1);
-		copyVertex.setZ(length);
-		vertexBuffer.push_back(copyVertex);
-	}
-	//calculate closing faces
-	{
-		Vertex copyVertex;
-		int lastOuterIndex = originalEdges.size() - 1;
-
-		vertexBuffer.push_back(originalEdges.at(lastOuterIndex));
-		vertexBuffer.push_back(originalEdges.at(0));
-		copyVertex = originalEdges.at(lastOuterIndex);
-		copyVertex.setZ(length);
-		vertexBuffer.push_back(copyVertex);
-
-		copyVertex = originalEdges.at(lastOuterIndex);
-		copyVertex.setZ(length);
-		vertexBuffer.push_back(copyVertex);
-		vertexBuffer.push_back(originalEdges.at(0));
-		copyVertex = originalEdges.at(0);
-		copyVertex.setZ(length);
-		vertexBuffer.push_back(copyVertex);
-	}
-	//TODO add planes for faces
-
-	updateData();
+	emit updateData();
 	setExpanded(true);
 }
 
@@ -189,6 +138,11 @@ void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
 	this->extrusion = extrusion;
 
 	extrude();
+}
+
+std::vector<Vertex> *Item::getExtrudedVertexes()
+{
+	return &extrudedVertexes;
 }
 
 nlohmann::json Item::toJson()

@@ -51,12 +51,12 @@ private:
 	QOpenGLShaderProgram vertexProgram;
 	QOpenGLShaderProgram planesProgram;
 
-	//copy of all item vertexes data
+	//processed vertexes data
 	std::vector<Vertex> vertexData;
 	QOpenGLBuffer vertexBuffer;
 	QOpenGLVertexArrayObject vertexBufferObject;
 
-	//plane data
+	//processed plane data
 	QVector<Plane*> planes;
 	std::vector<Vertex> planeVertexData;
 	QOpenGLBuffer planeBuffer;

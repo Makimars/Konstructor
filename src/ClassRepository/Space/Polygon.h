@@ -7,7 +7,6 @@
 
 #include "src/ClassRepository/Settings.h"
 #include "Vertex.h"
-#include "include/delaunator/delaunator.h"
 
 enum ExtrusionDirection
 {
@@ -28,22 +27,20 @@ class Polygon : public QListWidgetItem
 public:
 	Polygon(QPolygonF polygon);
 
-	std::vector<Vertex> *getOuterPoints();
-	std::vector<Vertex> *getVertexData();
-	Vertex getVertexAt(int i);
+	std::vector<QPointF> getPoints();
+	int getDataSize() const;
+	void setDataSize(int value);
 
 	void setColor(QVector3D color);
+	QVector3D getColor();
 	void setHidden(bool hidden);
 	bool isHidden();
-	int size();
-
 private:
-	std::vector<Vertex> baseEdgeVertexes;
-	std::vector<Vertex> baseVertexes;
-
-	std::vector<Vertex> vertexData;
-
-	Extrusion extrusion;
+	//boundry vertex of the polygon
+	QPolygonF polygon;
+	//length of the processed vertexes represented by this polygon
+	int dataSize;
+	QVector3D color;
 	bool hidden = false;
 };
 

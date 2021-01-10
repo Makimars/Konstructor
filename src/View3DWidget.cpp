@@ -107,16 +107,9 @@ void View3DWidget::reallocateItems()
 
 void View3DWidget::allocateNewItem(Item *item)
 {
-	int newItemIndex = vertexData.size();
-	vertexData.resize(newItemIndex + item->size());
+	item->setItemIndex(vertexData.size());
 
-	std::vector<Vertex*> itemData;
-	for(uint32_t i = newItemIndex; i < vertexData.size(); i++)
-	{
-		itemData.push_back(&vertexData[i]);
-	}
-
-	item->copyVertexesToReference(itemData, newItemIndex);
+	factory->generateItemVertexDataToBuffer(item, &vertexData);
 
 	vertexBuffer.bind();
 	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));
@@ -337,16 +330,15 @@ void View3DWidget::paintGL()
 		if(item->isExtruded())
 		{
 			vertexProgram.setUniformValue(itemIsSelected, item->isSelected());
-			glDrawArrays(GL_TRIANGLES, currentIndex, item->size());
-			currentIndex += item->size();
+			glDrawArrays(GL_TRIANGLES, currentIndex, item->getDataSize());
 		}
 		else
 		{
 			for(int i = 0; i < item->getPolygons()->size(); i++)
 			{
 				vertexProgram.setUniformValue(itemIsSelected, item->isSelected() || item->getPolygons()->at(i)->isSelected());
-				glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->size());
-				currentIndex += item->getPolygons()->at(i)->size();
+				glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->getDataSize());
+				currentIndex += item->getPolygons()->at(i)->getDataSize();
 			}
 		}
 	}

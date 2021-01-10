@@ -75,6 +75,7 @@ SOURCES += \
 
 HEADERS += \
     include/delaunator/delaunator.h \
+    include/nlohmann/json.hpp \
 \
     src/ClassRepository/Plane/Style.h \
     src/ClassRepository/Plane/Tools/ArcTool.h \

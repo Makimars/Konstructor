@@ -2,6 +2,7 @@
 #define SPACEFACTORY_H
 
 #include "Item.h"
+#include "include/delaunator/delaunator.h"
 
 class SpaceFactory : public QObject
 {
@@ -12,6 +13,9 @@ public:
 						QObject *glWidget
 						);
 	static SpaceFactory *getInstance();
+
+public:
+	void generateItemVertexDataToBuffer(Item *item, std::vector<Vertex> *vertexData);
 
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);

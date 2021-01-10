@@ -1,7 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <include/nlohmann/json.hpp>
+#include "nlohmann/json.hpp"
 
 #include "Plane.h"
 #include "Polygon.h"
@@ -14,18 +14,23 @@ public:
 	Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch);
 	~Item();
 
-	void copyVertexesToReference(std::vector<Vertex*> vector, int itemIndex);
 	void setPolygons(std::vector<QPolygonF> polygons);
 	QVector<Polygon*> *getPolygons();
+
+	void setItemIndex(int index);
+	int getItemIndex();
+	void setDataSize(int size);
+	int getDataSize();
+	bool isExtruded();
+
 	void setSketch(QString sketch);
 	QString getSketch();
-	int getItemIndex();
-	int size();
-	bool isExtruded();
 	Plane *getPlane(int index);
 
 	void extrude();
 	void extrude(Extrusion extrusion, Polygon *targetPolygon);
+
+	std::vector<Vertex> *getExtrudedVertexes();
 
 	nlohmann::json toJson();
 	void loadData(QString basePlaneId, Extrusion extrusion, bool extruded, int extrudedPolygon);
@@ -38,20 +43,22 @@ private:
 	std::vector<Plane*> planes;
 	QString sketch;
 
-	//pointers to the global buffer
-	std::vector<Vertex*> targetVertexBuffer;
 	//original polygons
 	QVector<Polygon*> polygons;
+
+	//extruded vertex data
+	std::vector<Vertex> extrudedVertexes;
 
 	//extrusion info
 	bool extruded = false;
 	Extrusion extrusion;
 	Polygon *extrudedPolygon;
 
-	//extruded vertex data
-	std::vector<Vertex> vertexBuffer;
-
+	//item's position within the global buffer
 	int itemIndex;
+	//size of extruded vertexes in the global buffer
+	int extrudedDataSize;
+
 	QString basePlaneId;
 
 	void addPlane(int index, QVector3D position, QQuaternion rotation);

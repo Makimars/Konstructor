@@ -12,6 +12,124 @@ SpaceFactory *SpaceFactory::getInstance()
 	return SpaceFactory::instance;
 }
 
+void SpaceFactory::generateItemVertexDataToBuffer(Item *item, std::vector<Vertex> *vertexData)
+{
+	if(item->isExtruded())
+	{
+		std::vector<Vertex> *vertexes = item->getExtrudedVertexes();
+		std::vector<Vertex> base[2];
+		int baseSize = (vertexes->size() / 2) + 1;
+
+		base[0].assign(vertexes->data(), vertexes->data()+baseSize-1);
+		base[1].assign(vertexes->data() + baseSize-1, vertexes->data()+vertexes->size());
+		int dataSize = 0;
+
+		for (int a = 0; a < 2 ; a++)
+		{
+			std::vector<double> coordinates;
+			for(uint32_t i = 0; i < base[a].size(); i++)
+			{
+				coordinates.push_back(base[a].at(i).position().x());
+				coordinates.push_back(base[a].at(i).position().y());
+			}
+
+			//calculate vertexes for both bases
+			delaunator::Delaunator d(coordinates);
+			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
+			{
+				vertexData->push_back(Vertex(QVector3D(
+					d.coords[2 * d.triangles[i]],
+					d.coords[2 * d.triangles[i] + 1],
+					0
+				)));
+
+				vertexData->push_back(Vertex(QVector3D(
+					d.coords[2 * d.triangles[i + 1]],
+					d.coords[2 * d.triangles[i + 1] + 1],
+					0
+				)));
+
+				vertexData->push_back(Vertex(QVector3D(
+					d.coords[2 * d.triangles[i + 2]],
+					d.coords[2 * d.triangles[i + 2] + 1],
+					0
+				)));
+
+				dataSize += 3;
+			}
+		}
+
+		//calculate faces
+		for (uint32_t i = 0; i < base[0].size() - 1; i++)
+		{
+			vertexData->push_back(base[0].at(i));
+			vertexData->push_back(base[0].at(i + 1));
+			vertexData->push_back(base[1].at(i));
+
+			vertexData->push_back(base[0].at(i + 1));
+			vertexData->push_back(base[1].at(i + 1));
+			vertexData->push_back(base[1].at(i));
+
+			dataSize += 6;
+		}
+		//calculate closing faces
+		{
+			int lastIndex = base[0].size() - 1;
+
+			vertexData->push_back(base[0].at(lastIndex));
+			vertexData->push_back(base[0].at(0));
+			vertexData->push_back(base[1].at(lastIndex));
+
+			vertexData->push_back(base[0].at(0));
+			vertexData->push_back(base[1].at(0));
+			vertexData->push_back(base[1].at(lastIndex));
+
+			dataSize += 6;
+		}
+
+		item->setDataSize(dataSize);
+	}
+	else
+	{
+		QVector<Polygon*> *polygons = item->getPolygons();
+		for(int a = 0; a < polygons->size(); a++)
+		{
+			std::vector<double> coordinates;
+			std::vector<QPointF> points = polygons->at(a)->getPoints();
+
+			for(uint32_t i = 0; i < points.size(); i++)
+			{
+				coordinates.push_back(points.at(i).x());
+				coordinates.push_back(points.at(i).y());
+			}
+
+			delaunator::Delaunator d(coordinates);
+			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
+			{
+				vertexData->push_back(Vertex(QVector3D(
+					d.coords[2 * d.triangles[i]],
+					d.coords[2 * d.triangles[i] + 1],
+					0
+				), polygons->at(a)->getColor()));
+
+				vertexData->push_back(Vertex(QVector3D(
+					d.coords[2 * d.triangles[i + 1]],
+					d.coords[2 * d.triangles[i + 1] + 1],
+					0
+				), polygons->at(a)->getColor()));
+
+				vertexData->push_back(Vertex(QVector3D(
+					d.coords[2 * d.triangles[i + 2]],
+					d.coords[2 * d.triangles[i + 2] + 1],
+					0
+				), polygons->at(a)->getColor()));
+
+			}
+			polygons->at(a)->setDataSize(d.triangles.size());
+		}
+	}
+}
+
 void SpaceFactory::recieveTargetItem(QTreeWidgetItem *item)
 {
 	targetItem = item;
