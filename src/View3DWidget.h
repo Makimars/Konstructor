@@ -13,6 +13,11 @@
 #include "ClassRepository/Space/Space"
 #include "MessagesManager.h"
 
+struct vertexProgramParameters{
+	int itemToSpace, worldToCamera, cameraToView, itemToRotate;
+	float transparentColorValue;
+};
+
 class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 {
 	Q_OBJECT
@@ -44,6 +49,7 @@ private:
 
 	QVector<Item*> objectsInSpace;
 	QOpenGLShaderProgram vertexProgram;
+	QOpenGLShaderProgram planesProgram;
 
 	//copy of all item vertexes data
 	std::vector<Vertex> vertexData;
@@ -58,15 +64,13 @@ private:
 
 
 	// Shader Information
-	int itemToSpace;
-	int worldToCamera;
-	int cameraToView;
-	int itemToRotate;
+	vertexProgramParameters vertexParameter;
+	vertexProgramParameters planesParameter;
 
 	int selectedItemColor;
-	int isSelected;
+	int itemIsSelected;
+	int planeIsSelected;
 
-	int transparentColorValue;
 	int selectedTransparentValue;
 
 	QPoint lastPos;
