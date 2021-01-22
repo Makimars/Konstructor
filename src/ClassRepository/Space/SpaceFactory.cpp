@@ -37,23 +37,23 @@ void SpaceFactory::generateItemVertexDataToBuffer(Item *item, std::vector<Vertex
 			delaunator::Delaunator d(coordinates);
 			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
 			{
-				vertexData->push_back(Vertex(QVector3D(
+				vertexData->push_back(Vertex(
 					d.coords[2 * d.triangles[i]],
 					d.coords[2 * d.triangles[i] + 1],
 					0
-				)));
+				));
 
-				vertexData->push_back(Vertex(QVector3D(
+				vertexData->push_back(Vertex(
 					d.coords[2 * d.triangles[i + 1]],
 					d.coords[2 * d.triangles[i + 1] + 1],
 					0
-				)));
+				));
 
-				vertexData->push_back(Vertex(QVector3D(
+				vertexData->push_back(Vertex(
 					d.coords[2 * d.triangles[i + 2]],
 					d.coords[2 * d.triangles[i + 2] + 1],
 					0
-				)));
+				));
 
 				dataSize += 3;
 			}
@@ -106,23 +106,23 @@ void SpaceFactory::generateItemVertexDataToBuffer(Item *item, std::vector<Vertex
 			delaunator::Delaunator d(coordinates);
 			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
 			{
-				vertexData->push_back(Vertex(QVector3D(
+				vertexData->push_back(Vertex(
 					d.coords[2 * d.triangles[i]],
 					d.coords[2 * d.triangles[i] + 1],
 					0
-				), polygons->at(a)->getColor()));
+				));
 
-				vertexData->push_back(Vertex(QVector3D(
+				vertexData->push_back(Vertex(
 					d.coords[2 * d.triangles[i + 1]],
 					d.coords[2 * d.triangles[i + 1] + 1],
 					0
-				), polygons->at(a)->getColor()));
+				));
 
-				vertexData->push_back(Vertex(QVector3D(
+				vertexData->push_back(Vertex(
 					d.coords[2 * d.triangles[i + 2]],
 					d.coords[2 * d.triangles[i + 2] + 1],
 					0
-				), polygons->at(a)->getColor()));
+				));
 
 			}
 			polygons->at(a)->setDataSize(d.triangles.size());

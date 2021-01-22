@@ -78,6 +78,13 @@ bool Item::isExtruded()
 	return extruded;
 }
 
+QVector3D Item::getColor()
+{
+	if(extruded)return extrudedPolygon->getColor();
+
+	return QVector3D(0,0,0);
+}
+
 Plane *Item::getPlane(int index)
 {
 	return planes.at(index);
@@ -88,11 +95,11 @@ void Item::extrude()
 	std::vector<QPointF> polygonPoints = extrudedPolygon->getPoints();
 	for (u_int32_t i = 0; i < polygonPoints.size(); i++)
 	{
-		extrudedVertexes.push_back(
-					Vertex(
-						QVector3D(polygonPoints.at(i).x(), polygonPoints.at(i).y(), 0),
-						QVector3D(extrudedPolygon->getColor())
-						));
+		extrudedVertexes.push_back(Vertex(
+						polygonPoints.at(i).x(),
+						polygonPoints.at(i).y(),
+						0
+					));
 	}
 
 	//calculate length

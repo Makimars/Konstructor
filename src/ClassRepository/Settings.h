@@ -7,6 +7,7 @@
 #include <QMargins>
 #include <QLocale>
 #include <QVector3D>
+#include <QVector4D>
 
 enum AngleUnits{
 	radians,
@@ -52,7 +53,7 @@ public:
 	static int planeToSpaceRatio;
 
 	static QVector3D selectedFaceColor;
-	static QVector3D planeColor;
+	static QVector4D planeColor;
 };
 
 #endif // SETTINGS_H

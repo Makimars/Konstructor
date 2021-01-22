@@ -15,7 +15,6 @@
 
 struct vertexProgramParameters{
 	int itemToSpace, worldToCamera, cameraToView, itemToRotate;
-	float transparentColorValue;
 };
 
 class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
@@ -66,6 +65,9 @@ private:
 	// Shader Information
 	vertexProgramParameters vertexParameter;
 	vertexProgramParameters planesParameter;
+
+	int itemColor;
+	int planeColor;
 
 	int selectedItemColor;
 	int itemIsSelected;

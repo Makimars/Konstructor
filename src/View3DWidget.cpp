@@ -130,26 +130,25 @@ void View3DWidget::reallocatePlanes()
 
 void View3DWidget::allocateNewPlane()
 {
-	QVector3D planeColor = Settings::planeColor;
 	double planeSize = 20;
 
 	planeVertexData.push_back(
-				Vertex(QVector3D(planeSize, planeSize, 0), planeColor)
+				Vertex(planeSize, planeSize, 0)
 				);
 	planeVertexData.push_back(
-				Vertex(QVector3D(planeSize, -planeSize, 0), planeColor)
+				Vertex(planeSize, -planeSize, 0)
 				);
 	planeVertexData.push_back(
-				Vertex(QVector3D(-planeSize, -planeSize, 0), planeColor)
+				Vertex(-planeSize, -planeSize, 0)
 				);
 	planeVertexData.push_back(
-				Vertex(QVector3D(planeSize, planeSize, 0), planeColor)
+				Vertex(planeSize, planeSize, 0)
 				);
 	planeVertexData.push_back(
-				Vertex(QVector3D(-planeSize, planeSize, 0), planeColor)
+				Vertex(-planeSize, planeSize, 0)
 				);
 	planeVertexData.push_back(
-				Vertex(QVector3D(-planeSize, -planeSize, 0), planeColor)
+				Vertex(-planeSize, -planeSize, 0)
 				);
 
 	planeBuffer.bind();
@@ -238,7 +237,7 @@ void View3DWidget::initializeGL()
 	selectedItemColor = vertexProgram.uniformLocation("selectedItemColor");
 	itemIsSelected = vertexProgram.uniformLocation("isSelected");
 
-	vertexParameter.transparentColorValue = vertexProgram.uniformLocation("transparentColorValue");
+	itemColor = vertexProgram.uniformLocation("itemColor");
 	selectedTransparentValue = vertexProgram.uniformLocation("selectedTransparentValue");
 
 	vertexProgram.release();
@@ -254,8 +253,6 @@ void View3DWidget::initializeGL()
 	vertexProgram.enableAttributeArray(0);
 	vertexProgram.enableAttributeArray(1);
 	vertexProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
-	vertexProgram.setAttributeBuffer(1, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
-
 	vertexBufferObject.release();
 	vertexBuffer.release();
 
@@ -271,7 +268,7 @@ void View3DWidget::initializeGL()
 	planesParameter.worldToCamera = planesProgram.uniformLocation("worldToCamera");
 	planesParameter.cameraToView = planesProgram.uniformLocation("cameraToView");
 	planesParameter.itemToRotate = planesProgram.uniformLocation("itemToRotate");
-	planesParameter.transparentColorValue = planesProgram.uniformLocation("transparentColorValue");
+	planeColor = planesProgram.uniformLocation("planeColor");
 
 	planeIsSelected = planesProgram.uniformLocation("isSelected");
 
@@ -289,7 +286,6 @@ void View3DWidget::initializeGL()
 	planesProgram.enableAttributeArray(0);
 	planesProgram.enableAttributeArray(1);
 	planesProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
-	planesProgram.setAttributeBuffer(1, GL_FLOAT, Vertex::colorOffset(), Vertex::ColorTupleSize, Vertex::stride());
 
 	planeBuffer.release();
 	planeBufferObject.release();
@@ -319,7 +315,6 @@ void View3DWidget::paintGL()
 
 	//items
 	vertexBufferObject.bind();
-	vertexProgram.setUniformValue(vertexParameter.transparentColorValue, 1.0f);
 	vertexProgram.setUniformValue(selectedTransparentValue, 1.0f);
 
 	foreach (Item *item, objectsInSpace)
@@ -329,6 +324,7 @@ void View3DWidget::paintGL()
 
 		if(item->isExtruded())
 		{
+			vertexProgram.setUniformValue(itemColor, QVector4D(item->getColor(), 1.0f));
 			vertexProgram.setUniformValue(itemIsSelected, item->isSelected());
 			glDrawArrays(GL_TRIANGLES, currentIndex, item->getDataSize());
 		}
@@ -336,6 +332,7 @@ void View3DWidget::paintGL()
 		{
 			for(int i = 0; i < item->getPolygons()->size(); i++)
 			{
+				vertexProgram.setUniformValue(itemColor, QVector4D(item->getPolygons()->at(i)->getColor(), 1.0f));
 				vertexProgram.setUniformValue(itemIsSelected, item->isSelected() || item->getPolygons()->at(i)->isSelected());
 				glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->getDataSize());
 				currentIndex += item->getPolygons()->at(i)->getDataSize();
@@ -352,7 +349,7 @@ void View3DWidget::paintGL()
 
 	planesProgram.setUniformValue(planesParameter.worldToCamera, camera.toMatrix());
 	planesProgram.setUniformValue(planesParameter.cameraToView, projection);
-	planesProgram.setUniformValue(planesParameter.transparentColorValue, 0.3f);
+	planesProgram.setUniformValue(planeColor, Settings::planeColor);
 
 	vertexProgram.setUniformValue(vertexParameter.itemToRotate, mtr);
 
