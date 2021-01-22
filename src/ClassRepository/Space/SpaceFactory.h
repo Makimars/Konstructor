@@ -16,6 +16,7 @@ public:
 
 public:
 	void generateItemVertexDataToBuffer(Item *item, std::vector<Vertex> *vertexData);
+	QByteArray generateStlFile(std::vector<Vertex> *vertexData);
 
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);

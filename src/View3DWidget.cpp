@@ -85,6 +85,15 @@ void View3DWidget::saveToFile(QString file)
 	}
 }
 
+void View3DWidget::exportToFile(QString file)
+{
+	QFile targetFile(file);
+	if(targetFile.open(QIODevice::WriteOnly))
+	{
+		targetFile.write(factory->generateStlFile(&vertexData));
+	}
+}
+
 void View3DWidget::reset()
 {
 	Plane *basePlane = planes.at(0);

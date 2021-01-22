@@ -28,6 +28,7 @@ public:
 	//file operations
 	void loadFromFile(QString fileContents);
 	void saveToFile(QString file);
+	void exportToFile(QString file);
 
 	void reset();
 

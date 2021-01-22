@@ -130,6 +130,44 @@ void SpaceFactory::generateItemVertexDataToBuffer(Item *item, std::vector<Vertex
 	}
 }
 
+QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
+{
+	QByteArray file;
+
+	file.fill('k',80); // 80 byte header
+
+
+	uint32_t length = vertexData->size() / 3;
+	char *size = (char*)&length;
+
+	qDebug() << length;
+	//4 byte length space
+	for(int a = 0; a < 4; a++)
+		file.append(size[a]);
+
+	//triangles
+	for(uint i = 0; i < vertexData->size(); i+=3)
+	{
+		//normal vector - 12 bytes
+		for(int a = 0; a < 12; a++)
+			file += uint8_t(0);
+
+		file += vertexData->at(i).toByteArray();	//vertex 0 - 12 bytes
+		file += vertexData->at(i +1).toByteArray(); //vertex 1 - 12 bytes
+		file += vertexData->at(i +2).toByteArray(); //vertex 2 - 12 bytes
+
+		//Attribute byte count - 0 (legacy specification) - 2 bytes
+		file += u_int8_t(0);
+		file += u_int8_t(0);
+	}
+
+
+
+
+
+	return file;
+}
+
 void SpaceFactory::recieveTargetItem(QTreeWidgetItem *item)
 {
 	targetItem = item;

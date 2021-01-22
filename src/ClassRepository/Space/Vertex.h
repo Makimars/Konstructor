@@ -2,6 +2,7 @@
 #define VERTEX_H
 
 #include <QVector3D>
+#include <QByteArray>
 
 class Vertex
 {
@@ -15,6 +16,7 @@ public:
   Q_DECL_CONSTEXPR const QVector3D& position() const;
   void setPosition(const QVector3D& position);
   void setZ(const double z);
+  QByteArray toByteArray();
 
   // OpenGL Helpers
   static const int PositionTupleSize = 3;
@@ -42,6 +44,26 @@ Q_DECL_CONSTEXPR inline Vertex::Vertex(double x, double y, double z) : m_positio
 Q_DECL_CONSTEXPR inline const QVector3D& Vertex::position() const { return m_position; }
 void inline Vertex::setPosition(const QVector3D& position) { m_position = position; }
 void inline Vertex::setZ(const double z) { m_position.setZ(z); }
+
+QByteArray inline Vertex::toByteArray()
+{
+	QByteArray result;
+
+	float point[3] = {
+		m_position.x(),
+		m_position.y(),
+		m_position.z()
+	};
+
+	for(int a = 0; a < 3; a++)
+	{
+		char *pointer = (char*)&point[a];
+		for(int i = 0; i < 4; i++)
+			result += pointer[i];
+	}
+
+	return result;
+}
 
 // OpenGL Helpers
 Q_DECL_CONSTEXPR inline int Vertex::positionOffset() { return offsetof(Vertex, m_position); }

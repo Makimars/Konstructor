@@ -209,7 +209,13 @@ void MainWindow::on_saveObjectButton_clicked()
 
 void MainWindow::on_exportObjectButton_clicked()
 {
-
+	QString fileName = QFileDialog::getSaveFileName(
+			this,
+			Global::saveFile,
+			Settings::userProjectRoot,
+			"STL (*.stl)"
+			);
+	this->ui->view3D->exportToFile(fileName);
 }
 
 void MainWindow::on_settingsButton_clicked()
