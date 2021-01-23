@@ -128,6 +128,9 @@ void ViewWidget::initializeScene()
 	//grid
 	QPen gridPen = QPen(QColor::fromRgb(0,0,0,64));
 	gridPen.setWidthF(0.2);
+	QPen zeroPen = gridPen;
+	zeroPen.setWidth(2);
+
 	const int gridSize = 100;
 	double count = Settings::sketchSize / gridSize;
 
@@ -135,49 +138,22 @@ void ViewWidget::initializeScene()
 	for (int i = -count; i < count; i++)
 	{
 		QGraphicsLineItem *line = new QGraphicsLineItem(i*gridSize,-Settings::sketchSize,i*gridSize,Settings::sketchSize);
-		line->setPen(gridPen);
+
+		if(i == 0) line->setPen(zeroPen);
+		else line->setPen(gridPen);
+
 		this->sketchScene->addItem(line);
 	}
 	//horizontal grid lines
 	for (int i = -count; i < count; i++)
 	{
 		QGraphicsLineItem *line = new QGraphicsLineItem(-Settings::sketchSize, i*gridSize, Settings::sketchSize, i*gridSize);
-		line->setPen(gridPen);
+
+		if(i == 0) line->setPen(zeroPen);
+		else line->setPen(gridPen);
+
 		this->sketchScene->addItem(line);
 	}
-
-	//axis
-	QPen axisPen(Qt::black);
-	axisPen.setWidth(2);
-	QBrush brush(Qt::black);
-	Style axisStyle(axisPen, brush);
-	styles.append(axisStyle);
-
-	Point *topPoint = this->objectFactory->makePoint(0, Settings::sketchSize);
-	Point *bottomPoint = this->objectFactory->makePoint(0, -Settings::sketchSize);
-	Point *leftPoint = this->objectFactory->makePoint(-Settings::sketchSize, 0);
-	Point *rightPoint = this->objectFactory->makePoint(Settings::sketchSize, 0);
-
-	Line *yAxis = this->objectFactory->makeLine(bottomPoint, topPoint);
-	yAxis->setStyle(&styles.last());
-	yAxis->setId(Y_AXIS_ID);
-	yAxis->setAcceptHoverEvents(true);
-	this->sketchScene->addItem(yAxis);
-	this->staticObjects.append(yAxis);
-
-	Line *xAxis = this->objectFactory->makeLine(leftPoint, rightPoint);
-	xAxis->setStyle(&styles.last());
-	xAxis->setId(X_AXIS_ID);
-	xAxis->setAcceptHoverEvents(true);
-	this->sketchScene->addItem(xAxis);
-	this->staticObjects.append(xAxis);
-
-	Point *zeroPoint = this->objectFactory->makePoint(0,0);
-	zeroPoint->setId(ZERO_POINT_ID);
-	zeroPoint->setAcceptHoverEvents(true);
-	zeroPoint->setLocked(true);
-	this->sketchScene->addItem(zeroPoint);
-	this->staticObjects.append(zeroPoint);
 
 	this->setScene(sketchScene);
 }
