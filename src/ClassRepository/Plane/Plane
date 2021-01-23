@@ -1,6 +1,6 @@
 #ifndef PLANE
 #define PLANE
 
-#include "Tools/ArcTool.h"
+#include "Tools/LockPositionTool.h"
 
 #endif // PLANE

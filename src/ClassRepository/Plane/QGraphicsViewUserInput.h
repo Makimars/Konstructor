@@ -2,6 +2,7 @@
 #define VIEWWIDGETUSERINPUT_H
 
 #include <QLineEdit>
+#include <QLabel>
 #include <QGraphicsProxyWidget>
 #include <QValidator>
 
@@ -23,6 +24,8 @@ private:
 
 	QLineEdit inputBox;
 	QGraphicsProxyWidget *inputBoxProxy;
+	QLabel label;
+	QGraphicsProxyWidget *labelProxy;
 
 	QDoubleValidator doubleValidator;
 
@@ -34,7 +37,7 @@ private:
 	void returnString(double value);
 
 public slots:
-	void requestDouble(UserInputRequester *requester);
+	void requestDouble(UserInputRequester *requester, QString name);
 	void requestString(UserInputRequester *requester);
 
 	void returnInput();

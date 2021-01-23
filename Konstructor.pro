@@ -27,7 +27,8 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/ClassRepository/Plane/Tools/ArcTool.cpp \
+    src/ClassRepository/Plane/Tools/LockPositionTool.cpp \
+    src/ClassRepository/Plane/Tools/PointPositionTool.cpp \
     src/ClassRepository/Space/SpaceFactory.cpp \
     src/ExtrusionDialog.cpp \
     src/MainWindow.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
     src/WelcomeDialog.cpp \
     src/main.cpp \
     src/ViewWidget.cpp \
+    src/PointPositionDialog.cpp \
 \
     src/ClassRepository/Settings.cpp \
     src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
@@ -50,6 +52,7 @@ SOURCES += \
     src/ClassRepository/Plane/Tools/RectangleTool.cpp \
     src/ClassRepository/Plane/Tools/LabelTool.cpp \
     src/ClassRepository/Plane/Tools/LineTool.cpp \
+    src/ClassRepository/Plane/Tools/ArcTool.cpp \
 \
     src/ClassRepository/Plane/Drawables/DrawableObject.cpp \
     src/ClassRepository/Plane/Drawables/Circle.cpp \
@@ -79,6 +82,8 @@ HEADERS += \
 \
     src/ClassRepository/Plane/Style.h \
     src/ClassRepository/Plane/Tools/ArcTool.h \
+    src/ClassRepository/Plane/Tools/LockPositionTool.h \
+    src/ClassRepository/Plane/Tools/PointPositionTool.h \
     src/ClassRepository/Space/SpaceFactory.h \
     src/ExtrusionDialog.h \
     src/MainWindow.h \
@@ -87,6 +92,7 @@ HEADERS += \
     src/SettingsDialog.h \
     src/View3DWidget.h \
     src/ViewWidget.h \
+    src/PointPositionDialog.h \
 \
     src/ClassRepository/GlobalVariables.h \
     src/ClassRepository/Settings.h \
@@ -132,6 +138,7 @@ HEADERS += \
 
 
 FORMS += \
+    src/PointPositionDialog.ui \
     src/ExtrusionDialog.ui \
     src/MainWindow.ui \
     src/PopUpMessage.ui \

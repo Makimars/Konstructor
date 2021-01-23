@@ -62,7 +62,7 @@ void Label::setLocation(QPointF location)
 
 void Label::requestText()
 {
-	emit requestString(this);
+	emit requestString(this, "Text");
 }
 
 //----------	QGraphicsItem overrides    ----------
@@ -95,7 +95,7 @@ void Label::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void Label::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	emit requestString(this);
+	emit requestString(this, "Text");
 }
 
 //--------     user input requests     ---------

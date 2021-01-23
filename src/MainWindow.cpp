@@ -152,6 +152,10 @@ void MainWindow::refreshTools(int tool)
 		this->ui->dimensionButton->setChecked(false);
 	if(tool != Global::Tools::ArcTool)
 		this->ui->arcButton->setChecked(false);
+	if(tool != Global::Tools::PointPositionTool)
+		this->ui->pointPosButton->setChecked(false);
+	if(tool != Global::Tools::LockPointTool)
+		this->ui->lockPointButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -312,6 +316,22 @@ void MainWindow::on_dimensionButton_clicked()
 {
 	if(this->ui->dimensionButton->isChecked())
 		refreshTools(Global::Tools::DimensionTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
+void MainWindow::on_pointPosButton_clicked()
+{
+	if(this->ui->pointPosButton->isChecked())
+		refreshTools(Global::Tools::PointPositionTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
+void MainWindow::on_lockPointButton_clicked()
+{
+	if(this->ui->lockPointButton->isChecked())
+		refreshTools(Global::Tools::LockPointTool);
 	else
 		refreshTools(Global::Tools::NoTool);
 }

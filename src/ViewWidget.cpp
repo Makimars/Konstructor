@@ -13,6 +13,10 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	contextMenu.addAction(&constractionalToggle);
 	deleteObjectAction.setText(tr("Delete"));
 	contextMenu.addAction(&deleteObjectAction);
+	lockPointAction.setCheckable(true);
+	lockPointAction.setText(tr("Lock point"));
+	contextMenu.addAction(&lockPointAction);
+	lockPointAction.setVisible(false);
 
 	this->setAlignment(Qt::AlignCenter);
 	this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -202,7 +206,8 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 	QGraphicsView::mousePressEvent(event);
 
 	QGraphicsViewUserInput *userInput = QGraphicsViewUserInput::getInstance();
-	userInput->setInputBoxLocation(event->pos());
+	userInput->setInputBoxLocation(mapToScene(event->pos()));
+
 	if(!userInput->isFocused())
 		userInput->closeInputBox();
 
@@ -315,6 +320,12 @@ void ViewWidget::setTool(int tool)
 		case Global::Tools::ArcTool:
 			this->selectedTool = ArcTool::getInstance();
 			break;
+		case Global::Tools::PointPositionTool:
+			this->selectedTool = PointPositionTool::getInstance();
+			break;
+		case Global::Tools::LockPointTool:
+			this->selectedTool = LockPositionTool::getInstance();
+			break;
 		default:
 			this->selectedTool = nullptr;
 			break;
@@ -341,14 +352,23 @@ void ViewWidget::customContextMenuRequested(const QPoint &pos)
 		obj->setHighlight(true);
 		constractionalToggle.setChecked(obj->isConstructional());
 
+		if(Point *point = dynamic_cast<Point*>(obj))
+		{
+			lockPointAction.setChecked(point->isLocked());
+			lockPointAction.setVisible(true);
+		}
+
 		QAction *selectedAction = contextMenu.exec(this->viewport()->mapToGlobal(pos));
 		if(selectedAction == &deleteObjectAction)
 		{
 			objectFactory->deleteDrawable(obj);
 		}
 
+		obj->setLocked(lockPointAction.isChecked());
 		obj->setIsConstructional(constractionalToggle.isChecked());
 		obj->setHighlight(false);
+
+		lockPointAction.setVisible(false);
 	}
 }
 

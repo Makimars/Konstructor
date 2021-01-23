@@ -28,7 +28,9 @@ enum Tools{
 	RectangleTool,
 	LabelTool,
 	DimensionTool,
-	ArcTool
+	ArcTool,
+	PointPositionTool,
+	LockPointTool
 };
 
 enum Mode{

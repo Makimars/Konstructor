@@ -6,5 +6,6 @@
         <file>icons/Label.png</file>
         <file>icons/Line.png</file>
         <file>icons/Rectangle.png</file>
+        <file>icons/Lock.png</file>
     </qresource>
 </RCC>

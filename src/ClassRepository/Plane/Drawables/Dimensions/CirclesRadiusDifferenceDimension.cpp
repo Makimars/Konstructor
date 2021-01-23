@@ -90,7 +90,7 @@ void CirclesRadiusDifferenceDimension::paint(QPainter *painter, const QStyleOpti
 
 void CirclesRadiusDifferenceDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	emit requestDouble(this);
+	emit requestDouble(this, "Radius diference");
 }
 
 void CirclesRadiusDifferenceDimension::setGeometryUpdates()

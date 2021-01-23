@@ -212,7 +212,7 @@ void LineLengthDimension::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void LineLengthDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	emit requestDouble(this);
+	emit requestDouble(this, "Length");
 }
 
 

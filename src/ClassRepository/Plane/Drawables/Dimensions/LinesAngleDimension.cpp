@@ -197,7 +197,7 @@ void LinesAngleDimension::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void LinesAngleDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	emit requestDouble(this);
+	emit requestDouble(this, "Angle");
 }
 
 //----------     user input requests      ---------

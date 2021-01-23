@@ -12,8 +12,8 @@ protected:
 	virtual ~UserInputRequester(){};
 
 signals:
-	void requestDouble(UserInputRequester *requester);
-	void requestString(UserInputRequester *requeste);
+	void requestDouble(UserInputRequester *requester, QString name);
+	void requestString(UserInputRequester *requeste, QString name);
 
 public slots:
 	virtual void recieveDouble(double value){};

@@ -17,6 +17,8 @@ QGraphicsViewUserInput::QGraphicsViewUserInput(QGraphicsScene *sketchScene)
 {
 	this->inputBoxProxy = sketchScene->addWidget(&this->inputBox);
 	this->inputBoxProxy->hide();
+	labelProxy = sketchScene->addWidget(&label);
+	labelProxy->hide();
 
 	connect(
 			&this->inputBox, &QLineEdit::returnPressed,
@@ -36,6 +38,8 @@ void QGraphicsViewUserInput::closeInputBox()
 	this->currentReciever = nullptr;
 	this->inputBoxProxy->hide();
 	this->inputBox.setText("");
+	labelProxy->hide();
+	label.setText("");
 }
 
 void QGraphicsViewUserInput::setInputBoxLocation(QPointF location)
@@ -46,6 +50,7 @@ void QGraphicsViewUserInput::setInputBoxLocation(QPointF location)
 void QGraphicsViewUserInput::showInputBox()
 {
 	this->inputBoxProxy->show();
+	labelProxy->show();
 	this->inputBox.setFocus();
 }
 
@@ -57,9 +62,10 @@ void QGraphicsViewUserInput::requestValue(UserInputRequester *requester)
 
 //---------     slots     ----------
 
-void QGraphicsViewUserInput::requestDouble(UserInputRequester *requester)
+void QGraphicsViewUserInput::requestDouble(UserInputRequester *requester, QString name)
 {
 	this->inputBox.setValidator(&this->doubleValidator);
+	label.setText(name);
 	requestValue(requester);
 }
 

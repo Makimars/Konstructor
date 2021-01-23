@@ -2,9 +2,7 @@
 
 DimensionTool *DimensionTool::instance = nullptr;
 
-DimensionTool::DimensionTool() : Tool()
-{
-}
+DimensionTool::DimensionTool() : Tool(){}
 
 DimensionTool *DimensionTool::getInstance()
 {

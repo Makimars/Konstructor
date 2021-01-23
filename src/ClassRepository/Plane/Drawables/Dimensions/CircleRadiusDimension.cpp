@@ -86,7 +86,7 @@ void CircleRadiusDimension::paint(QPainter *painter, const QStyleOptionGraphicsI
 
 void CircleRadiusDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
-	emit requestDouble(this);
+	emit requestDouble(this, "Radius");
 }
 
 //----------     geometry     ---------

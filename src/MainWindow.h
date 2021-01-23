@@ -79,6 +79,8 @@ private slots:
 	void on_labelButton_clicked();
 	//constrains
 	void on_dimensionButton_clicked();
+	void on_pointPosButton_clicked();
+	void on_lockPointButton_clicked();
 	//finish drawing
 	void on_finishDrawingButton_clicked();
 

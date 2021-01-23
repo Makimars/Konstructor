@@ -30,6 +30,7 @@ private:
 	QMenu contextMenu;
 	QAction constractionalToggle;
 	QAction deleteObjectAction;
+	QAction lockPointAction;
 
 	Factory *objectFactory;
 
