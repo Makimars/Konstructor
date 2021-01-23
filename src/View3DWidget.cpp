@@ -1,6 +1,6 @@
 #include "View3DWidget.h"
 
-View3DWidget::View3DWidget(QFrame *frame) : QOpenGLWidget(frame)
+View3DWidget::View3DWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
 	QSurfaceFormat format;
 	format.setRenderableType(QSurfaceFormat::OpenGL);

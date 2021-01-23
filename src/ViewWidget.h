@@ -49,6 +49,13 @@ private:
 	void initializeTools();
 	void initializeScene();
 
+	/**
+	 * @brief snapping to 100x100 grid
+	 * @param mousePos scene coordinates
+	 * @return snapped scene coordinates
+	 */
+	QPointF gridSnapping(QPointF mousePos);
+
 	//events
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);

@@ -357,24 +357,7 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 
 void MainWindow::setMode(int index)
 {
-	switch (index)
-	{
-		case Global::Mode::Object:
-			ui->view2D->hide();
-			ui->drawFrame->hide();
-
-            ui->view3D->setFocus();
-			ui->view3D->show();
-            ui->leftFrame->show();
-			break;
-		case Global::Mode::Draw:
-			ui->view2D->show();
-			ui->drawFrame->show();
-
-			ui->view3D->hide();
-			ui->leftFrame->hide();
-			break;
-	}
+	this->ui->stackedWidget->setCurrentIndex(index);
 }
 
 void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)

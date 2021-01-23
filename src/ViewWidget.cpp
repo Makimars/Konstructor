@@ -158,6 +158,43 @@ void ViewWidget::initializeScene()
 	this->setScene(sketchScene);
 }
 
+QPointF ViewWidget::gridSnapping(QPointF mousePos)
+{
+	if(Settings::gridSnapping)
+	{
+		static int threshold = 10;
+		double x = (int)mousePos.x() % 100;
+		double y = (int)mousePos.y() % 100;
+
+		//close to 0;0
+		if(std::sqrt(x*x + y*y) < threshold)
+		{
+			mousePos.setX((int)mousePos.x() - x);
+			mousePos.setY((int)mousePos.y() - y);
+		}
+		//close to 100;100
+		else if(std::sqrt((100-x)*(100-x) + (100-y)*(100-y)) < threshold)
+		{
+			mousePos.setX((int)mousePos.x() + (100-x));
+			mousePos.setY((int)mousePos.y() + (100-y));
+		}
+		//close to 0;100
+		else if(std::sqrt(x*x + (100-y)*(100-y)) < threshold)
+		{
+			mousePos.setX((int)mousePos.x() + x);
+			mousePos.setY((int)mousePos.y() + (100-y));
+		}
+		//close to 100;0
+		else if(std::sqrt((100-x)*(100-x) + y*y) < threshold)
+		{
+			mousePos.setX((int)mousePos.x() + (100-x));
+			mousePos.setY((int)mousePos.y() + y);
+		}
+	}
+
+	return mousePos;
+}
+
 //----------	events    ----------
 
 void ViewWidget::mousePressEvent(QMouseEvent *event)
@@ -187,7 +224,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 				DrawableObject *clickedObject = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
 				if(clickedObject == nullptr || !objectsInSketch.contains(clickedObject))
 					clickedObject = nullptr;
-				this->selectedTool->click(clickedObject, mapToScene(event->pos()));
+				this->selectedTool->click(clickedObject, gridSnapping(mapToScene(event->pos())));
 			}
 		}
 		catch (DrawableAlreadyRestrainedException e)
@@ -218,39 +255,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	this->prevY = event->y();
 
 
-	QPointF mousePoint = mapToScene(event->pos());
-
-	if(Settings::gridSnapping)
-	{
-		static int threshold = 10;
-		double x = (int)mousePoint.x() % 100;
-		double y = (int)mousePoint.y() % 100;
-
-		//close to 0;0
-		if(std::sqrt(x*x + y*y) < threshold)
-		{
-			mousePoint.setX((int)mousePoint.x() - x);
-			mousePoint.setY((int)mousePoint.y() - y);
-		}
-		//close to 100;100
-		else if(std::sqrt((100-x)*(100-x) + (100-y)*(100-y)) < threshold)
-		{
-			mousePoint.setX((int)mousePoint.x() + (100-x));
-			mousePoint.setY((int)mousePoint.y() + (100-y));
-		}
-		//close to 0;100
-		else if(std::sqrt(x*x + (100-y)*(100-y)) < threshold)
-		{
-			mousePoint.setX((int)mousePoint.x() + x);
-			mousePoint.setY((int)mousePoint.y() + (100-y));
-		}
-		//close to 100;0
-		else if(std::sqrt((100-x)*(100-x) + y*y) < threshold)
-		{
-			mousePoint.setX((int)mousePoint.x() + (100-x));
-			mousePoint.setY((int)mousePoint.y() + y);
-		}
-	}
+	QPointF mousePoint = gridSnapping(mapToScene(event->pos()));
 
 	event->setLocalPos(mapFromScene(mousePoint));
 	QGraphicsView::mouseMoveEvent(event);

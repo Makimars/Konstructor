@@ -21,7 +21,7 @@ class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
 {
 	Q_OBJECT
 public:
-	View3DWidget(QFrame *frame);
+	View3DWidget(QWidget *parent);
 
 	void setTopPlane(Plane *plane);
 

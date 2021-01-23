@@ -32,9 +32,8 @@ enum Tools{
 };
 
 enum Mode{
-	File,
-	Object,
-	Draw
+	Draw,
+	Object
 };
 
 	//messages
