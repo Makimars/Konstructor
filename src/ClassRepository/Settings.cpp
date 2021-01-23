@@ -8,11 +8,12 @@ double Settings::sketchSize  = 4000;
 
 float Settings::defaultAngleDimensionTextDistance = 200;
 
-
 int Settings::pointRenderSize = 4;
 int Settings::lineShapeSize = 3;
 QMargins Settings::lineAngleArcMargins(10,10,10,10);
 QMargins Settings::pointMargin(4,4,4,4);
+
+bool Settings::gridSnapping = true;
 
 //keyboad shortcuts
 QKeySequence Settings::newFile(Qt::CTRL + Qt::Key_N);

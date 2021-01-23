@@ -226,9 +226,6 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	QGraphicsView::mouseMoveEvent(event);
-	emit mouseMoved(mapToScene(event->pos()));
-
 	//draging plane
 	if(event->buttons() == Qt::MouseButton::MidButton)
 	{
@@ -243,6 +240,47 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	this->sketchScene->update();
 	this->prevX = event->x();
 	this->prevY = event->y();
+
+
+	QPointF mousePoint = mapToScene(event->pos());
+
+	if(Settings::gridSnapping)
+	{
+		static int threshold = 10;
+		double x = (int)mousePoint.x() % 100;
+		double y = (int)mousePoint.y() % 100;
+
+		//close to 0;0
+		if(std::sqrt(x*x + y*y) < threshold)
+		{
+			mousePoint.setX((int)mousePoint.x() - x);
+			mousePoint.setY((int)mousePoint.y() - y);
+		}
+		//close to 100;100
+		else if(std::sqrt((100-x)*(100-x) + (100-y)*(100-y)) < threshold)
+		{
+			mousePoint.setX((int)mousePoint.x() + (100-x));
+			mousePoint.setY((int)mousePoint.y() + (100-y));
+		}
+		//close to 0;100
+		else if(std::sqrt(x*x + (100-y)*(100-y)) < threshold)
+		{
+			mousePoint.setX((int)mousePoint.x() + x);
+			mousePoint.setY((int)mousePoint.y() + (100-y));
+		}
+		//close to 100;0
+		else if(std::sqrt((100-x)*(100-x) + y*y) < threshold)
+		{
+			mousePoint.setX((int)mousePoint.x() + (100-x));
+			mousePoint.setY((int)mousePoint.y() + y);
+		}
+	}
+
+	event->setLocalPos(mapFromScene(mousePoint));
+	QGraphicsView::mouseMoveEvent(event);
+
+	emit mouseMoved(mousePoint);
+	emit showStatusBarMessage("X: " + QString::number(mousePoint.x()) + " Y: " + QString::number(mousePoint.y()));
 }
 
 void ViewWidget::wheelEvent(QWheelEvent *event)

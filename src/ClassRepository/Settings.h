@@ -33,6 +33,8 @@ public:
 	static QMargins lineAngleArcMargins;
 	static QMargins pointMargin;
 
+	static bool gridSnapping;
+
 	//keyboard shortcuts
 	static QKeySequence
 		newFile,

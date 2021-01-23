@@ -41,6 +41,8 @@ void LineTool::click(DrawableObject *clickedObject, QPointF pos)
 		linePreview->setHidden(false);
 
 		previewPoints[0]->setLocation(pos);
+		if(clickedPoints[0] != nullptr)
+			previewPoints[0]->setLocation(clickedPoints[0]->getLocation());
 	}
 	else if(clickCounter == 2)
 	{
@@ -64,7 +66,10 @@ void LineTool::click(DrawableObject *clickedObject, QPointF pos)
 					objectFactory->makeLine(points[0],points[1])
 					);
 
-		resetTool();
+		clickCounter = 1;
+		previewPoints[0]->setLocation(points[1]->getLocation());
+		clickedPoints[0] = points[1];
+		clickedPoints[1] = nullptr;
 	}
 }
 
