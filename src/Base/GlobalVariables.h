@@ -5,7 +5,7 @@
 #define X_AXIS_ID -2
 #define Y_AXIS_ID -3
 
-#include <QStringList>
+#include <QString>
 namespace Global
 {
 

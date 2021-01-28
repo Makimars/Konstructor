@@ -3,7 +3,8 @@
 
 #include <QDialog>
 #include <QDoubleValidator>
-#include "ClassRepository/Settings.h"
+
+#include "../Base/Settings.h"
 
 namespace Ui {
 class PointPositionDialog;

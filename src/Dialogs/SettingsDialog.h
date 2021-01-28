@@ -5,7 +5,7 @@
 #include <QDoubleValidator>
 
 #include <QDebug>
-#include "ClassRepository/Settings.h"
+#include "../Base/Settings.h"
 
 namespace Ui {
 class SettingsDialog;

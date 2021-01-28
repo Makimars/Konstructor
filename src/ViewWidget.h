@@ -8,8 +8,8 @@
 #include <QScrollBar>
 #include <QMenu>
 
-#include "MessagesManager.h"
-#include "ClassRepository/Plane/Plane"
+#include "Dialogs/MessagesManager.h"
+#include "Plane/Plane"
 
 class ViewWidget : public QGraphicsView
 {

@@ -2,7 +2,7 @@
 #define ABSOLUTEPOINTPOSITION_H
 
 #include "ArcTool.h"
-#include "../../../PointPositionDialog.h"
+#include "src/Dialogs/PointPositionDialog.h"
 
 class PointPositionTool : public Tool
 {

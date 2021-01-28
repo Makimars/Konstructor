@@ -11,8 +11,8 @@
 
 #include <QDebug>
 
-#include "src/ClassRepository/Settings.h"
-#include "src/ClassRepository/GlobalVariables.h"
+#include "src/Base/Settings.h"
+#include "src/Base/GlobalVariables.h"
 #include "../UserInputRequester.h"
 #include "../Style.h"
 

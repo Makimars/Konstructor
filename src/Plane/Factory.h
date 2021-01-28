@@ -2,7 +2,6 @@
 #define DRAWABLESFACTORY_H
 
 #include "QGraphicsViewUserInput.h"
-#include "src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h"
 
 class Factory
 {

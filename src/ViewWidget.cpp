@@ -222,22 +222,12 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 
 	if(event->button() == Qt::LeftButton)
 	{
-		try
+		if(this->selectedTool != nullptr)
 		{
-			if(this->selectedTool != nullptr)
-			{
-				DrawableObject *clickedObject = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
-				if(clickedObject == nullptr || !objectsInSketch.contains(clickedObject))
-					clickedObject = nullptr;
-				this->selectedTool->click(clickedObject, gridSnapping(mapToScene(event->pos())));
-			}
-		}
-		catch (DrawableAlreadyRestrainedException e)
-		{
-			emit showStatusBarMessage("Error: " + tr("Drawable cannot be more restraned"), 2000);
-		}
-		catch (QException e){
-
+			DrawableObject *clickedObject = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
+			if(clickedObject == nullptr || !objectsInSketch.contains(clickedObject))
+				clickedObject = nullptr;
+			this->selectedTool->click(clickedObject, gridSnapping(mapToScene(event->pos())));
 		}
 	}
 }

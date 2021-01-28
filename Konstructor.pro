@@ -27,123 +27,122 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/ClassRepository/Plane/Tools/LockPositionTool.cpp \
-    src/ClassRepository/Plane/Tools/PointPositionTool.cpp \
-    src/ClassRepository/Space/SpaceFactory.cpp \
-    src/ExtrusionDialog.cpp \
-    src/MainWindow.cpp \
-    src/MessagesManager.cpp \
-    src/PopUpMessage.cpp \
-    src/SettingsDialog.cpp \
-    src/View3DWidget.cpp \
-    src/WelcomeDialog.cpp \
     src/main.cpp \
+    src/MainWindow.cpp \
+    src/View3DWidget.cpp \
     src/ViewWidget.cpp \
-    src/PointPositionDialog.cpp \
+    \
+    src/Dialogs/PointPositionDialog.cpp \
+    src/Dialogs/ExtrusionDialog.cpp \
+    src/Dialogs/MessagesManager.cpp \
+    src/Dialogs/PopUpMessage.cpp \
+    src/Dialogs/SettingsDialog.cpp \
+    src/Dialogs/WelcomeDialog.cpp \
 \
-    src/ClassRepository/Settings.cpp \
-    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.cpp \
+    src/Base/Settings.cpp \
 \
-    src/ClassRepository/Plane/Factory.cpp \
-    src/ClassRepository/Plane/QGraphicsViewUserInput.cpp \
+    src/Plane/Factory.cpp \
+    src/Plane/QGraphicsViewUserInput.cpp \
 \
-    src/ClassRepository/Plane/Tools/DimensionTool.cpp \
-    src/ClassRepository/Plane/Tools/CircleTool.cpp \
-    src/ClassRepository/Plane/Tools/RectangleTool.cpp \
-    src/ClassRepository/Plane/Tools/LabelTool.cpp \
-    src/ClassRepository/Plane/Tools/LineTool.cpp \
-    src/ClassRepository/Plane/Tools/ArcTool.cpp \
+    src/Plane/Tools/LockPositionTool.cpp \
+    src/Plane/Tools/PointPositionTool.cpp \
+    src/Plane/Tools/DimensionTool.cpp \
+    src/Plane/Tools/CircleTool.cpp \
+    src/Plane/Tools/RectangleTool.cpp \
+    src/Plane/Tools/LabelTool.cpp \
+    src/Plane/Tools/LineTool.cpp \
+    src/Plane/Tools/ArcTool.cpp \
 \
-    src/ClassRepository/Plane/Drawables/DrawableObject.cpp \
-    src/ClassRepository/Plane/Drawables/Circle.cpp \
-    src/ClassRepository/Plane/Drawables/Line.cpp \
-    src/ClassRepository/Plane/Drawables/Point.cpp \
-    src/ClassRepository/Plane/Drawables/Label.cpp \
-    src/ClassRepository/Plane/Drawables/Arc.cpp \
+    src/Plane/Drawables/DrawableObject.cpp \
+    src/Plane/Drawables/Circle.cpp \
+    src/Plane/Drawables/Line.cpp \
+    src/Plane/Drawables/Point.cpp \
+    src/Plane/Drawables/Label.cpp \
+    src/Plane/Drawables/Arc.cpp \
 \
-    src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.cpp \
-    src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
-    src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
-    src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
+    src/Plane/Drawables/Dimensions/CircleRadiusDimension.cpp \
+    src/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
+    src/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
+    src/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
 \
-    src/ClassRepository/Adapters/PointAdapter.cpp \
-    src/ClassRepository/Adapters/Polygonator.cpp \
+    src/Adapters/PointAdapter.cpp \
+    src/Adapters/Polygonator.cpp \
 \
-    src/ClassRepository/Space/Polygon.cpp \
-    src/ClassRepository/Space/Plane.cpp \
-    src/ClassRepository/Space/Item.cpp \
-    src/ClassRepository/Space/Transform3D.cpp \
-    src/ClassRepository/Space/Camera.cpp
+    src/Space/SpaceFactory.cpp \
+    src/Space/Polygon.cpp \
+    src/Space/Plane.cpp \
+    src/Space/Item.cpp \
+    src/Space/Transform3D.cpp \
+    src/Space/Camera.cpp \
 
 
 HEADERS += \
     include/delaunator/delaunator.h \
     include/nlohmann/json.hpp \
 \
-    src/ClassRepository/Plane/Style.h \
-    src/ClassRepository/Plane/Tools/ArcTool.h \
-    src/ClassRepository/Plane/Tools/LockPositionTool.h \
-    src/ClassRepository/Plane/Tools/PointPositionTool.h \
-    src/ClassRepository/Space/SpaceFactory.h \
-    src/ExtrusionDialog.h \
     src/MainWindow.h \
-    src/MessagesManager.h \
-    src/PopUpMessage.h \
-    src/SettingsDialog.h \
     src/View3DWidget.h \
     src/ViewWidget.h \
-    src/PointPositionDialog.h \
 \
-    src/ClassRepository/GlobalVariables.h \
-    src/ClassRepository/Settings.h \
-    src/ClassRepository/Exceptions/DrawableAlreadyRestrainedException.h \
+    src/Dialogs/ExtrusionDialog.h \
+    src/Dialogs/MessagesManager.h \
+    src/Dialogs/PopUpMessage.h \
+    src/Dialogs/SettingsDialog.h \
+    src/Dialogs/PointPositionDialog.h \
+    src/Dialogs/WelcomeDialog.h \
 \
-    src/ClassRepository/Plane/Plane \
+    src/Base/GlobalVariables.h \
+    src/Base/Settings.h \
 \
-    src/ClassRepository/Plane/Factory.h \
-    src/ClassRepository/Plane/UserInputRequester.h \
-    src/ClassRepository/Plane/QGraphicsViewUserInput.h \
+    src/Plane/Plane \
+    src/Plane/Style.h \
+    src/Plane/Factory.h \
+    src/Plane/UserInputRequester.h \
+    src/Plane/QGraphicsViewUserInput.h \
 \
-    src/ClassRepository/Plane/Tools/Tool.h \
-    src/ClassRepository/Plane/Tools/LineTool.h \
-    src/ClassRepository/Plane/Tools/CircleTool.h \
-    src/ClassRepository/Plane/Tools/RectangleTool.h \
-    src/ClassRepository/Plane/Tools/DimensionTool.h \
-    src/ClassRepository/Plane/Tools/LabelTool.h \
+    src/Plane/Tools/ArcTool.h \
+    src/Plane/Tools/LockPositionTool.h \
+    src/Plane/Tools/PointPositionTool.h \
+    src/Plane/Tools/Tool.h \
+    src/Plane/Tools/LineTool.h \
+    src/Plane/Tools/CircleTool.h \
+    src/Plane/Tools/RectangleTool.h \
+    src/Plane/Tools/DimensionTool.h \
+    src/Plane/Tools/LabelTool.h \
 \
-    src/ClassRepository/Plane/Drawables/DrawableObject.h \
-    src/ClassRepository/Plane/Drawables/Circle.h \
-    src/ClassRepository/Plane/Drawables/Line.h \
-    src/ClassRepository/Plane/Drawables/Point.h \
-    src/ClassRepository/Plane/Drawables/Label.h \
-    src/ClassRepository/Plane/Drawables/Arc.h \
+    src/Plane/Drawables/DrawableObject.h \
+    src/Plane/Drawables/Circle.h \
+    src/Plane/Drawables/Line.h \
+    src/Plane/Drawables/Point.h \
+    src/Plane/Drawables/Label.h \
+    src/Plane/Drawables/Arc.h \
 \
-    src/ClassRepository/Plane/Drawables/Dimensions/CircleRadiusDimension.h \
-    src/ClassRepository/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
-    src/ClassRepository/Plane/Drawables/Dimensions/LineLengthDimension.h \
-    src/ClassRepository/Plane/Drawables/Dimensions/LinesAngleDimension.h \
+    src/Plane/Drawables/Dimensions/CircleRadiusDimension.h \
+    src/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
+    src/Plane/Drawables/Dimensions/LineLengthDimension.h \
+    src/Plane/Drawables/Dimensions/LinesAngleDimension.h \
 \
-    src/ClassRepository/Adapters/PointAdapter.h \
-    src/ClassRepository/Adapters/Polygonator.h \
+    src/Adapters/PointAdapter.h \
+    src/Adapters/Polygonator.h \
 \
-    src/ClassRepository/Space/Space \
-\
-    src/ClassRepository/Space/Polygon.h \
-    src/ClassRepository/Space/Plane.h \
-    src/ClassRepository/Space/Item.h \
-    src/ClassRepository/Space/Transform3D.h \
-    src/ClassRepository/Space/Vertex.h \
-    src/ClassRepository/Space/Camera.h \
-    src/WelcomeDialog.h
+    src/Space/Space \
+    src/Space/SpaceFactory.h \
+    src/Space/Polygon.h \
+    src/Space/Plane.h \
+    src/Space/Item.h \
+    src/Space/Transform3D.h \
+    src/Space/Vertex.h \
+    src/Space/Camera.h \
 
 
 FORMS += \
-    src/PointPositionDialog.ui \
-    src/ExtrusionDialog.ui \
     src/MainWindow.ui \
-    src/PopUpMessage.ui \
-    src/SettingsDialog.ui \
-    src/WelcomeDialog.ui
+    \
+    src/Dialogs/PointPositionDialog.ui \
+    src/Dialogs/ExtrusionDialog.ui \
+    src/Dialogs/PopUpMessage.ui \
+    src/Dialogs/SettingsDialog.ui \
+    src/Dialogs/WelcomeDialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

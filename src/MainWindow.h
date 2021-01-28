@@ -7,14 +7,14 @@
 #include <QTreeWidgetItem>
 #include <QMenuBar>
 
-#include "WelcomeDialog.h"
-#include "SettingsDialog.h"
-#include "ExtrusionDialog.h"
-#include "ClassRepository/GlobalVariables.h"
+#include "Dialogs/WelcomeDialog.h"
+#include "Dialogs/SettingsDialog.h"
+#include "Dialogs/ExtrusionDialog.h"
+#include "Base/GlobalVariables.h"
 
-#include "ClassRepository/Space/Space"
-#include "ClassRepository/Plane/Plane"
-#include "ClassRepository/Adapters/Polygonator.h"
+#include "Space/Space"
+#include "Plane/Plane"
+#include "Adapters/Polygonator.h"
 
 namespace Ui {
 class MainWindow;

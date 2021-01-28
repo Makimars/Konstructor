@@ -5,7 +5,7 @@
 
 #include <QDebug>
 
-#include "src/ClassRepository/Settings.h"
+#include "src/Base/Settings.h"
 #include "Vertex.h"
 
 enum ExtrusionDirection

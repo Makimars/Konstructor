@@ -10,8 +10,8 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLVertexArrayObject>
 
-#include "ClassRepository/Space/Space"
-#include "MessagesManager.h"
+#include "Dialogs/MessagesManager.h"
+#include "Space/Space"
 
 struct vertexProgramParameters{
 	int itemToSpace, worldToCamera, cameraToView, itemToRotate;

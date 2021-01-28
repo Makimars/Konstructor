@@ -2,8 +2,9 @@
 #define EXTRUSIONDIALOG_H
 
 #include <QDialog>
-#include "ClassRepository/Space/Item.h"
-#include "ClassRepository/Settings.h"
+
+#include "../Space/Item.h"
+#include "../Base/Settings.h"
 
 namespace Ui {
 class ExtrusionDialog;
