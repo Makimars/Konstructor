@@ -19,8 +19,8 @@ LineTool::LineTool() : Tool()
 	objectFactory->addToScene(previewPoints[1]);
 	objectFactory->addToScene(linePreview);
 
-	toolTips.append("Select frist point");
-	toolTips.append("Select second point of a line");
+	toolTips.append(tr("Select frist point"));
+	toolTips.append(tr("Select second point of a line"));
 }
 
 LineTool *LineTool::getInstance()

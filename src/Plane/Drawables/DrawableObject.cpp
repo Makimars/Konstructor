@@ -17,6 +17,16 @@ QString DrawableObject::toFileString()
 	return this->file;
 }
 
+void DrawableObject::setConstrained(bool value)
+{
+	constrained = value;
+}
+
+bool DrawableObject::isConstrained()
+{
+	return constrained;
+}
+
 //----------	geometry    ----------
 
 void DrawableObject::addGeometryUpdate(DrawableObject *object)

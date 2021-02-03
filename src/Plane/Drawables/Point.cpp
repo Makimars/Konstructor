@@ -34,7 +34,7 @@ QString Point::toFileString()
 
 void Point::setLocation(double x, double y)
 {
-	if(isLocked()) return;
+	if(isLocked() | isConstrained()) return;
 
 	updateGeometry();
 	this->x = x;
@@ -88,7 +88,7 @@ void Point::paint(QPainter *painter,
 
 	painter->drawEllipse(rect);
 
-	if(isLocked()) painter->drawImage(
+	if(isLocked() | isConstrained()) painter->drawImage(
 				QRectF(rect.x()+rect.width(), rect.y(), rect.width()*2, rect.height()*2),
 				QImage(":/icons/Lock.png")
 				);
@@ -98,7 +98,7 @@ void Point::paint(QPainter *painter,
 
 void Point::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-	if(this->isDraging() & !isLocked())
+	if(this->isDraging() & !isLocked() & !isConstrained())
 	{
 		this->setLocation(event->pos());
 	}

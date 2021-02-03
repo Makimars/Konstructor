@@ -7,6 +7,9 @@ LineLengthConstraint::LineLengthConstraint(Point *originPoint, Point *drivenPoin
 	this->originPoint = originPoint;
 	this->drivenPoint = drivenPoint;
 	setGeometryUpdates();
+
+	lengthToSet = drivenPoint->distanceFrom(originPoint->getLocation());
+	originPoint->setConstrained(true);
 }
 
 void LineLengthConstraint::resolveTies()
@@ -75,12 +78,12 @@ QRectF LineLengthConstraint::boundingRect() const
 
 	return QRectF(
 		QPointF(
-			*std::max_element(x.begin(),x.end()),
-			*std::max_element(y.begin(), y.end())
+			*std::min_element(x.begin(), x.end()),
+			*std::min_element(y.begin(), y.end())
 			),
 		QPointF(
-			*std::min_element(x.begin(),x.end()),
-			*std::min_element(y.begin(), y.end())
+			*std::max_element(x.begin(), x.end()),
+			*std::max_element(y.begin(), y.end())
 			)
 	);
 }
@@ -95,7 +98,12 @@ QPainterPath LineLengthConstraint::shape() const
 				-lineVector.y(),
 				lineVector.x()
 						);
-	normalVector *= this->distanceFromLine + textHeight;
+
+	normalVector.normalize();
+	if(distanceFromLine < 0)
+		normalVector *= this->distanceFromLine - textHeight;
+	else
+		normalVector *= this->distanceFromLine + textHeight;
 
 	//edge points
 	QPointF aboveStartPoint(
@@ -106,9 +114,6 @@ QPainterPath LineLengthConstraint::shape() const
 				drivenPoint->getX() + normalVector.x(),
 				drivenPoint->getY() + normalVector.y()
 				);
-
-	normalVector.normalize();
-	normalVector *= this->textHeight;
 
 	polygon << originPoint->getLocation()
 			<< aboveStartPoint

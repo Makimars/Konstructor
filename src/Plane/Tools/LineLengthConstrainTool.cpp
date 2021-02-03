@@ -2,7 +2,11 @@
 
 LineLengthConstrainTool *LineLengthConstrainTool::instance = nullptr;
 
-LineLengthConstrainTool::LineLengthConstrainTool() : Tool(){}
+LineLengthConstrainTool::LineLengthConstrainTool() : Tool()
+{
+	toolTips.append(tr("Select first point (origin point), this point will be fixed"));
+	toolTips.append(tr("Select second point which will be driven by the distance"));
+}
 
 LineLengthConstrainTool *LineLengthConstrainTool::getInstance()
 {
@@ -27,6 +31,12 @@ void LineLengthConstrainTool::click(DrawableObject *clickedObject, QPointF pos)
 			}
 			else if(clickCounter == 2)
 			{
+				if(clickedObject->isLocked() | clickedObject->isConstrained())
+				{
+					clickCounter = 1;
+					return;
+				}
+
 				objectFactory->addDrawable(
 					objectFactory->makeLengthConstraint(firstPoint, dynamic_cast<Point*>(clickedObject))
 				);
