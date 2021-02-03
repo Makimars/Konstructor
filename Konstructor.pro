@@ -29,10 +29,10 @@ SOURCES += \
 \
     src/Plane/Drawables/Dimensions/LineLengthConstraint.cpp \
     src/Plane/Tools/LineLengthConstrainTool.cpp \
+    src/PlaneWidget.cpp \
+    src/SpaceWidget.cpp \
     src/main.cpp \
     src/MainWindow.cpp \
-    src/View3DWidget.cpp \
-    src/ViewWidget.cpp \
     \
     src/Dialogs/PointPositionDialog.cpp \
     src/Dialogs/ExtrusionDialog.cpp \
@@ -85,8 +85,8 @@ HEADERS += \
     src/MainWindow.h \
     src/Plane/Drawables/Dimensions/LineLengthConstraint.h \
     src/Plane/Tools/LineLengthConstrainTool.h \
-    src/View3DWidget.h \
-    src/ViewWidget.h \
+    src/PlaneWidget.h \
+    src/SpaceWidget.h \
 \
     src/Dialogs/ExtrusionDialog.h \
     src/Dialogs/MessagesManager.h \

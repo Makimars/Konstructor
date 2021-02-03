@@ -36,7 +36,7 @@
     <item>
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="drawPage">
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -679,7 +679,7 @@
          </widget>
         </item>
         <item>
-         <widget class="ViewWidget" name="view2D">
+         <widget class="PlaneWidget" name="planeView">
           <property name="maximumSize">
            <size>
             <width>16777215</width>
@@ -885,7 +885,7 @@
          </widget>
         </item>
         <item>
-         <widget class="View3DWidget" name="view3D">
+         <widget class="SpaceWidget" name="spaceView">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
@@ -908,14 +908,14 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>ViewWidget</class>
+   <class>PlaneWidget</class>
    <extends>QGraphicsView</extends>
-   <header>src/ViewWidget.h</header>
+   <header>src/PlaneWidget.h</header>
   </customwidget>
   <customwidget>
-   <class>View3DWidget</class>
+   <class>SpaceWidget</class>
    <extends>QOpenGLWidget</extends>
-   <header>src/View3DWidget.h</header>
+   <header>src/SpaceWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

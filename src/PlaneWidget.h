@@ -12,11 +12,11 @@
 #include "Dialogs/MessagesManager.h"
 #include "Plane/Plane"
 
-class ViewWidget : public QGraphicsView
+class PlaneWidget : public QGraphicsView
 {
 	Q_OBJECT
 public:
-	ViewWidget(QWidget *parent = nullptr);
+	PlaneWidget(QWidget *parent = nullptr);
 
 	//file operations
 	void loadFromFile(QString fileContents);

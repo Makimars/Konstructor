@@ -1,12 +1,12 @@
-#include "ViewWidget.h"
+#include "PlaneWidget.h"
 
-ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
+PlaneWidget::PlaneWidget(QWidget *parent) : QGraphicsView (parent)
 {
 
 	this->setBackgroundBrush(QBrush(QColor::fromRgb(210,210,210)));
 	this->setContextMenuPolicy(Qt::ContextMenuPolicy::CustomContextMenu);
 	connect(this, &QGraphicsView::customContextMenuRequested,
-			this, &ViewWidget::customContextMenuRequested
+			this, &PlaneWidget::customContextMenuRequested
 			);
 
 	//context menu
@@ -50,7 +50,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 
 //----------	file operations    ----------
 
-void ViewWidget::loadFromFile(QString file)
+void PlaneWidget::loadFromFile(QString file)
 {
 	QVector<DrawableObject*> loadedObjects = objectFactory->generateListFromSketch(file);
 
@@ -60,7 +60,7 @@ void ViewWidget::loadFromFile(QString file)
     }
 }
 
-void ViewWidget::saveToFile(QString path)
+void PlaneWidget::saveToFile(QString path)
 {
 	QFile targetFile(path);
 	if(targetFile.open(QIODevice::WriteOnly))
@@ -80,29 +80,29 @@ void ViewWidget::saveToFile(QString path)
 
 //----------    initialization    ----------
 
-void ViewWidget::initializeTools()
+void PlaneWidget::initializeTools()
 {
-	connect(this, &ViewWidget::mouseMoved,
+	connect(this, &PlaneWidget::mouseMoved,
 			ArcTool::getInstance(), &Tool::mouseMoveEvent
 			);
-	connect(this, &ViewWidget::mouseMoved,
+	connect(this, &PlaneWidget::mouseMoved,
 			CircleTool::getInstance(), &Tool::mouseMoveEvent
 			);
-	connect(this, &ViewWidget::mouseMoved,
+	connect(this, &PlaneWidget::mouseMoved,
 			DimensionTool::getInstance(), &Tool::mouseMoveEvent
 			);
-	connect(this, &ViewWidget::mouseMoved,
+	connect(this, &PlaneWidget::mouseMoved,
 			LabelTool::getInstance(), &Tool::mouseMoveEvent
 			);
-	connect(this, &ViewWidget::mouseMoved,
+	connect(this, &PlaneWidget::mouseMoved,
 			LineTool::getInstance(), &Tool::mouseMoveEvent
 			);
-	connect(this, &ViewWidget::mouseMoved,
+	connect(this, &PlaneWidget::mouseMoved,
 			RectangleTool::getInstance(), &Tool::mouseMoveEvent
 			);
 }
 
-void ViewWidget::initializeScene()
+void PlaneWidget::initializeScene()
 {
 	this->sketchScene->setSceneRect(
 				-Settings::sketchSize-2,
@@ -161,7 +161,7 @@ void ViewWidget::initializeScene()
 	this->setScene(sketchScene);
 }
 
-QPointF ViewWidget::gridSnapping(QPointF mousePos)
+QPointF PlaneWidget::gridSnapping(QPointF mousePos)
 {
 	if(Settings::gridSnapping)
 	{
@@ -200,7 +200,7 @@ QPointF ViewWidget::gridSnapping(QPointF mousePos)
 
 //----------	events    ----------
 
-void ViewWidget::mousePressEvent(QMouseEvent *event)
+void PlaneWidget::mousePressEvent(QMouseEvent *event)
 {
 	QGraphicsView::mousePressEvent(event);
 
@@ -214,7 +214,7 @@ void ViewWidget::mousePressEvent(QMouseEvent *event)
 	this->prevY = event->y();
 }
 
-void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
+void PlaneWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	viewport()->setCursor(Qt::CursorShape::ArrowCursor);
 	QGraphicsView::mouseReleaseEvent(event);
@@ -233,7 +233,7 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
-void ViewWidget::mouseMoveEvent(QMouseEvent *event)
+void PlaneWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	//draging plane
 	if(event->buttons() == Qt::MouseButton::MidButton)
@@ -260,7 +260,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	//emit showStatusBarMessage("X: " + QString::number(mousePoint.x()) + " Y: " + QString::number(mousePoint.y()));
 }
 
-void ViewWidget::wheelEvent(QWheelEvent *event)
+void PlaneWidget::wheelEvent(QWheelEvent *event)
 {
 	setTransformationAnchor(QGraphicsView::AnchorViewCenter);
 
@@ -279,7 +279,7 @@ void ViewWidget::wheelEvent(QWheelEvent *event)
 	}
 }
 
-void ViewWidget::keyPressEvent(QKeyEvent *event)
+void PlaneWidget::keyPressEvent(QKeyEvent *event)
 {
 	QGraphicsView::keyPressEvent(event);
 	emit keyPressed(event);
@@ -287,7 +287,7 @@ void ViewWidget::keyPressEvent(QKeyEvent *event)
 
 //----------	tools    ----------
 
-void ViewWidget::setTool(int tool)
+void PlaneWidget::setTool(int tool)
 {
 	if(this->selectedTool != nullptr)
 		this->selectedTool->resetTool();
@@ -330,7 +330,7 @@ void ViewWidget::setTool(int tool)
 		emit showStatusBarMessage(selectedTool->getToolTip());
 }
 
-void ViewWidget::resetTool()
+void PlaneWidget::resetTool()
 {
 	if(this->selectedTool != nullptr)
 	{
@@ -339,14 +339,14 @@ void ViewWidget::resetTool()
 	}
 }
 
-void ViewWidget::finishDrawing()
+void PlaneWidget::finishDrawing()
 {
 	emit returnDrawing(this->objectsInSketch);
 
 	objectFactory->deleteAll();
 }
 
-void ViewWidget::customContextMenuRequested(const QPoint &pos)
+void PlaneWidget::customContextMenuRequested(const QPoint &pos)
 {
 	if(this->selectedTool != nullptr)
 	{
@@ -380,12 +380,12 @@ void ViewWidget::customContextMenuRequested(const QPoint &pos)
 	}
 }
 
-void ViewWidget::newSketchButtonClicked()
+void PlaneWidget::newSketchButtonClicked()
 {
 	this->objectFactory->deleteAll();
 }
 
-void ViewWidget::closeSketchButtonClicked()
+void PlaneWidget::closeSketchButtonClicked()
 {
 	objectFactory->deleteAll();
 	emit returnDrawing(QVector<DrawableObject*>());

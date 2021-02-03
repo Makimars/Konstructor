@@ -66,7 +66,7 @@ void MainWindow::setupUi()
 	basePlane->setRotation(QQuaternion(1,0,0,0));
 	basePlane->setText(0, "origin plane");
     this->ui->objectsTree->addTopLevelItem(basePlane);
-	this->ui->view3D->setTopPlane(basePlane);
+	this->ui->spaceView->setTopPlane(basePlane);
 
     //context menus
 	drawAction.setText(tr("Draw"));
@@ -83,28 +83,28 @@ void MainWindow::setupUi()
 void MainWindow::setupConnections()
 {
 	//forward keypresses to ViewWidget
-	connect(this->ui->view2D, &ViewWidget::keyPressed,
+	connect(this->ui->planeView, &PlaneWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
 	//forwards statusBar messages from VieewWidget
-	connect(this->ui->view2D, &ViewWidget::showStatusBarMessage,
+	connect(this->ui->planeView, &PlaneWidget::showStatusBarMessage,
 			this->ui->statusBar, &QStatusBar::showMessage
 			);
 
 	//tools
 	connect(this, &MainWindow::setTool,
-			this->ui->view2D, &ViewWidget::setTool
+			this->ui->planeView, &PlaneWidget::setTool
 			);
 	connect(this, &MainWindow::resetTool,
-			this->ui->view2D, &ViewWidget::resetTool
+			this->ui->planeView, &PlaneWidget::resetTool
 			);
 
 	//sketch file
 	connect(this->ui->newSketchButton, &QToolButton::clicked,
-			this->ui->view2D, &ViewWidget::newSketchButtonClicked
+			this->ui->planeView, &PlaneWidget::newSketchButtonClicked
 			);
 	connect(this->ui->closeSketchButton, &QToolButton::clicked,
-			this->ui->view2D, &ViewWidget::closeSketchButtonClicked
+			this->ui->planeView, &PlaneWidget::closeSketchButtonClicked
 			);
 
 	//Plane to Space connection
@@ -114,20 +114,20 @@ void MainWindow::setupConnections()
 			);
 	//send finishWarning signal to ViewWidget
 	connect(this, &MainWindow::finishDrawing,
-			this->ui->view2D, &ViewWidget::finishDrawing
+			this->ui->planeView, &PlaneWidget::finishDrawing
 			);
 	//sends drawing to polygonator
-	connect(this->ui->view2D, &ViewWidget::returnDrawing,
+	connect(this->ui->planeView, &PlaneWidget::returnDrawing,
 			Polygonator::getInstance(), &Polygonator::recieveDrawing
 			);
-	//sends polygons from polygonator to View3DWidget
+	//sends polygons from polygonator to spaceViewWidget
 	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
 			SpaceFactory::getInstance(), &SpaceFactory::addNewItem
 			);
 
 	//connect extrusionDialog to screen update
 	connect(extrusionDialog, &ExtrusionDialog::selectionChanged,
-			this->ui->view3D, &View3DWidget::update
+			this->ui->spaceView, &SpaceWidget::update
 			);
 
 	//generating drawables for loading items
@@ -181,12 +181,12 @@ void MainWindow::saveSettings()
 
 void MainWindow::on_newObjectFile_clicked()
 {
-	this->ui->view3D->reset();
+	this->ui->spaceView->reset();
 }
 
 void MainWindow::on_openObjectFile_clicked()
 {
-	this->ui->view3D->reset();
+	this->ui->spaceView->reset();
 	QString fileName = QFileDialog::getOpenFileName(
 			this,
 			Global::openFile,
@@ -198,7 +198,7 @@ void MainWindow::on_openObjectFile_clicked()
 	if(file.exists())
 	{
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-			this->ui->view3D->loadFromFile(file.readAll());
+			this->ui->spaceView->loadFromFile(file.readAll());
 	}
 }
 
@@ -210,7 +210,7 @@ void MainWindow::on_saveObjectButton_clicked()
 			Settings::userProjectRoot,
 			Global::konstructorProject + ";;" + Global::allFiles
 			);
-	this->ui->view3D->saveToFile(fileName);
+	this->ui->spaceView->saveToFile(fileName);
 }
 
 void MainWindow::on_exportObjectButton_clicked()
@@ -221,7 +221,7 @@ void MainWindow::on_exportObjectButton_clicked()
 			Settings::userProjectRoot,
 			"STL (*.stl)"
 			);
-	this->ui->view3D->exportToFile(fileName);
+	this->ui->spaceView->exportToFile(fileName);
 }
 
 void MainWindow::on_settingsButton_clicked()
@@ -249,7 +249,7 @@ void MainWindow::on_saveSketchButton_clicked()
 			Settings::userProjectRoot,
 			Global::konstructorSketch + ";;" + Global::allFiles
 			);
-	this->ui->view2D->saveToFile(fileName);
+	this->ui->planeView->saveToFile(fileName);
 }
 
 void MainWindow::on_openSketchButton_clicked()
@@ -265,7 +265,7 @@ void MainWindow::on_openSketchButton_clicked()
 	if(file.exists())
 	{
 		if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-			this->ui->view2D->loadFromFile(file.readAll());
+			this->ui->planeView->loadFromFile(file.readAll());
 	}
 }
 
@@ -369,7 +369,7 @@ void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int col
 
     if(Item *existingItem = dynamic_cast<Item*>(item))
     {
-		this->ui->view2D->loadFromFile(existingItem->getSketch());
+		this->ui->planeView->loadFromFile(existingItem->getSketch());
 	}
 }
 
@@ -406,7 +406,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			{
 				setMode(Global::Mode::Draw);
 				emit setTargetItem(item);
-				this->ui->view2D->loadFromFile(item->getSketch());
+				this->ui->planeView->loadFromFile(item->getSketch());
 			}
 			else if(selectedAction == &deleteAction)
 			{
@@ -425,12 +425,12 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
         }
     }
 
-	this->ui->view3D->update();
+	this->ui->spaceView->update();
 }
 
 void MainWindow::on_objectsTree_itemClicked(QTreeWidgetItem *item, int column)
 {
-	this->ui->view3D->update();
+	this->ui->spaceView->update();
 }
 
 std::vector<QPolygonF> MainWindow::getPolygonsForItem(QString sketch)

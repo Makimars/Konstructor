@@ -1,6 +1,6 @@
-#include "View3DWidget.h"
+#include "SpaceWidget.h"
 
-View3DWidget::View3DWidget(QWidget *parent) : QOpenGLWidget(parent)
+SpaceWidget::SpaceWidget(QWidget *parent) : QOpenGLWidget(parent)
 {
 	QSurfaceFormat format;
 	format.setRenderableType(QSurfaceFormat::OpenGL);
@@ -16,30 +16,30 @@ View3DWidget::View3DWidget(QWidget *parent) : QOpenGLWidget(parent)
 	SpaceFactory::init(&objectsInSpace, &planes, this);
 	factory = SpaceFactory::getInstance();
 	connect(factory, &SpaceFactory::reallocateItems,
-			this, &View3DWidget::reallocateItems
+			this, &SpaceWidget::reallocateItems
 			);
 	connect(factory, &SpaceFactory::allocateNewItem,
-			this, &View3DWidget::allocateNewItem
+			this, &SpaceWidget::allocateNewItem
 			);
 	connect(factory, &SpaceFactory::reallocatePlanes,
-			this, &View3DWidget::reallocatePlanes
+			this, &SpaceWidget::reallocatePlanes
 			);
 	connect(factory, &SpaceFactory::allocateNewPlane,
-			this, &View3DWidget::allocateNewPlane
+			this, &SpaceWidget::allocateNewPlane
 			);
 
 	connect(factory, &SpaceFactory::getBasePlane,
-			this, &View3DWidget::getBasePlane
+			this, &SpaceWidget::getBasePlane
 			);
 }
 
-void View3DWidget::setTopPlane(Plane *plane)
+void SpaceWidget::setTopPlane(Plane *plane)
 {
 	planes.push_back(plane);
 	reallocatePlanes();
 }
 
-void View3DWidget::loadFromFile(QString fileContents)
+void SpaceWidget::loadFromFile(QString fileContents)
 {
 	nlohmann::json input = nlohmann::json::parse(fileContents.toStdString());
 
@@ -67,7 +67,7 @@ void View3DWidget::loadFromFile(QString fileContents)
 	}
 }
 
-void View3DWidget::saveToFile(QString file)
+void SpaceWidget::saveToFile(QString file)
 {
 	std::vector<std::string> objects;
 	for(int i = 0; i < this->objectsInSpace.length(); i++)
@@ -85,7 +85,7 @@ void View3DWidget::saveToFile(QString file)
 	}
 }
 
-void View3DWidget::exportToFile(QString file)
+void SpaceWidget::exportToFile(QString file)
 {
 	QFile targetFile(file);
 	if(targetFile.open(QIODevice::WriteOnly))
@@ -94,7 +94,7 @@ void View3DWidget::exportToFile(QString file)
 	}
 }
 
-void View3DWidget::reset()
+void SpaceWidget::reset()
 {
 	Plane *basePlane = planes.at(0);
 	planes.clear();
@@ -104,7 +104,7 @@ void View3DWidget::reset()
 	update();
 }
 
-void View3DWidget::reallocateItems()
+void SpaceWidget::reallocateItems()
 {
 	vertexData.clear();
 
@@ -114,7 +114,7 @@ void View3DWidget::reallocateItems()
 	}
 }
 
-void View3DWidget::allocateNewItem(Item *item)
+void SpaceWidget::allocateNewItem(Item *item)
 {
 	item->setItemIndex(vertexData.size());
 
@@ -127,7 +127,7 @@ void View3DWidget::allocateNewItem(Item *item)
 	update();
 }
 
-void View3DWidget::reallocatePlanes()
+void SpaceWidget::reallocatePlanes()
 {
 	planeVertexData.clear();
 
@@ -137,7 +137,7 @@ void View3DWidget::reallocatePlanes()
 	}
 }
 
-void View3DWidget::allocateNewPlane()
+void SpaceWidget::allocateNewPlane()
 {
 	double planeSize = 20;
 
@@ -165,24 +165,24 @@ void View3DWidget::allocateNewPlane()
 	planeBuffer.release();
 }
 
-Plane *View3DWidget::getBasePlane()
+Plane *SpaceWidget::getBasePlane()
 {
 	return planes.at(0);
 }
 
-void View3DWidget::mousePressEvent(QMouseEvent *event)
+void SpaceWidget::mousePressEvent(QMouseEvent *event)
 {
 	lastPos = event->pos();
 	QOpenGLWidget::mousePressEvent(event);
 }
 
-void View3DWidget::mouseReleaseEvent(QMouseEvent *event)
+void SpaceWidget::mouseReleaseEvent(QMouseEvent *event)
 {
 	lastPos = event->pos();
 	QOpenGLWidget::mouseReleaseEvent(event);
 }
 
-void View3DWidget::mouseMoveEvent(QMouseEvent *event)
+void SpaceWidget::mouseMoveEvent(QMouseEvent *event)
 {
 	QOpenGLWidget::mouseMoveEvent(event);
 
@@ -204,7 +204,7 @@ void View3DWidget::mouseMoveEvent(QMouseEvent *event)
 	lastPos = event->pos();
 }
 
-void View3DWidget::wheelEvent(QWheelEvent *event)
+void SpaceWidget::wheelEvent(QWheelEvent *event)
 {
 	QOpenGLWidget::wheelEvent(event);
 
@@ -216,12 +216,12 @@ void View3DWidget::wheelEvent(QWheelEvent *event)
 	QOpenGLWidget::update();
 }
 
-void View3DWidget::keyPressEvent(QKeyEvent *event)
+void SpaceWidget::keyPressEvent(QKeyEvent *event)
 {
 	QOpenGLWidget::keyPressEvent(event);
 }
 
-void View3DWidget::initializeGL()
+void SpaceWidget::initializeGL()
 {
 	initializeOpenGLFunctions();
 	glEnable(GL_DEPTH_TEST);
@@ -300,7 +300,7 @@ void View3DWidget::initializeGL()
 	planeBufferObject.release();
 }
 
-void View3DWidget::resizeGL(int width, int height)
+void SpaceWidget::resizeGL(int width, int height)
 {
 	static float near = 0.1;
 	static float far = 1000;
@@ -309,7 +309,7 @@ void View3DWidget::resizeGL(int width, int height)
 	projection.perspective(45.0f, width / float(height), near, far);
 }
 
-void View3DWidget::paintGL()
+void SpaceWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

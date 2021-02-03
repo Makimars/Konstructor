@@ -1,5 +1,5 @@
-#ifndef VIEW3DWIDGET_H
-#define VIEW3DWIDGET_H
+#ifndef SPACEWIDGET_H
+#define SPACEWIDGET_H
 
 #include <QOpenGLWidget>
 #include <QOpenGLShaderProgram>
@@ -17,11 +17,11 @@ struct vertexProgramParameters{
 	int itemToSpace, worldToCamera, cameraToView, itemToRotate;
 };
 
-class View3DWidget : public QOpenGLWidget, private QOpenGLFunctions
+class SpaceWidget : public QOpenGLWidget, private QOpenGLFunctions
 {
 	Q_OBJECT
 public:
-	View3DWidget(QWidget *parent);
+	SpaceWidget(QWidget *parent);
 
 	void setTopPlane(Plane *plane);
 
@@ -90,6 +90,6 @@ private:
 	void paintGL() override;
 };
 
-inline void View3DWidget::update() { QOpenGLWidget::update(); }
+inline void SpaceWidget::update() { QOpenGLWidget::update(); }
 
-#endif // VIEW3DWIDGET_H
+#endif // SPACEWIDGET_H
