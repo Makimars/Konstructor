@@ -1,13 +1,14 @@
 #ifndef LINELENGTHCONSTRAINT_H
 #define LINELENGTHCONSTRAINT_H
 
-#include "CirclesRadiusDifferenceDimension.h"
+#include "../Label.h"
 
 class LineLengthConstraint : public DrawableObject, public UserInputRequester
 {
 public:
 	LineLengthConstraint();
 	LineLengthConstraint(Point *originPoint, Point *drivenPoint);
+	~LineLengthConstraint();
 
 	void resolveTies() override;
 

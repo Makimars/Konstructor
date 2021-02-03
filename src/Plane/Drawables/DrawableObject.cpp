@@ -17,14 +17,19 @@ QString DrawableObject::toFileString()
 	return this->file;
 }
 
-void DrawableObject::setConstrained(bool value)
+void DrawableObject::addConstrant()
 {
-	constrained = value;
+	constrains++;
+}
+
+void DrawableObject::removeConstraint()
+{
+	constrains--;
 }
 
 bool DrawableObject::isConstrained()
 {
-	return constrained;
+	return constrains > 0;
 }
 
 //----------	geometry    ----------

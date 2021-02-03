@@ -47,7 +47,8 @@ public:
 	int getId();
 	void setLocked(bool value);
 	bool isLocked();
-	void setConstrained(bool value);
+	void addConstrant();
+	void removeConstraint();
 	bool isConstrained();
 
 	void setStyle(const Style *style);
@@ -108,7 +109,7 @@ private:
 	bool hidden = false;
 	bool draging = false;
 	bool locked = false;
-	bool constrained = false;
+	int constrains = 0;
 
 	//saving
 	QString file;

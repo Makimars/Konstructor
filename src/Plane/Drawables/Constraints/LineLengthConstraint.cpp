@@ -9,7 +9,12 @@ LineLengthConstraint::LineLengthConstraint(Point *originPoint, Point *drivenPoin
 	setGeometryUpdates();
 
 	lengthToSet = drivenPoint->distanceFrom(originPoint->getLocation());
-	originPoint->setConstrained(true);
+	originPoint->addConstrant();
+}
+
+LineLengthConstraint::~LineLengthConstraint()
+{
+	originPoint->removeConstraint();
 }
 
 void LineLengthConstraint::resolveTies()

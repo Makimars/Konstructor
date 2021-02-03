@@ -27,8 +27,6 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/Plane/Drawables/Dimensions/LineLengthConstraint.cpp \
-    src/Plane/Tools/LineLengthConstrainTool.cpp \
     src/PlaneWidget.cpp \
     src/SpaceWidget.cpp \
     src/main.cpp \
@@ -55,12 +53,16 @@ SOURCES += \
     src/Plane/Tools/LineTool.cpp \
     src/Plane/Tools/ArcTool.cpp \
 \
+    src/Plane/Tools/Constraints/LineLengthConstrainTool.cpp \
+\
     src/Plane/Drawables/DrawableObject.cpp \
     src/Plane/Drawables/Circle.cpp \
     src/Plane/Drawables/Line.cpp \
     src/Plane/Drawables/Point.cpp \
     src/Plane/Drawables/Label.cpp \
     src/Plane/Drawables/Arc.cpp \
+\
+    src/Plane/Drawables/Constraints/LineLengthConstraint.cpp \
 \
     src/Plane/Drawables/Dimensions/CircleRadiusDimension.cpp \
     src/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
@@ -83,8 +85,6 @@ HEADERS += \
     include/nlohmann/json.hpp \
 \
     src/MainWindow.h \
-    src/Plane/Drawables/Dimensions/LineLengthConstraint.h \
-    src/Plane/Tools/LineLengthConstrainTool.h \
     src/PlaneWidget.h \
     src/SpaceWidget.h \
 \
@@ -114,12 +114,16 @@ HEADERS += \
     src/Plane/Tools/DimensionTool.h \
     src/Plane/Tools/LabelTool.h \
 \
+    src/Plane/Tools/Constraints/LineLengthConstrainTool.h \
+\
     src/Plane/Drawables/DrawableObject.h \
     src/Plane/Drawables/Circle.h \
     src/Plane/Drawables/Line.h \
     src/Plane/Drawables/Point.h \
     src/Plane/Drawables/Label.h \
     src/Plane/Drawables/Arc.h \
+\
+    src/Plane/Drawables/Constraints/LineLengthConstraint.h \
 \
     src/Plane/Drawables/Dimensions/CircleRadiusDimension.h \
     src/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \

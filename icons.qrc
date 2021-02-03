@@ -7,5 +7,6 @@
         <file>icons/Line.png</file>
         <file>icons/Rectangle.png</file>
         <file>icons/Lock.png</file>
+        <file>icons/LineLength.png</file>
     </qresource>
 </RCC>

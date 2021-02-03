@@ -6,7 +6,8 @@
 #include <QGraphicsProxyWidget>
 #include <QValidator>
 
-#include  "Drawables/Dimensions/LineLengthConstraint.h"
+#include "Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
+#include "Drawables/Constraints/LineLengthConstraint.h"
 
 class QGraphicsViewUserInput : public QObject
 {
