@@ -8,6 +8,8 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	connect(this, &QGraphicsView::customContextMenuRequested,
 			this, &ViewWidget::customContextMenuRequested
 			);
+
+	//context menu
 	constractionalToggle.setCheckable(true);
 	constractionalToggle.setText(tr("Constructional"));
 	contextMenu.addAction(&constractionalToggle);
@@ -24,6 +26,7 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	this->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 	this->setDragMode(DragMode::NoDrag);
 
+	//Style
 	QPen pen(Qt::PenStyle::SolidLine);
 	pen.setColor(Qt::black);
 	QBrush brush(Qt::black, Qt::BrushStyle::NoBrush);
@@ -43,10 +46,6 @@ ViewWidget::ViewWidget(QWidget *parent) : QGraphicsView (parent)
 	//tools initialisation
 	this->selectedTool = nullptr;
 	initializeTools();
-}
-
-ViewWidget::~ViewWidget()
-{
 }
 
 //----------	file operations    ----------
@@ -228,6 +227,8 @@ void ViewWidget::mouseReleaseEvent(QMouseEvent *event)
 			if(clickedObject == nullptr || !objectsInSketch.contains(clickedObject))
 				clickedObject = nullptr;
 			this->selectedTool->click(clickedObject, gridSnapping(mapToScene(event->pos())));
+
+			emit showStatusBarMessage(selectedTool->getToolTip());
 		}
 	}
 }
@@ -256,7 +257,7 @@ void ViewWidget::mouseMoveEvent(QMouseEvent *event)
 	QGraphicsView::mouseMoveEvent(event);
 
 	emit mouseMoved(mousePoint);
-	emit showStatusBarMessage("X: " + QString::number(mousePoint.x()) + " Y: " + QString::number(mousePoint.y()));
+	//emit showStatusBarMessage("X: " + QString::number(mousePoint.x()) + " Y: " + QString::number(mousePoint.y()));
 }
 
 void ViewWidget::wheelEvent(QWheelEvent *event)
@@ -281,7 +282,7 @@ void ViewWidget::wheelEvent(QWheelEvent *event)
 void ViewWidget::keyPressEvent(QKeyEvent *event)
 {
 	QGraphicsView::keyPressEvent(event);
-    emit keyPressed(event);
+	emit keyPressed(event);
 }
 
 //----------	tools    ----------
@@ -316,16 +317,26 @@ void ViewWidget::setTool(int tool)
 		case Global::Tools::LockPointTool:
 			this->selectedTool = LockPositionTool::getInstance();
 			break;
+		case Global::Tools::LineLengthConstrainTool:
+			this->selectedTool = LineLengthConstrainTool::getInstance();
+			break;
 		default:
 			this->selectedTool = nullptr;
+			emit showStatusBarMessage("");
 			break;
 	}
+
+	if(this->selectedTool != nullptr)
+		emit showStatusBarMessage(selectedTool->getToolTip());
 }
 
 void ViewWidget::resetTool()
 {
 	if(this->selectedTool != nullptr)
+	{
 		this->selectedTool->resetTool();
+		emit showStatusBarMessage(selectedTool->getToolTip());
+	}
 }
 
 void ViewWidget::finishDrawing()
@@ -337,8 +348,15 @@ void ViewWidget::finishDrawing()
 
 void ViewWidget::customContextMenuRequested(const QPoint &pos)
 {
+	if(this->selectedTool != nullptr)
+	{
+		selectedTool->resetTool();
+	}
+
 	if(DrawableObject *obj = dynamic_cast<DrawableObject*>(this->itemAt(pos)))
 	{
+		if(obj->getId() <= 0) return;
+
 		obj->setHighlight(true);
 		constractionalToggle.setChecked(obj->isConstructional());
 

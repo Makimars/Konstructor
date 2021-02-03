@@ -18,7 +18,8 @@ enum Types{
 	LineLengthDimension,
 	LineAngleDimension,
 	CircleRadiusDimension,
-	CirclesRadiusDifferenceDimension
+	CirclesRadiusDifferenceDimension,
+	LineLengthConstraint
 };
 
 enum Tools{
@@ -30,7 +31,8 @@ enum Tools{
 	DimensionTool,
 	ArcTool,
 	PointPositionTool,
-	LockPointTool
+	LockPointTool,
+	LineLengthConstrainTool
 };
 
 enum Mode{
@@ -46,6 +48,7 @@ enum Mode{
 	const QString konstructorSketch = "Konstructor sketch (*.kosk)";
 	const QString konstructorProject = "Konstructor project (*.kopr)";
 	const QString allFiles;
+
 
 }
 

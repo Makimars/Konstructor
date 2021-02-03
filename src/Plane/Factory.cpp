@@ -184,6 +184,18 @@ CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(
 	return dimension;
 }
 
+LineLengthConstraint *Factory::makeLengthConstraint(Point *originPoint, Point *drivenPoint)
+{
+	LineLengthConstraint *constraint = new LineLengthConstraint(originPoint, drivenPoint);
+	constraint->setStyle(currentStyle);
+
+	QObject::connect(constraint, &UserInputRequester::requestDouble,
+					 this->userInput, &QGraphicsViewUserInput::requestDouble
+					 );
+
+	return constraint;
+}
+
 void Factory::addToScene(DrawableObject *object)
 {
 	object->setStyle(currentStyle);
@@ -247,7 +259,7 @@ void Factory::deleteAll()
 		delete item;
 	}
 	objectList->clear();
-	this->idCounter = 0;
+	this->idCounter = 1;
 }
 
 QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)

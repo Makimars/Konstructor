@@ -7,6 +7,7 @@
 #include <QGraphicsView>
 #include <QScrollBar>
 #include <QMenu>
+#include <QToolTip>
 
 #include "Dialogs/MessagesManager.h"
 #include "Plane/Plane"
@@ -16,7 +17,6 @@ class ViewWidget : public QGraphicsView
 	Q_OBJECT
 public:
 	ViewWidget(QWidget *parent = nullptr);
-	~ViewWidget();
 
 	//file operations
 	void loadFromFile(QString fileContents);
@@ -58,11 +58,11 @@ private:
 	QPointF gridSnapping(QPointF mousePos);
 
 	//events
-	void mousePressEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void wheelEvent(QWheelEvent *event);
-	void keyPressEvent(QKeyEvent *event);
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void wheelEvent(QWheelEvent *event) override;
+	void keyPressEvent(QKeyEvent *event) override;
 
 signals:
     void keyPressed(QKeyEvent *event);

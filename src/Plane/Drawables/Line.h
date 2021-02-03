@@ -36,6 +36,10 @@ public:
 			   QWidget *widget
 			   ) override;
 
+	//static distance
+	static double distanceFrom(QPointF p0, QPointF p1, QPointF location);
+	static double signedDistanceFrom(QPointF p0, QPointF p1, QPointF location);
+
 private:
 	//defining variables
 	Point *startPoint, *endPoint;

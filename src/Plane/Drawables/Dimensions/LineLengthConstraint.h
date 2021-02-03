@@ -1,13 +1,13 @@
-#ifndef LINELENGTHDIMENSION_H
-#define LINELENGTHDIMENSION_H
+#ifndef LINELENGTHCONSTRAINT_H
+#define LINELENGTHCONSTRAINT_H
 
-#include "../Label.h"
+#include "CirclesRadiusDifferenceDimension.h"
 
-class Q_DECL_DEPRECATED LineLengthDimension : public DrawableObject, public UserInputRequester
+class LineLengthConstraint : public DrawableObject, public UserInputRequester
 {
 public:
-	LineLengthDimension();
-	LineLengthDimension(Line *line);
+	LineLengthConstraint();
+	LineLengthConstraint(Point *originPoint, Point *drivenPoint);
 
 	void resolveTies() override;
 
@@ -18,7 +18,7 @@ public:
 
 	//getters and setters
 	void setDistanceFromLine(double distance);
-	void setLineLength(double length);
+	void setLength(double length);
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -28,13 +28,20 @@ public:
 			   QWidget *widget
 			   ) override;
 
+public slots:
+
+	//user input requests
+	void recieveDouble(double value) override;
+
 private:
-	Line *attachedLine;
+	Point *originPoint, *drivenPoint;
 	double lengthToSet;
 	double distanceFromLine = 20;
 
 	int textWidth = 60;
 	int textHeight = 20;
+
+	QVector2D getLineVector() const;
 
 	//events
 	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
@@ -43,15 +50,6 @@ private:
 	//geometry
 	void setGeometryUpdates() override;
 	void unsetGeometryUpdates() override;
-
-public slots:
-
-	//user input requests
-	void recieveDouble(double value) override;
 };
 
-//inline getters and setters
-inline void LineLengthDimension::setDistanceFromLine(double distance) { distanceFromLine = distance; }
-inline void LineLengthDimension::setLineLength(double length) { lengthToSet = length; }
-
-#endif // LINELENGHTDIMENSION_H
+#endif // LINELENGTHCONSTRAINT_H

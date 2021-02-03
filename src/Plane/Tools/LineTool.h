@@ -20,7 +20,6 @@ private:
 
 	//working variables
 	Point *clickedPoints[2];
-	int clickCounter;
 
 	//preview
 	Line *linePreview;

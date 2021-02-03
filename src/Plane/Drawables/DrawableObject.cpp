@@ -4,6 +4,7 @@ DrawableObject::DrawableObject(int type)
 {
 	this->type = type;
 	this->propagateGeometry = QVector<DrawableObject*>();
+	id = 0;
 }
 
 //----------	file handling    ----------

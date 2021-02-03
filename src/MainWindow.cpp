@@ -156,6 +156,8 @@ void MainWindow::refreshTools(int tool)
 		this->ui->pointPosButton->setChecked(false);
 	if(tool != Global::Tools::LockPointTool)
 		this->ui->lockPointButton->setChecked(false);
+	if(tool != Global::Tools::LineLengthConstrainTool)
+		this->ui->lineLengthConstraintButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -332,6 +334,14 @@ void MainWindow::on_lockPointButton_clicked()
 {
 	if(this->ui->lockPointButton->isChecked())
 		refreshTools(Global::Tools::LockPointTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
+void MainWindow::on_lineLengthConstraintButton_clicked()
+{
+	if(this->ui->lineLengthConstraintButton->isChecked())
+		refreshTools(Global::Tools::LineLengthConstrainTool);
 	else
 		refreshTools(Global::Tools::NoTool);
 }

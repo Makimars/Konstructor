@@ -30,13 +30,16 @@ public:
 	Arc *makeArc(Point *points[3]);
 
 	//dimension creation
-	LineLengthDimension *makeLineLengthDimension(Line *line);
-	LineLengthDimension *makeLineLengthDimension(Line *line, double lenght);
-	LineLengthDimension *makeLineLengthDimension(Line *line, double lenght, double distanceFromLine);
+	Q_DECL_DEPRECATED LineLengthDimension *makeLineLengthDimension(Line *line);
+	Q_DECL_DEPRECATED LineLengthDimension *makeLineLengthDimension(Line *line, double lenght);
+	Q_DECL_DEPRECATED LineLengthDimension *makeLineLengthDimension(Line *line, double lenght, double distanceFromLine);
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2]);
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double distanceFromCenter);
 	CircleRadiusDimension *makeCircleRadiusDimension(Circle *circle);
 	CirclesRadiusDifferenceDimension *makeCirclesRadiusDifferenceDimension(Circle *circles[2]);
+
+	//constrains
+	LineLengthConstraint *makeLengthConstraint(Point *originPoint, Point *drivenPoint);
 
 	//object managment
 	void addToScene(DrawableObject *object);
@@ -72,7 +75,7 @@ private:
 				QGraphicsScene *scene
 				);
 
-	int idCounter = 0;
+	int idCounter = 1;
 
 	QVector<DrawableObject*> *objectList;
 	QVector<DrawableObject*> *staticObjectsList;

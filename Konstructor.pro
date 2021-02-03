@@ -27,6 +27,8 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
+    src/Plane/Drawables/Dimensions/LineLengthConstraint.cpp \
+    src/Plane/Tools/LineLengthConstrainTool.cpp \
     src/main.cpp \
     src/MainWindow.cpp \
     src/View3DWidget.cpp \
@@ -81,6 +83,8 @@ HEADERS += \
     include/nlohmann/json.hpp \
 \
     src/MainWindow.h \
+    src/Plane/Drawables/Dimensions/LineLengthConstraint.h \
+    src/Plane/Tools/LineLengthConstrainTool.h \
     src/View3DWidget.h \
     src/ViewWidget.h \
 \

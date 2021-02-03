@@ -11,6 +11,8 @@ public:
 	virtual void click(DrawableObject *clickedObject, QPointF pos) = 0;
 	virtual void resetTool() = 0;
 
+	QString getToolTip();
+
 public slots:
 	virtual void mouseMoveEvent(QPointF pos) = 0;
 
@@ -19,6 +21,8 @@ protected:
 
 	int clickCounter;
 	Factory *objectFactory;
+
+	QStringList toolTips;
 
 	//getters and setters
 	void setCurrentBrush(QBrush *value);
@@ -29,6 +33,14 @@ inline Tool::Tool()
 {
 	this->objectFactory = Factory::getInstance();
 	clickCounter = 0;
+}
+
+inline QString Tool::getToolTip()
+{
+	if(clickCounter < toolTips.length())
+			return toolTips.at(clickCounter);
+
+	return "";
 }
 
 

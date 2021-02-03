@@ -89,23 +89,12 @@ Point *Line::getEndPoint()
 
 double Line::distanceFrom(QPointF location)
 {
-	return abs((long int)signedDistanceFrom(location));
+	return Line::distanceFrom(startPoint->getLocation(), endPoint->getLocation(), location);
 }
 
 double Line::signedDistanceFrom(QPointF location)
 {
-	double denominator = (
-				((this->endPoint->getY() - this->startPoint->getY()) * location.x()) -
-				((this->endPoint->getX() - this->startPoint->getX()) * location.y()) +
-				(this->endPoint->getX() * this->startPoint->getY()) -
-				(this->endPoint->getY() * this->startPoint->getX())
-				);
-	double numerator = sqrt(
-				pow(this->endPoint->getY() - this->startPoint->getY(), 2) +
-				pow(this->endPoint->getX() - this->startPoint->getX(), 2)
-				);
-
-	return denominator / numerator;
+	return Line::signedDistanceFrom(startPoint->getLocation(), endPoint->getLocation(), location);
 }
 
 //----------	QGraphicsItem overrides    ----------
@@ -167,6 +156,27 @@ void Line::paint(QPainter *painter,
 	painter->drawLine(this->startPoint->getLocation(),
 						this->endPoint->getLocation()
 					  );
+}
+
+double Line::distanceFrom(QPointF p0, QPointF p1, QPointF location)
+{
+	return abs((long int)Line::signedDistanceFrom(p0, p1, location));
+}
+
+double Line::signedDistanceFrom(QPointF p0, QPointF p1, QPointF location)
+{
+	double denominator = (
+				((p1.y() - p0.y()) * location.x()) -
+				((p1.x() - p0.x()) * location.y()) +
+				(p1.x() * p0.y()) -
+				(p1.y() * p0.x())
+				);
+	double numerator = sqrt(
+				pow(p1.y() - p0.y(), 2) +
+				pow(p1.x() - p0.x(), 2)
+				);
+
+	return denominator / numerator;
 }
 
 //----------     geometry     ----------´
