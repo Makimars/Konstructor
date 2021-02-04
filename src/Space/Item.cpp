@@ -3,6 +3,7 @@
 Item::Item()
 {
 	this->setIcon(0, QIcon(":/icons/Cube.png"));
+	this->setText(0, "Sketch");
 }
 
 Item::Item(Plane *plane, std::vector<QPolygonF> polygons, QString sketch) : Item()
@@ -92,6 +93,8 @@ Plane *Item::getPlane(int index)
 
 void Item::extrude()
 {
+	setText(0, "Item");
+
 	std::vector<QPointF> polygonPoints = extrudedPolygon->getPoints();
 	for (u_int32_t i = 0; i < polygonPoints.size(); i++)
 	{
@@ -132,7 +135,24 @@ void Item::extrude()
 	}
 	addPlane(1, basePlane->getPosition() + QVector3D(0,0,length), basePlane->getRotation());
 
-	//TODO calculate planes for faces
+
+	//calculate planes for faces
+	int edges = extrudedVertexes.size() / 2;
+	for (int i = 0; i < edges - 1 ; i++)
+	{
+		QVector3D basePos = extrudedVertexes.at(i).position() * toMatrix();
+
+		QVector3D rotAxis = extrudedVertexes.at(i+1).position() - extrudedVertexes.at(i).position();
+		QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
+
+		addPlane(i+2, basePos, rot);
+	}
+	//overlapping
+	QVector3D basePos = extrudedVertexes.at(edges-1).position() * toMatrix();
+	QVector3D rotAxis = extrudedVertexes.at(0).position() - extrudedVertexes.at(edges-1).position();
+	QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
+	//+1 = edges -1 + 2
+	addPlane(edges+1, basePos, rot);
 
 	emit updateData();
 	setExpanded(true);
@@ -183,7 +203,7 @@ void Item::loadData(QString basePlaneId, Extrusion extrusion, bool extruded, int
 	this->extrusion = extrusion;
 	this->extruded = extruded;
 
-	this->extrudedPolygon = polygons.at(extrudedPolygon);
+	if(extruded) this->extrudedPolygon = polygons.at(extrudedPolygon);
 }
 
 void Item::loadRelations(std::vector<Item*> list)

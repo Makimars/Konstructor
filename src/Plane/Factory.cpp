@@ -70,14 +70,6 @@ Circle *Factory::makeCircle(Point *centerPoint, double radius)
 	return circle;
 }
 
-Circle *Factory::makeCircle(Point *centerPoint, Point *liesOn)
-{
-	Circle *circle = makeCircle(centerPoint);
-	circle->setRelationLiesOn(liesOn);
-
-	return circle;
-}
-
 Label *Factory::makeLabel(QPointF location)
 {
 	Label *label = new Label(location);
@@ -160,18 +152,6 @@ LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[], double dist
 	return dimension;
 }
 
-CircleRadiusDimension *Factory::makeCircleRadiusDimension(Circle *circle)
-{
-	CircleRadiusDimension *dimension = new CircleRadiusDimension(circle);
-	dimension->setStyle(currentStyle);
-
-	QObject::connect(dimension, &UserInputRequester::requestDouble,
-					 this->userInput, &QGraphicsViewUserInput::requestDouble
-					 );
-
-	return dimension;
-}
-
 CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(Circle *circles[])
 {
 	CirclesRadiusDifferenceDimension *dimension = new CirclesRadiusDifferenceDimension(circles);
@@ -184,9 +164,9 @@ CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(
 	return dimension;
 }
 
-LineLengthConstraint *Factory::makeLengthConstraint(Point *originPoint, Point *drivenPoint)
+PointDistanceConstraint *Factory::makePointDistanceConstraint(Point *originPoint, Point *drivenPoint)
 {
-	LineLengthConstraint *constraint = new LineLengthConstraint(originPoint, drivenPoint);
+	PointDistanceConstraint *constraint = new PointDistanceConstraint(originPoint, drivenPoint);
 	constraint->setStyle(currentStyle);
 
 	QObject::connect(constraint, &UserInputRequester::requestDouble,
@@ -194,6 +174,18 @@ LineLengthConstraint *Factory::makeLengthConstraint(Point *originPoint, Point *d
 					 );
 
 	return constraint;
+}
+
+CircleRadiusConstraint *Factory::makeCircleRadiusConstraint(Circle *circle)
+{
+	CircleRadiusConstraint *dimension = new CircleRadiusConstraint(circle);
+	dimension->setStyle(currentStyle);
+
+	QObject::connect(dimension, &UserInputRequester::requestDouble,
+					 this->userInput, &QGraphicsViewUserInput::requestDouble
+					 );
+
+	return dimension;
 }
 
 void Factory::addToScene(DrawableObject *object)
@@ -296,7 +288,7 @@ QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
 				createdObj = new LinesAngleDimension();
 				break;
 			case Global::CircleRadiusDimension:
-				createdObj = new CircleRadiusDimension();
+				createdObj = new CircleRadiusConstraint();
 				break;
 			default:
 				createdObj = nullptr;

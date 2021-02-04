@@ -1,7 +1,7 @@
 #ifndef LABELTOOL_H
 #define LABELTOOL_H
 
-#include "RectangleTool.h"
+#include "Tool.h"
 
 class LabelTool : public Tool
 {

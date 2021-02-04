@@ -21,9 +21,6 @@ public:
 	double getRadius();
 	Circle *setRadius(double value);
 
-	//relations
-	void setRelationLiesOn(Point *point);
-
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
 	QPainterPath shape() const override;
@@ -36,9 +33,6 @@ private:
 	//defining variables
 	Point *centerPoint;
 	double radius;
-
-	//relations
-	Point *liesOn = nullptr;
 
 	//geometry
 	void setGeometryUpdates() override;

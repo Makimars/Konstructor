@@ -11,11 +11,7 @@ Circle::Circle(Point *center_point) : DrawableObject (Global::Circle)
 
 void Circle::resolveTies()
 {
-	if(this->liesOn != nullptr)
-	{
-		updateGeometry();
-		this->radius = this->centerPoint->distanceFrom(this->liesOn->getLocation());
-	}
+	updateGeometry();
 }
 
 //----------	file handling    ----------
@@ -42,14 +38,12 @@ QString Circle::toFileString()
 void Circle::loadRelations(QVector<DrawableObject*> list)
 {
 	QStringList varNames = {
-		"centerPoint",
-		"liesOn"
+		"centerPoint"
     };
 
 	QVector<DrawableObject*> values = fetchRelations(&list, varNames);
 
 	this->centerPoint = dynamic_cast<Point*>(values[0]);
-	this->liesOn = dynamic_cast<Point*>(values[1]);
 	setGeometryUpdates();
 }
 
@@ -62,13 +56,6 @@ Circle *Circle::setRadius(double value)
 	updateGeometry();
 
 	return this;
-}
-
-//----------	Relations    ----------
-
-void Circle::setRelationLiesOn(Point *object)
-{
-	this->liesOn = object;
 }
 
 //----------	QGraphicsItem overrides    ----------

@@ -1,7 +1,7 @@
 #ifndef LOCKPOSITIONTOOL_H
 #define LOCKPOSITIONTOOL_H
 
-#include "PointPositionTool.h"
+#include "Tool.h"
 
 class LockPositionTool : public Tool
 {

@@ -1,7 +1,7 @@
 #ifndef ARCTOOL_H
 #define ARCTOOL_H
 
-#include "DimensionTool.h"
+#include "Tool.h"
 
 class ArcTool : public Tool
 {

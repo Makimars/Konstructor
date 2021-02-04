@@ -1,14 +1,13 @@
-#ifndef LINELENGTHCONSTRAINT_H
-#define LINELENGTHCONSTRAINT_H
+#ifndef CIRCLERADIUSCONSTRAINT_H
+#define CIRCLERADIUSCONSTRAINT_H
 
-#include "../Label.h"
+#include "../Drawables.h"
 
-class LineLengthConstraint : public DrawableObject, public UserInputRequester
+class CircleRadiusConstraint : public DrawableObject, public UserInputRequester
 {
 public:
-	LineLengthConstraint();
-	LineLengthConstraint(Point *originPoint, Point *drivenPoint);
-	~LineLengthConstraint();
+	CircleRadiusConstraint();
+	CircleRadiusConstraint(Circle *circle);
 
 	void resolveTies() override;
 
@@ -18,8 +17,8 @@ public:
 	void loadRelations(QVector<DrawableObject*> list) override;
 
 	//getters and setters
-	void setDistanceFromLine(double distance);
-	void setLength(double length);
+	void setRadius(double value);
+	double getRadius();
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;
@@ -30,27 +29,26 @@ public:
 			   ) override;
 
 public slots:
-
 	//user input requests
 	void recieveDouble(double value) override;
 
 private:
-	Point *originPoint, *drivenPoint;
-	double lengthToSet;
-	double distanceFromLine = 20;
+	double radius;
+	Circle *circle;
 
 	int textWidth = 60;
 	int textHeight = 20;
 
-	QVector2D getLineVector() const;
-
 	//events
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 	void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
 	//geometry
 	void setGeometryUpdates() override;
 	void unsetGeometryUpdates() override;
+
 };
 
-#endif // LINELENGTHCONSTRAINT_H
+inline void CircleRadiusConstraint::setRadius(double value) { radius = value; }
+inline double CircleRadiusConstraint::getRadius() { return radius; }
+
+#endif // CIRCLERADIUSCONSTRAINT_H

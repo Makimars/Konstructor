@@ -14,6 +14,8 @@ QString DrawableObject::toFileString()
     this->file = "";
 	this->fileAddVar("id", this->getId());
 	this->fileAddVar("constructional", this->constructional);
+	this->fileAddVar("locked", locked);
+	this->fileAddVar("constrains", constrains);
 	return this->file;
 }
 
@@ -67,6 +69,8 @@ QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varN
 	int startIndex = varNames.length();
 	varNames.append("id");
 	varNames.append("constructional");
+	varNames.append("locked");
+	varNames.append("constrains");
 
 	QVector<QVariant> values;
 	values.resize(varNames.length());
@@ -85,6 +89,8 @@ QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varN
 
 	this->id = values[startIndex].toInt();
 	this->constructional = values[startIndex + 1].toBool();
+	this->locked = values[startIndex + 2].toBool();
+	this->constrains = values[startIndex + 3].toInt();
 
 	return values;
 }
@@ -146,12 +152,14 @@ void DrawableObject::paint(QPainter *painter)
 
 void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	this->draging = true;
+	if(event->button() == Qt::MouseButton::LeftButton)
+		this->draging = true;
 }
 
 void DrawableObject::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	this->draging = false;
+	if(event->button() == Qt::MouseButton::LeftButton)
+		this->draging = false;
 }
 
 void DrawableObject::hoverEnterEvent(QGraphicsSceneHoverEvent *event)

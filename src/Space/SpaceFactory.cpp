@@ -24,6 +24,7 @@ void SpaceFactory::generateItemVertexDataToBuffer(Item *item, std::vector<Vertex
 		base[1].assign(vertexes->data() + baseSize-1, vertexes->data()+vertexes->size());
 		int dataSize = 0;
 
+		//calculate bases
 		for (int a = 0; a < 2 ; a++)
 		{
 			std::vector<double> coordinates;

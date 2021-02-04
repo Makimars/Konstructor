@@ -3,7 +3,8 @@
 Plane::Plane()
 {
 	this->setIcon(0, QIcon(":/icons/Plane.png"));
-	setCheckState(0,Qt::CheckState::Checked);
+	setText(0, "Plane");
+	setCheckState(0,Qt::CheckState::Unchecked);
 	itemIndex = -1;
 	planeIndex = 0;
 }

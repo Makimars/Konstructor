@@ -114,7 +114,7 @@ qDebug() << "line and location";
 			Circle *circle = dynamic_cast<Circle*>(this->clickedObjects[1]);
 
 			this->objectFactory->addDrawable(
-						this->objectFactory->makeCircleRadiusDimension(circle)
+						this->objectFactory->makeCircleRadiusConstraint(circle)
 						);
 		}
 

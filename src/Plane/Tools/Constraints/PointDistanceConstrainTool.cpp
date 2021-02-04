@@ -1,21 +1,21 @@
-#include "LineLengthConstrainTool.h"
+#include "PointDistanceConstrainTool.h"
 
-LineLengthConstrainTool *LineLengthConstrainTool::instance = nullptr;
+PointDistanceConstrainTool *PointDistanceConstrainTool::instance = nullptr;
 
-LineLengthConstrainTool::LineLengthConstrainTool() : Tool()
+PointDistanceConstrainTool::PointDistanceConstrainTool() : Tool()
 {
 	toolTips.append(tr("Select first point (origin point), this point will be fixed"));
 	toolTips.append(tr("Select second point which will be driven by the distance"));
 }
 
-LineLengthConstrainTool *LineLengthConstrainTool::getInstance()
+PointDistanceConstrainTool *PointDistanceConstrainTool::getInstance()
 {
-	if(LineLengthConstrainTool::instance == nullptr)
-		LineLengthConstrainTool::instance = new LineLengthConstrainTool();
-	return LineLengthConstrainTool::instance;
+	if(PointDistanceConstrainTool::instance == nullptr)
+		PointDistanceConstrainTool::instance = new PointDistanceConstrainTool();
+	return PointDistanceConstrainTool::instance;
 }
 
-void LineLengthConstrainTool::click(DrawableObject *clickedObject, QPointF pos)
+void PointDistanceConstrainTool::click(DrawableObject *clickedObject, QPointF pos)
 {
 	if(clickedObject != nullptr)
 	{
@@ -38,7 +38,7 @@ void LineLengthConstrainTool::click(DrawableObject *clickedObject, QPointF pos)
 				}
 
 				objectFactory->addDrawable(
-					objectFactory->makeLengthConstraint(firstPoint, dynamic_cast<Point*>(clickedObject))
+					objectFactory->makePointDistanceConstraint(firstPoint, dynamic_cast<Point*>(clickedObject))
 				);
 				resetTool();
 			}
@@ -46,10 +46,8 @@ void LineLengthConstrainTool::click(DrawableObject *clickedObject, QPointF pos)
 	}
 }
 
-void LineLengthConstrainTool::resetTool()
+void PointDistanceConstrainTool::resetTool()
 {
 	clickCounter = 0;
 	firstPoint = nullptr;
 }
-
-void LineLengthConstrainTool::mouseMoveEvent(QPointF pos){}

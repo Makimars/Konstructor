@@ -1,7 +1,7 @@
 #ifndef CIRCLESRADIUSDIFFERENCEDIMENSION_H
 #define CIRCLESRADIUSDIFFERENCEDIMENSION_H
 
-#include "CircleRadiusDimension.h"
+#include "LinesAngleDimension.h"
 
 class CirclesRadiusDifferenceDimension : public DrawableObject, public UserInputRequester
 {

@@ -1,21 +1,21 @@
-#include "CircleRadiusDimension.h"
+#include "CircleRadiusConstraint.h"
 
-CircleRadiusDimension::CircleRadiusDimension() : DrawableObject (Global::CircleRadiusDimension){}
+CircleRadiusConstraint::CircleRadiusConstraint() : DrawableObject (Global::CircleRadiusDimension){}
 
-CircleRadiusDimension::CircleRadiusDimension(Circle *circle) : DrawableObject (Global::CircleRadiusDimension)
+CircleRadiusConstraint::CircleRadiusConstraint(Circle *circle) : DrawableObject (Global::CircleRadiusDimension)
 {
 	this->circle = circle;
 	this->radius = circle->getRadius();
 }
 
-void CircleRadiusDimension::resolveTies()
+void CircleRadiusConstraint::resolveTies()
 {
 	this->circle->setRadius(this->radius);
 }
 
 //----------     file handling     ----------
 
-void CircleRadiusDimension::loadVariables(QString input)
+void CircleRadiusConstraint::loadVariables(QString input)
 {
 	QStringList varNames = {
 		"radius"
@@ -26,7 +26,7 @@ void CircleRadiusDimension::loadVariables(QString input)
 	this->radius = variables[0].toDouble();
 }
 
-QString CircleRadiusDimension::toFileString()
+QString CircleRadiusConstraint::toFileString()
 {
 	DrawableObject::toFileString();
 	this->fileAddVar("radius", this->radius);
@@ -34,7 +34,7 @@ QString CircleRadiusDimension::toFileString()
 	return DrawableObject::fileFinish();
 }
 
-void CircleRadiusDimension::loadRelations(QVector<DrawableObject*> list)
+void CircleRadiusConstraint::loadRelations(QVector<DrawableObject*> list)
 {
 	QStringList varNames = {
 		"circle"
@@ -48,7 +48,7 @@ void CircleRadiusDimension::loadRelations(QVector<DrawableObject*> list)
 
 //----------     QGraphicsItem overrides     ----------
 
-QRectF CircleRadiusDimension::boundingRect() const
+QRectF CircleRadiusConstraint::boundingRect() const
 {
 	QPointF centerPoint = this->circle->getCenterPoint()->getLocation();
 	QPointF rightPoint(centerPoint.x() + this->radius, centerPoint.y()-this->textHeight);
@@ -56,7 +56,7 @@ QRectF CircleRadiusDimension::boundingRect() const
 	return  QRectF(centerPoint, rightPoint);
 }
 
-QPainterPath CircleRadiusDimension::shape() const
+QPainterPath CircleRadiusConstraint::shape() const
 {
 	QPainterPath path;
 	path.addRect(boundingRect());
@@ -64,7 +64,7 @@ QPainterPath CircleRadiusDimension::shape() const
 	return path;
 }
 
-void CircleRadiusDimension::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void CircleRadiusConstraint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	if(this->isHidden())return;
 
@@ -84,26 +84,26 @@ void CircleRadiusDimension::paint(QPainter *painter, const QStyleOptionGraphicsI
 
 //----------     events     ----------
 
-void CircleRadiusDimension::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void CircleRadiusConstraint::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	emit requestDouble(this, "Radius");
 }
 
 //----------     geometry     ---------
 
-void CircleRadiusDimension::setGeometryUpdates()
+void CircleRadiusConstraint::setGeometryUpdates()
 {
 	this->circle->addGeometryUpdate(this);
 }
 
-void CircleRadiusDimension::unsetGeometryUpdates()
+void CircleRadiusConstraint::unsetGeometryUpdates()
 {
 	this->circle->removeGeometryUpdate(this);
 }
 
 //----------     user input requests      ---------
 
-void CircleRadiusDimension::recieveDouble(double value)
+void CircleRadiusConstraint::recieveDouble(double value)
 {
 	this->radius = value;
 }

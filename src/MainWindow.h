@@ -93,6 +93,7 @@ private slots:
 	void on_objectsTree_itemClicked(QTreeWidgetItem *item, int column);
 
 	std::vector<QPolygonF> getPolygonsForItem(QString sketch);
+	void on_circleRadiusConstraintButton_clicked();
 };
 
 #endif // MAINWINDOW_H

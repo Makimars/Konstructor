@@ -14,7 +14,7 @@ public:
 	QString getToolTip();
 
 public slots:
-	virtual void mouseMoveEvent(QPointF pos) = 0;
+	virtual void mouseMoveEvent(QPointF pos){};
 
 protected:
 	Tool();

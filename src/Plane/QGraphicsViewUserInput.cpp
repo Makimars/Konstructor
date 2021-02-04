@@ -45,6 +45,7 @@ void QGraphicsViewUserInput::closeInputBox()
 void QGraphicsViewUserInput::setInputBoxLocation(QPointF location)
 {
 	this->inputBoxProxy->setPos(location);
+	labelProxy->setPos(QPoint(location.x(), location.y()-inputBox.height()));
 }
 
 void QGraphicsViewUserInput::showInputBox()

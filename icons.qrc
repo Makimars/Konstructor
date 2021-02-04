@@ -8,5 +8,6 @@
         <file>icons/Rectangle.png</file>
         <file>icons/Lock.png</file>
         <file>icons/LineLength.png</file>
+        <file>icons/CircleRadius.png</file>
     </qresource>
 </RCC>

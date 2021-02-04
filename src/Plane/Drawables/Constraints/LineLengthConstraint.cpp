@@ -1,8 +1,8 @@
-#include "LineLengthConstraint.h"
+#include "PointDistanceConstraint.h"
 
-LineLengthConstraint::LineLengthConstraint() : DrawableObject(Global::Types::LineLengthConstraint){}
+PointDistanceConstraint::PointDistanceConstraint() : DrawableObject(Global::Types::LineLengthConstraint){}
 
-LineLengthConstraint::LineLengthConstraint(Point *originPoint, Point *drivenPoint) : LineLengthConstraint()
+PointDistanceConstraint::PointDistanceConstraint(Point *originPoint, Point *drivenPoint) : PointDistanceConstraint()
 {
 	this->originPoint = originPoint;
 	this->drivenPoint = drivenPoint;
@@ -12,19 +12,19 @@ LineLengthConstraint::LineLengthConstraint(Point *originPoint, Point *drivenPoin
 	originPoint->addConstrant();
 }
 
-LineLengthConstraint::~LineLengthConstraint()
+PointDistanceConstraint::~PointDistanceConstraint()
 {
 	originPoint->removeConstraint();
 }
 
-void LineLengthConstraint::resolveTies()
+void PointDistanceConstraint::resolveTies()
 {
 	drivenPoint->setLocation(
 				originPoint->getLocation() + (getLineVector().normalized() * lengthToSet).toPointF()
 			);
 }
 
-void LineLengthConstraint::loadVariables(QString input)
+void PointDistanceConstraint::loadVariables(QString input)
 {
 	QStringList varNames = {
 		"lengthToSet",
@@ -37,7 +37,7 @@ void LineLengthConstraint::loadVariables(QString input)
 	this->distanceFromLine = variables[1].toDouble();
 }
 
-QString LineLengthConstraint::toFileString()
+QString PointDistanceConstraint::toFileString()
 {
 	DrawableObject::toFileString();
 	this->fileAddVar("lengthToSet", this->lengthToSet);
@@ -47,7 +47,7 @@ QString LineLengthConstraint::toFileString()
 	return this->fileFinish();
 }
 
-void LineLengthConstraint::loadRelations(QVector<DrawableObject *> list)
+void PointDistanceConstraint::loadRelations(QVector<DrawableObject *> list)
 {
 	QStringList varNames = {
 		"originPoint",
@@ -61,17 +61,17 @@ void LineLengthConstraint::loadRelations(QVector<DrawableObject *> list)
 	setGeometryUpdates();
 }
 
-void LineLengthConstraint::setDistanceFromLine(double distance)
+void PointDistanceConstraint::setDistanceFromLine(double distance)
 {
 	this->distanceFromLine = distance;
 }
 
-void LineLengthConstraint::setLength(double length)
+void PointDistanceConstraint::setLength(double length)
 {
 	lengthToSet = length;
 }
 
-QRectF LineLengthConstraint::boundingRect() const
+QRectF PointDistanceConstraint::boundingRect() const
 {
 	std::vector<QPointF> points = shape().toFillPolygon().toStdVector();
 	std::vector<double> x, y;
@@ -93,7 +93,7 @@ QRectF LineLengthConstraint::boundingRect() const
 	);
 }
 
-QPainterPath LineLengthConstraint::shape() const
+QPainterPath PointDistanceConstraint::shape() const
 {
 	QPolygonF polygon;
 
@@ -133,7 +133,7 @@ QPainterPath LineLengthConstraint::shape() const
 	return path;
 }
 
-void LineLengthConstraint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void PointDistanceConstraint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 	if(this->isHidden())return;
 
@@ -189,18 +189,18 @@ void LineLengthConstraint::paint(QPainter *painter, const QStyleOptionGraphicsIt
 	painter->restore();
 }
 
-void LineLengthConstraint::recieveDouble(double value)
+void PointDistanceConstraint::recieveDouble(double value)
 {
 	this->lengthToSet = value;
 	resolveTies();
 }
 
-QVector2D LineLengthConstraint::getLineVector() const
+QVector2D PointDistanceConstraint::getLineVector() const
 {
 	return QVector2D(drivenPoint->getLocation() - originPoint->getLocation());
 }
 
-void LineLengthConstraint::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+void PointDistanceConstraint::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	if(this->isDraging())
 	{
@@ -208,18 +208,18 @@ void LineLengthConstraint::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void LineLengthConstraint::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+void PointDistanceConstraint::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
 	emit requestDouble(this, "Length");
 }
 
-void LineLengthConstraint::setGeometryUpdates()
+void PointDistanceConstraint::setGeometryUpdates()
 {
 	originPoint->addGeometryUpdate(this);
 	drivenPoint->addGeometryUpdate(this);
 }
 
-void LineLengthConstraint::unsetGeometryUpdates()
+void PointDistanceConstraint::unsetGeometryUpdates()
 {
 	originPoint->removeGeometryUpdate(this);
 	drivenPoint->removeGeometryUpdate(this);

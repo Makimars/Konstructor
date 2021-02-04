@@ -1,7 +1,10 @@
 #ifndef DRAWABLESFACTORY_H
 #define DRAWABLESFACTORY_H
 
+#include "Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
+
 #include "QGraphicsViewUserInput.h"
+#include "Drawables/Constraints/Constraints.h"
 
 class Factory
 {
@@ -23,7 +26,6 @@ public:
 	Line *makeLine(Point *startPoint, Point *endPoint);
 	Circle *makeCircle(Point *centerPoint);
 	Circle *makeCircle(Point *centerPoint, double radius);
-	Circle *makeCircle(Point *centerPoint, Point *liesOn);
 	Label *makeLabel(QPointF location);
 	Label *makeLabel(QPointF location, QString text);
 	// 0 and 1 edge points, 2 center
@@ -35,11 +37,11 @@ public:
 	Q_DECL_DEPRECATED LineLengthDimension *makeLineLengthDimension(Line *line, double lenght, double distanceFromLine);
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2]);
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double distanceFromCenter);
-	CircleRadiusDimension *makeCircleRadiusDimension(Circle *circle);
 	CirclesRadiusDifferenceDimension *makeCirclesRadiusDifferenceDimension(Circle *circles[2]);
 
 	//constrains
-	LineLengthConstraint *makeLengthConstraint(Point *originPoint, Point *drivenPoint);
+	PointDistanceConstraint *makePointDistanceConstraint(Point *originPoint, Point *drivenPoint);
+	CircleRadiusConstraint *makeCircleRadiusConstraint(Circle *circle);
 
 	//object managment
 	void addToScene(DrawableObject *object);

@@ -1,7 +1,7 @@
 #ifndef DIMENSIONSTOOL_H
 #define DIMENSIONSTOOL_H
 
-#include "LabelTool.h"
+#include "Tool.h"
 
 class DimensionTool : public Tool
 {

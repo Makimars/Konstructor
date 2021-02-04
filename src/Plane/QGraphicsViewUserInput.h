@@ -5,9 +5,10 @@
 #include <QLabel>
 #include <QGraphicsProxyWidget>
 #include <QValidator>
+#include <QGraphicsScene>
 
-#include "Drawables/Dimensions/CirclesRadiusDifferenceDimension.h"
-#include "Drawables/Constraints/LineLengthConstraint.h"
+#include "src/Base/Settings.h"
+#include "UserInputRequester.h"
 
 class QGraphicsViewUserInput : public QObject
 {

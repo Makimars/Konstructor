@@ -1,7 +1,7 @@
 #ifndef ABSOLUTEPOINTPOSITION_H
 #define ABSOLUTEPOINTPOSITION_H
 
-#include "LineLengthConstrainTool.h"
+#include "Tool.h"
 #include "src/Dialogs/PointPositionDialog.h"
 
 class PointPositionTool : public Tool

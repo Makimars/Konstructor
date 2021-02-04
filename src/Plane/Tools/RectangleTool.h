@@ -1,7 +1,7 @@
 #ifndef RECTANGLETOOL_H
 #define RECTANGLETOOL_H
 
-#include "CircleTool.h"
+#include "Tool.h"
 
 class RectangleTool : public Tool
 {

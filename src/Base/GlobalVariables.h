@@ -32,7 +32,8 @@ enum Tools{
 	ArcTool,
 	PointPositionTool,
 	LockPointTool,
-	LineLengthConstrainTool
+	PointDistanceConstrainTool,
+	CircleRadiusConstraintTool
 };
 
 enum Mode{

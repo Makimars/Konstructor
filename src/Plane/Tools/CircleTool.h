@@ -1,7 +1,7 @@
 #ifndef CIRCLETOOL_H
 #define CIRCLETOOL_H
 
-#include "LineTool.h"
+#include "Tool.h"
 
 class CircleTool : public Tool
 {

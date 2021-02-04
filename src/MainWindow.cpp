@@ -61,10 +61,12 @@ void MainWindow::setupUi()
 	this->ui->objectsTree->setHeaderHidden(true);
     ui->objectsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 
+	//base plane
 	Plane *basePlane = new Plane();
 	basePlane->setPosition(QVector3D(0,0,0));
 	basePlane->setRotation(QQuaternion(1,0,0,0));
 	basePlane->setText(0, "origin plane");
+	basePlane->setCheckState(0,Qt::CheckState::Checked);
     this->ui->objectsTree->addTopLevelItem(basePlane);
 	this->ui->spaceView->setTopPlane(basePlane);
 
@@ -156,8 +158,10 @@ void MainWindow::refreshTools(int tool)
 		this->ui->pointPosButton->setChecked(false);
 	if(tool != Global::Tools::LockPointTool)
 		this->ui->lockPointButton->setChecked(false);
-	if(tool != Global::Tools::LineLengthConstrainTool)
+	if(tool != Global::Tools::PointDistanceConstrainTool)
 		this->ui->lineLengthConstraintButton->setChecked(false);
+	if(tool != Global::Tools::CircleRadiusConstraintTool)
+		this->ui->circleRadiusConstraintButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -341,7 +345,15 @@ void MainWindow::on_lockPointButton_clicked()
 void MainWindow::on_lineLengthConstraintButton_clicked()
 {
 	if(this->ui->lineLengthConstraintButton->isChecked())
-		refreshTools(Global::Tools::LineLengthConstrainTool);
+		refreshTools(Global::Tools::PointDistanceConstrainTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
+void MainWindow::on_circleRadiusConstraintButton_clicked()
+{
+	if(this->ui->circleRadiusConstraintButton->isChecked())
+		refreshTools(Global::Tools::CircleRadiusConstraintTool);
 	else
 		refreshTools(Global::Tools::NoTool);
 }

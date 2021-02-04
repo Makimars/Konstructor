@@ -317,8 +317,11 @@ void PlaneWidget::setTool(int tool)
 		case Global::Tools::LockPointTool:
 			this->selectedTool = LockPositionTool::getInstance();
 			break;
-		case Global::Tools::LineLengthConstrainTool:
-			this->selectedTool = LineLengthConstrainTool::getInstance();
+		case Global::Tools::PointDistanceConstrainTool:
+			this->selectedTool = PointDistanceConstrainTool::getInstance();
+			break;
+		case Global::Tools::CircleRadiusConstraintTool:
+			this->selectedTool = CircleRadiusConstraintTool::getInstance();
 			break;
 		default:
 			this->selectedTool = nullptr;
