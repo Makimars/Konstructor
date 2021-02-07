@@ -279,8 +279,6 @@ void SpaceWidget::initializeGL()
 	planesParameter.itemToRotate = planesProgram.uniformLocation("itemToRotate");
 	planeColor = planesProgram.uniformLocation("planeColor");
 
-	planeIsSelected = planesProgram.uniformLocation("isSelected");
-
 	planesProgram.release();
 
 
@@ -364,9 +362,11 @@ void SpaceWidget::paintGL()
 
 	for(int i = 0; i < planes.size(); i++)
 	{
-		planesProgram.setUniformValue(planeIsSelected, planes.at(i)->checkState(0) == Qt::Checked);
-		planesProgram.setUniformValue(planesParameter.itemToSpace, planes.at(i)->toMatrix());
-		glDrawArrays(GL_TRIANGLES, i * 6, 6);
+		if(planes.at(i)->checkState(0) == Qt::Checked)
+		{
+			planesProgram.setUniformValue(planesParameter.itemToSpace, planes.at(i)->toMatrix());
+			glDrawArrays(GL_TRIANGLES, i * 6, 6);
+		}
 	}
 
 	planeBufferObject.release();

@@ -72,7 +72,6 @@ private:
 
 	int selectedItemColor;
 	int itemIsSelected;
-	int planeIsSelected;
 
 	int selectedTransparentValue;
 
