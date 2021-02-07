@@ -40,19 +40,16 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QCheckBox" name="gridSnapping">
            <property name="text">
-            <string>Snapping distance</string>
+            <string>Grid snapping</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="snappingDistanceLine"/>
-         </item>
-         <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Sketch size</string>
+            <string>Default sketch size</string>
            </property>
           </widget>
          </item>
@@ -78,6 +75,23 @@
          </item>
          <item>
           <widget class="QLineEdit" name="lineShapeSizeLine"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Max side planes for an item</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="maxItemSidePlanes"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="planeColorButton">
+           <property name="text">
+            <string>Plane color</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_5">
@@ -136,16 +150,6 @@
           <widget class="QKeySequenceEdit" name="saveFileEdit"/>
          </item>
          <item>
-          <widget class="QLabel" name="label_9">
-           <property name="text">
-            <string>Save file as</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QKeySequenceEdit" name="saveAsFileEdit"/>
-         </item>
-         <item>
           <widget class="QLabel" name="label_11">
            <property name="text">
             <string>Export file</string>
@@ -154,16 +158,6 @@
          </item>
          <item>
           <widget class="QKeySequenceEdit" name="exportFileEdit"/>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_10">
-           <property name="text">
-            <string>Print file</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QKeySequenceEdit" name="printFileEdit"/>
          </item>
          <item>
           <widget class="QLabel" name="label_13">

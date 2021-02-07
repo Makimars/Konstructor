@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QDoubleValidator>
+#include <QColorDialog>
 
 #include <QDebug>
 #include "../Base/Settings.h"
@@ -24,10 +25,14 @@ public:
 private slots:
 	void on_buttonBox_accepted();
 
+	void on_planeColorButton_clicked();
+
 private:
 	Ui::SettingsDialog *ui;
 	QDoubleValidator doubleValidator;
 	QIntValidator intValidator;
+
+	QColorDialog colorDialog;
 
 	void loadSettings();
 };
