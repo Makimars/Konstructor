@@ -62,6 +62,7 @@ private:
 
 	QString basePlaneId;
 
+	QVector3D globalVertexPos(u_int32_t i);
 	void addPlane(int index, QVector3D position, QQuaternion rotation);
 
 signals:

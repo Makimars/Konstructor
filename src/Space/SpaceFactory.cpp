@@ -216,7 +216,7 @@ void SpaceFactory::addNewItem(std::vector<QPolygonF> polygons, QString sketch)
 	{
 		Item *item = new Item(plane, polygons, sketch);
 
-		item->setText(0, "object " + QString::number(objectsInSpace->size()));
+		item->setText(0, "item " + QString::number(objectsInSpace->size()));
 
 		connect(item, &Item::planeAdded,
 				this, &SpaceFactory::addPlane

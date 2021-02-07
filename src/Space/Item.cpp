@@ -133,26 +133,28 @@ void Item::extrude()
 
 		extrudedVertexes.push_back(vertex);
 	}
-	addPlane(1, basePlane->getPosition() + QVector3D(0,0,length), basePlane->getRotation());
-
+	addPlane(1, basePlane->getPosition() + (QVector3D(0,0,-length)*toMatrix()), basePlane->getRotation());
 
 	//calculate planes for faces
 	int edges = extrudedVertexes.size() / 2;
-	for (int i = 0; i < edges - 1 ; i++)
+	if(edges < Settings::maxItemSidePlanes)
 	{
-		QVector3D basePos = extrudedVertexes.at(i).position() * toMatrix();
+		for (int i = 0; i < edges - 1 ; i++)
+		{
+			QVector3D basePos = extrudedVertexes.at(i).position() * toMatrix();
 
-		QVector3D rotAxis = extrudedVertexes.at(i+1).position() - extrudedVertexes.at(i).position();
+			QVector3D rotAxis = globalVertexPos(i+1) - globalVertexPos(i);
+			QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
+
+			addPlane(i+2, basePos, rot);
+		}
+		//overlapping
+		QVector3D basePos = globalVertexPos(edges - 1);
+		QVector3D rotAxis = globalVertexPos(0) - globalVertexPos(edges-1);
 		QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
-
-		addPlane(i+2, basePos, rot);
+		//+1 = edges - 1 + 2
+		addPlane(edges+1, basePos, rot);
 	}
-	//overlapping
-	QVector3D basePos = extrudedVertexes.at(edges-1).position() * toMatrix();
-	QVector3D rotAxis = extrudedVertexes.at(0).position() - extrudedVertexes.at(edges-1).position();
-	QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
-	//+1 = edges -1 + 2
-	addPlane(edges+1, basePos, rot);
 
 	emit updateData();
 	setExpanded(true);
@@ -222,6 +224,11 @@ void Item::loadRelations(std::vector<Item*> list)
 	}
 
 	basePlane->addChild(this);
+}
+
+QVector3D Item::globalVertexPos(u_int32_t i)
+{
+	return extrudedVertexes.at(i).position() * toMatrix();
 }
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation)

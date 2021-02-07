@@ -53,6 +53,7 @@ public:
 	static AngleUnits angleUnits;
 
 	static int planeToSpaceRatio;
+	static int maxItemSidePlanes;
 
 	static QVector3D selectedFaceColor;
 	static QVector4D planeColor;
