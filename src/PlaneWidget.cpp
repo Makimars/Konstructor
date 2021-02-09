@@ -158,6 +158,10 @@ void PlaneWidget::initializeScene()
 		this->sketchScene->addItem(line);
 	}
 
+	mousePosLabel.setStyleSheet("background-color: rgba(255, 255, 255, 0);");
+	mousePosLabel.setSizePolicy(QSizePolicy(QSizePolicy::Policy::Expanding,QSizePolicy::Policy::Expanding));
+	mousePosLabelProxy = sketchScene->addWidget(&mousePosLabel);
+
 	this->setScene(sketchScene);
 }
 
@@ -257,7 +261,10 @@ void PlaneWidget::mouseMoveEvent(QMouseEvent *event)
 	QGraphicsView::mouseMoveEvent(event);
 
 	emit mouseMoved(mousePoint);
-	//emit showStatusBarMessage("X: " + QString::number(mousePoint.x()) + " Y: " + QString::number(mousePoint.y()));
+
+	mousePosLabelProxy->setPos(mousePoint.x(), mousePoint.y()-20);
+	mousePosLabel.setText("X: " + QString::number((int)mousePoint.x()) + "; Y: " + QString::number((int)mousePoint.y()));
+	mousePosLabel.adjustSize();
 }
 
 void PlaneWidget::wheelEvent(QWheelEvent *event)
@@ -283,6 +290,20 @@ void PlaneWidget::keyPressEvent(QKeyEvent *event)
 {
 	QGraphicsView::keyPressEvent(event);
 	emit keyPressed(event);
+}
+
+void PlaneWidget::paintEvent(QPaintEvent *event)
+{
+	QGraphicsView::paintEvent(event);
+	/*qDebug() << "paint";
+
+	QPainter painter(this);
+	painter.setPen(Qt::red);
+	painter.setBrush(Qt::red);
+
+	painter.drawLine(0,0,100,100);
+
+	painter.drawLine(100,0,0,100);*/
 }
 
 //----------	tools    ----------

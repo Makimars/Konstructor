@@ -32,6 +32,9 @@ private:
 	QAction deleteObjectAction;
 	QAction lockPointAction;
 
+	QLabel mousePosLabel;
+	QGraphicsProxyWidget *mousePosLabelProxy;
+
 	Factory *objectFactory;
 
 	//tools
@@ -63,6 +66,7 @@ private:
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void wheelEvent(QWheelEvent *event) override;
 	void keyPressEvent(QKeyEvent *event) override;
+	void paintEvent(QPaintEvent *event) override;
 
 signals:
     void keyPressed(QKeyEvent *event);
