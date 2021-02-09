@@ -33,7 +33,8 @@ enum Tools{
 	PointPositionTool,
 	LockPointTool,
 	PointDistanceConstrainTool,
-	CircleRadiusConstraintTool
+	CircleRadiusConstraintTool,
+	ExpandPolgyonTool
 };
 
 enum Mode{

@@ -9,5 +9,6 @@
         <file>icons/Lock.png</file>
         <file>icons/LineLength.png</file>
         <file>icons/CircleRadius.png</file>
+        <file>icons/ConcentricCircles.png</file>
     </qresource>
 </RCC>

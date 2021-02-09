@@ -11,6 +11,7 @@
 #include "LockPositionTool.h"
 #include "PointPositionTool.h"
 #include "RectangleTool.h"
+#include "ExpandPolygonTool.h"
 
 #include "DimensionTool.h"
 

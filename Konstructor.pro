@@ -27,8 +27,7 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/Plane/Tools/Constraints/CircleRadiusConstraintTool.cpp \
-    src/Plane/Tools/Constraints/PointDistanceConstrainTool.cpp \
+    src/Plane/Tools/ExpandPolygonTool.cpp \
     src/PlaneWidget.cpp \
     src/SpaceWidget.cpp \
     src/main.cpp \
@@ -55,6 +54,8 @@ SOURCES += \
     src/Plane/Tools/LineTool.cpp \
     src/Plane/Tools/ArcTool.cpp \
 \
+    src/Plane/Tools/Constraints/CircleRadiusConstraintTool.cpp \
+    src/Plane/Tools/Constraints/PointDistanceConstrainTool.cpp \
 \
     src/Plane/Drawables/DrawableObject.cpp \
     src/Plane/Drawables/Circle.cpp \
@@ -86,10 +87,7 @@ HEADERS += \
     include/nlohmann/json.hpp \
 \
     src/MainWindow.h \
-    src/Plane/Drawables/Constraints/Constraints.h \
-    src/Plane/Drawables/Drawables.h \
-    src/Plane/Tools/Constraints/CircleRadiusConstraintTool.h \
-    src/Plane/Tools/Tools.h \
+    src/Plane/Tools/ExpandPolygonTool.h \
     src/PlaneWidget.h \
     src/SpaceWidget.h \
 \
@@ -109,6 +107,7 @@ HEADERS += \
     src/Plane/UserInputRequester.h \
     src/Plane/QGraphicsViewUserInput.h \
 \
+    src/Plane/Tools/Tools.h \
     src/Plane/Tools/ArcTool.h \
     src/Plane/Tools/LockPositionTool.h \
     src/Plane/Tools/PointPositionTool.h \
@@ -120,13 +119,17 @@ HEADERS += \
     src/Plane/Tools/LabelTool.h \
 \
     src/Plane/Tools/Constraints/PointDistanceConstrainTool.h \
+    src/Plane/Tools/Constraints/CircleRadiusConstraintTool.h \
 \
+    src/Plane/Drawables/Drawables.h \
     src/Plane/Drawables/DrawableObject.h \
     src/Plane/Drawables/Circle.h \
     src/Plane/Drawables/Line.h \
     src/Plane/Drawables/Point.h \
     src/Plane/Drawables/Label.h \
     src/Plane/Drawables/Arc.h \
+\
+    src/Plane/Drawables/Constraints/Constraints.h \
 \
     src/Plane/Drawables/Constraints/PointDistanceConstraint.h \
     src/Plane/Drawables/Constraints/CircleRadiusConstraint.h \

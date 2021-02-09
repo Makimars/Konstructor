@@ -119,6 +119,9 @@ void PlaneWidget::initializeTools()
 	connect(this, &PlaneWidget::mouseMoved,
 			RectangleTool::getInstance(), &Tool::mouseMoveEvent
 			);
+	connect(this, &PlaneWidget::mouseMoved,
+			ExpandPolygonTool::getInstance(), &Tool::mouseMoveEvent
+			);
 }
 
 void PlaneWidget::initializeScene()
@@ -247,6 +250,8 @@ void PlaneWidget::mouseReleaseEvent(QMouseEvent *event)
 		if(this->selectedTool != nullptr)
 		{
 			DrawableObject *clickedObject = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
+			if(clickedObject == nullptr || !(objectsInSketch.contains(clickedObject) || staticObjects.contains(clickedObject)))
+					clickedObject = nullptr;
 
 			this->selectedTool->click(clickedObject, gridSnapping(mapToScene(event->pos())));
 
@@ -310,20 +315,6 @@ void PlaneWidget::keyPressEvent(QKeyEvent *event)
 	emit keyPressed(event);
 }
 
-void PlaneWidget::paintEvent(QPaintEvent *event)
-{
-	QGraphicsView::paintEvent(event);
-	/*qDebug() << "paint";
-
-	QPainter painter(this);
-	painter.setPen(Qt::red);
-	painter.setBrush(Qt::red);
-
-	painter.drawLine(0,0,100,100);
-
-	painter.drawLine(100,0,0,100);*/
-}
-
 //----------	tools    ----------
 
 void PlaneWidget::setTool(int tool)
@@ -361,6 +352,9 @@ void PlaneWidget::setTool(int tool)
 			break;
 		case Global::Tools::CircleRadiusConstraintTool:
 			this->selectedTool = CircleRadiusConstraintTool::getInstance();
+			break;
+		case Global::Tools::ExpandPolgyonTool:
+			this->selectedTool = ExpandPolygonTool::getInstance();
 			break;
 		default:
 			this->selectedTool = nullptr;

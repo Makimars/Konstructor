@@ -77,11 +77,13 @@ private slots:
 	void on_circleButton_clicked();
 	void on_rectangleButton_clicked();
 	void on_labelButton_clicked();
+	void on_expandPolygonButton_clicked();
 	//constrains
 	void on_dimensionButton_clicked();
 	void on_pointPosButton_clicked();
 	void on_lockPointButton_clicked();
 	void on_lineLengthConstraintButton_clicked();
+	void on_circleRadiusConstraintButton_clicked();
 	//finish drawing
 	void on_finishDrawingButton_clicked();
 
@@ -93,7 +95,6 @@ private slots:
 	void on_objectsTree_itemClicked(QTreeWidgetItem *item, int column);
 
 	std::vector<QPolygonF> getPolygonsForItem(QString sketch);
-	void on_circleRadiusConstraintButton_clicked();
 };
 
 #endif // MAINWINDOW_H

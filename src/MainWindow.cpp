@@ -162,6 +162,8 @@ void MainWindow::refreshTools(int tool)
 		this->ui->lineLengthConstraintButton->setChecked(false);
 	if(tool != Global::Tools::CircleRadiusConstraintTool)
 		this->ui->circleRadiusConstraintButton->setChecked(false);
+	if(tool != Global::Tools::ExpandPolgyonTool)
+		this->ui->expandPolygonButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -312,6 +314,14 @@ void MainWindow::on_arcButton_clicked()
 {
 	if(this->ui->arcButton->isChecked())
 		refreshTools(Global::Tools::ArcTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
+void MainWindow::on_expandPolygonButton_clicked()
+{
+	if(this->ui->expandPolygonButton->isChecked())
+		refreshTools(Global::Tools::ExpandPolgyonTool);
 	else
 		refreshTools(Global::Tools::NoTool);
 }
