@@ -2,7 +2,10 @@
 
 LabelTool *LabelTool::instance = nullptr;
 
-LabelTool::LabelTool() : Tool(){}
+LabelTool::LabelTool() : Tool()
+{
+	toolTips.append(tr("Place label."));
+}
 
 LabelTool *LabelTool::getInstance()
 {
@@ -17,7 +20,3 @@ void LabelTool::click(DrawableObject *clickedObject, QPointF pos)
 	this->objectFactory->addDrawable(label);
 	label->requestText();
 }
-
-void LabelTool::resetTool(){}
-
-void LabelTool::mouseMoveEvent(QPointF pos){}

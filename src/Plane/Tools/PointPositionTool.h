@@ -10,10 +10,6 @@ public:
 	static PointPositionTool *getInstance();
 
 	void click(DrawableObject *clickedObject, QPointF pos) override;
-	void resetTool() override;
-
-public slots:
-	void mouseMoveEvent(QPointF pos) override;
 
 private:
 	PointPositionTool();

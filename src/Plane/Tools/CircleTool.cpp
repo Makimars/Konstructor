@@ -15,6 +15,9 @@ CircleTool::CircleTool() : Tool()
 
 	objectFactory->addToScene(circlePreview);
 	objectFactory->addToScene(circlePreviewCentre);
+
+	toolTips.append(tr("Select center for a circle"));
+	toolTips.append(tr("Select circle's radius"));
 }
 
 CircleTool *CircleTool::getInstance()

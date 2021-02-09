@@ -9,12 +9,12 @@ class Tool : public QObject
 	Q_OBJECT
 public:
 	virtual void click(DrawableObject *clickedObject, QPointF pos) = 0;
-	virtual void resetTool() = 0;
+	virtual void resetTool(){};
 
 	QString getToolTip();
 
 public slots:
-	virtual void mouseMoveEvent(QPointF pos){};
+	virtual void mouseMoveEvent(QPointF){};
 
 protected:
 	Tool();

@@ -6,6 +6,8 @@ CircleRadiusConstraint::CircleRadiusConstraint(Circle *circle) : DrawableObject 
 {
 	this->circle = circle;
 	this->radius = circle->getRadius();
+
+
 }
 
 void CircleRadiusConstraint::resolveTies()

@@ -8,11 +8,7 @@ class LockPositionTool : public Tool
 public:
     static LockPositionTool *getInstance();
 
-    void click(DrawableObject *clickedObject, QPointF pos) override;
-    void resetTool() override;
-
-public slots:
-    void mouseMoveEvent(QPointF pos) override;
+	void click(DrawableObject *clickedObject, QPointF pos) override;
 
 private:
     LockPositionTool();

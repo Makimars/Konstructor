@@ -6,12 +6,12 @@
 
 #include "ArcTool.h"
 #include "CircleTool.h"
-#include "DimensionTool.h"
 #include "LabelTool.h"
 #include "LineTool.h"
 #include "LockPositionTool.h"
 #include "PointPositionTool.h"
 #include "RectangleTool.h"
 
+#include "DimensionTool.h"
 
 #endif // TOOLS_H

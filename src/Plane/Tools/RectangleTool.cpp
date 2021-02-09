@@ -23,6 +23,9 @@ RectangleTool::RectangleTool() : Tool()
 		pointsPreview[i]->setHidden(true);
 		linesPreview[i]->setHidden(true);
 	}
+
+	toolTips.append(tr("Select edge of the rectangle."));
+	toolTips.append(tr("Select size of the rectangle."));
 }
 RectangleTool *RectangleTool::getInstance()
 {

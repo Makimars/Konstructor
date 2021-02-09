@@ -2,6 +2,11 @@
 
 LockPositionTool *LockPositionTool::instance = nullptr;
 
+LockPositionTool::LockPositionTool()
+{
+	toolTips.append(tr("Select point to be locked/unlocked."));
+}
+
 LockPositionTool *LockPositionTool::getInstance()
 {
     if(LockPositionTool::instance == nullptr)
@@ -13,13 +18,7 @@ void LockPositionTool::click(DrawableObject *clickedObject, QPointF pos)
 {
     if(Point *point = dynamic_cast<Point*>(clickedObject))
     {
-	if(point->isLocked()) point->setLocked(false);
-	else point->setLocked(true);
+		if(point->isLocked()) point->setLocked(false);
+		else point->setLocked(true);
     }
 }
-
-void LockPositionTool::resetTool(){}
-
-void LockPositionTool::mouseMoveEvent(QPointF pos){}
-
-LockPositionTool::LockPositionTool(){}

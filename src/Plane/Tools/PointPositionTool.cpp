@@ -5,6 +5,8 @@ PointPositionTool *PointPositionTool::instance = nullptr;
 PointPositionTool::PointPositionTool() : Tool()
 {
 	dialog = new PointPositionDialog();
+
+	toolTips.append(tr("Select point to set its coordinates."));
 }
 
 PointPositionTool::~PointPositionTool()
@@ -38,7 +40,3 @@ void PointPositionTool::click(DrawableObject *clickedObject, QPointF pos)
 		}
 	}
 }
-
-void PointPositionTool::resetTool(){}
-
-void PointPositionTool::mouseMoveEvent(QPointF pos){}
