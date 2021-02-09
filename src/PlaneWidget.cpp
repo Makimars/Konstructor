@@ -60,22 +60,14 @@ void PlaneWidget::loadFromFile(QString file)
     }
 }
 
-void PlaneWidget::saveToFile(QString path)
+QString PlaneWidget::toFile()
 {
-	QFile targetFile(path);
-	if(targetFile.open(QIODevice::WriteOnly))
-	{
-		for(int i = 0; i < this->objectsInSketch.length(); i++)
-		{
-			targetFile.write(
-						this->objectsInSketch
-						.at(i)
-						->toFileString()
-						.toUtf8() + "\n"
-						);
-		}
-	}
+	QString file;
 
+	for(int i = 0; i < this->objectsInSketch.length(); i++)
+		file += this->objectsInSketch.at(i)->toFileString() + "\n";
+
+	return file;
 }
 
 void PlaneWidget::loadProjected(QPolygonF projectedPoints)
@@ -356,6 +348,9 @@ void PlaneWidget::setTool(int tool)
 		case Global::Tools::ExpandPolgyonTool:
 			this->selectedTool = ExpandPolygonTool::getInstance();
 			break;
+		case Global::Tools::LineCenterTool:
+			this->selectedTool = LineCenterTool::getInstance();
+			break;
 		default:
 			this->selectedTool = nullptr;
 			emit showStatusBarMessage("");
@@ -375,11 +370,9 @@ void PlaneWidget::resetTool()
 	}
 }
 
-void PlaneWidget::finishDrawing()
+QVector<DrawableObject*> PlaneWidget::finishDrawing()
 {
-	emit returnDrawing(this->objectsInSketch + staticObjects);
-
-	objectFactory->deleteAll();
+	return this->objectsInSketch + staticObjects;
 }
 
 void PlaneWidget::customContextMenuRequested(const QPoint &pos)
@@ -424,5 +417,5 @@ void PlaneWidget::newSketchButtonClicked()
 void PlaneWidget::closeSketchButtonClicked()
 {
 	objectFactory->deleteAll();
-	emit returnDrawing(QVector<DrawableObject*>());
+	emit closeDrawing();
 }

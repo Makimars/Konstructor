@@ -67,7 +67,7 @@ void SpaceWidget::loadFromFile(QString fileContents)
 	}
 }
 
-void SpaceWidget::saveToFile(QString file)
+QString SpaceWidget::saveToFile()
 {
 	std::vector<std::string> objects;
 	for(int i = 0; i < this->objectsInSpace.length(); i++)
@@ -76,13 +76,10 @@ void SpaceWidget::saveToFile(QString file)
 		objects.push_back(s);
 	}
 
-	QFile targetFile(file);
-	if(targetFile.open(QIODevice::WriteOnly))
-	{
-		nlohmann::json json;
-		json["objects"] = objects;
-		targetFile.write(QString::fromStdString(std::string(json.dump())).toUtf8());
-	}
+	nlohmann::json json;
+	json["objects"] = objects;
+
+	return QString::fromStdString(std::string(json.dump()));
 }
 
 void SpaceWidget::exportToFile(QString file)

@@ -20,12 +20,6 @@ private:
 
 	QVector<PointAdapter*> generateAdapters(QVector<DrawableObject*> drawing);
 	QVector<QPolygonF> generatePolygons(QVector<PointAdapter*> transferPoints);
-
-public slots:
-	void recieveDrawing(QVector<DrawableObject*> drawing);
-
-signals:
-	void sendPolygons(std::vector<QPolygonF> polygons, QString sketch);
 };
 
 #endif // POLYGONATOR_H

@@ -3,6 +3,7 @@
 
 #include "Constraints/CircleRadiusConstraintTool.h"
 #include "Constraints/PointDistanceConstrainTool.h"
+#include "LineCenterTool.h"
 
 #include "ArcTool.h"
 #include "CircleTool.h"

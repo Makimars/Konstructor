@@ -56,7 +56,6 @@ signals:
 	void setTool(int tool);
 	void resetTool();
 
-	void finishDrawing();
 	void setTargetItem(QTreeWidgetItem *item);
 
 private slots:
@@ -95,6 +94,8 @@ private slots:
 	void on_objectsTree_itemClicked(QTreeWidgetItem *item, int column);
 
 	std::vector<QPolygonF> getPolygonsForItem(QString sketch);
+	void closeDrawing();
+	void on_lineCenterButton_clicked();
 };
 
 #endif // MAINWINDOW_H

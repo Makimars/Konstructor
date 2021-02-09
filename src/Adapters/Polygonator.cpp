@@ -31,17 +31,6 @@ std::vector<QPolygonF> Polygonator::generatePolygons(QVector<DrawableObject*> dr
 	return polygons.toStdVector();
 }
 
-void Polygonator::recieveDrawing(QVector<DrawableObject*> drawing)
-{
-	QString sketch;
-	for(int i = 0; i < drawing.count(); i++)
-	{
-		sketch.append(drawing.at(i)->toFileString().toLatin1() + "\n");
-	}
-
-	emit sendPolygons(generatePolygons(drawing), sketch);
-}
-
 QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> drawing)
 {
 	QVector<PointAdapter*> pointAdapters;

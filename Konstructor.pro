@@ -27,7 +27,6 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/Plane/Tools/ExpandPolygonTool.cpp \
     src/PlaneWidget.cpp \
     src/SpaceWidget.cpp \
     src/main.cpp \
@@ -53,6 +52,8 @@ SOURCES += \
     src/Plane/Tools/LabelTool.cpp \
     src/Plane/Tools/LineTool.cpp \
     src/Plane/Tools/ArcTool.cpp \
+    src/Plane/Tools/LineCenterTool.cpp \
+    src/Plane/Tools/ExpandPolygonTool.cpp \
 \
     src/Plane/Tools/Constraints/CircleRadiusConstraintTool.cpp \
     src/Plane/Tools/Constraints/PointDistanceConstrainTool.cpp \
@@ -87,7 +88,6 @@ HEADERS += \
     include/nlohmann/json.hpp \
 \
     src/MainWindow.h \
-    src/Plane/Tools/ExpandPolygonTool.h \
     src/PlaneWidget.h \
     src/SpaceWidget.h \
 \
@@ -117,6 +117,8 @@ HEADERS += \
     src/Plane/Tools/RectangleTool.h \
     src/Plane/Tools/DimensionTool.h \
     src/Plane/Tools/LabelTool.h \
+    src/Plane/Tools/LineCenterTool.h \
+    src/Plane/Tools/ExpandPolygonTool.h \
 \
     src/Plane/Tools/Constraints/PointDistanceConstrainTool.h \
     src/Plane/Tools/Constraints/CircleRadiusConstraintTool.h \

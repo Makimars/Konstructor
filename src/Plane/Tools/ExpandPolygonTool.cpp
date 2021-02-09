@@ -49,7 +49,11 @@ void ExpandPolygonTool::click(DrawableObject *clickedObject, QPointF pos)
 		}
 		else if(clickedObject->getType() == Global::Types::Line)
 		{
-
+			//find polygon from lineStartPoint and expand
+		}
+		else if(clickedObject->getType() == Global::Types::Point)
+		{
+			//find polygon from point and expand
 		}
 	}
 	else if(clickCounter == 2)

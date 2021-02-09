@@ -114,17 +114,8 @@ void MainWindow::setupConnections()
 	connect(this, &MainWindow::setTargetItem,
 			SpaceFactory::getInstance(), &SpaceFactory::recieveTargetItem
 			);
-	//send finishWarning signal to ViewWidget
-	connect(this, &MainWindow::finishDrawing,
-			this->ui->planeView, &PlaneWidget::finishDrawing
-			);
-	//sends drawing to polygonator
-	connect(this->ui->planeView, &PlaneWidget::returnDrawing,
-			Polygonator::getInstance(), &Polygonator::recieveDrawing
-			);
-	//sends polygons from polygonator to spaceViewWidget
-	connect(Polygonator::getInstance(), &Polygonator::sendPolygons,
-			SpaceFactory::getInstance(), &SpaceFactory::addNewItem
+	connect(this->ui->planeView, &PlaneWidget::closeDrawing,
+			this, &MainWindow::closeDrawing
 			);
 
 	//connect extrusionDialog to screen update
@@ -164,6 +155,8 @@ void MainWindow::refreshTools(int tool)
 		this->ui->circleRadiusConstraintButton->setChecked(false);
 	if(tool != Global::Tools::ExpandPolgyonTool)
 		this->ui->expandPolygonButton->setChecked(false);
+	if(tool != Global::Tools::LineCenterTool)
+		this->ui->lineCenterButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -216,7 +209,12 @@ void MainWindow::on_saveObjectButton_clicked()
 			Settings::userProjectRoot,
 			Global::konstructorProject + ";;" + Global::allFiles
 			);
-	this->ui->spaceView->saveToFile(fileName);
+
+	QFile targetFile(fileName);
+	if(targetFile.open(QIODevice::WriteOnly))
+	{
+		targetFile.write(this->ui->spaceView->saveToFile().toUtf8());
+	}
 }
 
 void MainWindow::on_exportObjectButton_clicked()
@@ -245,6 +243,7 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_closeSketchButton_clicked()
 {
 	setMode(Global::Mode::Object);
+	Factory::getInstance()->deleteAll();
 }
 
 void MainWindow::on_saveSketchButton_clicked()
@@ -255,7 +254,12 @@ void MainWindow::on_saveSketchButton_clicked()
 			Settings::userProjectRoot,
 			Global::konstructorSketch + ";;" + Global::allFiles
 			);
-	this->ui->planeView->saveToFile(fileName);
+
+	QFile targetFile(fileName);
+	if(targetFile.open(QIODevice::WriteOnly))
+	{
+		targetFile.write(this->ui->planeView->toFile().toUtf8());
+	}
 }
 
 void MainWindow::on_openSketchButton_clicked()
@@ -360,6 +364,14 @@ void MainWindow::on_lineLengthConstraintButton_clicked()
 		refreshTools(Global::Tools::NoTool);
 }
 
+void MainWindow::on_lineCenterButton_clicked()
+{
+	if(this->ui->lineCenterButton->isChecked())
+		refreshTools(Global::Tools::LineCenterTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
 void MainWindow::on_circleRadiusConstraintButton_clicked()
 {
 	if(this->ui->circleRadiusConstraintButton->isChecked())
@@ -379,7 +391,12 @@ void MainWindow::on_finishDrawingButton_clicked()
 	}
 
 	setMode(Global::Mode::Object);
-	emit finishDrawing();
+
+	QString sketch = this->ui->planeView->toFile();
+	std::vector<QPolygonF> polygons = Polygonator::getInstance()->generatePolygons(this->ui->planeView->finishDrawing());
+	Factory::getInstance()->deleteAll();
+
+	SpaceFactory::getInstance()->addNewItem(polygons, sketch);
 }
 
 //-----    misc slots    -----
@@ -461,4 +478,9 @@ std::vector<QPolygonF> MainWindow::getPolygonsForItem(QString sketch)
 	QVector<DrawableObject*> loadedObjects = Factory::getInstance()->generateListFromSketch(sketch);
 
 	return Polygonator::getInstance()->generatePolygons(loadedObjects);
+}
+
+void MainWindow::closeDrawing()
+{
+	setMode(Global::Mode::Object);
 }

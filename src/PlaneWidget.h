@@ -20,9 +20,10 @@ public:
 
 	//file operations
 	void loadFromFile(QString fileContents);
-    void saveToFile(QString file);
+	QString toFile();
 
 	void loadProjected(QPolygonF projectedPoints);
+	QVector<DrawableObject*> finishDrawing();
 
     //axis
 	Line *getAxisLine(int xDirection, int yDirection);
@@ -72,13 +73,12 @@ private:
 signals:
     void keyPressed(QKeyEvent *event);
 	void showStatusBarMessage(const QString &message, int timeout = 0);
-	void returnDrawing(QVector<DrawableObject*> drawing);
 	void mouseMoved(QPointF pos);
+	void closeDrawing();
 
 public slots:
 	void setTool(int tool);
 	void resetTool();
-	void finishDrawing();
 
 	void customContextMenuRequested(const QPoint &pos);
 
