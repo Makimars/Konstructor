@@ -22,6 +22,8 @@ public:
 	void loadFromFile(QString fileContents);
     void saveToFile(QString file);
 
+	void loadProjected(QPolygonF projectedPoints);
+
     //axis
 	Line *getAxisLine(int xDirection, int yDirection);
 private:

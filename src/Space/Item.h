@@ -64,6 +64,7 @@ private:
 
 	QVector3D globalVertexPos(u_int32_t i);
 	void addPlane(int index, QVector3D position, QQuaternion rotation);
+	void addPlane(int index, QVector3D position, QQuaternion rotation, std::vector<QVector3D> existingVertexes);
 
 signals:
 	void updateData();

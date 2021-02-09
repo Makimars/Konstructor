@@ -78,6 +78,25 @@ void PlaneWidget::saveToFile(QString path)
 
 }
 
+void PlaneWidget::loadProjected(QPolygonF projectedPoints)
+{
+	objectFactory->deleteAllStaticDrawables();
+	std::vector<Point*> points;
+	std::vector<Line*> lines;
+
+	for (int i = 0; i < projectedPoints.size(); i++ )
+		points.push_back(objectFactory->makePoint(projectedPoints.at(i).x(), projectedPoints.at(i).y()));
+	for (int i = 0; i < projectedPoints.size()-1; i++ )
+		lines.push_back(objectFactory->makeLine(points.at(i), points.at(i+1)));
+	lines.push_back(objectFactory->makeLine(points.at(points.size()-1), points.at(0)));
+
+
+	for(uint32_t i = 0; i < points.size(); i++)
+		objectFactory->addStaticDrawable(points.at(i));
+	for(uint32_t i = 0; i < lines.size(); i++)
+		objectFactory->addStaticDrawable(lines.at(i));
+}
+
 //----------    initialization    ----------
 
 void PlaneWidget::initializeTools()
@@ -228,8 +247,7 @@ void PlaneWidget::mouseReleaseEvent(QMouseEvent *event)
 		if(this->selectedTool != nullptr)
 		{
 			DrawableObject *clickedObject = dynamic_cast<DrawableObject*>(this->itemAt(event->pos()));
-			if(clickedObject == nullptr || !objectsInSketch.contains(clickedObject))
-				clickedObject = nullptr;
+
 			this->selectedTool->click(clickedObject, gridSnapping(mapToScene(event->pos())));
 
 			emit showStatusBarMessage(selectedTool->getToolTip());
@@ -365,7 +383,7 @@ void PlaneWidget::resetTool()
 
 void PlaneWidget::finishDrawing()
 {
-	emit returnDrawing(this->objectsInSketch);
+	emit returnDrawing(this->objectsInSketch + staticObjects);
 
 	objectFactory->deleteAll();
 }

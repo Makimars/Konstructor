@@ -63,9 +63,12 @@ public:
 	 */
 	void removeDrawable(DrawableObject *object);
 	/**
-	 * @brief deletes all objects and resets the id counter to 0
+	 * @brief deletes all objects and resets the id counter to 1
 	 */
 	void deleteAll();
+
+	void addStaticDrawable(DrawableObject *object);
+	void deleteAllStaticDrawables();
 
 	QVector<DrawableObject*> generateListFromSketch(QString sketch);
 
@@ -77,7 +80,8 @@ private:
 				QGraphicsScene *scene
 				);
 
-	int idCounter = 1;
+	uint32_t idCounter = 1;
+	int staticIdCounter = -1;
 
 	QVector<DrawableObject*> *objectList;
 	QVector<DrawableObject*> *staticObjectsList;

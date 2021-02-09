@@ -120,20 +120,26 @@ void Item::extrude()
 		{
 			extrudedVertexes.at(i).setZ(-length);
 		}
-		addPlane(0, basePlane->getPosition() + QVector3D(0,0,-length), basePlane->getRotation());
+		addPlane(0, (basePlane->getPosition() + QVector3D(0,0,-length))*toMatrix(), basePlane->getRotation());
 
 	}
 
 	//calculate second base
 	int count = extrudedVertexes.size();
+	std::vector<QVector3D> secondBasePlaneVertexes;
 	for (int i = 0; i < count; i++)
 	{
 		Vertex vertex = extrudedVertexes.at(i);
 		vertex.setPosition(QVector3D(vertex.position().x(), vertex.position().y(), length));
+		secondBasePlaneVertexes.push_back(globalVertexPos(i));
 
 		extrudedVertexes.push_back(vertex);
 	}
-	addPlane(1, basePlane->getPosition() + (QVector3D(0,0,-length)*toMatrix()), basePlane->getRotation());
+	addPlane(1,
+			 (basePlane->getPosition() + QVector3D(0,0,length) * toMatrix()),
+			 basePlane->getRotation(),
+			 secondBasePlaneVertexes
+			 );
 
 	//calculate planes for faces
 	int edges = extrudedVertexes.size() / 2;
@@ -141,7 +147,7 @@ void Item::extrude()
 	{
 		for (int i = 0; i < edges - 1 ; i++)
 		{
-			QVector3D basePos = extrudedVertexes.at(i).position() * toMatrix();
+			QVector3D basePos = globalVertexPos(i);
 
 			QVector3D rotAxis = globalVertexPos(i+1) - globalVertexPos(i);
 			QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
@@ -233,6 +239,17 @@ QVector3D Item::globalVertexPos(u_int32_t i)
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 {
+	std::vector<QVector3D> emptyIterator;
+	addPlane(index, position, rotation, emptyIterator);
+}
+
+void Item::addPlane(int index, QVector3D position, QQuaternion rotation, std::vector<QVector3D> existingVertexes)
+{
+	for (uint32_t i = 0; i < existingVertexes.size(); i++)
+	{
+		existingVertexes.at(i) = existingVertexes.at(i) * toMatrix();
+	}
+
 	// ensures that the vector has either nullptr or an instance
 	if(planes.size() < index + 1)
 	{
@@ -247,6 +264,7 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 	{
 		Plane *newPlane = new Plane(this, position, rotation);
 		newPlane->setText(0, tr("plane"));
+		newPlane->setExistingVertexes(existingVertexes);
 
 		//adds to local vector
 		planes.at(index) = newPlane;
@@ -260,6 +278,7 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 	else
 	{
 		//rewrite plane
-		*planes.at(index) =  Plane(this, position, rotation);
+		*planes.at(index) = Plane(this, position, rotation);
+		planes.at(index)->setExistingVertexes(existingVertexes);
 	}
 }

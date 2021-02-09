@@ -254,6 +254,32 @@ void Factory::deleteAll()
 	this->idCounter = 1;
 }
 
+void Factory::addStaticDrawable(DrawableObject *object)
+{
+	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
+	{
+		object->setStyle(currentStyle);
+		object->setFlags(QGraphicsItem::ItemIsSelectable);
+		object->setAcceptHoverEvents(true);
+
+		this->staticObjectsList->append(object);
+		this->scene->addItem(object);
+
+		object->setId(staticIdCounter);
+		staticIdCounter--;
+	}
+}
+
+void Factory::deleteAllStaticDrawables()
+{
+	foreach(DrawableObject *item, *this->staticObjectsList)
+	{
+		delete item;
+	}
+	staticObjectsList->clear();
+	staticIdCounter = -1;
+}
+
 QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
 {
 	QStringList splited = sketch.trimmed().replace('\n',"").split(";");

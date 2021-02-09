@@ -126,7 +126,7 @@ inline int DrawableObject::getType() { return type; }
 inline void DrawableObject::setId(int id) { this->id = id; }
 inline int DrawableObject::getId() { return id; }
 inline void DrawableObject::setLocked(bool value) { locked = value; }
-inline bool DrawableObject::isLocked() { return locked; }
+inline bool DrawableObject::isLocked() { return locked | (id < 0); }
 
 inline void DrawableObject::setStyle(const Style *style) { this->style = style; }
 inline void DrawableObject::setIsConstructional(bool value) { constructional = value; }

@@ -432,6 +432,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			{
 				setMode(Global::Mode::Draw);
 
+				this->ui->planeView->loadProjected(plane->getProjectedPolygon());
 				emit setTargetItem(plane);
 			}
         }

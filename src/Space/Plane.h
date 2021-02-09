@@ -5,6 +5,7 @@
 #include <QVector3D>
 
 #include "Transform3D.h"
+#include "src/Base/Settings.h"
 
 class Plane : public QTreeWidgetItem
 {
@@ -20,11 +21,19 @@ public:
 	void setItemIndex(int i);
 	void setPlaneIndex(int i);
 
+	/**
+	 * @brief sets vertexes from which the plane is defined
+	 * @param vertexes (global pos)
+	 */
+	void setExistingVertexes(std::vector<QVector3D> vertexes);
+	QPolygonF getProjectedPolygon();
+
 	QMatrix4x4 toMatrix();
 
 private:
 	Transform3D transform;
 	int itemIndex, planeIndex;
+	std::vector<QPointF> projectedVertexes;
 };
 
 inline QMatrix4x4 Plane::toMatrix(){ return transform.toMatrix(); }

@@ -50,3 +50,27 @@ void Plane::setPlaneIndex(int i)
 {
 	planeIndex = i;
 }
+
+void Plane::setExistingVertexes(std::vector<QVector3D> vertexes)
+{
+	for (uint32_t i = 0; i < vertexes.size(); i++)
+	{
+		projectedVertexes.push_back(
+					(vertexes.at(i) * toMatrix().inverted()).toPointF() * Settings::planeToSpaceRatio
+					);
+	}
+}
+
+QPolygonF Plane::getProjectedPolygon()
+{
+	QPolygonF polygon;
+	if(projectedVertexes.size() == 0) return polygon;
+
+	for (uint32_t i = 0; i < projectedVertexes.size(); i++)
+	{
+		polygon << projectedVertexes.at(i);
+	}
+	polygon << projectedVertexes.at(0);
+
+	return polygon;
+}
