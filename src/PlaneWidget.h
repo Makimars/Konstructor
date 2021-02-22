@@ -10,7 +10,7 @@
 #include <QToolTip>
 
 #include "Dialogs/MessagesManager.h"
-#include "Plane/Plane"
+#include "Plane/Plane.h"
 
 class PlaneWidget : public QGraphicsView
 {

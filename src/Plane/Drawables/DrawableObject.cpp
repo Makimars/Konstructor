@@ -19,7 +19,7 @@ QString DrawableObject::toFileString()
 	return this->file;
 }
 
-void DrawableObject::addConstrant()
+void DrawableObject::addConstraint()
 {
 	constrains++;
 }
@@ -32,6 +32,11 @@ void DrawableObject::removeConstraint()
 bool DrawableObject::isConstrained()
 {
 	return constrains > 0;
+}
+
+bool DrawableObject::hasGeometryUpdates()
+{
+	return propagateGeometry.size() > 0;
 }
 
 //----------	geometry    ----------

@@ -12,8 +12,8 @@
 #include "Dialogs/ExtrusionDialog.h"
 #include "Base/GlobalVariables.h"
 
-#include "Space/Space"
-#include "Plane/Plane"
+#include "Space/Space.h"
+#include "Plane/Plane.h"
 #include "Adapters/Polygonator.h"
 
 namespace Ui {

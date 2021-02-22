@@ -178,14 +178,22 @@ PointDistanceConstraint *Factory::makePointDistanceConstraint(Point *originPoint
 
 CircleRadiusConstraint *Factory::makeCircleRadiusConstraint(Circle *circle)
 {
-	CircleRadiusConstraint *dimension = new CircleRadiusConstraint(circle);
-	dimension->setStyle(currentStyle);
+	CircleRadiusConstraint *constraint = new CircleRadiusConstraint(circle);
+	constraint->setStyle(currentStyle);
 
-	QObject::connect(dimension, &UserInputRequester::requestDouble,
+	QObject::connect(constraint, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
 					 );
 
-	return dimension;
+	return constraint;
+}
+
+LineCenterPointConstraint *Factory::makeLineCenterPointConstraint(Line *line, Point *point)
+{
+	LineCenterPointConstraint *constraint = new LineCenterPointConstraint(line, point);
+	constraint->setStyle(currentStyle);
+
+	return constraint;
 }
 
 void Factory::addToScene(DrawableObject *object)
@@ -261,6 +269,7 @@ void Factory::addStaticDrawable(DrawableObject *object)
 		object->setStyle(currentStyle);
 		object->setFlags(QGraphicsItem::ItemIsSelectable);
 		object->setAcceptHoverEvents(true);
+		object->setIsConstructional(true);
 
 		this->staticObjectsList->append(object);
 		this->scene->addItem(object);

@@ -22,24 +22,21 @@ public:
 	virtual void resolveTies() {}
 
 	//file handling
-
 	/**
 	 * @brief asigns variables from a file representation
 	 * @param input
 	 */
 	virtual void loadVariables(QString input){}
-
-	/**
-	 * @brief generates file representation of an object
-	 * @return file
-	 */
-    virtual QString toFileString();
-
 	/**
 	 * @brief assign pointers to objects to a variable from a vector of drawables
 	 * @param list
 	 */
 	virtual void loadRelations(QVector<DrawableObject*> list) {}
+	/**
+	 * @brief generates file representation of an object
+	 * @return file
+	 */
+	virtual QString toFileString();
 
 	//getters and setters
 	int getType();
@@ -47,7 +44,7 @@ public:
 	int getId();
 	void setLocked(bool value);
 	bool isLocked();
-	void addConstrant();
+	void addConstraint();
 	void removeConstraint();
 	bool isConstrained();
 
@@ -61,6 +58,7 @@ public:
 	bool isHidden();
 
 	//geometry
+	bool hasGeometryUpdates();
 	void addGeometryUpdate(DrawableObject *object);
 	void removeGeometryUpdate(DrawableObject *object);
 	void removeGeometryUpdates();
@@ -74,6 +72,7 @@ protected:
 	void fileAddVar(QString variable, int value);
 	void fileAddVar(QString variable, long value);
 	void fileAddVar(QString variable, bool value);
+	void fileAddVar(QString variable, DrawableObject *object);
 	QString fileFinish();
 
 	//loading objects
@@ -153,6 +152,9 @@ inline void DrawableObject::fileAddVar(QString variable, long value)
 
 inline void DrawableObject::fileAddVar(QString variable, bool value)
 { this->fileAddVar(variable, QString::number(value)); }
+
+inline void DrawableObject::fileAddVar(QString variable, DrawableObject *object)
+{ this->fileAddVar(variable, QString::number(object->getId())); }
 
 #endif // DRAWABLEOBJECT_H
 

@@ -11,7 +11,7 @@
 #include <QOpenGLVertexArrayObject>
 
 #include "Dialogs/MessagesManager.h"
-#include "Space/Space"
+#include "Space/Space.h"
 
 struct vertexProgramParameters{
 	int itemToSpace, worldToCamera, cameraToView, itemToRotate;

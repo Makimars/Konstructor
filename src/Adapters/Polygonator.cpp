@@ -47,6 +47,7 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 			pointAdapters.append(new PointAdapter(point->getX(), point->getY()));
 		}
 	}
+
 	//generate connections
 	foreach (DrawableObject *obj, drawing)
 	{
@@ -95,6 +96,20 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 
 			pointAdapters.append(points);
 		}
+		else if (obj->getType() == Global::LineCenterPointConstraint)
+		{
+			LineCenterPointConstraint *constraint = dynamic_cast<LineCenterPointConstraint*>(obj);
+
+			PointAdapter *centerPoint = pointAdapters.at(originalPoints.indexOf(constraint->getPoint()));
+			PointAdapter *linePointOne = pointAdapters.at(originalPoints.indexOf(constraint->getLine()->getStartPoint()));
+			PointAdapter *linePointTwo = pointAdapters.at(originalPoints.indexOf(constraint->getLine()->getEndPoint()));
+
+			centerPoint->addNeighbor(linePointOne);
+			centerPoint->addNeighbor(linePointTwo);
+
+			linePointOne->addNeighbor(centerPoint);
+			linePointTwo->addNeighbor(centerPoint);
+		}
 	}
 
 	return pointAdapters;
@@ -117,7 +132,7 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 		jobs.push(QVector<PointAdapter*>());
 		jobs.front().append(transferPoints.at(0));
 
-		while(jobs.size() > 0)
+		while(!jobs.empty())
 		{
 			QVector<PointAdapter*> workingPath = jobs.front();
 			QVector<PointAdapter*> currentNeighbors = workingPath.last()->getNeighborPoints();
@@ -170,7 +185,6 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 						transferPoints.removeAll(pathPoint);
 					}
 
-					jobs.empty();
 					finished = true;
 					break;
 				}
@@ -201,4 +215,3 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 
 	return paths;
 }
-

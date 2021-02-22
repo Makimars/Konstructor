@@ -3,5 +3,6 @@
 
 #include "CircleRadiusConstraint.h"
 #include "PointDistanceConstraint.h"
+#include "LineCenterPointConstraint.h"
 
 #endif // CONSTRAINTS_H

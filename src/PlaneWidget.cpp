@@ -72,6 +72,8 @@ QString PlaneWidget::toFile()
 
 void PlaneWidget::loadProjected(QPolygonF projectedPoints)
 {
+	if(projectedPoints.size() < 1) return;
+
 	objectFactory->deleteAllStaticDrawables();
 	std::vector<Point*> points;
 	std::vector<Line*> lines;
@@ -396,7 +398,7 @@ void PlaneWidget::customContextMenuRequested(const QPoint &pos)
 		}
 
 		QAction *selectedAction = contextMenu.exec(this->viewport()->mapToGlobal(pos));
-		if(selectedAction == &deleteObjectAction)
+		if((selectedAction == &deleteObjectAction) & !(obj->isLocked() | obj->hasGeometryUpdates()))
 		{
 			objectFactory->deleteDrawable(obj);
 		}

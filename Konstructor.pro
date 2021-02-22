@@ -65,6 +65,7 @@ SOURCES += \
     src/Plane/Drawables/Label.cpp \
     src/Plane/Drawables/Arc.cpp \
 \
+    src/Plane/Drawables/Constraints/LineCenterPointConstraint.cpp \
     src/Plane/Drawables/Constraints/CircleRadiusConstraint.cpp \
     src/Plane/Drawables/Constraints/LineLengthConstraint.cpp \
 \
@@ -88,7 +89,9 @@ HEADERS += \
     include/nlohmann/json.hpp \
 \
     src/MainWindow.h \
+    src/Plane/Plane.h \
     src/PlaneWidget.h \
+    src/Space/Space.h \
     src/SpaceWidget.h \
 \
     src/Dialogs/ExtrusionDialog.h \
@@ -101,7 +104,6 @@ HEADERS += \
     src/Base/GlobalVariables.h \
     src/Base/Settings.h \
 \
-    src/Plane/Plane \
     src/Plane/Style.h \
     src/Plane/Factory.h \
     src/Plane/UserInputRequester.h \
@@ -120,6 +122,7 @@ HEADERS += \
     src/Plane/Tools/LineCenterTool.h \
     src/Plane/Tools/ExpandPolygonTool.h \
 \
+    src/Plane/Drawables/Constraints/LineCenterPointConstraint.h \
     src/Plane/Tools/Constraints/PointDistanceConstrainTool.h \
     src/Plane/Tools/Constraints/CircleRadiusConstraintTool.h \
 \
@@ -143,7 +146,6 @@ HEADERS += \
     src/Adapters/PointAdapter.h \
     src/Adapters/Polygonator.h \
 \
-    src/Space/Space \
     src/Space/SpaceFactory.h \
     src/Space/Polygon.h \
     src/Space/Plane.h \

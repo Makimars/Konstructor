@@ -3,7 +3,7 @@
 
 #include <queue>
 
-#include "../Plane/Plane"
+#include "../Plane/Plane.h"
 #include "PointAdapter.h"
 
 class Polygonator : public QObject
@@ -20,6 +20,8 @@ private:
 
 	QVector<PointAdapter*> generateAdapters(QVector<DrawableObject*> drawing);
 	QVector<QPolygonF> generatePolygons(QVector<PointAdapter*> transferPoints);
+
+	PointAdapter *getAdapterRepresentation(Point *point);
 };
 
 #endif // POLYGONATOR_H

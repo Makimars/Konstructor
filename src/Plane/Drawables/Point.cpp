@@ -34,7 +34,7 @@ QString Point::toFileString()
 
 void Point::setLocation(double x, double y)
 {
-	if(isLocked() | isConstrained()) return;
+	if(isLocked()) return;
 
 	updateGeometry();
 	this->x = x;

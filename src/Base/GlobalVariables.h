@@ -19,7 +19,8 @@ enum Types{
 	LineAngleDimension,
 	CircleRadiusDimension,
 	CirclesRadiusDifferenceDimension,
-	LineLengthConstraint
+	LineLengthConstraint,
+	LineCenterPointConstraint
 };
 
 enum Tools{

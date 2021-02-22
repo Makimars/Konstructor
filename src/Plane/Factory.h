@@ -42,6 +42,7 @@ public:
 	//constrains
 	PointDistanceConstraint *makePointDistanceConstraint(Point *originPoint, Point *drivenPoint);
 	CircleRadiusConstraint *makeCircleRadiusConstraint(Circle *circle);
+	LineCenterPointConstraint *makeLineCenterPointConstraint(Line *line, Point *point);
 
 	//object managment
 	void addToScene(DrawableObject *object);

@@ -9,7 +9,7 @@ PointDistanceConstraint::PointDistanceConstraint(Point *originPoint, Point *driv
 	setGeometryUpdates();
 
 	lengthToSet = drivenPoint->distanceFrom(originPoint->getLocation());
-	originPoint->addConstrant();
+	originPoint->addConstraint();
 }
 
 PointDistanceConstraint::~PointDistanceConstraint()

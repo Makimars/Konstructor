@@ -15,6 +15,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setupUi();
 	this->setupConnections();
+
+	this->setWindowState(Qt::WindowMaximized);
 }
 
 MainWindow::~MainWindow()
@@ -27,6 +29,7 @@ void MainWindow::show()
 	//welcome screen
 	WelcomeDialog *welcomeDialog = new WelcomeDialog(this);
 	welcomeDialog->exec();
+	QMainWindow::show();
 
 	switch (welcomeDialog->action)
 	{
@@ -51,8 +54,6 @@ void MainWindow::show()
 			QApplication::quit();
 			break;
 	}
-
-	QMainWindow::show();
 }
 
 void MainWindow::setupUi()
