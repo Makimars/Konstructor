@@ -31,11 +31,6 @@ public:
 	// 0 and 1 edge points, 2 center
 	Arc *makeArc(Point *points[3]);
 
-	//dimension creation
-	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2]);
-	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double distanceFromCenter);
-	CirclesRadiusDifferenceDimension *makeCirclesRadiusDifferenceDimension(Circle *circles[2]);
-
 	//constrains
 	PointDistanceConstraint *makePointDistanceConstraint(Point *originPoint, Point *drivenPoint);
 	CircleRadiusConstraint *makeCircleRadiusConstraint(Circle *circle);
@@ -54,13 +49,9 @@ public:
 	 */
 	void tryDeleteDrawable(DrawableObject *object);
 	/**
-	 * @brief removeDrawable() and deletes it
+	 * @brief removes drawable from object list and scene and deletes it
 	 */
-	void deleteDrawable(DrawableObject *object);
-	/**
-	 * @brief removes drawable from object list and scene
-	 */
-	void removeDrawable(DrawableObject *object);
+	bool deleteDrawable(DrawableObject *object);
 	/**
 	 * @brief deletes all objects and resets the id counter to 1
 	 */

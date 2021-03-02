@@ -8,6 +8,7 @@ class CircleRadiusConstraint : public DrawableObject, public UserInputRequester
 public:
 	CircleRadiusConstraint();
 	CircleRadiusConstraint(Circle *circle);
+	~CircleRadiusConstraint();
 
 	void resolveTies() override;
 

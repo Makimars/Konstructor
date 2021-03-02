@@ -88,10 +88,13 @@ void Point::paint(QPainter *painter,
 
 	painter->drawEllipse(rect);
 
-	if(isLocked() | isConstrained()) painter->drawImage(
+	if(isLocked() | isConstrained())
+	{
+		painter->drawImage(
 				QRectF(rect.x()+rect.width(), rect.y(), rect.width()*2, rect.height()*2),
 				QImage(":/icons/Lock.png")
 				);
+	}
 }
 
 //---------     events     ----------

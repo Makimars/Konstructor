@@ -59,6 +59,7 @@ void PointDistanceConstraint::loadRelations(QVector<DrawableObject *> list)
 	this->originPoint = dynamic_cast<Point*>(values[0]);
 	this->drivenPoint = dynamic_cast<Point*>(values[1]);
 	setGeometryUpdates();
+	originPoint->addConstraint();
 }
 
 void PointDistanceConstraint::setDistanceFromLine(double distance)

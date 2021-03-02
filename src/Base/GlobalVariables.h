@@ -29,8 +29,8 @@ enum Tools{
 	CircleTool,
 	RectangleTool,
 	LabelTool,
-	DimensionTool,
 	ArcTool,
+
 	PointPositionTool,
 	LockPointTool,
 	PointDistanceConstrainTool,

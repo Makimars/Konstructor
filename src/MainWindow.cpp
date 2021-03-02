@@ -142,8 +142,6 @@ void MainWindow::refreshTools(int tool)
 		this->ui->rectangleButton->setChecked(false);
 	if(tool != Global::Tools::LabelTool)
 		this->ui->labelButton->setChecked(false);
-	if(tool != Global::Tools::DimensionTool)
-		this->ui->dimensionButton->setChecked(false);
 	if(tool != Global::Tools::ArcTool)
 		this->ui->arcButton->setChecked(false);
 	if(tool != Global::Tools::PointPositionTool)
@@ -151,7 +149,7 @@ void MainWindow::refreshTools(int tool)
 	if(tool != Global::Tools::LockPointTool)
 		this->ui->lockPointButton->setChecked(false);
 	if(tool != Global::Tools::PointDistanceConstrainTool)
-		this->ui->lineLengthConstraintButton->setChecked(false);
+		this->ui->pointDistanceConstraintButton->setChecked(false);
 	if(tool != Global::Tools::CircleRadiusConstraintTool)
 		this->ui->circleRadiusConstraintButton->setChecked(false);
 	if(tool != Global::Tools::ExpandPolgyonTool)
@@ -160,7 +158,6 @@ void MainWindow::refreshTools(int tool)
 		this->ui->lineCenterButton->setChecked(false);
 	if(tool != Global::Tools::ParaelLinesConstraintTool)
 		this->ui->paraelLineButton->setChecked(false);
-
 
 	emit setTool(tool);
 }
@@ -336,14 +333,6 @@ void MainWindow::on_expandPolygonButton_clicked()
 
 //-----    constrains    -----
 
-void MainWindow::on_dimensionButton_clicked()
-{
-	if(this->ui->dimensionButton->isChecked())
-		refreshTools(Global::Tools::DimensionTool);
-	else
-		refreshTools(Global::Tools::NoTool);
-}
-
 void MainWindow::on_pointPosButton_clicked()
 {
 	if(this->ui->pointPosButton->isChecked())
@@ -360,9 +349,9 @@ void MainWindow::on_lockPointButton_clicked()
 		refreshTools(Global::Tools::NoTool);
 }
 
-void MainWindow::on_lineLengthConstraintButton_clicked()
+void MainWindow::on_pointDistanceConstraintButton_clicked()
 {
-	if(this->ui->lineLengthConstraintButton->isChecked())
+	if(this->ui->pointDistanceConstraintButton->isChecked())
 		refreshTools(Global::Tools::PointDistanceConstrainTool);
 	else
 		refreshTools(Global::Tools::NoTool);

@@ -102,9 +102,6 @@ void PlaneWidget::initializeTools()
 			CircleTool::getInstance(), &Tool::mouseMoveEvent
 			);
 	connect(this, &PlaneWidget::mouseMoved,
-			DimensionTool::getInstance(), &Tool::mouseMoveEvent
-			);
-	connect(this, &PlaneWidget::mouseMoved,
 			LabelTool::getInstance(), &Tool::mouseMoveEvent
 			);
 	connect(this, &PlaneWidget::mouseMoved,
@@ -329,9 +326,6 @@ void PlaneWidget::setTool(int tool)
 		case Global::Tools::LabelTool:
 			this->selectedTool = LabelTool::getInstance();
 			break;
-		case Global::Tools::DimensionTool:
-			this->selectedTool = DimensionTool::getInstance();
-			break;
 		case Global::Tools::ArcTool:
 			this->selectedTool = ArcTool::getInstance();
 			break;
@@ -401,9 +395,12 @@ void PlaneWidget::customContextMenuRequested(const QPoint &pos)
 		}
 
 		QAction *selectedAction = contextMenu.exec(this->viewport()->mapToGlobal(pos));
-		if((selectedAction == &deleteObjectAction) & !(obj->isLocked() | obj->hasGeometryUpdates()))
+		if((selectedAction == &deleteObjectAction) & !(obj->isLocked()))
 		{
-			objectFactory->deleteDrawable(obj);
+			if(!objectFactory->deleteDrawable(obj))
+			{
+				emit showStatusBarMessage(("Cannot delete object, others depends on it."));
+			}
 		}
 
 		obj->setLocked(lockPointAction.isChecked());

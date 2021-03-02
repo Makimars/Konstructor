@@ -10,6 +10,11 @@ LineCenterPointConstraint::LineCenterPointConstraint(Line *line, Point *point) :
 	centerPoint->addConstraint();
 }
 
+LineCenterPointConstraint::~LineCenterPointConstraint()
+{
+	centerPoint->removeConstraint();
+}
+
 void LineCenterPointConstraint::resolveTies()
 {
 	QPointF pos = line->getStartPoint()->getLocation();
@@ -51,6 +56,7 @@ void LineCenterPointConstraint::loadRelations(QVector<DrawableObject *> list)
 	this->centerPoint = dynamic_cast<Point*>(values[1]);
 
 	setGeometryUpdates();
+	centerPoint->addConstraint();
 }
 
 QRectF LineCenterPointConstraint::boundingRect() const

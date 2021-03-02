@@ -8,8 +8,8 @@ class ParaelLinesConstraint: public DrawableObject
 public:
 	ParaelLinesConstraint();
 	ParaelLinesConstraint(Line *lineOne, Line* lineTwo);
+	~ParaelLinesConstraint();
 
-public:
 	void resolveTies() override;
 
 	void loadVariables(QString input) override;
@@ -21,6 +21,9 @@ public:
 
 private:
 	Line *lines[2];
+	Point *base, *follower;
+
+	void assignPoints();
 
 	void setGeometryUpdates() override;
 	void unsetGeometryUpdates() override;

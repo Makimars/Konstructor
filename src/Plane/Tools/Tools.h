@@ -15,6 +15,4 @@
 #include "RectangleTool.h"
 #include "ExpandPolygonTool.h"
 
-#include "DimensionTool.h"
-
 #endif // TOOLS_H

@@ -102,40 +102,6 @@ Arc *Factory::makeArc(Point *points[])
 	return arc;
 }
 
-//----------     dimension creation     ---------
-
-LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[])
-{
-	LinesAngleDimension *dimension = new LinesAngleDimension(lines);
-	dimension->setStyle(currentStyle);
-
-	QObject::connect(dimension, &UserInputRequester::requestDouble,
-					 this->userInput, &QGraphicsViewUserInput::requestDouble
-					 );
-
-	return dimension;
-}
-
-LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[], double distanceFromCenter)
-{
-	LinesAngleDimension *dimension = makeLinesAngleDimension(lines);
-	dimension->setDistanceFromCenter(distanceFromCenter);
-
-	return dimension;
-}
-
-CirclesRadiusDifferenceDimension *Factory::makeCirclesRadiusDifferenceDimension(Circle *circles[])
-{
-	CirclesRadiusDifferenceDimension *dimension = new CirclesRadiusDifferenceDimension(circles);
-	dimension->setStyle(currentStyle);
-
-	QObject::connect(dimension, &UserInputRequester::requestDouble,
-					 this->userInput, &QGraphicsViewUserInput::requestDouble
-					 );
-
-	return dimension;
-}
-
 PointDistanceConstraint *Factory::makePointDistanceConstraint(Point *originPoint, Point *drivenPoint)
 {
 	PointDistanceConstraint *constraint = new PointDistanceConstraint(originPoint, drivenPoint);
@@ -207,29 +173,22 @@ void Factory::tryDeleteDrawable(DrawableObject *object)
 		deleteDrawable(object);
 }
 
-void Factory::deleteDrawable(DrawableObject *object)
+bool Factory::deleteDrawable(DrawableObject *object)
 {
-	if(object != nullptr)
-	{
-		removeDrawable(object);
-
-		delete object;
-		object = nullptr;
-	}
-}
-
-void Factory::removeDrawable(DrawableObject *object)
-{
-	object->removeGeometryUpdates();
-	for(int i = 0; i < this->objectList->size(); i++)
-	{
-		this->objectList->at(i)->removeGeometryUpdate(object);
-	}
+	if(object == nullptr)
+		return false;
+	if(object->hasGeometryUpdates())
+		return false;
 
 	if(objectList->contains(object))
 		this->objectList->removeAll(object);
 	if(this->scene->items().contains(object))
 		this->scene->removeItem(object);
+
+	delete object;
+	object = nullptr;
+
+	return true;
 }
 
 void Factory::deleteAll()

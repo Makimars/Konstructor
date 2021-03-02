@@ -11,7 +11,8 @@ ParaelLinesConstraintTool *ParaelLinesConstraintTool::getInstance()
 
 ParaelLinesConstraintTool::ParaelLinesConstraintTool() : Tool()
 {
-
+	toolTips.append(tr("Select the line determinig the vector."));
+	toolTips.append(tr("Select the line to be adjusted."));
 }
 
 void ParaelLinesConstraintTool::click(DrawableObject *clickedObject, QPointF pos)

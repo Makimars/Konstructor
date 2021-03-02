@@ -8,23 +8,18 @@ ParaelLinesConstraint::ParaelLinesConstraint(Line *lineOne, Line *lineTwo) : Par
 	this->lines[1] = lineTwo;
 
 	setGeometryUpdates();
+	assignPoints();
+}
+
+ParaelLinesConstraint::~ParaelLinesConstraint()
+{
+	follower->removeConstraint();
 }
 
 void ParaelLinesConstraint::resolveTies()
 {
 	QVector2D targetVector = lines[0]->getLineVector();
 
-	Point *base, *follower;
-	if(lines[1]->getStartPoint()->isLocked())
-	{
-		base = lines[1]->getStartPoint();
-		follower = lines[1]->getEndPoint();
-	}
-	else
-	{
-		base = lines[1]->getEndPoint();
-		follower = lines[1]->getStartPoint();
-	}
 	QVector2D followerVector(follower->getLocation() - base->getLocation());
 
 	//if targetVector is not in the right direction, reverse
@@ -36,8 +31,6 @@ void ParaelLinesConstraint::resolveTies()
 	{
 		targetVector = -targetVector;
 	}
-
-
 
 	follower->setLocation(base->getLocation() + (targetVector.normalized() * lines[1]->getLength()).toPointF());
 }
@@ -56,6 +49,8 @@ void ParaelLinesConstraint::loadRelations(QVector<DrawableObject *> list)
 	this->lines[0] = dynamic_cast<Line*>(values[0]);
 	this->lines[1] = dynamic_cast<Line*>(values[1]);
 	setGeometryUpdates();
+
+	assignPoints();
 }
 
 QString ParaelLinesConstraint::toFileString()
@@ -78,6 +73,22 @@ void ParaelLinesConstraint::paint(QPainter *painter, const QStyleOptionGraphicsI
 	DrawableObject::paint(painter);
 
 	painter->drawLine(lines[0]->getCenterPos(), lines[1]->getCenterPos());
+}
+
+void ParaelLinesConstraint::assignPoints()
+{
+	if(lines[1]->getStartPoint()->isLocked())
+	{
+		base = lines[1]->getStartPoint();
+		follower = lines[1]->getEndPoint();
+	}
+	else
+	{
+		base = lines[1]->getEndPoint();
+		follower = lines[1]->getStartPoint();
+	}
+
+	follower->addConstraint();
 }
 
 void ParaelLinesConstraint::setGeometryUpdates()

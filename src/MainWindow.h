@@ -78,10 +78,9 @@ private slots:
 	void on_labelButton_clicked();
 	void on_expandPolygonButton_clicked();
 	//constrains
-	void on_dimensionButton_clicked();
 	void on_pointPosButton_clicked();
 	void on_lockPointButton_clicked();
-	void on_lineLengthConstraintButton_clicked();
+	void on_pointDistanceConstraintButton_clicked();
 	void on_circleRadiusConstraintButton_clicked();
 	//finish drawing
 	void on_finishDrawingButton_clicked();

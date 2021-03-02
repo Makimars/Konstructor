@@ -579,7 +579,7 @@
                <number>4</number>
               </property>
               <item>
-               <widget class="QToolButton" name="lineLengthConstraintButton">
+               <widget class="QToolButton" name="pointDistanceConstraintButton">
                 <property name="minimumSize">
                  <size>
                   <width>100</width>
@@ -587,7 +587,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>Line length</string>
+                 <string>Point distance</string>
                 </property>
                 <property name="icon">
                  <iconset resource="../icons.qrc">
@@ -753,35 +753,6 @@
                </widget>
               </item>
              </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="dimensionButton">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Dimension</string>
-             </property>
-             <property name="icon">
-              <iconset theme="document">
-               <normaloff>.</normaloff>.</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="toolButtonStyle">
-              <enum>Qt::ToolButtonTextUnderIcon</enum>
-             </property>
             </widget>
            </item>
            <item>

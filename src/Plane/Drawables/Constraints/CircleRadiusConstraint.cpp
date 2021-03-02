@@ -6,8 +6,14 @@ CircleRadiusConstraint::CircleRadiusConstraint(Circle *circle) : DrawableObject 
 {
 	this->circle = circle;
 	this->radius = circle->getRadius();
+	circle->addConstraint();
 
 	setGeometryUpdates();
+}
+
+CircleRadiusConstraint::~CircleRadiusConstraint()
+{
+	circle->removeConstraint();
 }
 
 void CircleRadiusConstraint::resolveTies()
@@ -46,6 +52,7 @@ void CircleRadiusConstraint::loadRelations(QVector<DrawableObject*> list)
 
 	this->circle = dynamic_cast<Circle*>(values[0]);
 	setGeometryUpdates();
+	circle->addConstraint();
 }
 
 //----------     QGraphicsItem overrides     ----------

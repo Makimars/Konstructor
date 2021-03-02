@@ -8,6 +8,7 @@ class LineCenterPointConstraint : public DrawableObject
 public:
 	LineCenterPointConstraint();
 	LineCenterPointConstraint(Line *line, Point *point);
+	~LineCenterPointConstraint();
 
 	void resolveTies() override;
 
