@@ -2,12 +2,7 @@
 
 Label::Label() : DrawableObject (Global::Label){}
 
-Label::Label(QPointF location) : DrawableObject (Global::Label)
-{
-	this->location = location;
-}
-
-Label::Label(QPointF location, QString text) : DrawableObject (Global::Label)
+Label::Label(QPointF location, QString text) : Label()
 {
 	this->location = location;
 	this->text = text;
@@ -69,7 +64,12 @@ void Label::requestText()
 
 QRectF Label::boundingRect() const
 {
-	return QRectF(this->location-QPointF(this->textWidth/2,this->textHeight/2),QSizeF(this->textWidth, this->textHeight));
+	QRectF rect(
+				this->location - QPointF(this->textWidth * text.size() / 2, this->textHeight / 2),
+				QSizeF(this->textWidth * text.size(), this->textHeight)
+			);
+
+	return rect;
 }
 
 void Label::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

@@ -72,19 +72,7 @@ Circle *Factory::makeCircle(Point *centerPoint, double radius)
 
 Label *Factory::makeLabel(QPointF location)
 {
-	Label *label = new Label(location);
-	label->setStyle(currentStyle);
-
-	QObject::connect(label, &UserInputRequester::requestString,
-					 this->userInput, &QGraphicsViewUserInput::requestString
-					 );
-
-	return label;
-}
-
-Label *Factory::makeLabel(QPointF location, QString text)
-{
-	Label *label = new Label(location, text);
+	Label *label = new Label(location, "               ");
 	label->setStyle(currentStyle);
 
 	QObject::connect(label, &UserInputRequester::requestString,
@@ -208,7 +196,6 @@ void Factory::addStaticDrawable(DrawableObject *object)
 		object->setStyle(currentStyle);
 		object->setFlags(QGraphicsItem::ItemIsSelectable);
 		object->setAcceptHoverEvents(true);
-		object->setIsConstructional(true);
 
 		this->staticObjectsList->append(object);
 		this->scene->addItem(object);

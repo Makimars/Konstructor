@@ -7,7 +7,6 @@ class Label : public DrawableObject, public UserInputRequester
 {
 public:
 	Label();
-	Label(QPointF location);
 	Label(QPointF location, QString text);
 
 	//file handling
@@ -33,7 +32,7 @@ private:
 	QString text;
 	QPointF location;
 
-	int textWidth = 60;
+	int textWidth = 10;
 	int textHeight = 20;
 
 	//events
