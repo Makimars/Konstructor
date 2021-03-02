@@ -23,10 +23,6 @@ protected:
 	Factory *objectFactory;
 
 	QStringList toolTips;
-
-	//getters and setters
-	void setCurrentBrush(QBrush *value);
-	void setCurrentPen(QPen *value);
 };
 
 inline Tool::Tool()

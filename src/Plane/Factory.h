@@ -32,9 +32,6 @@ public:
 	Arc *makeArc(Point *points[3]);
 
 	//dimension creation
-	Q_DECL_DEPRECATED LineLengthDimension *makeLineLengthDimension(Line *line);
-	Q_DECL_DEPRECATED LineLengthDimension *makeLineLengthDimension(Line *line, double lenght);
-	Q_DECL_DEPRECATED LineLengthDimension *makeLineLengthDimension(Line *line, double lenght, double distanceFromLine);
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2]);
 	LinesAngleDimension *makeLinesAngleDimension(Line *lines[2], double distanceFromCenter);
 	CirclesRadiusDifferenceDimension *makeCirclesRadiusDifferenceDimension(Circle *circles[2]);
@@ -43,6 +40,7 @@ public:
 	PointDistanceConstraint *makePointDistanceConstraint(Point *originPoint, Point *drivenPoint);
 	CircleRadiusConstraint *makeCircleRadiusConstraint(Circle *circle);
 	LineCenterPointConstraint *makeLineCenterPointConstraint(Line *line, Point *point);
+	ParaelLinesConstraint *makeParaelLinesConstraint(Line *lineOne, Line *lineTwo);
 
 	//object managment
 	void addToScene(DrawableObject *object);

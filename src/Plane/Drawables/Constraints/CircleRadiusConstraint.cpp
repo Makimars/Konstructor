@@ -7,7 +7,7 @@ CircleRadiusConstraint::CircleRadiusConstraint(Circle *circle) : DrawableObject 
 	this->circle = circle;
 	this->radius = circle->getRadius();
 
-
+	setGeometryUpdates();
 }
 
 void CircleRadiusConstraint::resolveTies()
@@ -77,11 +77,6 @@ void CircleRadiusConstraint::paint(QPainter *painter, const QStyleOptionGraphics
 
 	painter->drawLine(centerPoint, rightPoint);
 	painter->drawText(QPointF(centerPoint.x() + radius / 2, centerPoint.y()), QString::number(this->radius));
-
-	painter->setPen(Qt::red);
-	painter->drawRect(boundingRect());
-	painter->setPen(Qt::blue);
-	painter->drawPath(shape());
 }
 
 //----------     events     ----------

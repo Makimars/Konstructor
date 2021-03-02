@@ -1,7 +1,7 @@
 ﻿#ifndef LINESANGLEDIMENSION_H
 #define LINESANGLEDIMENSION_H
 
-#include "LineLengthDimension.h"
+#include "../Drawables.h"
 
 class LinesAngleDimension : public DrawableObject, public UserInputRequester
 {

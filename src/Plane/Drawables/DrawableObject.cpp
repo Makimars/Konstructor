@@ -157,7 +157,7 @@ void DrawableObject::paint(QPainter *painter)
 
 void DrawableObject::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if(event->button() == Qt::MouseButton::LeftButton)
+	if((event->button() == Qt::MouseButton::LeftButton) & !this->isLocked() & !this->isConstrained())
 		this->draging = true;
 }
 

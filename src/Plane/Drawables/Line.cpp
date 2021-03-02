@@ -41,38 +41,12 @@ void Line::loadRelations(QVector<DrawableObject*> list)
 
 //----------	getters and setters    ----------
 
-void Line::setLength(float lenght)
-{
-	QVector2D newVector = this->getLineVector().normalized() * lenght;
-
-	updateGeometry();
-	this->endPoint->setLocation(
-				this->startPoint->getX() + newVector.x(),
-				this->startPoint->getY() + newVector.y()
-				);
-}
-
 QVector2D Line::getLineVector() const
 {
 	return QVector2D(
 				this->endPoint->getX() - this->startPoint->getX(),
 				this->endPoint->getY() - this->startPoint->getY()
 				);
-}
-
-Line *Line::setLineVector(QVector2D vector)
-{
-	vector.normalize();
-	vector *= this->getLength();
-	QVector2D lineVector = this->getLineVector();
-
-	updateGeometry();
-	this->endPoint->setLocation(
-				this->startPoint->getY() + lineVector.x(),
-				this->startPoint->getY() + lineVector.y()
-                );
-
-	return this;
 }
 
 Point *Line::getStartPoint()
@@ -83,6 +57,14 @@ Point *Line::getStartPoint()
 Point *Line::getEndPoint()
 {
 	return this->endPoint;
+}
+
+QPointF Line::getCenterPos()
+{
+	double x = (startPoint->getLocation().x() + endPoint->getLocation().x()) /2;
+	double y = (startPoint->getLocation().y() + endPoint->getLocation().y()) /2;
+
+	return QPointF(x, y);
 }
 
 //----------     Distance    ----------

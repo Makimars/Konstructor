@@ -96,6 +96,7 @@ private slots:
 	std::vector<QPolygonF> getPolygonsForItem(QString sketch);
 	void closeDrawing();
 	void on_lineCenterButton_clicked();
+	void on_paraelLineButton_clicked();
 };
 
 #endif // MAINWINDOW_H

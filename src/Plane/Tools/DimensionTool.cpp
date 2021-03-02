@@ -98,7 +98,7 @@ void DimensionTool::click(DrawableObject *clickedObject, QPointF pos)
 			//line and place
 qDebug() << "line and location";
 			Line *line = dynamic_cast<Line*>(this->clickedObjects[1]);
-
+/*
 			double distanceFromLine = -line->signedDistanceFrom(pos);
 
 			this->objectFactory->addDrawable(
@@ -107,7 +107,7 @@ qDebug() << "line and location";
 							line->getLength(),
 							distanceFromLine
 							)
-				);
+				);*/
 		}
 		else if(this->clickedObjects[1]->getType() == Global::Circle)
 		{

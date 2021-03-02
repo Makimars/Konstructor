@@ -9,7 +9,6 @@ public:
 	static LineCenterTool *getInstance();
 
 	void click(DrawableObject * clickedObject, QPointF pos) override;
-	void resetTool() override;
 
 private:
 	LineCenterTool();

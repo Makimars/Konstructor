@@ -16,13 +16,12 @@ public:
 
 	//getters and setters
 	double getLength();
-	void setLength(float lenght);
 	Point *getStartPoint();
 	Point *getEndPoint();
+	QPointF getCenterPos();
 
 	//Geometry
 	QVector2D getLineVector() const;
-	Line *setLineVector(QVector2D vector);
 
 	//Distance
 	double distanceFrom(QPointF location);

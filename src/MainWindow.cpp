@@ -158,6 +158,9 @@ void MainWindow::refreshTools(int tool)
 		this->ui->expandPolygonButton->setChecked(false);
 	if(tool != Global::Tools::LineCenterTool)
 		this->ui->lineCenterButton->setChecked(false);
+	if(tool != Global::Tools::ParaelLinesConstraintTool)
+		this->ui->paraelLineButton->setChecked(false);
+
 
 	emit setTool(tool);
 }
@@ -377,6 +380,14 @@ void MainWindow::on_circleRadiusConstraintButton_clicked()
 {
 	if(this->ui->circleRadiusConstraintButton->isChecked())
 		refreshTools(Global::Tools::CircleRadiusConstraintTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
+void MainWindow::on_paraelLineButton_clicked()
+{
+	if(this->ui->paraelLineButton->isChecked())
+		refreshTools(Global::Tools::ParaelLinesConstraintTool);
 	else
 		refreshTools(Global::Tools::NoTool);
 }

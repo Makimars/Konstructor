@@ -1,6 +1,6 @@
 #include "PointDistanceConstraint.h"
 
-PointDistanceConstraint::PointDistanceConstraint() : DrawableObject(Global::Types::LineLengthConstraint){}
+PointDistanceConstraint::PointDistanceConstraint() : DrawableObject(Global::Types::PointDistanceConstraint){}
 
 PointDistanceConstraint::PointDistanceConstraint(Point *originPoint, Point *drivenPoint) : PointDistanceConstraint()
 {

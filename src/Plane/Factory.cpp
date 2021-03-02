@@ -104,34 +104,6 @@ Arc *Factory::makeArc(Point *points[])
 
 //----------     dimension creation     ---------
 
-LineLengthDimension *Factory::makeLineLengthDimension(Line *line)
-{
-	LineLengthDimension *dimension = new LineLengthDimension(line);
-	dimension->setStyle(currentStyle);
-
-	QObject::connect(dimension, &UserInputRequester::requestDouble,
-					 this->userInput, &QGraphicsViewUserInput::requestDouble
-					 );
-
-	return dimension;
-}
-
-LineLengthDimension *Factory::makeLineLengthDimension(Line *line, double length)
-{
-	LineLengthDimension *dimension = makeLineLengthDimension(line);
-	dimension->setLineLength(length);
-
-	return dimension;
-}
-
-LineLengthDimension *Factory::makeLineLengthDimension(Line *line, double length, double distanceFromLine)
-{
-	LineLengthDimension *dimension = makeLineLengthDimension(line, length);
-	dimension->setDistanceFromLine(distanceFromLine);
-
-	return dimension;
-}
-
 LinesAngleDimension *Factory::makeLinesAngleDimension(Line *lines[])
 {
 	LinesAngleDimension *dimension = new LinesAngleDimension(lines);
@@ -191,6 +163,14 @@ CircleRadiusConstraint *Factory::makeCircleRadiusConstraint(Circle *circle)
 LineCenterPointConstraint *Factory::makeLineCenterPointConstraint(Line *line, Point *point)
 {
 	LineCenterPointConstraint *constraint = new LineCenterPointConstraint(line, point);
+	constraint->setStyle(currentStyle);
+
+	return constraint;
+}
+
+ParaelLinesConstraint *Factory::makeParaelLinesConstraint(Line *lineOne, Line *lineTwo)
+{
+	ParaelLinesConstraint *constraint = new ParaelLinesConstraint(lineOne, lineTwo);
 	constraint->setStyle(currentStyle);
 
 	return constraint;
@@ -313,17 +293,29 @@ QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
 			case Global::Circle:
 				createdObj = new Circle();
 				break;
+			case Global::Arc:
+				createdObj = new Arc();
+				break;
 			case Global::Label:
 				createdObj = new Label();
-				break;
-			case Global::LineLengthDimension:
-				createdObj = new LineLengthDimension();
 				break;
 			case Global::LineAngleDimension:
 				createdObj = new LinesAngleDimension();
 				break;
 			case Global::CircleRadiusDimension:
 				createdObj = new CircleRadiusConstraint();
+				break;
+			case Global::CirclesRadiusDifferenceDimension:
+				createdObj = new CirclesRadiusDifferenceDimension();
+				break;
+			case Global::PointDistanceConstraint:
+				createdObj = new PointDistanceConstraint();
+				break;
+			case Global::LineCenterPointConstraint:
+				createdObj = new LineCenterPointConstraint();
+				break;
+			case Global::ParaelLinesConstraint:
+				createdObj = new ParaelLinesConstraint();
 				break;
 			default:
 				createdObj = nullptr;

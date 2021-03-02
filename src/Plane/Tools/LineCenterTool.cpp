@@ -9,7 +9,10 @@ LineCenterTool *LineCenterTool::getInstance()
 	return LineCenterTool::instance;
 }
 
-LineCenterTool::LineCenterTool() : Tool(){}
+LineCenterTool::LineCenterTool() : Tool()
+{
+	toolTips.append(tr("Select a line to create center."));
+}
 
 void LineCenterTool::click(DrawableObject *clickedObject, QPointF pos)
 {
@@ -26,7 +29,5 @@ void LineCenterTool::click(DrawableObject *clickedObject, QPointF pos)
 						);
 		}
 	}
+
 }
-
-void LineCenterTool::resetTool(){}
-

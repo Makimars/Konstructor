@@ -27,6 +27,9 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
+    src/Plane/Drawables/Constraints/ParaelLinesConstraint.cpp \
+    src/Plane/Drawables/Constraints/PointDistanceConstraint.cpp \
+    src/Plane/Tools/Constraints/ParaelLinesConstraintTool.cpp \
     src/PlaneWidget.cpp \
     src/SpaceWidget.cpp \
     src/main.cpp \
@@ -67,10 +70,8 @@ SOURCES += \
 \
     src/Plane/Drawables/Constraints/LineCenterPointConstraint.cpp \
     src/Plane/Drawables/Constraints/CircleRadiusConstraint.cpp \
-    src/Plane/Drawables/Constraints/LineLengthConstraint.cpp \
 \
     src/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.cpp \
-    src/Plane/Drawables/Dimensions/LineLengthDimension.cpp \
     src/Plane/Drawables/Dimensions/LinesAngleDimension.cpp \
 \
     src/Adapters/PointAdapter.cpp \
@@ -89,7 +90,9 @@ HEADERS += \
     include/nlohmann/json.hpp \
 \
     src/MainWindow.h \
+    src/Plane/Drawables/Constraints/ParaelLinesConstraint.h \
     src/Plane/Plane.h \
+    src/Plane/Tools/Constraints/ParaelLinesConstraintTool.h \
     src/PlaneWidget.h \
     src/Space/Space.h \
     src/SpaceWidget.h \
@@ -140,7 +143,6 @@ HEADERS += \
     src/Plane/Drawables/Constraints/CircleRadiusConstraint.h \
 \
     src/Plane/Drawables/Dimensions/CirclesRadiusDifferenceDimension.h \
-    src/Plane/Drawables/Dimensions/LineLengthDimension.h \
     src/Plane/Drawables/Dimensions/LinesAngleDimension.h \
 \
     src/Adapters/PointAdapter.h \

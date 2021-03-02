@@ -10,5 +10,6 @@
         <file>icons/LineLength.png</file>
         <file>icons/CircleRadius.png</file>
         <file>icons/ConcentricCircles.png</file>
+        <file>icons/ParaelLine.png</file>
     </qresource>
 </RCC>
