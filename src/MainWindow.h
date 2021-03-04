@@ -82,6 +82,9 @@ private slots:
 	void on_lockPointButton_clicked();
 	void on_pointDistanceConstraintButton_clicked();
 	void on_circleRadiusConstraintButton_clicked();
+	void on_lineCenterButton_clicked();
+	void on_paraelLineButton_clicked();
+	void on_linesAngleButton_clicked();
 	//finish drawing
 	void on_finishDrawingButton_clicked();
 
@@ -94,8 +97,6 @@ private slots:
 
 	std::vector<QPolygonF> getPolygonsForItem(QString sketch);
 	void closeDrawing();
-	void on_lineCenterButton_clicked();
-	void on_paraelLineButton_clicked();
 };
 
 #endif // MAINWINDOW_H

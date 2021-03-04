@@ -350,6 +350,9 @@ void PlaneWidget::setTool(int tool)
 		case Global::Tools::ParaelLinesConstraintTool:
 			this->selectedTool = ParaelLinesConstraintTool::getInstance();
 			break;
+		case Global::Tools::LinesAngleConstraintTool:
+			this->selectedTool = LinesAngleConstraintTool::getInstance();
+			break;
 		default:
 			this->selectedTool = nullptr;
 			emit showStatusBarMessage("");

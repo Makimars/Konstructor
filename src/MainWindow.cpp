@@ -158,6 +158,8 @@ void MainWindow::refreshTools(int tool)
 		this->ui->lineCenterButton->setChecked(false);
 	if(tool != Global::Tools::ParaelLinesConstraintTool)
 		this->ui->paraelLineButton->setChecked(false);
+	if(tool != Global::Tools::LinesAngleConstraintTool)
+		this->ui->linesAngleButton->setChecked(false);
 
 	emit setTool(tool);
 }
@@ -377,6 +379,14 @@ void MainWindow::on_paraelLineButton_clicked()
 {
 	if(this->ui->paraelLineButton->isChecked())
 		refreshTools(Global::Tools::ParaelLinesConstraintTool);
+	else
+		refreshTools(Global::Tools::NoTool);
+}
+
+void MainWindow::on_linesAngleButton_clicked()
+{
+	if(this->ui->paraelLineButton->isChecked())
+		refreshTools(Global::Tools::LinesAngleConstraintTool);
 	else
 		refreshTools(Global::Tools::NoTool);
 }

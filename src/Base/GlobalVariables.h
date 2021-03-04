@@ -16,11 +16,12 @@ enum Types{
 	Arc,
 	Label,
 	LineAngleDimension,
-	CircleRadiusDimension,
-	CirclesRadiusDifferenceDimension,
+	CircleRadiusConstraint,
+	CirclesRadiusDifferenceConstraint,
 	PointDistanceConstraint,
 	LineCenterPointConstraint,
-	ParaelLinesConstraint
+	ParaelLinesConstraint,
+	LinesAngleConstraint
 };
 
 enum Tools{
@@ -30,14 +31,15 @@ enum Tools{
 	RectangleTool,
 	LabelTool,
 	ArcTool,
-
-	PointPositionTool,
-	LockPointTool,
-	PointDistanceConstrainTool,
-	CircleRadiusConstraintTool,
 	ExpandPolgyonTool,
 	LineCenterTool,
-	ParaelLinesConstraintTool
+	PointPositionTool,
+	LockPointTool,
+
+	PointDistanceConstrainTool,
+	CircleRadiusConstraintTool,
+	ParaelLinesConstraintTool,
+	LinesAngleConstraintTool
 };
 
 enum Mode{

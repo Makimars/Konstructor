@@ -1,8 +1,8 @@
 #include "CircleRadiusConstraint.h"
 
-CircleRadiusConstraint::CircleRadiusConstraint() : DrawableObject (Global::CircleRadiusDimension){}
+CircleRadiusConstraint::CircleRadiusConstraint() : DrawableObject (Global::CircleRadiusConstraint){}
 
-CircleRadiusConstraint::CircleRadiusConstraint(Circle *circle) : DrawableObject (Global::CircleRadiusDimension)
+CircleRadiusConstraint::CircleRadiusConstraint(Circle *circle) : DrawableObject (Global::CircleRadiusConstraint)
 {
 	this->circle = circle;
 	this->radius = circle->getRadius();

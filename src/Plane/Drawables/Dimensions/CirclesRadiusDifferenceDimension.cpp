@@ -1,8 +1,8 @@
 #include "CirclesRadiusDifferenceDimension.h"
 
-CirclesRadiusDifferenceDimension::CirclesRadiusDifferenceDimension() : DrawableObject(Global::CirclesRadiusDifferenceDimension){}
+CirclesRadiusDifferenceDimension::CirclesRadiusDifferenceDimension() : DrawableObject(Global::CirclesRadiusDifferenceConstraint){}
 
-CirclesRadiusDifferenceDimension::CirclesRadiusDifferenceDimension(Circle *circles[]) : DrawableObject(Global::CirclesRadiusDifferenceDimension)
+CirclesRadiusDifferenceDimension::CirclesRadiusDifferenceDimension(Circle *circles[]) : DrawableObject(Global::CirclesRadiusDifferenceConstraint)
 {
 	this->circles[0] = circles[0];
 	this->circles[1] = circles[1];

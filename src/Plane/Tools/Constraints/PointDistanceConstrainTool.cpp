@@ -31,7 +31,7 @@ void PointDistanceConstrainTool::click(DrawableObject *clickedObject, QPointF po
 			}
 			else if(clickCounter == 2)
 			{
-				if(clickedObject->isLocked() | clickedObject->isConstrained())
+				if(clickedObject->isLocked())
 				{
 					clickCounter = 1;
 					return;

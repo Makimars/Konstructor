@@ -248,10 +248,10 @@ QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
 			case Global::LineAngleDimension:
 				createdObj = new LinesAngleDimension();
 				break;
-			case Global::CircleRadiusDimension:
+			case Global::CircleRadiusConstraint:
 				createdObj = new CircleRadiusConstraint();
 				break;
-			case Global::CirclesRadiusDifferenceDimension:
+			case Global::CirclesRadiusDifferenceConstraint:
 				createdObj = new CirclesRadiusDifferenceDimension();
 				break;
 			case Global::PointDistanceConstraint:
