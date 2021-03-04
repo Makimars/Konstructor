@@ -28,8 +28,8 @@ public:
 	QString getSketch();
 	Plane *getPlane(int index);
 
-	void extrude();
-	void extrude(Extrusion extrusion, Polygon *targetPolygon);
+	void setExtrusion();
+	void setExtrusion(Extrusion extrusion, Polygon *targetPolygon);
 
 	std::vector<Vertex> *getExtrudedVertexes();
 

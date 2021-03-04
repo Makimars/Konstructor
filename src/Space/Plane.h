@@ -33,7 +33,7 @@ public:
 private:
 	Transform3D transform;
 	int itemIndex, planeIndex;
-	std::vector<QPointF> projectedVertexes;
+	QPolygonF projectedPoints;
 };
 
 inline QMatrix4x4 Plane::toMatrix(){ return transform.toMatrix(); }

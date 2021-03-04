@@ -91,7 +91,7 @@ Plane *Item::getPlane(int index)
 	return planes.at(index);
 }
 
-void Item::extrude()
+void Item::setExtrusion()
 {
 	setText(0, "Item");
 
@@ -152,27 +152,40 @@ void Item::extrude()
 			QVector3D rotAxis = globalVertexPos(i+1) - globalVertexPos(i);
 			QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
 
-			addPlane(i+2, basePos, rot);
+			std::vector<QVector3D> projectedPoints;
+			projectedPoints.push_back(globalVertexPos(i));
+			projectedPoints.push_back(globalVertexPos(i+1));
+			projectedPoints.push_back(globalVertexPos(edges + i));
+			projectedPoints.push_back(globalVertexPos(edges + i + 1));
+;
+			addPlane(i+2, basePos, rot, projectedPoints);
 		}
 		//overlapping
+
 		QVector3D basePos = globalVertexPos(edges - 1);
 		QVector3D rotAxis = globalVertexPos(0) - globalVertexPos(edges-1);
 		QQuaternion rot = QQuaternion::fromAxisAndAngle(rotAxis, 270);
+
+		std::vector<QVector3D> projectedPoints;
+		projectedPoints.push_back(globalVertexPos(edges - 1));
+		projectedPoints.push_back(globalVertexPos(0));
+		projectedPoints.push_back(globalVertexPos(edges - 1 + edges));
+		projectedPoints.push_back(globalVertexPos(edges));
 		//+1 = edges - 1 + 2
-		addPlane(edges+1, basePos, rot);
+		addPlane(edges+1, basePos, rot, projectedPoints);
 	}
 
 	emit updateData();
 	setExpanded(true);
 }
 
-void Item::extrude(Extrusion extrusion, Polygon *targetPolygon)
+void Item::setExtrusion(Extrusion extrusion, Polygon *targetPolygon)
 {
 	extruded = true;
 	this->extrudedPolygon = targetPolygon;
 	this->extrusion = extrusion;
 
-	extrude();
+	setExtrusion();
 }
 
 std::vector<Vertex> *Item::getExtrudedVertexes()
@@ -245,11 +258,6 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation, std::vector<QVector3D> existingVertexes)
 {
-	for (uint32_t i = 0; i < existingVertexes.size(); i++)
-	{
-		existingVertexes.at(i) = existingVertexes.at(i) * toMatrix();
-	}
-
 	// ensures that the vector has either nullptr or an instance
 	if(planes.size() < index + 1)
 	{

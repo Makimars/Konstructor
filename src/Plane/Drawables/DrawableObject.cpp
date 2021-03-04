@@ -15,6 +15,7 @@ QString DrawableObject::toFileString()
 	this->fileAddVar("id", this->getId());
 	this->fileAddVar("constructional", this->constructional);
 	this->fileAddVar("locked", locked);
+	this->fileAddVar("constraints", constrains);
 	return this->file;
 }
 
@@ -74,6 +75,7 @@ QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varN
 	varNames.append("id");
 	varNames.append("constructional");
 	varNames.append("locked");
+	varNames.append("constraints");
 
 	QVector<QVariant> values;
 	values.resize(varNames.length());

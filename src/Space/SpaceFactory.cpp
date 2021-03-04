@@ -141,7 +141,6 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 	uint32_t length = vertexData->size() / 3;
 	char *size = (char*)&length;
 
-	qDebug() << length;
 	//4 byte length space
 	for(int a = 0; a < 4; a++)
 		file.append(size[a]);
@@ -161,10 +160,6 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 		file += u_int8_t(0);
 		file += u_int8_t(0);
 	}
-
-
-
-
 
 	return file;
 }

@@ -456,6 +456,8 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			{
 				setMode(Global::Mode::Draw);
 				emit setTargetItem(item);
+
+				this->ui->planeView->loadProjected(item->getBasePlane()->getProjectedPolygon());
 				this->ui->planeView->loadFromFile(item->getSketch());
 			}
 			else if(selectedAction == &deleteAction)

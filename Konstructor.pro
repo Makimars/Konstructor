@@ -27,9 +27,6 @@ CONFIG += c++11
 SOURCES += \
     include/delaunator/delaunator.cpp \
 \
-    src/Plane/Drawables/Constraints/ParaelLinesConstraint.cpp \
-    src/Plane/Drawables/Constraints/PointDistanceConstraint.cpp \
-    src/Plane/Tools/Constraints/ParaelLinesConstraintTool.cpp \
     src/PlaneWidget.cpp \
     src/SpaceWidget.cpp \
     src/main.cpp \
@@ -59,6 +56,8 @@ SOURCES += \
 \
     src/Plane/Tools/Constraints/CircleRadiusConstraintTool.cpp \
     src/Plane/Tools/Constraints/PointDistanceConstrainTool.cpp \
+    src/Plane/Tools/Constraints/ParaelLinesConstraintTool.cpp \
+    src/Plane/Tools/Constraints/LinesAngleConstraintTool.cpp \
 \
     src/Plane/Drawables/DrawableObject.cpp \
     src/Plane/Drawables/Circle.cpp \
@@ -67,6 +66,8 @@ SOURCES += \
     src/Plane/Drawables/Label.cpp \
     src/Plane/Drawables/Arc.cpp \
 \
+    src/Plane/Drawables/Constraints/ParaelLinesConstraint.cpp \
+    src/Plane/Drawables/Constraints/PointDistanceConstraint.cpp \
     src/Plane/Drawables/Constraints/LineCenterPointConstraint.cpp \
     src/Plane/Drawables/Constraints/CircleRadiusConstraint.cpp \
 \
@@ -89,9 +90,7 @@ HEADERS += \
     include/nlohmann/json.hpp \
 \
     src/MainWindow.h \
-    src/Plane/Drawables/Constraints/ParaelLinesConstraint.h \
     src/Plane/Plane.h \
-    src/Plane/Tools/Constraints/ParaelLinesConstraintTool.h \
     src/PlaneWidget.h \
     src/Space/Space.h \
     src/SpaceWidget.h \
@@ -126,6 +125,7 @@ HEADERS += \
     src/Plane/Drawables/Constraints/LineCenterPointConstraint.h \
     src/Plane/Tools/Constraints/PointDistanceConstrainTool.h \
     src/Plane/Tools/Constraints/CircleRadiusConstraintTool.h \
+    src/Plane/Tools/Constraints/ParaelLinesConstraintTool.h \
 \
     src/Plane/Drawables/Drawables.h \
     src/Plane/Drawables/DrawableObject.h \
@@ -137,6 +137,7 @@ HEADERS += \
 \
     src/Plane/Drawables/Constraints/Constraints.h \
 \
+    src/Plane/Drawables/Constraints/ParaelLinesConstraint.h \
     src/Plane/Drawables/Constraints/PointDistanceConstraint.h \
     src/Plane/Drawables/Constraints/CircleRadiusConstraint.h \
 \

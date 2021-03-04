@@ -72,6 +72,7 @@ QString PlaneWidget::toFile()
 
 void PlaneWidget::loadProjected(QPolygonF projectedPoints)
 {
+	qDebug() << projectedPoints.size();
 	if(projectedPoints.size() < 1) return;
 
 	objectFactory->deleteAllStaticDrawables();
@@ -80,6 +81,7 @@ void PlaneWidget::loadProjected(QPolygonF projectedPoints)
 
 	for (int i = 0; i < projectedPoints.size(); i++ )
 		points.push_back(objectFactory->makePoint(projectedPoints.at(i).x(), projectedPoints.at(i).y()));
+
 	for (int i = 0; i < projectedPoints.size()-1; i++ )
 		lines.push_back(objectFactory->makeLine(points.at(i), points.at(i+1)));
 	lines.push_back(objectFactory->makeLine(points.at(points.size()-1), points.at(0)));
@@ -422,5 +424,6 @@ void PlaneWidget::newSketchButtonClicked()
 void PlaneWidget::closeSketchButtonClicked()
 {
 	objectFactory->deleteAll();
+	objectFactory->deleteAllStaticDrawables();
 	emit closeDrawing();
 }

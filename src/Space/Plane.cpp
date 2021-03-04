@@ -53,24 +53,17 @@ void Plane::setPlaneIndex(int i)
 
 void Plane::setExistingVertexes(std::vector<QVector3D> vertexes)
 {
+	//vertexes = global pos, need to covert to local 2D
+	if(vertexes.size() == 0) return;
+
 	for (uint32_t i = 0; i < vertexes.size(); i++)
 	{
-		projectedVertexes.push_back(
-					(vertexes.at(i) * toMatrix().inverted()).toPointF() * Settings::planeToSpaceRatio
-					);
+		projectedPoints << (vertexes.at(i) * toMatrix().inverted()).toPointF() * Settings::planeToSpaceRatio;
 	}
+	projectedPoints << (vertexes.at(0) * toMatrix().inverted()).toPointF() * Settings::planeToSpaceRatio;
 }
 
 QPolygonF Plane::getProjectedPolygon()
 {
-	QPolygonF polygon;
-	if(projectedVertexes.size() == 0) return polygon;
-
-	for (uint32_t i = 0; i < projectedVertexes.size(); i++)
-	{
-		polygon << projectedVertexes.at(i);
-	}
-	polygon << projectedVertexes.at(0);
-
-	return polygon;
+	return projectedPoints;
 }

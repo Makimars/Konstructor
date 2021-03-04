@@ -58,7 +58,7 @@ void SpaceWidget::loadFromFile(QString fileContents)
 		items.at(i)->loadRelations(items);
 		if(items.at(i)->isExtruded())
 		{
-			items.at(i)->extrude();
+			items.at(i)->setExtrusion();
 		}
 	}
 	for (uint32_t i = 0; i < items.size(); i++)
