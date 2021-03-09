@@ -3,16 +3,12 @@
 
 #include <QDialog>
 
+#include "AboutDialog.h"
+#include "../MainWindow.h"
+
 namespace Ui {
 class WelcomeDialog;
 }
-
-enum WelcomeScreenResult{
-	OpenProject,
-	NewProject,
-	About,
-	Exit
-};
 
 class WelcomeDialog : public QDialog
 {
@@ -22,7 +18,7 @@ public:
 	explicit WelcomeDialog(QWidget *parent = nullptr);
 	~WelcomeDialog();
 
-	WelcomeScreenResult action;
+	void show(MainWindow *m);
 
 private slots:
 	void on_exitButton_clicked();
@@ -35,6 +31,9 @@ private slots:
 
 private:
 	Ui::WelcomeDialog *ui;
+
+	AboutDialog aboutDialog;
+	MainWindow *mainWindow;
 };
 
 #endif // WELCOMEDIALOG_H

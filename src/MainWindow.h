@@ -7,8 +7,6 @@
 #include <QTreeWidgetItem>
 #include <QMenuBar>
 
-#include "Dialogs/AboutDialog.h"
-#include "Dialogs/WelcomeDialog.h"
 #include "Dialogs/SettingsDialog.h"
 #include "Dialogs/ExtrusionDialog.h"
 #include "Base/GlobalVariables.h"
@@ -29,7 +27,7 @@ public:
 	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 
-	void show();
+	void show(int mode);
 
 private:
 	Ui::MainWindow *ui;

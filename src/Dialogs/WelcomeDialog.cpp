@@ -13,26 +13,30 @@ WelcomeDialog::~WelcomeDialog()
 	delete ui;
 }
 
+void WelcomeDialog::show(MainWindow *m)
+{
+	mainWindow = m;
+	QDialog::show();
+}
+
 void WelcomeDialog::on_newProjectButton_clicked()
 {
-	action = WelcomeScreenResult::NewProject;
-	close();
+	mainWindow->show(Global::Mode::Draw);
+	hide();
 }
 
 void WelcomeDialog::on_openProjectButton_clicked()
 {
-	action = WelcomeScreenResult::OpenProject;
-	close();
+	mainWindow->show(Global::Mode::Object);
+	hide();
 }
 
 void WelcomeDialog::on_aboutButton_clicked()
 {
-	action = WelcomeScreenResult::About;
-	close();
+	aboutDialog.exec();
 }
 
 void WelcomeDialog::on_exitButton_clicked()
 {
-	action = WelcomeScreenResult::Exit;
-	close();
+	QApplication::quit();
 }

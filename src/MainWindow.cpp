@@ -24,39 +24,20 @@ MainWindow::~MainWindow()
 	delete this->ui;
 }
 
-void MainWindow::show()
+void MainWindow::show(int mode)
 {
-	//welcome screen
-	WelcomeDialog *welcomeDialog = new WelcomeDialog(this);
-	welcomeDialog->exec();
 	QMainWindow::show();
 
-	//AboutDialog
-	AboutDialog aboutDialog(this);
-
-	switch (welcomeDialog->action)
+	if(mode == Global::Draw)
 	{
-		case WelcomeScreenResult::NewProject:
-			//new Project
-			emit setTargetItem(this->ui->objectsTree->topLevelItem(0));
-			this->ui->objectsTree->setCurrentItem(this->ui->objectsTree->topLevelItem(0));
-			this->setMode(Global::Mode::Draw);
-			break;
-		case WelcomeScreenResult::OpenProject:
-			//open Project
-			on_openObjectFile_clicked();
-			this->setMode(Global::Mode::Object);
-			break;
-		case WelcomeScreenResult::About:
-			aboutDialog.exec();
-			break;
-		case WelcomeScreenResult::Exit:
-		default:
-			this->close();
-			this->hide();
-			QApplication::closeAllWindows();
-			QApplication::quit();
-			break;
+		this->setMode(Global::Mode::Draw);
+		emit setTargetItem(this->ui->objectsTree->topLevelItem(0));
+		this->ui->objectsTree->setCurrentItem(this->ui->objectsTree->topLevelItem(0));
+	}
+	else if(mode == Global::Object)
+	{
+		this->setMode(Global::Mode::Object);
+		on_openObjectFile_clicked();
 	}
 }
 
