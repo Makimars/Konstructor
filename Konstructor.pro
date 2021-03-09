@@ -32,6 +32,7 @@ SOURCES += \
     src/main.cpp \
     src/MainWindow.cpp \
     \
+    src/Dialogs/AboutDialog.cpp \
     src/Dialogs/PointPositionDialog.cpp \
     src/Dialogs/ExtrusionDialog.cpp \
     src/Dialogs/MessagesManager.cpp \
@@ -95,6 +96,7 @@ HEADERS += \
     src/Space/Space.h \
     src/SpaceWidget.h \
 \
+    src/Dialogs/AboutDialog.h \
     src/Dialogs/ExtrusionDialog.h \
     src/Dialogs/MessagesManager.h \
     src/Dialogs/PopUpMessage.h \
@@ -157,6 +159,7 @@ HEADERS += \
 
 
 FORMS += \
+    src/Dialogs/AboutDialog.ui \
     src/MainWindow.ui \
     \
     src/Dialogs/PointPositionDialog.ui \

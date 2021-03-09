@@ -678,7 +678,7 @@
                 </property>
                 <property name="icon">
                  <iconset resource="../icons.qrc">
-                  <normaloff>:/icons/ParaelLine.png</normaloff>:/icons/ParaelLine.png</iconset>
+                  <normaloff>:/icons/LinesAngle.png</normaloff>:/icons/LinesAngle.png</iconset>
                 </property>
                 <property name="iconSize">
                  <size>

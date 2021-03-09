@@ -25,8 +25,15 @@ public:
 	void loadProjected(QPolygonF projectedPoints);
 	QVector<DrawableObject*> finishDrawing();
 
-    //axis
-	Line *getAxisLine(int xDirection, int yDirection);
+public slots:
+	void setTool(int tool);
+	void resetTool();
+
+	void customContextMenuRequested(const QPoint &pos);
+
+	void newSketchButtonClicked();
+	void closeSketchButtonClicked();
+
 private:
 	QGraphicsScene *sketchScene;
 
@@ -75,15 +82,6 @@ signals:
 	void showStatusBarMessage(const QString &message, int timeout = 0);
 	void mouseMoved(QPointF pos);
 	void closeDrawing();
-
-public slots:
-	void setTool(int tool);
-	void resetTool();
-
-	void customContextMenuRequested(const QPoint &pos);
-
-	void newSketchButtonClicked();
-	void closeSketchButtonClicked();
 };
 
 #endif // DRAWINGWIDGET_H

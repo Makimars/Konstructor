@@ -7,6 +7,7 @@
 #include <QTreeWidgetItem>
 #include <QMenuBar>
 
+#include "Dialogs/AboutDialog.h"
 #include "Dialogs/WelcomeDialog.h"
 #include "Dialogs/SettingsDialog.h"
 #include "Dialogs/ExtrusionDialog.h"
@@ -44,6 +45,8 @@ private:
 
 	void setupUi();
 	void setupConnections();
+
+	void showWelcomeDialog();
 
 	//settings
 	void loadSettings();

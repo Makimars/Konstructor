@@ -11,5 +11,6 @@
         <file>icons/CircleRadius.png</file>
         <file>icons/ConcentricCircles.png</file>
         <file>icons/ParaelLine.png</file>
+        <file>icons/LinesAngle.png</file>
     </qresource>
 </RCC>

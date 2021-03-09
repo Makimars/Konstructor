@@ -31,6 +31,9 @@ void MainWindow::show()
 	welcomeDialog->exec();
 	QMainWindow::show();
 
+	//AboutDialog
+	AboutDialog aboutDialog(this);
+
 	switch (welcomeDialog->action)
 	{
 		case WelcomeScreenResult::NewProject:
@@ -45,6 +48,7 @@ void MainWindow::show()
 			this->setMode(Global::Mode::Object);
 			break;
 		case WelcomeScreenResult::About:
+			aboutDialog.exec();
 			break;
 		case WelcomeScreenResult::Exit:
 		default:
@@ -438,6 +442,7 @@ void MainWindow::viewKeyPress(QKeyEvent *event)
 void MainWindow::setMode(int index)
 {
 	this->ui->stackedWidget->setCurrentIndex(index);
+	this->ui->statusBar->clearMessage();
 }
 
 void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
