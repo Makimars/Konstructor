@@ -18,6 +18,11 @@ std::vector<QPointF> Polygon::getPoints()
 	return polygon.toStdVector();
 }
 
+QPolygonF Polygon::getQpolygon()
+{
+	return polygon;
+}
+
 int Polygon::getDataSize() const
 {
 	return dataSize;

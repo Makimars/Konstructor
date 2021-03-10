@@ -34,7 +34,6 @@ public:
 
 public slots:
 	void reallocateItems();
-	void allocateNewItem(Item *item);
 	void reallocatePlanes();
 	void allocateNewPlane();
 	void update();

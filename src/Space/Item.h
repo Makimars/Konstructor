@@ -22,6 +22,7 @@ public:
 	void setDataSize(int size);
 	int getDataSize();
 	bool isExtruded();
+	bool isAdditive();
 	QVector3D getColor();
 
 	void setSketch(QString sketch);

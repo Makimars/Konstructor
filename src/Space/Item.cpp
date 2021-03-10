@@ -79,6 +79,11 @@ bool Item::isExtruded()
 	return extruded;
 }
 
+bool Item::isAdditive()
+{
+	return extrusion.additive;
+}
+
 QVector3D Item::getColor()
 {
 	if(extruded)return extrudedPolygon->getColor();

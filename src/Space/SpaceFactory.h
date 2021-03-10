@@ -4,7 +4,10 @@
 #include "Item.h"
 
 #include "include/delaunator/delaunator.h"
+
+// Igl
 #include "include/libigl/include/igl/cotmatrix.h"
+#include "include/libigl/include/igl/copyleft/cgal/mesh_boolean.h"
 
 class SpaceFactory : public QObject
 {
@@ -17,8 +20,9 @@ public:
 	static SpaceFactory *getInstance();
 
 public:
-	void generateItemVertexDataToBuffer(Item *item, std::vector<Vertex> *vertexData);
 	QByteArray generateStlFile(std::vector<Vertex> *vertexData);
+
+	void generateBuffer(std::vector<Vertex> *vertexBuffer);
 
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);
@@ -26,8 +30,14 @@ public slots:
 	Item *loadItem(std::string file);
 
 	void addNewItem(std::vector<QPolygonF> polygons, QString sketch);
-	void addItem(Item *item);
-	void deleteItem(Item *item);
+
+	/** @brief adds item to list and connects, reallocates if selected */
+	void addItem(Item *item, bool reallocate = true);
+
+	/** @brief removes the itme from list, deletes and reallocates if selected*/
+	void deleteItem(Item *item, bool reallocate = true);
+
+	/** @brief delet all items and then reallocate */
 	void deleteAllItems();
 
 	void addPlane(Plane *plane);
@@ -42,13 +52,17 @@ private:
 
 	QTreeWidgetItem *targetItem;
 
-	QVector<Item*> *objectsInSpace;
+	QVector<Item*> *itemsInSpace;
 	QVector<Plane*> *planes;
 	QObject *glWidget;
 
+	std::vector<Vertex> triangularizePolygon(QPolygonF polygon);
+	std::vector<Vertex> triangularizeItem(Item *item);
+
+	void calculateBooleanIgl(std::vector<std::vector<Vertex>> *triangularizedVertexData);
+
 signals:
 	void reallocateItems();
-	void allocateNewItem(Item *item);
 	void reallocatePlanes();
 	void allocateNewPlane();
 

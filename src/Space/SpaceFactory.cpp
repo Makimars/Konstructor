@@ -12,125 +12,6 @@ SpaceFactory *SpaceFactory::getInstance()
 	return SpaceFactory::instance;
 }
 
-void SpaceFactory::generateItemVertexDataToBuffer(Item *item, std::vector<Vertex> *vertexData)
-{
-	if(item->isExtruded())
-	{
-		std::vector<Vertex> *vertexes = item->getExtrudedVertexes();
-		std::vector<Vertex> base[2];
-		int baseSize = (vertexes->size() / 2) + 1;
-
-		base[0].assign(vertexes->data(), vertexes->data()+baseSize-1);
-		base[1].assign(vertexes->data() + baseSize-1, vertexes->data()+vertexes->size());
-		int dataSize = 0;
-
-		//calculate bases
-		for (int a = 0; a < 2 ; a++)
-		{
-			std::vector<double> coordinates;
-			for(uint32_t i = 0; i < base[a].size(); i++)
-			{
-				coordinates.push_back(base[a].at(i).position().x());
-				coordinates.push_back(base[a].at(i).position().y());
-			}
-
-			//calculate vertexes for both bases
-			delaunator::Delaunator d(coordinates);
-			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
-			{
-				vertexData->push_back(Vertex(
-					d.coords[2 * d.triangles[i]],
-					d.coords[2 * d.triangles[i] + 1],
-					0
-				));
-
-				vertexData->push_back(Vertex(
-					d.coords[2 * d.triangles[i + 1]],
-					d.coords[2 * d.triangles[i + 1] + 1],
-					0
-				));
-
-				vertexData->push_back(Vertex(
-					d.coords[2 * d.triangles[i + 2]],
-					d.coords[2 * d.triangles[i + 2] + 1],
-					0
-				));
-
-				dataSize += 3;
-			}
-		}
-
-		//calculate faces
-		for (uint32_t i = 0; i < base[0].size() - 1; i++)
-		{
-			vertexData->push_back(base[0].at(i));
-			vertexData->push_back(base[0].at(i + 1));
-			vertexData->push_back(base[1].at(i));
-
-			vertexData->push_back(base[0].at(i + 1));
-			vertexData->push_back(base[1].at(i + 1));
-			vertexData->push_back(base[1].at(i));
-
-			dataSize += 6;
-		}
-		//calculate closing faces
-		{
-			int lastIndex = base[0].size() - 1;
-
-			vertexData->push_back(base[0].at(lastIndex));
-			vertexData->push_back(base[0].at(0));
-			vertexData->push_back(base[1].at(lastIndex));
-
-			vertexData->push_back(base[0].at(0));
-			vertexData->push_back(base[1].at(0));
-			vertexData->push_back(base[1].at(lastIndex));
-
-			dataSize += 6;
-		}
-
-		item->setDataSize(dataSize);
-	}
-	else
-	{
-		QVector<Polygon*> *polygons = item->getPolygons();
-		for(int a = 0; a < polygons->size(); a++)
-		{
-			std::vector<double> coordinates;
-			std::vector<QPointF> points = polygons->at(a)->getPoints();
-
-			for(uint32_t i = 0; i < points.size(); i++)
-			{
-				coordinates.push_back(points.at(i).x());
-				coordinates.push_back(points.at(i).y());
-			}
-
-			delaunator::Delaunator d(coordinates);
-			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
-			{
-				vertexData->push_back(Vertex(
-					d.coords[2 * d.triangles[i]],
-					d.coords[2 * d.triangles[i] + 1],
-					0
-				));
-
-				vertexData->push_back(Vertex(
-					d.coords[2 * d.triangles[i + 1]],
-					d.coords[2 * d.triangles[i + 1] + 1],
-					0
-				));
-
-				vertexData->push_back(Vertex(
-					d.coords[2 * d.triangles[i + 2]],
-					d.coords[2 * d.triangles[i + 2] + 1],
-					0
-				));
-
-			}
-			polygons->at(a)->setDataSize(d.triangles.size());
-		}
-	}
-}
-
 QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 {
 	QByteArray file;
@@ -162,6 +43,117 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 	}
 
 	return file;
+}
+
+void SpaceFactory::generateBuffer(std::vector<Vertex> *vertexBuffer)
+{
+	//vector of (all vertexes in an item)
+	std::vector<std::vector<Vertex>> vertexesInItems;
+	for(int i = 0; i < itemsInSpace->size(); i++)
+		vertexesInItems.push_back(std::vector<Vertex>());
+
+	//triangularize exstruded items
+	for(uint32_t i = 0; i < vertexesInItems.size(); i++)
+	{
+		if(itemsInSpace->at(i)->isExtruded())
+		{
+			vertexesInItems.at(i) = triangularizeItem(itemsInSpace->at(i));
+		}
+		else
+		{
+			//triangularize nonExtruded items and setDataSize since it's finalized
+			QVector<Polygon*> *polygons = itemsInSpace->at(i)->getPolygons();
+			for(int ii = 0; ii < polygons->size(); ii++)
+			{
+				std::vector<Vertex> triangularized = triangularizePolygon(polygons->at(ii)->getQpolygon());
+
+				polygons->at(ii)->setDataSize(triangularized.size());
+				vertexesInItems.at(i) = triangularized;
+			}
+		}
+	}
+
+	//calculates bollean operations
+	calculateBooleanIgl(&vertexesInItems);
+
+	//copy final data to the buffer
+	for(uint32_t i = 0; i < vertexesInItems.size(); i++)
+	{
+		//add item datasize since it's only now final
+		if(Item *item = dynamic_cast<Item*>(itemsInSpace->at(i)))
+		{
+			item->setDataSize(vertexesInItems.at(i).size());
+		}
+		vertexBuffer->insert(vertexBuffer->end(), vertexesInItems.at(i).begin(), vertexesInItems.at(i).end());
+	}
+}
+
+void SpaceFactory::calculateBooleanIgl(std::vector<std::vector<Vertex>> *triangularizedVertexData)
+{
+	std::vector<Eigen::Matrix3Xd> vertexesLocations;
+	std::vector<Eigen::Matrix3Xi> vertexesIndexes;
+/*
+	for(int i = 0; i < itemsInSpace->size(); i++)
+	{
+		Item *item = itemsInSpace->at(i);
+		if(!item->isExtruded())
+		{
+			//ensure that indexes in objectsInSpace and vertexLocations remain the equivalent
+			vertexesLocations.push_back(Eigen::Matrix3Xd(0));
+			vertexesIndexes.push_back(Eigen::Matrix3Xi(0));
+		}
+		else
+		{
+			std::vector<Vertex> vertexes = triangularizedVertexData->at(i);
+
+			uint32_t vertexCount = vertexes.size();
+			vertexesLocations.push_back(Eigen::Matrix3Xd(vertexCount));
+
+			uint32_t triangleCount = vertexes.size() / 3;
+			vertexesIndexes.push_back(Eigen::Matrix3Xi(triangleCount));
+
+			//create a location mesh for this item of vertexes size
+			for(uint32_t ii = 0; ii < vertexes.size(); ii++)
+			{
+				QVector3D pos = vertexes.at(ii).position();
+				vertexesLocations.at(i)(ii, 0) = pos.x();
+				vertexesLocations.at(i)(ii, 1) = pos.y();
+				vertexesLocations.at(i)(ii, 2) = pos.z();
+			}
+
+			//create index mesh of vertex size
+			for(uint32_t ii = 0; ii < triangleCount; ii++)
+			{
+				vertexesIndexes.at(i)(ii, 0) = ii*3;
+				vertexesIndexes.at(i)(ii, 1) = ii*3 + 1;
+				vertexesIndexes.at(i)(ii, 2) = ii*3 + 2;
+			}
+		}
+	}
+
+	//for every extruded additive item, subtract every extruded subtractive item
+	for(uint32_t i = 0; i < vertexesLocations.size(); i++)
+	{
+		//every extruded additive item
+		if(itemsInSpace->at(i)->isExtruded() & itemsInSpace->at(i)->isAdditive())
+		{
+			for(uint32_t ii = 0; ii < vertexesLocations.size(); ii++)
+			{
+				//every extruded subtractive item
+				if(itemsInSpace->at(i)->isExtruded() & !itemsInSpace->at(i)->isAdditive())
+				{
+					igl::copyleft::cgal::mesh_boolean(
+								vertexesLocations.at(i), vertexesIndexes.at(i),
+								vertexesLocations.at(ii), vertexesIndexes.at(ii),
+								igl::MESH_BOOLEAN_TYPE_MINUS,
+								vertexesLocations.at(i), vertexesIndexes.at(i)
+													  );
+				}
+			}
+		}
+	}*/
+
+	//return the resulting vertexes and add non extruded items
 }
 
 void SpaceFactory::recieveTargetItem(QTreeWidgetItem *item)
@@ -211,7 +203,7 @@ void SpaceFactory::addNewItem(std::vector<QPolygonF> polygons, QString sketch)
 	{
 		Item *item = new Item(plane, polygons, sketch);
 
-		item->setText(0, "item " + QString::number(objectsInSpace->size()));
+		item->setText(0, "item " + QString::number(itemsInSpace->size()));
 
 		connect(item, &Item::planeAdded,
 				this, &SpaceFactory::addPlane
@@ -231,29 +223,28 @@ void SpaceFactory::addNewItem(std::vector<QPolygonF> polygons, QString sketch)
 	}
 }
 
-void SpaceFactory::addItem(Item *item)
+void SpaceFactory::addItem(Item *item, bool reallocate)
 {
-	objectsInSpace->append(item);
+	itemsInSpace->append(item);
 
 	connect(item, &Item::updateData,
 			this, &SpaceFactory::reallocateItems
 			);
-
-	emit allocateNewItem(item);
+	if(reallocate) emit reallocateItems();
 }
 
-void SpaceFactory::deleteItem(Item *item)
+void SpaceFactory::deleteItem(Item *item, bool reallocate)
 {
-	objectsInSpace->remove(objectsInSpace->indexOf(item));
+	itemsInSpace->remove(itemsInSpace->indexOf(item));
 	delete item;
-	emit reallocateItems();
+	if(reallocate) emit reallocateItems();
 }
 
 void SpaceFactory::deleteAllItems()
 {
-	for (int i = objectsInSpace->size()-1; i >= 0; i--)
+	for (int i = itemsInSpace->size()-1; i >= 0; i--)
 	{
-		deleteItem(objectsInSpace->at(i));
+		deleteItem(itemsInSpace->at(i), false);
 	}
 	emit reallocateItems();
 }
@@ -261,7 +252,7 @@ void SpaceFactory::deleteAllItems()
 void SpaceFactory::addPlane(Plane *plane)
 {
 	planes->append(plane);
-	plane->setItemIndex(objectsInSpace->indexOf(dynamic_cast<Item*>(plane->parent())));
+	plane->setItemIndex(itemsInSpace->indexOf(dynamic_cast<Item*>(plane->parent())));
 
 	emit allocateNewPlane();
 }
@@ -282,7 +273,119 @@ void SpaceFactory::deletePlane(Plane *plane)
 
 SpaceFactory::SpaceFactory(QVector<Item*> *objectsInSpace, QVector<Plane*> *planes, QObject *glWidget)
 {
-	this->objectsInSpace = objectsInSpace;
+	this->itemsInSpace = objectsInSpace;
 	this->planes = planes;
 	this->glWidget = glWidget;
+}
+
+std::vector<Vertex> SpaceFactory::triangularizePolygon(QPolygonF polygon)
+{
+	std::vector<double> coordinates;
+	std::vector<QPointF> points = polygon.toStdVector();
+	std::vector<Vertex> vertexData;
+
+	for(uint32_t i = 0; i < points.size(); i++)
+	{
+		coordinates.push_back(points.at(i).x());
+		coordinates.push_back(points.at(i).y());
+	}
+
+	delaunator::Delaunator d(coordinates);
+	for(std::size_t i = 0; i < d.triangles.size(); i+=3)
+	{
+		vertexData.push_back(Vertex(
+			d.coords[2 * d.triangles[i]],
+			d.coords[2 * d.triangles[i] + 1],
+			0
+		));
+
+		vertexData.push_back(Vertex(
+			d.coords[2 * d.triangles[i + 1]],
+			d.coords[2 * d.triangles[i + 1] + 1],
+			0
+		));
+
+		vertexData.push_back(Vertex(
+			d.coords[2 * d.triangles[i + 2]],
+			d.coords[2 * d.triangles[i + 2] + 1],
+			0
+		));
+	}
+
+	return vertexData;
+}
+
+std::vector<Vertex> SpaceFactory::triangularizeItem(Item *item)
+{
+	std::vector<Vertex> vertexData;
+
+	if(item->isExtruded())
+	{
+		std::vector<Vertex> *vertexes = item->getExtrudedVertexes();
+		std::vector<Vertex> base[2];
+		int baseSize = (vertexes->size() / 2) + 1;
+
+		base[0].assign(vertexes->data(), vertexes->data()+baseSize-1);
+		base[1].assign(vertexes->data() + baseSize-1, vertexes->data()+vertexes->size());
+
+		//calculate bases
+		for (int a = 0; a < 2 ; a++)
+		{
+			std::vector<double> coordinates;
+			for(uint32_t i = 0; i < base[a].size(); i++)
+			{
+				coordinates.push_back(base[a].at(i).position().x());
+				coordinates.push_back(base[a].at(i).position().y());
+			}
+
+			//calculate vertexes for both bases
+			delaunator::Delaunator d(coordinates);
+			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
+			{
+				vertexData.push_back(Vertex(
+					d.coords[2 * d.triangles[i]],
+					d.coords[2 * d.triangles[i] + 1],
+					0
+				));
+
+				vertexData.push_back(Vertex(
+					d.coords[2 * d.triangles[i + 1]],
+					d.coords[2 * d.triangles[i + 1] + 1],
+					0
+				));
+
+				vertexData.push_back(Vertex(
+					d.coords[2 * d.triangles[i + 2]],
+					d.coords[2 * d.triangles[i + 2] + 1],
+					0
+				));
+			}
+		}
+
+		//calculate faces
+		for (uint32_t i = 0; i < base[0].size() - 1; i++)
+		{
+			vertexData.push_back(base[0].at(i));
+			vertexData.push_back(base[0].at(i + 1));
+			vertexData.push_back(base[1].at(i));
+
+			vertexData.push_back(base[0].at(i + 1));
+			vertexData.push_back(base[1].at(i + 1));
+			vertexData.push_back(base[1].at(i));
+		}
+		//calculate closing faces
+		{
+			int lastIndex = base[0].size() - 1;
+
+			vertexData.push_back(base[0].at(lastIndex));
+			vertexData.push_back(base[0].at(0));
+			vertexData.push_back(base[1].at(lastIndex));
+
+			vertexData.push_back(base[0].at(0));
+			vertexData.push_back(base[1].at(0));
+			vertexData.push_back(base[1].at(lastIndex));
+		}
+	}
+
+	return vertexData;
 }
