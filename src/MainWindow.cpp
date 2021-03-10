@@ -404,7 +404,12 @@ void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int col
 
     if(Item *existingItem = dynamic_cast<Item*>(item))
     {
+		this->ui->planeView->loadProjected(existingItem->getBasePlane()->getProjectedPolygon());
 		this->ui->planeView->loadFromFile(existingItem->getSketch());
+	}
+	else if(Plane *plane = dynamic_cast<Plane*>(item))
+	{
+		this->ui->planeView->loadProjected(plane->getProjectedPolygon());
 	}
 }
 
@@ -440,10 +445,10 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			}
 			else if(selectedAction == &redrawAction)
 			{
+				this->ui->planeView->loadProjected(item->getBasePlane()->getProjectedPolygon());
 				setMode(Global::Mode::Draw);
 				emit setTargetItem(item);
 
-				this->ui->planeView->loadProjected(item->getBasePlane()->getProjectedPolygon());
 				this->ui->planeView->loadFromFile(item->getSketch());
 			}
 			else if(selectedAction == &deleteAction)
@@ -456,9 +461,9 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			QAction *selectedAction = planeContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
 			if(selectedAction == &drawAction)
 			{
-				setMode(Global::Mode::Draw);
-
 				this->ui->planeView->loadProjected(plane->getProjectedPolygon());
+
+				setMode(Global::Mode::Draw);
 				emit setTargetItem(plane);
 			}
         }
