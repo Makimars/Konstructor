@@ -27,12 +27,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 
+file(GLOB_RECURSE IGL_SRC include/igl/*.cpp include/igl/*.h)
 
+set(INCLUDES
+    ${IGL_SRC}
+
+    include/delaunator/delaunator.cpp
+    include/delaunator/delaunator.h
+    include/nlohmann/json.hpp
+)
 
 set(PLANE
     src/Plane/Plane.h
 
-    src/Plane/Factory.cpp
+    src/Plane/PlaneFactory.cpp
     src/Plane/QGraphicsViewUserInput.cpp
 
     src/Plane/Tools/LockPositionTool.cpp
@@ -66,7 +74,7 @@ set(PLANE
     src/Plane/Drawables/Dimensions/LinesAngleDimension.cpp
 
     src/Plane/Style.h
-    src/Plane/Factory.h
+    src/Plane/PlaneFactory.h
     src/Plane/UserInputRequester.h
     src/Plane/QGraphicsViewUserInput.h
 
@@ -150,10 +158,7 @@ set(DIALOGS
 )
 
 set(PROJECT_SOURCES
-    include/delaunator/delaunator.cpp
-    include/delaunator/delaunator.h
-    include/nlohmann/json.hpp
-
+    ${INCLUDES}
     ${PLANE}
     ${SPACE}
     ${DIALOGS}

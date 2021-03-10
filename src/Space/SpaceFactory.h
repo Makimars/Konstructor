@@ -2,7 +2,9 @@
 #define SPACEFACTORY_H
 
 #include "Item.h"
+
 #include "include/delaunator/delaunator.h"
+#include "include/libigl/include/igl/cotmatrix.h"
 
 class SpaceFactory : public QObject
 {
