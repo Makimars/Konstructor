@@ -96,9 +96,15 @@ Plane *Item::getPlane(int index)
 	return planes.at(index);
 }
 
+Plane *Item::getParentPlane()
+{
+	return basePlane;
+}
+
 void Item::setExtrusion()
 {
 	setText(0, "Item");
+	extrudedVertexes.clear();
 
 	std::vector<QPointF> polygonPoints = extrudedPolygon->getPoints();
 	for (u_int32_t i = 0; i < polygonPoints.size(); i++)
@@ -193,6 +199,11 @@ void Item::setExtrusion(Extrusion extrusion, Polygon *targetPolygon)
 	setExtrusion();
 }
 
+Extrusion Item::getExtrusion()
+{
+	return extrusion;
+}
+
 std::vector<Vertex> *Item::getExtrudedVertexes()
 {
 	return &extrudedVertexes;
@@ -240,7 +251,7 @@ void Item::loadRelations(std::vector<Item*> list)
 
 	if(itemId == -1)
 	{
-		basePlane = emit getBasePlane();
+		basePlane = emit getOriginalPlane();
 	}
 	else
 	{

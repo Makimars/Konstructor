@@ -62,6 +62,8 @@ void SpaceWidget::loadFromFile(QString fileContents)
 	{
 		objectsInSpace.append(items.at(i));
 	}
+
+	reallocateItems();
 }
 
 QString SpaceWidget::saveToFile()
@@ -101,7 +103,6 @@ void SpaceWidget::reset()
 void SpaceWidget::reallocateItems()
 {
 	vertexData.clear();
-
 	//generates buffer data
 	factory->generateBuffer(&vertexData);
 

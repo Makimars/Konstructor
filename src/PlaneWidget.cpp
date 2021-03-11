@@ -72,10 +72,9 @@ QString PlaneWidget::toFile()
 
 void PlaneWidget::loadProjected(QPolygonF projectedPoints)
 {
-	qDebug() << projectedPoints.size();
+	objectFactory->deleteAllStaticDrawables();
 	if(projectedPoints.size() < 1) return;
 
-	objectFactory->deleteAllStaticDrawables();
 	std::vector<Point*> points;
 	std::vector<Line*> lines;
 

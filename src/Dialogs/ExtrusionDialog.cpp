@@ -27,6 +27,18 @@ void ExtrusionDialog::show(Item *item)
 	{
 		this->ui->polygonsList->addItem(referencedItem->getPolygons()->at(i));
 	}
+
+	if(item->isExtruded())
+	{
+		ui->lengthInput->setValue(item->getExtrusion().length);
+		ui->additiveButton->setChecked(item->getExtrusion().additive);
+
+		ExtrusionDirection direction = item->getExtrusion().direction;
+		if(direction == ExtrusionDirection::Front) ui->frontButton->setChecked(true);
+		if(direction == ExtrusionDirection::FrontAndBack) ui->frontAndBackButton->setChecked(true);
+		if(direction == ExtrusionDirection::Back) ui->backButton->setChecked(true);
+	}
+
 	QDialog::show();
 }
 

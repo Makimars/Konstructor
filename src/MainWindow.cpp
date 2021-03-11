@@ -161,8 +161,6 @@ void MainWindow::saveSettings()
 
 }
 
-
-//----------	ui signals reciever    ----------
 //-----    file tab    -----
 
 
@@ -404,7 +402,7 @@ void MainWindow::on_objectsTree_itemDoubleClicked(QTreeWidgetItem *item, int col
 
     if(Item *existingItem = dynamic_cast<Item*>(item))
     {
-		this->ui->planeView->loadProjected(existingItem->getBasePlane()->getProjectedPolygon());
+		this->ui->planeView->loadProjected(existingItem->getParentPlane()->getProjectedPolygon());
 		this->ui->planeView->loadFromFile(existingItem->getSketch());
 	}
 	else if(Plane *plane = dynamic_cast<Plane*>(item))
@@ -445,7 +443,7 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
 			}
 			else if(selectedAction == &redrawAction)
 			{
-				this->ui->planeView->loadProjected(item->getBasePlane()->getProjectedPolygon());
+				this->ui->planeView->loadProjected(item->getParentPlane()->getProjectedPolygon());
 				setMode(Global::Mode::Draw);
 				emit setTargetItem(item);
 

@@ -28,9 +28,11 @@ public:
 	void setSketch(QString sketch);
 	QString getSketch();
 	Plane *getPlane(int index);
+	Plane *getParentPlane();
 
 	void setExtrusion();
 	void setExtrusion(Extrusion extrusion, Polygon *targetPolygon);
+	Extrusion getExtrusion();
 
 	std::vector<Vertex> *getExtrudedVertexes();
 
@@ -73,7 +75,7 @@ signals:
 	void deletePlane(Plane *plane);
 	void planeAdded(Plane *plane);
 
-	Plane *getBasePlane();
+	Plane *getOriginalPlane();
 };
 
 inline QString Item::getSketch() { return sketch; }

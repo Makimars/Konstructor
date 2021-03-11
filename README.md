@@ -10,16 +10,18 @@ This software is linced under EUPL v1.2, other language versions are located in 
 
 - nlohmann (json library)
 - delaunator
+- CGAL
+- Eigen3
+- Igl
 
 ## current TODO list
 
 ### Plane
 
-- rework constrains and dimensions
-- add projection when drawing on object
+- implement linesAngle
+- fix side projection
 
 ### Space
 
-- better STL export (normals)
 - subtractive extrusion
 - cube in the right top corner to select view

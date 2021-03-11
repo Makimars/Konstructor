@@ -21,6 +21,7 @@ public:
 
 public:
 	QByteArray generateStlFile(std::vector<Vertex> *vertexData);
+	QVector3D getNormalVector(QVector3D objectCenter, const Vertex *vertex1, const Vertex *vertex2, const Vertex *vertex3);
 
 	void generateBuffer(std::vector<Vertex> *vertexBuffer);
 
@@ -59,7 +60,9 @@ private:
 	std::vector<Vertex> triangularizePolygon(QPolygonF polygon);
 	std::vector<Vertex> triangularizeItem(Item *item);
 
-	void calculateBooleanIgl(std::vector<std::vector<Vertex>> *triangularizedVertexData);
+	void calculateBoolean(std::vector<std::vector<Vertex>> *triangularizedVertexData);
+
+	QByteArray vectorToByteArray(QVector3D vector);
 
 signals:
 	void reallocateItems();
