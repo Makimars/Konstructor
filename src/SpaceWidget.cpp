@@ -18,9 +18,6 @@ SpaceWidget::SpaceWidget(QWidget *parent) : QOpenGLWidget(parent)
 	connect(factory, &SpaceFactory::reallocateItems,
 			this, &SpaceWidget::reallocateItems
 			);
-	connect(factory, &SpaceFactory::allocateNewItem,
-			this, &SpaceWidget::allocateNewItem
-			);
 	connect(factory, &SpaceFactory::reallocatePlanes,
 			this, &SpaceWidget::reallocatePlanes
 			);
@@ -63,8 +60,10 @@ void SpaceWidget::loadFromFile(QString fileContents)
 	}
 	for (uint32_t i = 0; i < items.size(); i++)
 	{
-		factory->addItem(items.at(i));
+		objectsInSpace.append(items.at(i));
 	}
+
+	reallocateItems();
 }
 
 QString SpaceWidget::saveToFile()
@@ -104,18 +103,8 @@ void SpaceWidget::reset()
 void SpaceWidget::reallocateItems()
 {
 	vertexData.clear();
-
-	foreach(Item *item, objectsInSpace)
-	{
-		allocateNewItem(item);
-	}
-}
-
-void SpaceWidget::allocateNewItem(Item *item)
-{
-	item->setItemIndex(vertexData.size());
-
-	factory->generateItemVertexDataToBuffer(item, &vertexData);
+	//generates buffer data
+	factory->generateBuffer(&vertexData);
 
 	vertexBuffer.bind();
 	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));

@@ -1,7 +1,7 @@
 #ifndef TOOL_H
 #define TOOL_H
 
-#include "../Factory.h"
+#include "../PlaneFactory.h"
 #include <QKeyEvent>
 
 class Tool : public QObject

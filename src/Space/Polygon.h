@@ -28,6 +28,7 @@ public:
 	Polygon(QPolygonF polygon);
 
 	std::vector<QPointF> getPoints();
+	QPolygonF getQpolygon();
 	int getDataSize() const;
 	void setDataSize(int value);
 
