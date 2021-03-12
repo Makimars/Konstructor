@@ -12,43 +12,6 @@ SpaceFactory *SpaceFactory::getInstance()
 	return SpaceFactory::instance;
 }
 
-QVector3D SpaceFactory::getNormalVector(QVector3D objectCenter, const Vertex *vertex1, const Vertex *vertex2, const Vertex *vertex3)
-{
-	QVector3D sideVector = vertex2->position() - vertex1->position();
-	sideVector.normalize();
-
-	QVector3D triangleCenter = QVector3D(
-			(vertex1->position().x() + vertex2->position().x() + vertex3->position().x()) / 3,
-			(vertex1->position().y() + vertex2->position().y() + vertex3->position().y()) / 3,
-			(vertex1->position().z() + vertex2->position().z() + vertex3->position().z()) / 3
-				);
-
-	QVector3D upwardVector = triangleCenter - objectCenter;
-	upwardVector.normalize();
-
-	std::vector<QVector3D> possibleVectors;
-
-	possibleVectors.push_back(QVector3D(sideVector.x(), -sideVector.z(), sideVector.y()));
-	possibleVectors.push_back(QVector3D(sideVector.x(), sideVector.z(), -sideVector.y()));
-
-	possibleVectors.push_back(QVector3D(-sideVector.z(), sideVector.y(), sideVector.x()));
-	possibleVectors.push_back(QVector3D(sideVector.z(), sideVector.y(), -sideVector.x()));
-
-	possibleVectors.push_back(QVector3D(-sideVector.y(), sideVector.x(), sideVector.z()));
-	possibleVectors.push_back(QVector3D(sideVector.y(), -sideVector.x(), sideVector.z()));
-
-	QVector3D targetPoint = triangleCenter + upwardVector;
-
-	std::vector<double> distances;
-	for(uint32_t i = 0; i < possibleVectors.size(); i++)
-	{
-		distances.push_back(targetPoint.distanceToPoint(triangleCenter + possibleVectors.at(i).normalized()));
-	}
-
-	std::min_element(distances.begin(), distances.end());
-	return possibleVectors.at(std::distance(std::begin(distances), std::min_element(std::begin(distances), std::end(distances))));
-}
-
 QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 {
 	QVector3D objectCenter;
@@ -58,8 +21,8 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 		objectCenter += vertexData->at(i).position();
 	}
 	objectCenter.setX(objectCenter.x() / vertexCount);
-	objectCenter.setX(objectCenter.y() / vertexCount);
-	objectCenter.setX(objectCenter.z() / vertexCount);
+	objectCenter.setY(objectCenter.y() / vertexCount);
+	objectCenter.setZ(objectCenter.z() / vertexCount);
 
 
 	QByteArray file;
@@ -78,7 +41,8 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 	for(uint i = 0; i < vertexCount; i+=3)
 	{
 		//normal vector - 12 bytes
-		file += vectorToByteArray(getNormalVector(objectCenter, &vertexData->at(i), &vertexData->at(i+1), &vertexData->at(i+2)));
+		QVector3D normal = Vertex::generateNormalVector(objectCenter, &vertexData->at(i), &vertexData->at(i+1), &vertexData->at(i+2));
+		file += vectorToByteArray(normal);
 
 		file += vertexData->at(i).toByteArray();	//vertex 0 - 12 bytes
 		file += vertexData->at(i +1).toByteArray(); //vertex 1 - 12 bytes

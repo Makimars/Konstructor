@@ -15,8 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setupUi();
 	this->setupConnections();
-
-	this->setWindowState(Qt::WindowMaximized);
 }
 
 MainWindow::~MainWindow()
@@ -59,13 +57,14 @@ void MainWindow::setupUi()
     //context menus
 	drawAction.setText(tr("Draw"));
     planeContextMenu.addAction(&drawAction);
-
 	extrusionAction.setText(tr("Extrude"));
 	objectContextMenu.addAction(&extrusionAction);
 	redrawAction.setText(tr("Redraw"));
 	objectContextMenu.addAction(&redrawAction);
 	deleteAction.setText(tr("Delete"));
 	objectContextMenu.addAction(&deleteAction);
+
+	this->setWindowState(Qt::WindowMaximized);
 }
 
 void MainWindow::setupConnections()

@@ -21,8 +21,6 @@ public:
 
 public:
 	QByteArray generateStlFile(std::vector<Vertex> *vertexData);
-	QVector3D getNormalVector(QVector3D objectCenter, const Vertex *vertex1, const Vertex *vertex2, const Vertex *vertex3);
-
 	void generateBuffer(std::vector<Vertex> *vertexBuffer);
 
 public slots:
