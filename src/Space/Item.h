@@ -21,8 +21,8 @@ public:
 	int getItemIndex();
 	void setDataSize(int size);
 	int getDataSize();
-	bool isExtruded();
-	bool isAdditive();
+	bool isExtruded() const;
+	bool isAdditive() const;
 	QVector3D getColor();
 
 	void setSketch(QString sketch);

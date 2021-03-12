@@ -33,7 +33,7 @@ find_package(pthread)
 file(GLOB_RECURSE IGL_SRC include/igl/include/*.cpp include/igl/include/*.h)
 
 set(INCLUDES
-    ${IGL_SRC}
+    #${IGL_SRC}
 
     include/delaunator/delaunator.cpp
     include/delaunator/delaunator.h

@@ -1,13 +1,17 @@
 #ifndef SPACEFACTORY_H
 #define SPACEFACTORY_H
 
+#define NO_IGL_BOOLEAN
+
 #include "Item.h"
 
 #include "include/delaunator/delaunator.h"
 
+#ifndef NO_IGL_BOOLEAN
 // Igl
 #include "include/libigl/include/igl/cotmatrix.h"
 #include "include/libigl/include/igl/copyleft/cgal/mesh_boolean.h"
+#endif
 
 class SpaceFactory : public QObject
 {
@@ -21,7 +25,7 @@ public:
 
 public:
 	QByteArray generateStlFile(std::vector<Vertex> *vertexData);
-	void generateBuffer(std::vector<Vertex> *vertexBuffer);
+	std::vector<Vertex> generateBuffer();
 
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);
@@ -58,7 +62,9 @@ private:
 	std::vector<Vertex> triangularizePolygon(QPolygonF polygon);
 	std::vector<Vertex> triangularizeItem(Item *item);
 
-	void calculateBoolean(std::vector<std::vector<Vertex>> *triangularizedVertexData);
+#ifndef NO_IGL_BOOLEAN
+	std::vector<std::vector<Vertex>> calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const;
+#endif
 
 	QByteArray vectorToByteArray(QVector3D vector);
 

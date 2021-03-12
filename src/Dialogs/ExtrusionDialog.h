@@ -14,8 +14,7 @@ struct ExtrusionDialogReturn
 {
     double length;
     bool extrusion;
-    ExtrusionDirection direction;
-    int dialogCode;
+	ExtrusionDirection direction;
 };
 
 class ExtrusionDialog : public QDialog

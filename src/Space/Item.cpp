@@ -74,12 +74,12 @@ int Item::getDataSize()
 	}
 }
 
-bool Item::isExtruded()
+bool Item::isExtruded() const
 {
 	return extruded;
 }
 
-bool Item::isAdditive()
+bool Item::isAdditive() const
 {
 	return extrusion.additive;
 }

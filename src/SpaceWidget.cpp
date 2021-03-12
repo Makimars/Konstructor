@@ -104,7 +104,7 @@ void SpaceWidget::reallocateItems()
 {
 	vertexData.clear();
 	//generates buffer data
-	factory->generateBuffer(&vertexData);
+	vertexData = factory->generateBuffer();
 
 	vertexBuffer.bind();
 	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));

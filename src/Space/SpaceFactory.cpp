@@ -56,7 +56,7 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 	return file;
 }
 
-void SpaceFactory::generateBuffer(std::vector<Vertex> *vertexBuffer)
+std::vector<Vertex> SpaceFactory::generateBuffer()
 {
 	//vector of (all vertexes in an item)
 	std::vector<std::vector<Vertex>> vertexesInItems;
@@ -84,31 +84,66 @@ void SpaceFactory::generateBuffer(std::vector<Vertex> *vertexBuffer)
 		}
 	}
 
-	//calculates bollean operations
-	calculateBoolean(&vertexesInItems);
+	std::vector<std::vector<Vertex>> finalVertexes;
+
+#ifdef NO_IGL_BOOLEAN
+	finalVertexes = vertexesInItems;
+#endif
+
+#ifndef NO_IGL_BOOLEAN
+	std::vector<std::vector<Vertex>> booleanResult = calculateBoolean(&vertexesInItems);
+
+	for(int i = 0; i < itemsInSpace->size(); i++)
+	{
+		finalVertexes.push_back(std::vector<Vertex>());
+		if(itemsInSpace->at(i)->isExtruded())
+		{
+			for(uint32_t ii = 0; ii < booleanResult.at(i).size(); ii++)
+			{
+				qDebug() << booleanResult.at(i).at(ii).position();
+
+				finalVertexes.at(i).push_back(Vertex( booleanResult.at(i).at(ii).position()));
+			}
+		}
+		else
+		{
+			finalVertexes.at(i) = vertexesInItems.at(i);
+		}
+	}
+#endif
 
 	uint32_t itemIndex = 0;
+	std::vector<Vertex> finalBufferVertexes;
 	//copy final data to the buffer
-	for(uint32_t i = 0; i < vertexesInItems.size(); i++)
+	for(uint32_t i = 0; i < finalVertexes.size(); i++)
 	{
-		if(itemsInSpace->at(i)->isExtruded()) itemsInSpace->at(i)->setDataSize(vertexesInItems.at(i).size());
+		if(itemsInSpace->at(i)->isExtruded()) itemsInSpace->at(i)->setDataSize(finalVertexes.at(i).size());
 		itemsInSpace->at(i)->setItemIndex(itemIndex);
 
-		itemIndex += vertexesInItems.at(i).size();
-		vertexBuffer->insert(vertexBuffer->end(), vertexesInItems.at(i).begin(), vertexesInItems.at(i).end());
+		itemIndex += finalVertexes .at(i).size();
+		finalBufferVertexes.insert(finalBufferVertexes.end(), finalVertexes.at(i).begin(), finalVertexes.at(i).end());
 	}
+
+	return finalBufferVertexes;
 }
 
-void SpaceFactory::calculateBoolean(std::vector<std::vector<Vertex>> *triangularizedVertexData)
+#ifndef NO_IGL_BOOLEAN
+std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
 {
 	std::vector<Eigen::MatrixXd> vertexesLocations;
 	std::vector<Eigen::MatrixXi> vertexesIndexes;
 
+	std::vector<std::vector<Vertex>> result;
+
+	//convert items to Eigen matrix format
 	for(int i = 0; i < itemsInSpace->size(); i++)
 	{
+		result.push_back(std::vector<Vertex>());
 		Item *item = itemsInSpace->at(i);
+
 		if(!item->isExtruded())
 		{
+			result.at(i) = triangularizedVertexData->at(i);
 			//ensure that indexes in objectsInSpace and vertexLocations remain the equivalent
 			vertexesLocations.push_back(Eigen::MatrixXd(1,3));
 			vertexesIndexes.push_back(Eigen::MatrixXi(1,3));
@@ -116,54 +151,67 @@ void SpaceFactory::calculateBoolean(std::vector<std::vector<Vertex>> *triangular
 		else
 		{
 			std::vector<Vertex> vertexes = triangularizedVertexData->at(i);
+			QVector<QVector3D> locations;
 
-			uint32_t vertexCount = vertexes.size();
-			vertexesLocations.push_back(Eigen::MatrixXd(vertexCount, 3));
+			//copy all unique vertexes
+			for(uint32_t ii = 0; ii < vertexes.size(); ii++)
+			{
+				QVector3D vec = vertexes.at(ii).position();
+				if (locations.indexOf(vec) == -1)
+				{
+					locations.append(vec);
+				}
+			}
+
+			vertexesLocations.push_back(Eigen::MatrixXd(locations.size(),3));
+			for(int ii = 0; ii < locations.size(); ii++)
+			{
+				QVector3D vec = locations.at(ii);
+				vertexesLocations.at(i)(ii, 0) = vec.x();
+				vertexesLocations.at(i)(ii, 1) = vec.y();
+				vertexesLocations.at(i)(ii, 2) = vec.z();
+			}
 
 			uint32_t triangleCount = vertexes.size() / 3;
 			vertexesIndexes.push_back(Eigen::MatrixXi(triangleCount, 3));
 
-			//create a location mesh for this item of vertexes size
-			for(uint32_t ii = 0; ii < vertexes.size(); ii++)
-			{
-				QVector3D pos = vertexes.at(ii).position();
-				vertexesLocations.at(i)(ii, 0) = pos.x();
-				vertexesLocations.at(i)(ii, 1) = pos.y();
-				vertexesLocations.at(i)(ii, 2) = pos.z();
-			}
-
 			//create index mesh of vertex size
 			for(uint32_t ii = 0; ii < triangleCount; ii++)
 			{
-				vertexesIndexes.at(i)(ii, 0) = ii*3;
-				vertexesIndexes.at(i)(ii, 1) = ii*3 + 1;
-				vertexesIndexes.at(i)(ii, 2) = ii*3 + 2;
+				vertexesIndexes.at(i)(ii, 0) = locations.indexOf(vertexes.at(ii*3).position());
+				vertexesIndexes.at(i)(ii, 1) = locations.indexOf(vertexes.at(ii*3 +1).position());
+				vertexesIndexes.at(i)(ii, 2) = locations.indexOf(vertexes.at(ii*3 +2).position());
 			}
 		}
 	}
 
 	//for every extruded additive item, subtract every extruded subtractive item
-	for(uint32_t i = 0; i < vertexesLocations.size(); i++)
+	for(int i = 0; i < itemsInSpace->size(); i++)
 	{
-		//every extruded additive item
-		if(itemsInSpace->at(i)->isExtruded())
-		{
-			triangularizedVertexData->at(i).clear();
+		Item *currentItem = itemsInSpace->at(i);
 
-			if(itemsInSpace->at(i)->isAdditive())
+		//every extruded additive item
+		if(currentItem->isExtruded())
+		{
+			if(currentItem->isAdditive())
 			{
+
 				for(uint32_t ii = 0; ii < vertexesLocations.size(); ii++)
 				{
+					Item *insideItem = itemsInSpace->at(ii);
+
 					//every extruded subtractive item
-					if(!itemsInSpace->at(i)->isAdditive())
+					if((!insideItem->isAdditive()) & insideItem->isExtruded())
 					{
-						qDebug() << "subtractive";
+
 						igl::copyleft::cgal::mesh_boolean(
 									vertexesLocations.at(i), vertexesIndexes.at(i),
 									vertexesLocations.at(ii), vertexesIndexes.at(ii),
-									igl::MESH_BOOLEAN_TYPE_MINUS,
+									igl::MeshBooleanType::MESH_BOOLEAN_TYPE_MINUS,
 									vertexesLocations.at(i), vertexesIndexes.at(i)
 														  );
+
+						qDebug() << ii;
 					}
 				}
 
@@ -178,13 +226,16 @@ void SpaceFactory::calculateBoolean(std::vector<std::vector<Vertex>> *triangular
 						y = vertexesLocations.at(i)(locationIndex, 1);
 						z = vertexesLocations.at(i)(locationIndex, 2);
 
-						triangularizedVertexData->at(i).push_back(Vertex(x,y,z));
+						result.at(i).push_back(Vertex(x,y,z));
 					}
 				}
 			}
 		}
 	}
+
+	return result;
 }
+#endif
 
 QByteArray SpaceFactory::vectorToByteArray(QVector3D vector)
 {
@@ -251,7 +302,6 @@ void SpaceFactory::addNewItem(std::vector<QPolygonF> polygons, QString sketch)
 {
 	if(Plane *plane = dynamic_cast<Plane*>(targetItem))
 	{
-		qDebug() << "new item from plane";
 		Item *item = new Item(plane, polygons, sketch);
 
 		item->setText(0, "Drawing " + QString::number(itemsInSpace->size()));

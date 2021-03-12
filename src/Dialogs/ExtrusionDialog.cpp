@@ -23,7 +23,7 @@ ExtrusionDialog::~ExtrusionDialog()
 void ExtrusionDialog::show(Item *item)
 {
 	referencedItem = item;
-	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
+	for(int i = 0; i < referencedItem->getPolygons()->size(); i++)
 	{
 		this->ui->polygonsList->addItem(referencedItem->getPolygons()->at(i));
 	}
@@ -44,13 +44,12 @@ void ExtrusionDialog::show(Item *item)
 
 void ExtrusionDialog::accept()
 {
-	ExtrusionDirection direction;
-	if(ui->frontButton->isChecked()) direction = ExtrusionDirection::Front;
+	ExtrusionDirection direction = ExtrusionDirection::Front;
 	if(ui->frontAndBackButton->isChecked()) direction = ExtrusionDirection::FrontAndBack;
 	if(ui->backButton->isChecked()) direction = ExtrusionDirection::Back;
 
 	std::vector<Polygon*> polygons;
-	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
+	for(int i = 0; i < referencedItem->getPolygons()->size(); i++)
 	{
 		Polygon *polygon = referencedItem->getPolygons()->at(i);
 		if(polygon->isSelected())
@@ -69,7 +68,7 @@ void ExtrusionDialog::accept()
 
 void ExtrusionDialog::finished(int result)
 {
-	for(uint32_t i = 0; i < referencedItem->getPolygons()->size(); i++)
+	for(int i = 0; i < referencedItem->getPolygons()->size(); i++)
 	{
 		Polygon *polygon = referencedItem->getPolygons()->at(i);
 		polygon->setSelected(false);
