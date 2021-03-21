@@ -35,3 +35,61 @@ int Settings::maxItemSidePlanes = 12;
 
 QVector3D Settings::selectedFaceColor = QVector3D(0.1, 0.1, 1);
 QVector4D Settings::planeColor = QVector4D(1, 0, 0, 0.3);
+
+void Settings::fromJson(QString json)
+{
+	nlohmann::json input = nlohmann::json::parse(json.toStdString());
+
+	Settings::mouseWheelInvertedZoom = input["mouseWheelInvertedZoom"];
+	Settings::gridSnapping = input["gridSnapping"];
+
+	double pointSize =  input["pointSize"];
+	Settings::pointMargin = QMargins(pointSize,pointSize,pointSize,pointSize);
+	Settings::lineShapeSize = input["lineShapeSize"];
+
+	Settings::sketchSize = input["sketchSize"];
+	Settings::maxItemSidePlanes = input["maxItemSidePlanes"];
+
+	Settings::angleUnits = input["angleUnits"];
+
+	Settings::newFile = QKeySequence::fromString(QString::fromStdString(input["newFile"]));
+	Settings::openFile = QKeySequence::fromString(QString::fromStdString(input["openFile"]));
+	Settings::saveFile = QKeySequence::fromString(QString::fromStdString(input["saveFile"]));
+	Settings::exportFile = QKeySequence::fromString(QString::fromStdString(input["exportFile"]));
+	Settings::openSettings = QKeySequence::fromString(QString::fromStdString(input["openSettings"]));
+
+	double x,y,z,w;
+	x = input["planeColorX"];
+	y = input["planeColorY"];
+	z = input["planeColorZ"];
+	w = input["planeColorW"];
+
+	Settings::planeColor = QVector4D(x, y, z, w);
+}
+
+QString Settings::toJson()
+{
+	nlohmann::json json;
+
+	json["mouseWheelInvertedZoom"] = Settings::mouseWheelInvertedZoom;
+	json["gridSnapping"] = Settings::gridSnapping;
+	json["pointSize"] = Settings::pointMargin.top();
+
+	json["sketchSize"] = Settings::sketchSize;
+	json["lineShapeSize"] = Settings::lineShapeSize;
+	json["maxItemSidePlanes"] = Settings::maxItemSidePlanes;
+	json["angleUnits"] = Settings::angleUnits;
+
+	json["planeColorX"] = Settings::planeColor.x();
+	json["planeColorY"] = Settings::planeColor.y();
+	json["planeColorZ"] = Settings::planeColor.z();
+	json["planeColorW"] = Settings::planeColor.w();
+
+	json["newFile"] = Settings::newFile.toString().toStdString();
+	json["openFile"] = Settings::openFile.toString().toStdString();
+	json["saveFile"] = Settings::saveFile.toString().toStdString();
+	json["exportFile"] = Settings::exportFile.toString().toStdString();
+	json["openSettings"] = Settings::openSettings.toString().toStdString();
+
+	return QString::fromStdString(json.dump());
+}

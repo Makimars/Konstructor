@@ -1,16 +1,31 @@
 #ifndef SPACEFACTORY_H
 #define SPACEFACTORY_H
 
-#define NO_IGL_BOOLEAN
-
 #include "Item.h"
 
 #include "include/delaunator/delaunator.h"
 
-#ifndef NO_IGL_BOOLEAN
+//#define IGL_BOOLEAN
+#ifdef IGL_BOOLEAN
 // Igl
 #include "include/libigl/include/igl/cotmatrix.h"
 #include "include/libigl/include/igl/copyleft/cgal/mesh_boolean.h"
+#endif
+
+//#define CGAL_BOOLEAN
+#ifdef CGAL_BOOLEAN
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Polyhedron_items_with_id_3.h>
+#include <CGAL/Polygon_mesh_processing/orient_polygon_soup.h>
+#include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
+#include <CGAL/Polygon_mesh_processing/orientation.h>
+
+#include <CGAL/Surface_mesh.h>
+#include <CGAL/Polygon_mesh_processing/corefinement.h>
+#include <CGAL/Polygon_mesh_processing/remesh.h>
+#include <CGAL/boost/graph/selection.h>
+#include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
 #endif
 
 class SpaceFactory : public QObject
@@ -62,7 +77,8 @@ private:
 	std::vector<Vertex> triangularizePolygon(QPolygonF polygon);
 	std::vector<Vertex> triangularizeItem(Item *item);
 
-#ifndef NO_IGL_BOOLEAN
+
+#if defined(CGAL_BOOLEAN) || defined(CGAL_BOOLEAN)
 	std::vector<std::vector<Vertex>> calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const;
 #endif
 

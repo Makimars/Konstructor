@@ -5,8 +5,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
-	loadSettings();
-
 	this->ui->setupUi(this);
 
 	this->settingsDialog = new SettingsDialog();
@@ -15,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	this->setupUi();
 	this->setupConnections();
+
+	loadSettings();
 }
 
 MainWindow::~MainWindow()
@@ -48,7 +48,7 @@ void MainWindow::setupUi()
 	//base plane
 	Plane *basePlane = new Plane();
 	basePlane->setPosition(QVector3D(0,0,0));
-	basePlane->setRotation(QQuaternion(1,0,0,0));
+	basePlane->setRotation(QQuaternion::fromAxisAndAngle(QVector3D(1,0,0), 0));
 	basePlane->setText(0, "origin plane");
 	basePlane->setCheckState(0,Qt::CheckState::Checked);
     this->ui->objectsTree->addTopLevelItem(basePlane);
@@ -112,6 +112,10 @@ void MainWindow::setupConnections()
 	connect(SpaceFactory::getInstance(), &SpaceFactory::generatePolygons,
 			this, &MainWindow::getPolygonsForItem
 			);
+
+	connect(this->settingsDialog, &SettingsDialog::saveSettings,
+			this, &MainWindow::saveSettings
+			);
 }
 
 //----------    Ui handeling    ---------
@@ -152,12 +156,26 @@ void MainWindow::refreshTools(int tool)
 
 void MainWindow::loadSettings()
 {
+	QString settingsFilePath = QStandardPaths::standardLocations(QStandardPaths::AppConfigLocation).at(0);
+	QFile settingsFile(settingsFilePath + "/Settings.json");
 
+	if (settingsFile.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		Settings::fromJson(settingsFile.readAll());
+	}
 }
 
 void MainWindow::saveSettings()
 {
+	QString settingsFilePath = QStandardPaths::standardLocations(QStandardPaths::AppConfigLocation).at(0);
+	QDir settingsFolder(settingsFilePath);
+	if(!settingsFolder.exists()) settingsFolder.mkdir(settingsFolder.path());
 
+	QFile settingsFile(settingsFilePath + "/Settings.json");
+	if(settingsFile.open(QIODevice::WriteOnly))
+	{
+		settingsFile.write(Settings::toJson().toUtf8());
+	}
 }
 
 //-----    file tab    -----

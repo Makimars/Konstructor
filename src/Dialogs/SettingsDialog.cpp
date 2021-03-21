@@ -48,12 +48,19 @@ void SettingsDialog::on_buttonBox_accepted()
 	Settings::exportFile = this->ui->exportFileEdit->keySequence();
 	Settings::openSettings = this->ui->settingsEdit->keySequence();
 
-	QColor color = colorDialog.selectedColor();
-	Settings::planeColor = QVector4D(color.redF(), color.greenF(), color.blueF(), 0.3);
+	if(colorChanged)
+	{
+		QColor color = colorDialog.selectedColor();
+		Settings::planeColor = QVector4D(color.redF(), color.greenF(), color.blueF(), 0.3);
+	}
+
+	emit saveSettings();
 }
 
 void SettingsDialog::loadSettings()
 {
+	colorChanged = false;
+
 	this->ui->invertMouseWheel->setChecked(Settings::mouseWheelInvertedZoom);
 	this->ui->gridSnapping->setChecked(Settings::gridSnapping);
 
@@ -79,4 +86,5 @@ void SettingsDialog::loadSettings()
 void SettingsDialog::on_planeColorButton_clicked()
 {
 	colorDialog.exec();
+	colorChanged = true;
 }

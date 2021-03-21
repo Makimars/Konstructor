@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QTreeWidgetItem>
 #include <QMenuBar>
+#include <QStandardPaths>
 
 #include "Dialogs/SettingsDialog.h"
 #include "Dialogs/ExtrusionDialog.h"
@@ -48,7 +49,6 @@ private:
 
 	//settings
 	void loadSettings();
-	void saveSettings();
 
 	//Ui handeling
 	void refreshTools(int tool);
@@ -98,6 +98,8 @@ private slots:
 
 	std::vector<QPolygonF> getPolygonsForItem(QString sketch);
 	void closeDrawing();
+
+	void saveSettings();
 };
 
 #endif // MAINWINDOW_H

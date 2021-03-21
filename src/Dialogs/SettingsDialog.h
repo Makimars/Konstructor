@@ -35,6 +35,11 @@ private:
 	QColorDialog colorDialog;
 
 	void loadSettings();
+
+	bool colorChanged = false;
+
+signals:
+	void saveSettings();
 };
 
 #endif // SETTINGSDIALOG_H

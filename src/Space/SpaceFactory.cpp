@@ -86,30 +86,12 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 
 	std::vector<std::vector<Vertex>> finalVertexes;
 
-#ifdef NO_IGL_BOOLEAN
+#ifndef IGL_BOOLEAN
 	finalVertexes = vertexesInItems;
 #endif
 
-#ifndef NO_IGL_BOOLEAN
-	std::vector<std::vector<Vertex>> booleanResult = calculateBoolean(&vertexesInItems);
-
-	for(int i = 0; i < itemsInSpace->size(); i++)
-	{
-		finalVertexes.push_back(std::vector<Vertex>());
-		if(itemsInSpace->at(i)->isExtruded())
-		{
-			for(uint32_t ii = 0; ii < booleanResult.at(i).size(); ii++)
-			{
-				qDebug() << booleanResult.at(i).at(ii).position();
-
-				finalVertexes.at(i).push_back(Vertex( booleanResult.at(i).at(ii).position()));
-			}
-		}
-		else
-		{
-			finalVertexes.at(i) = vertexesInItems.at(i);
-		}
-	}
+#if defined(CGAL_BOOLEAN) || defined(CGAL_BOOLEAN)
+	finalVertexes = calculateBoolean(&vertexesInItems);
 #endif
 
 	uint32_t itemIndex = 0;
@@ -127,7 +109,7 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 	return finalBufferVertexes;
 }
 
-#ifndef NO_IGL_BOOLEAN
+#ifdef IGL_BOOLEAN
 std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
 {
 	std::vector<Eigen::MatrixXd> vertexesLocations;
@@ -185,9 +167,12 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 		}
 	}
 
+
+
 	//for every extruded additive item, subtract every extruded subtractive item
 	for(int i = 0; i < itemsInSpace->size(); i++)
 	{
+
 		Item *currentItem = itemsInSpace->at(i);
 
 		//every extruded additive item
@@ -203,7 +188,6 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 					//every extruded subtractive item
 					if((!insideItem->isAdditive()) & insideItem->isExtruded())
 					{
-
 						igl::copyleft::cgal::mesh_boolean(
 									vertexesLocations.at(i), vertexesIndexes.at(i),
 									vertexesLocations.at(ii), vertexesIndexes.at(ii),
@@ -228,6 +212,174 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 
 						result.at(i).push_back(Vertex(x,y,z));
 					}
+				}
+			}
+		}
+	}
+
+	return result;
+}
+#endif
+
+#ifdef CGAL_BOOLEAN
+std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
+{
+	namespace PMP = CGAL::Polygon_mesh_processing;
+	namespace params = PMP::parameters;
+
+	typedef CGAL::Exact_predicates_inexact_constructions_kernel          K;
+	typedef CGAL::Polyhedron_3<K, CGAL::Polyhedron_items_with_id_3>      Polyhedron;
+
+	std::vector<std::vector<K::Point_3>> points;
+	std::vector<std::vector<std::vector<std::size_t>>> polygons;
+	std::vector<Polyhedron> meshes;
+	std::vector<std::vector<Vertex>> result;
+
+	//convert to CGAL
+	for(int itemIndex = 0; itemIndex < itemsInSpace->size(); itemIndex++)
+	{
+		Item *item = itemsInSpace->at(itemIndex);
+
+		result.push_back(std::vector<Vertex>());
+		points.push_back(std::vector<K::Point_3>());
+		polygons.push_back(std::vector<std::vector<std::size_t>>());
+		meshes.push_back(Polyhedron());
+
+		if(!item->isExtruded())
+		{
+			result.at(itemIndex) = triangularizedVertexData->at(itemIndex);
+		}
+		else
+		{
+			std::vector<Vertex> vertexes = triangularizedVertexData->at(itemIndex);
+			QVector<QVector3D> locations;
+
+			//copy all unique vertexes
+			for(uint32_t ii = 0; ii < vertexes.size(); ii++)
+			{
+				QVector3D vec = vertexes.at(ii).position();
+				if (locations.indexOf(vec) == -1)
+				{
+					locations.push_back(vec);
+					points.at(itemIndex).push_back(K::Point_3(vec.x(), vec.y(), vec.z()));
+				}
+			}
+
+			uint32_t triangleCount = vertexes.size() / 3;
+
+			//create index mesh of vertex size
+			for(uint32_t ii = 0; ii < triangleCount; ii++)
+			{
+				polygons.at(itemIndex).push_back(std::vector<std::size_t>());
+				//triangle
+				polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3).position()));
+				polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +1).position()));
+				polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +2).position()));
+			}
+
+			CGAL::Polygon_mesh_processing::orient_polygon_soup(points.at(itemIndex), polygons.at(itemIndex));
+			Polyhedron mesh;
+			CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(points.at(itemIndex), polygons.at(itemIndex), mesh);
+			// Number the faces because 'orient_to_bound_a_volume' needs a face <--> index map
+			int index = 0;
+			for(Polyhedron::Face_iterator fb=mesh.facets_begin(), fe=mesh.facets_end(); fb!=fe; ++fb)
+			  fb->id() = index++;
+			if(CGAL::is_closed(mesh))
+			{
+				CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
+			}
+
+			meshes.at(itemIndex) = mesh;
+		}
+	}
+
+	//for every extruded additive item, subtract every extruded subtractive item
+	for(int itemIndex = 0; itemIndex < itemsInSpace->size(); itemIndex++)
+	{
+		Item *currentItem = itemsInSpace->at(itemIndex);
+
+		//every extruded additive item
+		if(currentItem->isExtruded())
+		{
+			if(currentItem->isAdditive())
+			{
+				for(uint32_t subtractiveItemIndex = 0; subtractiveItemIndex < meshes.size(); subtractiveItemIndex++)
+				{
+					Item *insideItem = itemsInSpace->at(subtractiveItemIndex);
+
+					//every extruded subtractive item
+					if((!insideItem->isAdditive()) & insideItem->isExtruded())
+					{
+						bool valid_difference =
+						  PMP::corefine_and_compute_difference(meshes.at(itemIndex),
+															   meshes.at(subtractiveItemIndex),
+															   meshes.at(itemIndex),
+															   params::all_default(), // default parameters for mesh1
+															   params::all_default() // default parameters for mesh2
+															   );
+
+						if(!valid_difference) std::cout << "Warning: subtraction not valid (SpaceFactory:327)";
+					}
+				}
+				CGAL::Polygon_mesh_processing::triangulate_faces(meshes.at(itemIndex));
+
+				//convert via file
+				QString filePath = QDir::tempPath() + "/tempmesh.off";
+				std::ofstream out(filePath.toStdString());
+				out.precision(17);
+				out << meshes.at(itemIndex);
+				out.close();
+
+
+				//read file
+				QFile tmpFile(filePath);
+				tmpFile.open(QFile::OpenModeFlag::ReadOnly);
+				QString file = tmpFile.readAll();
+
+			qDebug() << file;
+
+				//load file to vertex list
+				QStringList lines = file.split('\n');
+				//header - filetype - line 1
+				if(lines.at(0).trimmed() == "OFF")
+				{
+					//header - count - line 0
+					int pointCount = lines.at(1).section(' ', 0,0).toInt();
+					int faceCount = lines.at(1).section(' ', 1,1).toInt();
+
+					std::vector<QVector3D> points;
+					std::vector<Vertex> vertexData;
+
+					const int headerSize = 3;
+
+					//points
+					for(int lineNum = headerSize; lineNum < pointCount + headerSize; lineNum++)
+					{
+						points.push_back(
+									QVector3D(
+										lines.at(lineNum).section(' ', 0,0).toDouble(),
+										lines.at(lineNum).section(' ', 1,1).toDouble(),
+										lines.at(lineNum).section(' ', 2,2).toDouble()
+										));
+					}
+
+					//faces
+					for(int lineNum = headerSize + pointCount; lineNum < faceCount + pointCount + headerSize; lineNum++)
+					{
+						QString debugStr;
+						for(int vertexIndex = 1; vertexIndex < 4; vertexIndex++)
+						{
+							int index = lines.at(lineNum).section(' ', vertexIndex, vertexIndex).toInt();
+
+							debugStr += QString::number(points.at(index).x()) + " ";
+							debugStr += QString::number(points.at(index).y()) + " ";
+							debugStr += QString::number(points.at(index).z()) + " ";
+							vertexData.push_back(Vertex(points.at(index)));
+							debugStr += ";		";
+						}
+						qDebug() << debugStr;
+					}
+					result.at(itemIndex) = vertexData;
 				}
 			}
 		}

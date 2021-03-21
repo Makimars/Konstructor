@@ -9,6 +9,8 @@
 #include <QVector3D>
 #include <QVector4D>
 
+#include "include/nlohmann/json.hpp"
+
 enum AngleUnits{
 	radians,
 	degrees
@@ -17,8 +19,8 @@ enum AngleUnits{
 class Settings
 {
 public:
-	static void loadFromFile(QString fileContent);
-	static QString getSaveFile();
+	static void fromJson(QString json);
+	static QString toJson();
 
 	//view widget
 	static double mouseWheelZoomFactor;
