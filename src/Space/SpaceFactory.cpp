@@ -14,19 +14,9 @@ SpaceFactory *SpaceFactory::getInstance()
 
 QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 {
-	QVector3D objectCenter;
 	uint32_t vertexCount = vertexData->size();
-	for(uint32_t i = 0; i < vertexCount; i++)
-	{
-		objectCenter += vertexData->at(i).position();
-	}
-	objectCenter.setX(objectCenter.x() / vertexCount);
-	objectCenter.setY(objectCenter.y() / vertexCount);
-	objectCenter.setZ(objectCenter.z() / vertexCount);
-
 
 	QByteArray file;
-
 	file.fill('k',80); // 80 byte header
 
 
@@ -41,8 +31,7 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 	for(uint i = 0; i < vertexCount; i+=3)
 	{
 		//normal vector - 12 bytes
-		QVector3D normal = Vertex::generateNormalVector(objectCenter, &vertexData->at(i), &vertexData->at(i+1), &vertexData->at(i+2));
-		file += vectorToByteArray(normal);
+		file += vectorToByteArray(vertexData->at(i).normal());
 
 		file += vertexData->at(i).toByteArray();	//vertex 0 - 12 bytes
 		file += vertexData->at(i +1).toByteArray(); //vertex 1 - 12 bytes
@@ -103,10 +92,33 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 		itemsInSpace->at(i)->setItemIndex(itemIndex);
 
 		itemIndex += finalVertexes .at(i).size();
+		assignNormals(&finalVertexes.at(i));
 		finalBufferVertexes.insert(finalBufferVertexes.end(), finalVertexes.at(i).begin(), finalVertexes.at(i).end());
 	}
 
 	return finalBufferVertexes;
+}
+
+void SpaceFactory::assignNormals(std::vector<Vertex> *vertexData)
+{
+	QVector3D objectCenter;
+	for(uint32_t i = 0; i < vertexData->size(); i++)
+	{
+		objectCenter += vertexData->at(i).position();
+	}
+	objectCenter.setX(objectCenter.x() / vertexData->size());
+	objectCenter.setY(objectCenter.y() / vertexData->size());
+	objectCenter.setZ(objectCenter.z() / vertexData->size());
+
+	for (uint32_t i = 0; i < vertexData->size(); i+=3)
+	{
+		QVector3D normal = Vertex::generateNormalVector(objectCenter, &vertexData->at(i), &vertexData->at(i+1), &vertexData->at(i+2));
+		normal.normalize();
+
+		vertexData->at(i).setNormal(normal);
+		vertexData->at(i+1).setNormal(normal);
+		vertexData->at(i+2).setNormal(normal);
+	}
 }
 
 #ifdef IGL_BOOLEAN

@@ -77,6 +77,7 @@ private:
 	std::vector<Vertex> triangularizePolygon(QPolygonF polygon);
 	std::vector<Vertex> triangularizeItem(Item *item);
 
+	void assignNormals(std::vector<Vertex> *vertexData);
 
 #if defined(CGAL_BOOLEAN) || defined(CGAL_BOOLEAN)
 	std::vector<std::vector<Vertex>> calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const;

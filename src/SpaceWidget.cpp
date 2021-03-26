@@ -248,13 +248,14 @@ void SpaceWidget::initializeGL()
 	vertexProgram.enableAttributeArray(0);
 	vertexProgram.enableAttributeArray(1);
 	vertexProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
+	vertexProgram.setAttributeBuffer(1, GL_FLOAT, Vertex::normalOffset(), Vertex::NormalTupleSize, Vertex::stride());
 	vertexBufferObject.release();
 	vertexBuffer.release();
 
 
 	//planes buffer
 
-	planesProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/simple.vert");
+	planesProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/planes.vert");
 	planesProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/src/shaders/planes.frag");
 	planesProgram.link();
 	planesProgram.bind();
@@ -277,7 +278,6 @@ void SpaceWidget::initializeGL()
 	planeBufferObject.bind();
 
 	planesProgram.enableAttributeArray(0);
-	planesProgram.enableAttributeArray(1);
 	planesProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
 
 	planeBuffer.release();
@@ -344,7 +344,7 @@ void SpaceWidget::paintGL()
 	planesProgram.setUniformValue(planesParameter.cameraToView, projection);
 	planesProgram.setUniformValue(planeColor, Settings::planeColor);
 
-	vertexProgram.setUniformValue(vertexParameter.itemToRotate, mtr);
+	planesProgram.setUniformValue(vertexParameter.itemToRotate, mtr);
 
 	for(int i = 0; i < planes.size(); i++)
 	{

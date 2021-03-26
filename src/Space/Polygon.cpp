@@ -3,6 +3,7 @@
 Polygon::Polygon(QPolygonF polygon)
 {
 	this->setText("Polygon");
+	this->color = QVector3D(0.8,0.8,0.8);
 
 	for (int i = 0; i < polygon.size(); i++ )
 	{
