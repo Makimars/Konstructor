@@ -86,6 +86,14 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 		itemsInSpace->at(i)->setItemIndex(itemIndex);
 
 		itemIndex += vertexesInItems .at(i).size();
+
+		for(uint32_t vertexesIndex = 0; vertexesIndex < vertexesInItems.at(i).size(); vertexesIndex++)
+		{
+			Vertex *currentVertex = &vertexesInItems.at(i).at(vertexesIndex);
+			currentVertex->setPosition(itemsInSpace->at(i)->toMatrix() * currentVertex->position());
+		}
+		assignNormals(&vertexesInItems.at(i));
+
 		finalBufferVertexes.insert(finalBufferVertexes.end(), vertexesInItems.at(i).begin(), vertexesInItems.at(i).end());
 	}
 

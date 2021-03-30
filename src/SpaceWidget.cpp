@@ -217,8 +217,8 @@ void SpaceWidget::initializeGL()
 
 	//item buffer
 
-	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/simple.vert");
-	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/src/shaders/simple.frag");
+	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/item.vert");
+	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/src/shaders/item.frag");
 	vertexProgram.link();
 	vertexProgram.bind();
 
@@ -311,7 +311,15 @@ void SpaceWidget::paintGL()
 	foreach (Item *item, objectsInSpace)
 	{
 		int currentIndex = item->getItemIndex();
-		vertexProgram.setUniformValue(vertexParameter.itemToSpace, item->toMatrix());
+
+		// positions are already global in the buffer, but if I remove the matrix from shader, planes stop working
+		//vertexProgram.setUniformValue(vertexParameter.itemToSpace, item->toMatrix());
+		QMatrix4x4 mat;
+		mat.setColumn(0, QVector4D(1,0,0,0));
+		mat.setColumn(1, QVector4D(0,1,0,0));
+		mat.setColumn(2, QVector4D(0,0,1,0));
+		mat.setColumn(3, QVector4D(0,0,0,1));
+		vertexProgram.setUniformValue(vertexParameter.itemToSpace, mat);
 
 		if(item->isExtruded())
 		{

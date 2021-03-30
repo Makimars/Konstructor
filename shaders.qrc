@@ -1,7 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/shaders/simple.vert</file>
-        <file>src/shaders/simple.frag</file>
+        <file>src/shaders/item.vert</file>
+        <file>src/shaders/item.frag</file>
         <file>src/shaders/planes.frag</file>
         <file>src/shaders/planes.vert</file>
     </qresource>
