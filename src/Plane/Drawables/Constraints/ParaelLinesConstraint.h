@@ -12,7 +12,6 @@ public:
 
 	void resolveTies() override;
 
-	void loadVariables(QString input) override;
 	void loadRelations(QVector<DrawableObject *> list) override;
 	QString toFileString() override;
 

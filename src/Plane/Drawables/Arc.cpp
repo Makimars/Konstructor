@@ -30,14 +30,12 @@ void Arc::resolveTies()
 	centerPoint->setLocation(acrossPoint + (lineVector*centerDelta).toPointF());
 }
 
-void Arc::loadVariables(QString input){}
-
 QString Arc::toFileString()
 {
 	DrawableObject::toFileString();
-	this->fileAddVar("centerPoint", this->centerPoint->getId());
-	this->fileAddVar("leftPoint", this->edgePoints[0]->getId());
-	this->fileAddVar("rightPoint", this->edgePoints[1]->getId());
+	this->fileAddVar("centerPoint", this->centerPoint);
+	this->fileAddVar("leftPoint", this->edgePoints[0]);
+	this->fileAddVar("rightPoint", this->edgePoints[1]);
 	return this->fileFinish();
 }
 
@@ -60,6 +58,21 @@ void Arc::loadRelations(QVector<DrawableObject*> list)
 double Arc::getRadius() const
 {
 	return radius;
+}
+
+Point *Arc::getCenter()
+{
+	return centerPoint;
+}
+
+Point *Arc::getFirstEdgePoint()
+{
+	return this->edgePoints[0];
+}
+
+Point *Arc::getSecondEdgePoint()
+{
+	return this->edgePoints[1];
 }
 
 QRectF Arc::boundingRect() const

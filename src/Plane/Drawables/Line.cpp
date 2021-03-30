@@ -12,11 +12,6 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Global::Line)
 
 //----------	file handling    ----------
 
-void Line::loadVariables(QString input)
-{
-	fetchVariables(input);
-}
-
 QString Line::toFileString()
 {
 	DrawableObject::toFileString();

@@ -408,7 +408,7 @@ void MainWindow::on_finishDrawingButton_clicked()
 	setMode(Global::Mode::Object);
 
 	QString sketch = this->ui->planeView->toFile();
-	std::vector<QPolygonF> polygons = Polygonator::getInstance()->generatePolygons(this->ui->planeView->finishDrawing());
+	std::vector<QPolygonF> polygons = Polygonator::getInstance()->generatePolygonsFromDrawing(this->ui->planeView->finishDrawing());
 	PlaneFactory::getInstance()->deleteAll();
 
 	SpaceFactory::getInstance()->addNewItem(polygons, sketch);
@@ -500,7 +500,7 @@ std::vector<QPolygonF> MainWindow::getPolygonsForItem(QString sketch)
 {
 	QVector<DrawableObject*> loadedObjects = PlaneFactory::getInstance()->generateListFromSketch(sketch);
 
-	return Polygonator::getInstance()->generatePolygons(loadedObjects);
+	return Polygonator::getInstance()->generatePolygonsFromDrawing(loadedObjects);
 }
 
 void MainWindow::closeDrawing()

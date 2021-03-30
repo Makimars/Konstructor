@@ -35,8 +35,6 @@ void ParaelLinesConstraint::resolveTies()
 	follower->setLocation(base->getLocation() + (targetVector.normalized() * lines[1]->getLength()).toPointF());
 }
 
-void ParaelLinesConstraint::loadVariables(QString input){}
-
 void ParaelLinesConstraint::loadRelations(QVector<DrawableObject *> list)
 {
 	QStringList varNames = {

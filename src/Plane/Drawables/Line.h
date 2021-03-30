@@ -9,8 +9,7 @@ public:
 	Line();
 	Line(Point *startPoint, Point *endPoint);
 
-    //file handling
-    void loadVariables(QString json) override;
+	//file handling
     QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
 

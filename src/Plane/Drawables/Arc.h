@@ -12,11 +12,13 @@ public:
 	void resolveTies() override;
 
 	//file handling
-	void loadVariables(QString input) override;
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
 
 	double getRadius() const;
+	Point *getCenter();
+	Point *getFirstEdgePoint();
+	Point *getSecondEdgePoint();
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;

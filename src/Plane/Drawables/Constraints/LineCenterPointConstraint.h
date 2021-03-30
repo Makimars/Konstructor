@@ -16,7 +16,6 @@ public:
 	Point *getPoint();
 
 	//file handling
-	void loadVariables(QString input) override;
 	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
 

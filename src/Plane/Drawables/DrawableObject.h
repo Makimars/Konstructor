@@ -26,7 +26,7 @@ public:
 	 * @brief asigns variables from a file representation
 	 * @param input
 	 */
-	virtual void loadVariables(QString input){};
+	virtual void loadVariables(QString input);
 	/**
 	 * @brief assign pointers to objects to a variable from a vector of drawables
 	 * @param list

@@ -9,6 +9,11 @@ DrawableObject::DrawableObject(int type)
 
 //----------	file handling    ----------
 
+void DrawableObject::loadVariables(QString input)
+{
+	fetchVariables(input);
+}
+
 QString DrawableObject::toFileString()
 {
     this->file = "";

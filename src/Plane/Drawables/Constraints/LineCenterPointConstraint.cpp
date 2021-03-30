@@ -33,8 +33,6 @@ Point *LineCenterPointConstraint::getPoint()
 	return centerPoint;
 }
 
-void LineCenterPointConstraint::loadVariables(QString input){}
-
 QString LineCenterPointConstraint::toFileString()
 {
 	DrawableObject::toFileString();
