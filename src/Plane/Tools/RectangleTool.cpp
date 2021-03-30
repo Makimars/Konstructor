@@ -6,17 +6,17 @@ RectangleTool::RectangleTool() : Tool()
 {
 	for(int i = 0; i < 4; i++)
 	{
-		pointsPreview[i] = objectFactory->makePoint();
-		objectFactory->addToScene(pointsPreview[i]);
+		pointsPreview[i] = planeFactory->makePoint();
+		planeFactory->addToScene(pointsPreview[i]);
 	}
 
-	linesPreview[0] = objectFactory->makeLine(pointsPreview[0], pointsPreview[1]);
-	linesPreview[1] = objectFactory->makeLine(pointsPreview[0], pointsPreview[2]);
-	linesPreview[2] = objectFactory->makeLine(pointsPreview[1], pointsPreview[3]);
-	linesPreview[3] = objectFactory->makeLine(pointsPreview[2], pointsPreview[3]);
+	linesPreview[0] = planeFactory->makeLine(pointsPreview[0], pointsPreview[1]);
+	linesPreview[1] = planeFactory->makeLine(pointsPreview[0], pointsPreview[2]);
+	linesPreview[2] = planeFactory->makeLine(pointsPreview[1], pointsPreview[3]);
+	linesPreview[3] = planeFactory->makeLine(pointsPreview[2], pointsPreview[3]);
 
 	for(int i = 0; i < 4; i++)
-		objectFactory->addToScene(linesPreview[i]);
+		planeFactory->addToScene(linesPreview[i]);
 
 	for(int i = 0; i < 4; i++)
 	{
@@ -73,10 +73,10 @@ void RectangleTool::click(DrawableObject *clickedObject, QPointF pos)
 		if(clickedPoints[0] != nullptr)
 			newPoints[0] = clickedPoints[0];
 		else
-			newPoints[0] = objectFactory->copyPoint(pointsPreview[0]);
+			newPoints[0] = planeFactory->copyPoint(pointsPreview[0]);
 
-		newPoints[1] = objectFactory->copyPoint(pointsPreview[1]);
-		newPoints[2] = objectFactory->copyPoint(pointsPreview[2]);
+		newPoints[1] = planeFactory->copyPoint(pointsPreview[1]);
+		newPoints[2] = planeFactory->copyPoint(pointsPreview[2]);
 
 		if(clickedPoints[1] != nullptr)
 		{
@@ -86,24 +86,24 @@ void RectangleTool::click(DrawableObject *clickedObject, QPointF pos)
 			pointsPreview[2]->setX(clickedPoints[1]->getX());
 		}
 		else
-			newPoints[3] = objectFactory->copyPoint(pointsPreview[3]);
+			newPoints[3] = planeFactory->copyPoint(pointsPreview[3]);
 
 		//add points to drawing
 		for(int i = 0; i < 4; i++)
-			objectFactory->addDrawable(newPoints[i]);
+			planeFactory->addDrawable(newPoints[i]);
 
 		//create lines
-		objectFactory->addDrawable(
-					objectFactory->makeLine(newPoints[0], newPoints[1])
+		planeFactory->addDrawable(
+					planeFactory->makeLine(newPoints[0], newPoints[1])
 					);
-		objectFactory->addDrawable(
-					objectFactory->makeLine(newPoints[0], newPoints[2])
+		planeFactory->addDrawable(
+					planeFactory->makeLine(newPoints[0], newPoints[2])
 					);
-		objectFactory->addDrawable(
-					objectFactory->makeLine(newPoints[1], newPoints[3])
+		planeFactory->addDrawable(
+					planeFactory->makeLine(newPoints[1], newPoints[3])
 					);
-		objectFactory->addDrawable(
-					objectFactory->makeLine(newPoints[2], newPoints[3])
+		planeFactory->addDrawable(
+					planeFactory->makeLine(newPoints[2], newPoints[3])
 					);
 
 

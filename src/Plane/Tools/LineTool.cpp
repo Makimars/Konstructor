@@ -7,17 +7,17 @@ LineTool::LineTool() : Tool()
 	clickCounter = 0;
 
 	//line preview
-	this->previewPoints[0] = this->objectFactory->makePoint();
-	this->previewPoints[1] = this->objectFactory->makePoint();
-	this->linePreview = this->objectFactory->makeLine(previewPoints[0], previewPoints[1]);
+	this->previewPoints[0] = this->planeFactory->makePoint();
+	this->previewPoints[1] = this->planeFactory->makePoint();
+	this->linePreview = this->planeFactory->makeLine(previewPoints[0], previewPoints[1]);
 
 	previewPoints[0]->setHidden(true);
 	previewPoints[1]->setHidden(true);
 	linePreview->setHidden(true);
 
-	objectFactory->addToScene(previewPoints[0]);
-	objectFactory->addToScene(previewPoints[1]);
-	objectFactory->addToScene(linePreview);
+	planeFactory->addToScene(previewPoints[0]);
+	planeFactory->addToScene(previewPoints[1]);
+	planeFactory->addToScene(linePreview);
 
 	toolTips.append(tr("Select frist point"));
 	toolTips.append(tr("Select second point of a line"));
@@ -61,12 +61,12 @@ void LineTool::click(DrawableObject *clickedObject, QPointF pos)
 			}
 			else
 			{
-				points[i] = objectFactory->copyPoint(previewPoints[i]);
-				objectFactory->addDrawable(points[i]);
+				points[i] = planeFactory->copyPoint(previewPoints[i]);
+				planeFactory->addDrawable(points[i]);
 			}
 		}
-		objectFactory->addDrawable(
-					objectFactory->makeLine(points[0],points[1])
+		planeFactory->addDrawable(
+					planeFactory->makeLine(points[0],points[1])
 					);
 
 		clickCounter = 1;

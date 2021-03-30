@@ -33,12 +33,12 @@ void PointDistanceConstrainTool::click(DrawableObject *clickedObject, QPointF po
 			{
 				if(clickedObject->isLocked())
 				{
-					clickCounter = 1;
+					clickCounter = 0;
 					return;
 				}
 
-				objectFactory->addDrawable(
-					objectFactory->makePointDistanceConstraint(firstPoint, dynamic_cast<Point*>(clickedObject))
+				planeFactory->addDrawable(
+					planeFactory->makePointDistanceConstraint(firstPoint, dynamic_cast<Point*>(clickedObject))
 				);
 				resetTool();
 			}

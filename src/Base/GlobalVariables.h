@@ -15,7 +15,6 @@ enum Types{
 	Circle,
 	Arc,
 	Label,
-	LineAngleDimension,
 	CircleRadiusConstraint,
 	CirclesRadiusDifferenceConstraint,
 	PointDistanceConstraint,

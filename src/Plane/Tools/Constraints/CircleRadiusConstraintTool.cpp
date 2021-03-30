@@ -22,8 +22,8 @@ void CircleRadiusConstraintTool::click(DrawableObject *clickedObject, QPointF po
 		{
 			Circle *circle = dynamic_cast<Circle*>(clickedObject);
 
-			objectFactory->addDrawable(
-				objectFactory->makeCircleRadiusConstraint(circle)
+			planeFactory->addDrawable(
+				planeFactory->makeCircleRadiusConstraint(circle)
 			);
 		}
 	}

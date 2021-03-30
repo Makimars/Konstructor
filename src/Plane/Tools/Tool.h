@@ -20,14 +20,14 @@ protected:
 	Tool();
 
 	int clickCounter;
-	Factory *objectFactory;
+	PlaneFactory *planeFactory;
 
 	QStringList toolTips;
 };
 
 inline Tool::Tool()
 {
-	this->objectFactory = Factory::getInstance();
+	this->planeFactory = PlaneFactory::getInstance();
 	clickCounter = 0;
 }
 

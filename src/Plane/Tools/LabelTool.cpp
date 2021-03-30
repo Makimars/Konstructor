@@ -16,7 +16,7 @@ LabelTool *LabelTool::getInstance()
 
 void LabelTool::click(DrawableObject *clickedObject, QPointF pos)
 {
-	Label *label = this->objectFactory->makeLabel(pos);
-	this->objectFactory->addDrawable(label);
+	Label *label = this->planeFactory->makeLabel(pos);
+	this->planeFactory->addDrawable(label);
 	label->requestText();
 }

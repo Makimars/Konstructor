@@ -73,8 +73,12 @@ void MainWindow::setupConnections()
 	connect(this->ui->planeView, &PlaneWidget::keyPressed,
 			this, &MainWindow::viewKeyPress
 			);
-	//forwards statusBar messages from VieewWidget
+	//forwards statusBar messages from ViewWidget
 	connect(this->ui->planeView, &PlaneWidget::showStatusBarMessage,
+			this->ui->statusBar, &QStatusBar::showMessage
+			);
+	//forwards statusBar messages from Tool
+	connect(LinesAngleConstraintTool::getInstance(), &LinesAngleConstraintTool::showStatusBarMessage,
 			this->ui->statusBar, &QStatusBar::showMessage
 			);
 
@@ -246,7 +250,7 @@ void MainWindow::on_quitButton_clicked()
 void MainWindow::on_closeSketchButton_clicked()
 {
 	setMode(Global::Mode::Object);
-	Factory::getInstance()->deleteAll();
+	PlaneFactory::getInstance()->deleteAll();
 }
 
 void MainWindow::on_saveSketchButton_clicked()
@@ -385,7 +389,7 @@ void MainWindow::on_paraelLineButton_clicked()
 
 void MainWindow::on_linesAngleButton_clicked()
 {
-	if(this->ui->paraelLineButton->isChecked())
+	if(this->ui->linesAngleButton->isChecked())
 		refreshTools(Global::Tools::LinesAngleConstraintTool);
 	else
 		refreshTools(Global::Tools::NoTool);
@@ -405,7 +409,7 @@ void MainWindow::on_finishDrawingButton_clicked()
 
 	QString sketch = this->ui->planeView->toFile();
 	std::vector<QPolygonF> polygons = Polygonator::getInstance()->generatePolygons(this->ui->planeView->finishDrawing());
-	Factory::getInstance()->deleteAll();
+	PlaneFactory::getInstance()->deleteAll();
 
 	SpaceFactory::getInstance()->addNewItem(polygons, sketch);
 }
@@ -494,7 +498,7 @@ void MainWindow::on_objectsTree_itemClicked(QTreeWidgetItem *item, int column)
 
 std::vector<QPolygonF> MainWindow::getPolygonsForItem(QString sketch)
 {
-	QVector<DrawableObject*> loadedObjects = Factory::getInstance()->generateListFromSketch(sketch);
+	QVector<DrawableObject*> loadedObjects = PlaneFactory::getInstance()->generateListFromSketch(sketch);
 
 	return Polygonator::getInstance()->generatePolygons(loadedObjects);
 }

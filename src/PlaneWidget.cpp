@@ -34,12 +34,12 @@ PlaneWidget::PlaneWidget(QWidget *parent) : QGraphicsView (parent)
 
 	this->sketchScene = new QGraphicsScene(this);
 
-	Factory::initialise(&styles.at(0),
+	PlaneFactory::initialise(&styles.at(0),
 								 &this->objectsInSketch,
 								 &this->staticObjects,
 								 this->sketchScene
 								 );
-	this->objectFactory = Factory::getInstance();
+	this->planeFactory = PlaneFactory::getInstance();
 
 	initializeScene();
 
@@ -52,11 +52,11 @@ PlaneWidget::PlaneWidget(QWidget *parent) : QGraphicsView (parent)
 
 void PlaneWidget::loadFromFile(QString file)
 {
-	QVector<DrawableObject*> loadedObjects = objectFactory->generateListFromSketch(file);
+	QVector<DrawableObject*> loadedObjects = planeFactory->generateListFromSketch(file);
 
 	foreach(DrawableObject *obj, loadedObjects)
     {
-		this->objectFactory->addDrawable(obj);
+		this->planeFactory->addDrawable(obj);
     }
 }
 
@@ -72,24 +72,24 @@ QString PlaneWidget::toFile()
 
 void PlaneWidget::loadProjected(QPolygonF projectedPoints)
 {
-	objectFactory->deleteAllStaticDrawables();
+	planeFactory->deleteAllStaticDrawables();
 	if(projectedPoints.size() < 1) return;
 
 	std::vector<Point*> points;
 	std::vector<Line*> lines;
 
 	for (int i = 0; i < projectedPoints.size(); i++ )
-		points.push_back(objectFactory->makePoint(projectedPoints.at(i).x(), projectedPoints.at(i).y()));
+		points.push_back(planeFactory->makePoint(projectedPoints.at(i).x(), projectedPoints.at(i).y()));
 
 	for (int i = 0; i < projectedPoints.size()-1; i++ )
-		lines.push_back(objectFactory->makeLine(points.at(i), points.at(i+1)));
-	lines.push_back(objectFactory->makeLine(points.at(points.size()-1), points.at(0)));
+		lines.push_back(planeFactory->makeLine(points.at(i), points.at(i+1)));
+	lines.push_back(planeFactory->makeLine(points.at(points.size()-1), points.at(0)));
 
 
 	for(uint32_t i = 0; i < points.size(); i++)
-		objectFactory->addStaticDrawable(points.at(i));
+		planeFactory->addStaticDrawable(points.at(i));
 	for(uint32_t i = 0; i < lines.size(); i++)
-		objectFactory->addStaticDrawable(lines.at(i));
+		planeFactory->addStaticDrawable(lines.at(i));
 }
 
 //----------    initialization    ----------
@@ -401,7 +401,7 @@ void PlaneWidget::customContextMenuRequested(const QPoint &pos)
 		QAction *selectedAction = contextMenu.exec(this->viewport()->mapToGlobal(pos));
 		if((selectedAction == &deleteObjectAction) & !(obj->isLocked()))
 		{
-			if(!objectFactory->deleteDrawable(obj))
+			if(!planeFactory->deleteDrawable(obj))
 			{
 				emit showStatusBarMessage(("Cannot delete object, others depends on it."));
 			}
@@ -417,12 +417,12 @@ void PlaneWidget::customContextMenuRequested(const QPoint &pos)
 
 void PlaneWidget::newSketchButtonClicked()
 {
-	this->objectFactory->deleteAll();
+	this->planeFactory->deleteAll();
 }
 
 void PlaneWidget::closeSketchButtonClicked()
 {
-	objectFactory->deleteAll();
-	objectFactory->deleteAllStaticDrawables();
+	planeFactory->deleteAll();
+	planeFactory->deleteAllStaticDrawables();
 	emit closeDrawing();
 }

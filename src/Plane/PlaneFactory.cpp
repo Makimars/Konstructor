@@ -1,27 +1,27 @@
 #include "PlaneFactory.h"
 
-Factory *Factory::instance = nullptr;
+PlaneFactory *PlaneFactory::instance = nullptr;
 
-void Factory::initialise(const Style *defaultStyle,
+void PlaneFactory::initialise(const Style *defaultStyle,
 									QVector<DrawableObject*> *objectList,
 									QVector<DrawableObject*> *staticObjectsList,
 									QGraphicsScene *scene
 									)
 {
-	if(Factory::instance == nullptr)
+	if(PlaneFactory::instance == nullptr)
 	{
-		Factory::instance = new Factory(defaultStyle, objectList, staticObjectsList, scene);
+		PlaneFactory::instance = new PlaneFactory(defaultStyle, objectList, staticObjectsList, scene);
 	}
 }
 
-Factory *Factory::getInstance()
+PlaneFactory *PlaneFactory::getInstance()
 {
-	return Factory::instance;
+	return PlaneFactory::instance;
 }
 
 //----------     object creation     ---------
 
-Point *Factory::makePoint()
+Point *PlaneFactory::makePoint()
 {
 	Point *point = new Point();
 	point->setStyle(currentStyle);
@@ -29,7 +29,7 @@ Point *Factory::makePoint()
 	return point;
 }
 
-Point *Factory::makePoint(double x, double y)
+Point *PlaneFactory::makePoint(double x, double y)
 {
 	Point *point = makePoint();
 	point->setLocation(x, y);
@@ -37,7 +37,7 @@ Point *Factory::makePoint(double x, double y)
 	return point;
 }
 
-Point *Factory::copyPoint(const Point *point)
+Point *PlaneFactory::copyPoint(const Point *point)
 {
 	Point *newPoint = makePoint();
 	newPoint->setLocation(point->getLocation());
@@ -45,7 +45,7 @@ Point *Factory::copyPoint(const Point *point)
 	return newPoint;
 }
 
-Line *Factory::makeLine(Point *startPoint, Point *endPoint)
+Line *PlaneFactory::makeLine(Point *startPoint, Point *endPoint)
 {
 	Line *line = new Line(startPoint, endPoint);
 	line->setStyle(currentStyle);
@@ -53,7 +53,7 @@ Line *Factory::makeLine(Point *startPoint, Point *endPoint)
 	return line;
 }
 
-Circle *Factory::makeCircle(Point *centerPoint)
+Circle *PlaneFactory::makeCircle(Point *centerPoint)
 {
 	Circle *circle = new Circle(centerPoint);
 	circle->setStyle(currentStyle);
@@ -62,7 +62,7 @@ Circle *Factory::makeCircle(Point *centerPoint)
 }
 
 
-Circle *Factory::makeCircle(Point *centerPoint, double radius)
+Circle *PlaneFactory::makeCircle(Point *centerPoint, double radius)
 {
 	Circle *circle = makeCircle(centerPoint);
 	circle->setRadius(radius);
@@ -70,7 +70,7 @@ Circle *Factory::makeCircle(Point *centerPoint, double radius)
 	return circle;
 }
 
-Label *Factory::makeLabel(QPointF location)
+Label *PlaneFactory::makeLabel(QPointF location)
 {
 	Label *label = new Label(location, "               ");
 	label->setStyle(currentStyle);
@@ -82,7 +82,7 @@ Label *Factory::makeLabel(QPointF location)
 	return label;
 }
 
-Arc *Factory::makeArc(Point *points[])
+Arc *PlaneFactory::makeArc(Point *points[])
 {
 	Arc *arc = new Arc(points[0], points[1], points[2]);
 	arc->setStyle(currentStyle);
@@ -90,7 +90,7 @@ Arc *Factory::makeArc(Point *points[])
 	return arc;
 }
 
-PointDistanceConstraint *Factory::makePointDistanceConstraint(Point *originPoint, Point *drivenPoint)
+PointDistanceConstraint *PlaneFactory::makePointDistanceConstraint(Point *originPoint, Point *drivenPoint)
 {
 	PointDistanceConstraint *constraint = new PointDistanceConstraint(originPoint, drivenPoint);
 	constraint->setStyle(currentStyle);
@@ -102,7 +102,7 @@ PointDistanceConstraint *Factory::makePointDistanceConstraint(Point *originPoint
 	return constraint;
 }
 
-CircleRadiusConstraint *Factory::makeCircleRadiusConstraint(Circle *circle)
+CircleRadiusConstraint *PlaneFactory::makeCircleRadiusConstraint(Circle *circle)
 {
 	CircleRadiusConstraint *constraint = new CircleRadiusConstraint(circle);
 	constraint->setStyle(currentStyle);
@@ -114,7 +114,7 @@ CircleRadiusConstraint *Factory::makeCircleRadiusConstraint(Circle *circle)
 	return constraint;
 }
 
-LineCenterPointConstraint *Factory::makeLineCenterPointConstraint(Line *line, Point *point)
+LineCenterPointConstraint *PlaneFactory::makeLineCenterPointConstraint(Line *line, Point *point)
 {
 	LineCenterPointConstraint *constraint = new LineCenterPointConstraint(line, point);
 	constraint->setStyle(currentStyle);
@@ -122,7 +122,7 @@ LineCenterPointConstraint *Factory::makeLineCenterPointConstraint(Line *line, Po
 	return constraint;
 }
 
-ParaelLinesConstraint *Factory::makeParaelLinesConstraint(Line *lineOne, Line *lineTwo)
+ParaelLinesConstraint *PlaneFactory::makeParaelLinesConstraint(Line *lineOne, Line *lineTwo)
 {
 	ParaelLinesConstraint *constraint = new ParaelLinesConstraint(lineOne, lineTwo);
 	constraint->setStyle(currentStyle);
@@ -130,7 +130,19 @@ ParaelLinesConstraint *Factory::makeParaelLinesConstraint(Line *lineOne, Line *l
 	return constraint;
 }
 
-void Factory::addToScene(DrawableObject *object)
+LinesAngleConstraint *PlaneFactory::makeLinesAngleConstraint(Line *lineOne, Line *lineTwo)
+{
+	LinesAngleConstraint *constraint = new LinesAngleConstraint(lineOne, lineTwo);
+	constraint->setStyle(currentStyle);
+
+	QObject::connect(constraint, &UserInputRequester::requestDouble,
+					 this->userInput, &QGraphicsViewUserInput::requestDouble
+					 );
+
+	return constraint;
+}
+
+void PlaneFactory::addToScene(DrawableObject *object)
 {
 	object->setStyle(currentStyle);
 
@@ -139,7 +151,7 @@ void Factory::addToScene(DrawableObject *object)
 
 //----------     object managment     ---------
 
-void Factory::addDrawable(DrawableObject *object)
+void PlaneFactory::addDrawable(DrawableObject *object)
 {
 	object->setStyle(currentStyle);
 
@@ -155,13 +167,13 @@ void Factory::addDrawable(DrawableObject *object)
 	}
 }
 
-void Factory::tryDeleteDrawable(DrawableObject *object)
+void PlaneFactory::tryDeleteDrawable(DrawableObject *object)
 {
 	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 		deleteDrawable(object);
 }
 
-bool Factory::deleteDrawable(DrawableObject *object)
+bool PlaneFactory::deleteDrawable(DrawableObject *object)
 {
 	if(object == nullptr)
 		return false;
@@ -179,7 +191,7 @@ bool Factory::deleteDrawable(DrawableObject *object)
 	return true;
 }
 
-void Factory::deleteAll()
+void PlaneFactory::deleteAll()
 {
 	foreach(DrawableObject *item, *this->objectList)
 	{
@@ -189,7 +201,7 @@ void Factory::deleteAll()
 	this->idCounter = 1;
 }
 
-void Factory::addStaticDrawable(DrawableObject *object)
+void PlaneFactory::addStaticDrawable(DrawableObject *object)
 {
 	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 	{
@@ -205,7 +217,7 @@ void Factory::addStaticDrawable(DrawableObject *object)
 	}
 }
 
-void Factory::deleteAllStaticDrawables()
+void PlaneFactory::deleteAllStaticDrawables()
 {
 	foreach(DrawableObject *item, *this->staticObjectsList)
 	{
@@ -215,7 +227,7 @@ void Factory::deleteAllStaticDrawables()
 	staticIdCounter = -1;
 }
 
-QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
+QVector<DrawableObject*> PlaneFactory::generateListFromSketch(QString sketch)
 {
 	QStringList splited = sketch.trimmed().replace('\n',"").split(";");
 	splited.removeAt(splited.length()-1);
@@ -245,9 +257,6 @@ QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
 			case Global::Label:
 				createdObj = new Label();
 				break;
-			case Global::LineAngleDimension:
-				createdObj = new LinesAngleDimension();
-				break;
 			case Global::CircleRadiusConstraint:
 				createdObj = new CircleRadiusConstraint();
 				break;
@@ -262,6 +271,9 @@ QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
 				break;
 			case Global::ParaelLinesConstraint:
 				createdObj = new ParaelLinesConstraint();
+				break;
+			case Global::LinesAngleConstraint:
+				createdObj = new LinesAngleConstraint();
 				break;
 			default:
 				createdObj = nullptr;
@@ -286,7 +298,7 @@ QVector<DrawableObject*> Factory::generateListFromSketch(QString sketch)
 
 //----------     _     ---------
 
-Factory::Factory(const Style *defaultStyle,
+PlaneFactory::PlaneFactory(const Style *defaultStyle,
 					QVector<DrawableObject*> *objectList,
 					QVector<DrawableObject*> *staticObjectsList,
 					QGraphicsScene *scene)

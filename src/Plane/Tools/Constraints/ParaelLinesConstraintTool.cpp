@@ -37,8 +37,8 @@ void ParaelLinesConstraintTool::click(DrawableObject *clickedObject, QPointF pos
 					return;
 				}
 
-				objectFactory->addDrawable(
-							objectFactory->makeParaelLinesConstraint(clickedLine, currentLine)
+				planeFactory->addDrawable(
+							planeFactory->makeParaelLinesConstraint(clickedLine, currentLine)
 							);
 				resetTool();
 			}

@@ -4,17 +4,15 @@ CircleTool *CircleTool::instance = nullptr;
 
 CircleTool::CircleTool() : Tool()
 {
-	this->objectFactory = Factory::getInstance();
-
-	this->circlePreviewCentre = this->objectFactory->makePoint();
-	this->circlePreview = this->objectFactory
+	this->circlePreviewCentre = this->planeFactory->makePoint();
+	this->circlePreview = this->planeFactory
 			->makeCircle(this->circlePreviewCentre);
 
 	this->circlePreview->setHidden(true);
 	this->circlePreviewCentre->setHidden(true);
 
-	objectFactory->addToScene(circlePreview);
-	objectFactory->addToScene(circlePreviewCentre);
+	planeFactory->addToScene(circlePreview);
+	planeFactory->addToScene(circlePreviewCentre);
 
 	toolTips.append(tr("Select center for a circle"));
 	toolTips.append(tr("Select circle's radius"));
@@ -50,12 +48,12 @@ void CircleTool::click(DrawableObject *clickedObject, QPointF pos)
 		}
 		else
 		{
-			centrePoint = objectFactory->copyPoint(circlePreviewCentre);
-			objectFactory->addDrawable(centrePoint);
+			centrePoint = planeFactory->copyPoint(circlePreviewCentre);
+			planeFactory->addDrawable(centrePoint);
 		}
 
-		objectFactory->addDrawable(
-					objectFactory->makeCircle(centrePoint, circlePreview->getRadius())
+		planeFactory->addDrawable(
+					planeFactory->makeCircle(centrePoint, circlePreview->getRadius())
 					);
 
 		resetTool();

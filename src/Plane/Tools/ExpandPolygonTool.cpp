@@ -4,13 +4,13 @@ ExpandPolygonTool *ExpandPolygonTool::instance = nullptr;
 
 ExpandPolygonTool::ExpandPolygonTool() : Tool()
 {
-	previewCircleCenter = objectFactory->makePoint(0,0);
+	previewCircleCenter = planeFactory->makePoint(0,0);
 	previewCircleCenter->setHidden(true);
-	objectFactory->addToScene(previewCircleCenter);
+	planeFactory->addToScene(previewCircleCenter);
 
-	previewCircle = objectFactory->makeCircle(previewCircleCenter);
+	previewCircle = planeFactory->makeCircle(previewCircleCenter);
 	previewCircle->setHidden(true);
-	objectFactory->addToScene(previewCircle);
+	planeFactory->addToScene(previewCircle);
 
 	clickedCircle = nullptr;
 
@@ -60,10 +60,10 @@ void ExpandPolygonTool::click(DrawableObject *clickedObject, QPointF pos)
 	{
 		if((!previewCircle->isHidden()) | (clickedCircle != nullptr))
 		{
-			Circle *circle = objectFactory->makeCircle(clickedCircle->getCenterPoint());
+			Circle *circle = planeFactory->makeCircle(clickedCircle->getCenterPoint());
 			circle->setRadius(clickedCircle->getCenterPoint()->distanceFrom(pos));
 
-			objectFactory->addDrawable(circle);
+			planeFactory->addDrawable(circle);
 			resetTool();
 		}
 	}

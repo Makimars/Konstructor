@@ -7,14 +7,14 @@ ArcTool::ArcTool() : Tool()
 	//preview
 	for(int i = 0; i < 3; i++)
 	{
-		this->previewPoints[i] = objectFactory->makePoint();
+		this->previewPoints[i] = planeFactory->makePoint();
 		this->previewPoints[i]->setHidden(true);
-		objectFactory->addToScene(previewPoints[i]);
+		planeFactory->addToScene(previewPoints[i]);
 	}
 
-	this->preview = this->objectFactory->makeArc(previewPoints);
+	this->preview = this->planeFactory->makeArc(previewPoints);
 	this->preview->setHidden(true);
-	objectFactory->addToScene(preview);
+	planeFactory->addToScene(preview);
 }
 
 ArcTool *ArcTool::getInstance()
@@ -62,13 +62,13 @@ void ArcTool::click(DrawableObject *clickedObject, QPointF pos)
 			}
 			else
 			{
-				newPoints[i] = objectFactory->copyPoint(previewPoints[i]);
-				objectFactory->addDrawable(newPoints[i]);
+				newPoints[i] = planeFactory->copyPoint(previewPoints[i]);
+				planeFactory->addDrawable(newPoints[i]);
 			}
 		}
 
-		objectFactory->addDrawable(
-					objectFactory->makeArc(newPoints)
+		planeFactory->addDrawable(
+					planeFactory->makeArc(newPoints)
 					);
 
 		resetTool();

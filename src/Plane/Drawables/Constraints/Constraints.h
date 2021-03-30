@@ -5,5 +5,6 @@
 #include "PointDistanceConstraint.h"
 #include "LineCenterPointConstraint.h"
 #include "ParaelLinesConstraint.h"
+#include "LinesAngleConstraint.h"
 
 #endif // CONSTRAINTS_H

@@ -6,7 +6,7 @@
 #include "QGraphicsViewUserInput.h"
 #include "Drawables/Constraints/Constraints.h"
 
-class Factory
+class PlaneFactory
 {
 public:
 	static void initialise(const Style *defaultStyle,
@@ -14,7 +14,7 @@ public:
 							QVector<DrawableObject*> *staticObjectsList,
 							QGraphicsScene *scene
 							);
-	static Factory *getInstance();
+	static PlaneFactory *getInstance();
 
 	QBrush *getCurrentBrush();
 	QPen *getCurrentPen();
@@ -35,6 +35,7 @@ public:
 	CircleRadiusConstraint *makeCircleRadiusConstraint(Circle *circle);
 	LineCenterPointConstraint *makeLineCenterPointConstraint(Line *line, Point *point);
 	ParaelLinesConstraint *makeParaelLinesConstraint(Line *lineOne, Line *lineTwo);
+	LinesAngleConstraint *makeLinesAngleConstraint(Line *lineOne, Line *lineTwo);
 
 	//object managment
 	void addToScene(DrawableObject *object);
@@ -62,8 +63,8 @@ public:
 	QVector<DrawableObject*> generateListFromSketch(QString sketch);
 
 private:
-	static Factory *instance;
-	Factory(const Style *defaultStyle,
+	static PlaneFactory *instance;
+	PlaneFactory(const Style *defaultStyle,
 				QVector<DrawableObject*> *objectList,
 				QVector<DrawableObject*> *staticObjectsList,
 				QGraphicsScene *scene

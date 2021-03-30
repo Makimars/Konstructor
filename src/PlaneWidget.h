@@ -45,7 +45,7 @@ private:
 	QLabel mousePosLabel;
 	QGraphicsProxyWidget *mousePosLabelProxy;
 
-	Factory *objectFactory;
+	PlaneFactory *planeFactory;
 
 	//tools
 	Tool *selectedTool;

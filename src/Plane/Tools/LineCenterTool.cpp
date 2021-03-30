@@ -20,12 +20,12 @@ void LineCenterTool::click(DrawableObject *clickedObject, QPointF pos)
 	{
 		if(clickedObject->getType() == Global::Line)
 		{
-			Point *point = objectFactory->makePoint(pos.x(), pos.y());
-			objectFactory->addDrawable(point);
+			Point *point = planeFactory->makePoint(pos.x(), pos.y());
+			planeFactory->addDrawable(point);
 			Line *line = dynamic_cast<Line*>(clickedObject);
 
-			objectFactory->addDrawable(
-						objectFactory->makeLineCenterPointConstraint(line, point)
+			planeFactory->addDrawable(
+						planeFactory->makeLineCenterPointConstraint(line, point)
 						);
 		}
 	}
