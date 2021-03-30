@@ -28,6 +28,10 @@
 #include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
 #endif
 
+// color normals type
+#define FRAG_NORMALS
+//#define FACE_NORMALS
+
 class SpaceFactory : public QObject
 {
 	Q_OBJECT

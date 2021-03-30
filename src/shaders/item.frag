@@ -7,12 +7,21 @@ uniform bool isSelected;
 uniform float selectedTransparentValue;
 uniform vec4 itemColor;
 
+uniform bool lightByNormals;
+
 vec3 lightDirection = vec3(0,0,1);
 
 void main()
 {
     if(isSelected)
+    {
 	fColor = vec4(selectedItemColor, selectedTransparentValue);
+    }
     else
-	fColor = vec4(dot(vNormal, lightDirection) * itemColor.rgb, itemColor.a);
+    {
+	if(lightByNormals)
+	    fColor = vec4(dot(vNormal, lightDirection) * itemColor.rgb, itemColor.a);
+	else
+	    fColor = itemColor;
+    }
 }

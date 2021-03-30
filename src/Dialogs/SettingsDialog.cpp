@@ -32,6 +32,7 @@ void SettingsDialog::on_buttonBox_accepted()
 {
 	Settings::mouseWheelInvertedZoom = this->ui->invertMouseWheel->isChecked();
 	Settings::gridSnapping = this->ui->gridSnapping->isChecked();
+	Settings::colorByNormals = this->ui->colorsByNormal->isChecked();
 
 	double pointSize =  QVariant(this->ui->pointSizeLine->text()).toDouble();
 	Settings::pointMargin = QMargins(pointSize,pointSize,pointSize,pointSize);
@@ -63,6 +64,7 @@ void SettingsDialog::loadSettings()
 
 	this->ui->invertMouseWheel->setChecked(Settings::mouseWheelInvertedZoom);
 	this->ui->gridSnapping->setChecked(Settings::gridSnapping);
+	this->ui->colorsByNormal->setChecked(Settings::colorByNormals);
 
 	this->ui->pointSizeLine->setText(QString::number(Settings::pointMargin.top()));
 	this->ui->sketchSizeLine->setText(QString::number(Settings::sketchSize));

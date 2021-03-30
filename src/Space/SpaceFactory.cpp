@@ -111,6 +111,14 @@ void SpaceFactory::assignNormals(std::vector<Vertex> *vertexData)
 	objectCenter.setY(objectCenter.y() / vertexData->size());
 	objectCenter.setZ(objectCenter.z() / vertexData->size());
 
+#ifdef FRAG_NORMALS
+	for (uint32_t i = 0; i < vertexData->size(); i++)
+	{
+		vertexData->at(i).setNormal((vertexData->at(i).position() - objectCenter).normalized());
+	}
+#endif
+
+#ifdef FACE_NORMALS
 	for (uint32_t i = 0; i < vertexData->size(); i+=3)
 	{
 		QVector3D normal = Vertex::generateNormalVector(objectCenter, &vertexData->at(i), &vertexData->at(i+1), &vertexData->at(i+2));
@@ -120,6 +128,7 @@ void SpaceFactory::assignNormals(std::vector<Vertex> *vertexData)
 		vertexData->at(i+1).setNormal(normal);
 		vertexData->at(i+2).setNormal(normal);
 	}
+#endif
 }
 
 #ifdef IGL_BOOLEAN

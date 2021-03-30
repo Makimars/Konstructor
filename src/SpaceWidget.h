@@ -73,6 +73,7 @@ private:
 	int itemIsSelected;
 
 	int selectedTransparentValue;
+	int lightByNormals;
 
 	QPoint lastPos;
 

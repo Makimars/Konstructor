@@ -25,6 +25,7 @@ QKeySequence Settings::quitApp(Qt::CTRL + Qt::Key_Q);
 
 //3D
 int Settings::pointPerRadiusCoeficient = 10;
+bool Settings::colorByNormals = true;
 
 //environment
 QString Settings::userProjectRoot = QDir::homePath();
@@ -42,6 +43,7 @@ void Settings::fromJson(QString json)
 
 	Settings::mouseWheelInvertedZoom = input["mouseWheelInvertedZoom"];
 	Settings::gridSnapping = input["gridSnapping"];
+	Settings::colorByNormals = input["colorByNormals"];
 
 	double pointSize =  input["pointSize"];
 	Settings::pointMargin = QMargins(pointSize,pointSize,pointSize,pointSize);
@@ -74,6 +76,7 @@ QString Settings::toJson()
 	json["mouseWheelInvertedZoom"] = Settings::mouseWheelInvertedZoom;
 	json["gridSnapping"] = Settings::gridSnapping;
 	json["pointSize"] = Settings::pointMargin.top();
+	json["colorByNormals"] = Settings::colorByNormals;
 
 	json["sketchSize"] = Settings::sketchSize;
 	json["lineShapeSize"] = Settings::lineShapeSize;

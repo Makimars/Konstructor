@@ -48,6 +48,7 @@ public:
 
 	//3D
 	static int pointPerRadiusCoeficient;
+	static bool colorByNormals;
 
 	//environment
 	static QString userProjectRoot;

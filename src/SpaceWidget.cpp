@@ -232,6 +232,7 @@ void SpaceWidget::initializeGL()
 
 	itemColor = vertexProgram.uniformLocation("itemColor");
 	selectedTransparentValue = vertexProgram.uniformLocation("selectedTransparentValue");
+	lightByNormals = vertexProgram.uniformLocation("lightByNormals");
 
 	vertexProgram.release();
 
@@ -299,6 +300,7 @@ void SpaceWidget::paintGL()
 	vertexProgram.setUniformValue(vertexParameter.worldToCamera, camera.toMatrix());
 	vertexProgram.setUniformValue(vertexParameter.cameraToView, projection);
 	vertexProgram.setUniformValue(selectedItemColor, Settings::selectedFaceColor);
+	vertexProgram.setUniformValue(lightByNormals, Settings::colorByNormals);
 
 	QMatrix4x4 mtr;
 	mtr.rotate(itemRotation.normalized());
