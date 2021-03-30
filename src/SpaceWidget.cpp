@@ -123,10 +123,8 @@ void SpaceWidget::reallocatePlanes()
 	}
 }
 
-void SpaceWidget::allocateNewPlane()
+void SpaceWidget::allocateNewPlane(double planeSize)
 {
-	double planeSize = 20;
-
 	planeVertexData.push_back(
 				Vertex(planeSize, planeSize, 0)
 				);

@@ -88,7 +88,7 @@ private:
 signals:
 	void reallocateItems();
 	void reallocatePlanes();
-	void allocateNewPlane();
+	void allocateNewPlane(double planeSize = 20);
 
 	std::vector<QPolygonF> generatePolygons(QString sketch);
 	Plane *getBasePlane();

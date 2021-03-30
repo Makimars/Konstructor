@@ -35,7 +35,7 @@ public:
 public slots:
 	void reallocateItems();
 	void reallocatePlanes();
-	void allocateNewPlane();
+	void allocateNewPlane(double planeSize = 20);
 	void update();
 
 	Plane *getBasePlane();

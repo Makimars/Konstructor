@@ -73,27 +73,20 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 		}
 	}
 
-	std::vector<std::vector<Vertex>> finalVertexes;
-
-#ifndef IGL_BOOLEAN
-	finalVertexes = vertexesInItems;
-#endif
-
 #if defined(CGAL_BOOLEAN) || defined(CGAL_BOOLEAN)
-	finalVertexes = calculateBoolean(&vertexesInItems);
+	vertexesInItems = calculateBoolean(&vertexesInItems);
 #endif
 
 	uint32_t itemIndex = 0;
 	std::vector<Vertex> finalBufferVertexes;
 	//copy final data to the buffer
-	for(uint32_t i = 0; i < finalVertexes.size(); i++)
+	for(uint32_t i = 0; i < vertexesInItems.size(); i++)
 	{
-		if(itemsInSpace->at(i)->isExtruded()) itemsInSpace->at(i)->setDataSize(finalVertexes.at(i).size());
+		if(itemsInSpace->at(i)->isExtruded()) itemsInSpace->at(i)->setDataSize(vertexesInItems.at(i).size());
 		itemsInSpace->at(i)->setItemIndex(itemIndex);
 
-		itemIndex += finalVertexes .at(i).size();
-		assignNormals(&finalVertexes.at(i));
-		finalBufferVertexes.insert(finalBufferVertexes.end(), finalVertexes.at(i).begin(), finalVertexes.at(i).end());
+		itemIndex += vertexesInItems .at(i).size();
+		finalBufferVertexes.insert(finalBufferVertexes.end(), vertexesInItems.at(i).begin(), vertexesInItems.at(i).end());
 	}
 
 	return finalBufferVertexes;
