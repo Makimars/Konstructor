@@ -78,6 +78,7 @@ private:
 	QGraphicsScene *scene;
 
 	const Style *currentStyle;
+	Style constraintStyle;
 
 	QGraphicsViewUserInput *userInput;
 

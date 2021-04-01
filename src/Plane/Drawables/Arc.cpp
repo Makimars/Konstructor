@@ -119,7 +119,14 @@ void Arc::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidg
 	QPainterPath subtractPath;
 	subtractPath.addEllipse(this->centerPoint->getLocation(), radius-0.5, radius-0.5);
 
-	painter->drawPath(drawPath.intersected(shape()));
+	painter->drawPath(drawPath.intersected(shape()).subtracted(subtractPath));
+
+	QPen pen = painter->pen();
+	pen.setStyle(Qt::PenStyle::DashLine);
+	painter->setPen(pen);
+
+	painter->drawLine(centerPoint->getLocation(), edgePoints[0]->getLocation());
+	painter->drawLine(centerPoint->getLocation(), edgePoints[1]->getLocation());
 }
 
 void Arc::setGeometryUpdates()

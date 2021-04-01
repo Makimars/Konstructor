@@ -93,7 +93,7 @@ Arc *PlaneFactory::makeArc(Point *points[])
 PointDistanceConstraint *PlaneFactory::makePointDistanceConstraint(Point *originPoint, Point *drivenPoint)
 {
 	PointDistanceConstraint *constraint = new PointDistanceConstraint(originPoint, drivenPoint);
-	constraint->setStyle(currentStyle);
+	constraint->setStyle(&constraintStyle);
 
 	QObject::connect(constraint, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -105,7 +105,7 @@ PointDistanceConstraint *PlaneFactory::makePointDistanceConstraint(Point *origin
 CircleRadiusConstraint *PlaneFactory::makeCircleRadiusConstraint(Circle *circle)
 {
 	CircleRadiusConstraint *constraint = new CircleRadiusConstraint(circle);
-	constraint->setStyle(currentStyle);
+	constraint->setStyle(&constraintStyle);
 
 	QObject::connect(constraint, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -117,7 +117,7 @@ CircleRadiusConstraint *PlaneFactory::makeCircleRadiusConstraint(Circle *circle)
 LineCenterPointConstraint *PlaneFactory::makeLineCenterPointConstraint(Line *line, Point *point)
 {
 	LineCenterPointConstraint *constraint = new LineCenterPointConstraint(line, point);
-	constraint->setStyle(currentStyle);
+	constraint->setStyle(&constraintStyle);
 
 	return constraint;
 }
@@ -125,7 +125,7 @@ LineCenterPointConstraint *PlaneFactory::makeLineCenterPointConstraint(Line *lin
 ParaelLinesConstraint *PlaneFactory::makeParaelLinesConstraint(Line *lineOne, Line *lineTwo)
 {
 	ParaelLinesConstraint *constraint = new ParaelLinesConstraint(lineOne, lineTwo);
-	constraint->setStyle(currentStyle);
+	constraint->setStyle(&constraintStyle);
 
 	return constraint;
 }
@@ -133,7 +133,7 @@ ParaelLinesConstraint *PlaneFactory::makeParaelLinesConstraint(Line *lineOne, Li
 LinesAngleConstraint *PlaneFactory::makeLinesAngleConstraint(Line *lineOne, Line *lineTwo)
 {
 	LinesAngleConstraint *constraint = new LinesAngleConstraint(lineOne, lineTwo);
-	constraint->setStyle(currentStyle);
+	constraint->setStyle(&constraintStyle);
 
 	QObject::connect(constraint, &UserInputRequester::requestDouble,
 					 this->userInput, &QGraphicsViewUserInput::requestDouble
@@ -144,8 +144,6 @@ LinesAngleConstraint *PlaneFactory::makeLinesAngleConstraint(Line *lineOne, Line
 
 void PlaneFactory::addToScene(DrawableObject *object)
 {
-	object->setStyle(currentStyle);
-
 	scene->addItem(object);
 }
 
@@ -153,8 +151,6 @@ void PlaneFactory::addToScene(DrawableObject *object)
 
 void PlaneFactory::addDrawable(DrawableObject *object)
 {
-	object->setStyle(currentStyle);
-
 	if(!this->objectList->contains(object) & !this->staticObjectsList->contains(object))
 	{
 		object->setFlags(QGraphicsItem::ItemIsSelectable);
@@ -307,6 +303,9 @@ PlaneFactory::PlaneFactory(const Style *defaultStyle,
 	this->objectList = objectList;
 	this->staticObjectsList = staticObjectsList;
 	this->scene = scene;
+
+	this->constraintStyle = *defaultStyle;
+	this->constraintStyle.pen.setStyle(Qt::PenStyle::DotLine);
 
 	QGraphicsViewUserInput::initialize(scene);
 	this->userInput = QGraphicsViewUserInput::getInstance();
