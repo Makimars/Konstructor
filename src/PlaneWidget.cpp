@@ -401,6 +401,7 @@ void PlaneWidget::customContextMenuRequested(const QPoint &pos)
 		QAction *selectedAction = contextMenu.exec(this->viewport()->mapToGlobal(pos));
 		if((selectedAction == &deleteObjectAction) & !(obj->isLocked()))
 		{
+			obj->removeGeometryUpdates();
 			if(!planeFactory->deleteDrawable(obj))
 			{
 				emit showStatusBarMessage(("Cannot delete object, others depends on it."));

@@ -164,6 +164,12 @@ void LinesAngleConstraint::paint(QPainter *painter, const QStyleOptionGraphicsIt
 
     painter->drawPath(outerCircle.subtracted(innerCircle).intersected(shape()));
 
+
+	QPointF vec0 = this->edgePointsLocations[0] - this->commonPoint->getLocation();
+	QPointF vec1 = this->edgePointsLocations[1] - this->commonPoint->getLocation();
+	QVector2D textVector(vec0 + vec1);
+	textVector.normalize();
+
     QString angleText;
     if(Settings::angleUnits == AngleUnits::degrees)
     {
@@ -173,7 +179,7 @@ void LinesAngleConstraint::paint(QPainter *painter, const QStyleOptionGraphicsIt
     {
 	    angleText = QString::number(this->angle);
     }
-    painter->drawText(this->edgePoints[0]->getLocation(), angleText);
+	painter->drawText((textVector.toPointF() * this->distanceFromCenter) + this->commonPoint->getLocation(), angleText);
 }
 
 void LinesAngleConstraint::recieveDouble(double value)
