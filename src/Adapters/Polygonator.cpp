@@ -9,7 +9,7 @@ Polygonator *Polygonator::getInstance()
 	return instance;
 }
 
-std::vector<QPolygonF> Polygonator::generatePolygons(QVector<DrawableObject*> drawing)
+std::vector<QPolygonF> Polygonator::generatePolygonsFromDrawing(QVector<DrawableObject*> drawing)
 {
 	if(drawing.size() < 1) return std::vector<QPolygonF>();
 
@@ -110,6 +110,72 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 			linePointOne->addNeighbor(centerPoint);
 			linePointTwo->addNeighbor(centerPoint);
 		}
+		else if (obj->getType() == Global::Arc)
+		{
+			//Arcs
+			Arc *arc = dynamic_cast<Arc*>(obj);
+			QVector<PointAdapter*> points;
+
+			double startingAngle, endingAngle;
+			PointAdapter *firstEdgePoint;
+			PointAdapter *secondEdgePoint;
+			{
+				QPointF center = arc->getCenter()->getLocation();
+				double angleOne = atan2(arc->getFirstEdgePoint()->getLocation().y() - center.y(), arc->getFirstEdgePoint()->getLocation().x() - center.x());
+				double angleTwo = atan2(arc->getSecondEdgePoint()->getLocation().y() - center.y(), arc->getSecondEdgePoint()->getLocation().x() - center.x());
+
+				if(angleOne < angleTwo)
+				{
+					startingAngle = angleOne;
+					endingAngle = angleTwo;
+
+					firstEdgePoint = pointAdapters.at(originalPoints.indexOf(arc->getFirstEdgePoint()));
+					secondEdgePoint = pointAdapters.at(originalPoints.indexOf(arc->getSecondEdgePoint()));
+				}
+				else
+				{
+					startingAngle = angleTwo;
+					endingAngle = angleOne;
+
+					firstEdgePoint = pointAdapters.at(originalPoints.indexOf(arc->getSecondEdgePoint()));
+					secondEdgePoint = pointAdapters.at(originalPoints.indexOf(arc->getFirstEdgePoint()));
+				}
+			}
+
+
+			double radius = arc->getRadius();
+			int pointsPerCircle = (int)(radius / Settings::pointPerRadiusCoeficient);
+			if(pointsPerCircle < 8) pointsPerCircle = 8;
+
+			double anglePerPoint = (endingAngle - startingAngle) / pointsPerCircle;
+
+			//0 and last point already exists as edge point
+			for(int i = 1; i < pointsPerCircle-1; i++)
+			{
+				double currentAngle = startingAngle + (anglePerPoint*i);
+
+				double x = arc->getCenter()->getX() + (cos(currentAngle) * radius);
+				double y = arc->getCenter()->getY() + (sin(currentAngle) * radius);
+
+				PointAdapter *point = new PointAdapter(x, y);
+				points.append(point);
+
+				if(i > 1){
+					points.at(i-2)->addNeighbor(point);
+					point->addNeighbor(points.at(i-2));
+				}
+			}
+
+			//edge points connections
+			firstEdgePoint->addNeighbor(points.at(0));
+			points.at(0)->addNeighbor(firstEdgePoint);
+
+			int lastIndex = points.size()-1;
+			secondEdgePoint->addNeighbor(points.at(lastIndex));
+			points.at(lastIndex)->addNeighbor(secondEdgePoint);
+
+			pointAdapters.append(points);
+		}
 	}
 
 	return pointAdapters;
@@ -124,9 +190,19 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 	{
 		//remove dead ends
 		foreach(PointAdapter *point, transferPoints)
-			if(point->getNeighborCount() < 2) transferPoints.removeAll(point);
+		{
+			if(point->getNeighborCount() < 2)
+			{
+				transferPoints.removeAll(point);
+				foreach(PointAdapter *secondPoint, transferPoints)
+				{
+					secondPoint->removeNeigbor(point);
+				}
+			}
+		}
 		if(transferPoints.size() < 2) break;
 
+		//finding paths
 		std::queue<QVector<PointAdapter*>> jobs;
 
 		jobs.push(QVector<PointAdapter*>());
@@ -150,7 +226,7 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 
 			//new possible paths
 			std::vector<PointAdapter*> newPaths;
-			bool finished = false;
+			bool jobFinished = false;
 			//for each naighbor
 			foreach(PointAdapter *neighbor, currentNeighbors)
 			{
@@ -185,7 +261,7 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 						transferPoints.removeAll(pathPoint);
 					}
 
-					finished = true;
+					jobFinished = true;
 					break;
 				}
 				else //add neigbor to list of new paths
@@ -194,7 +270,7 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 				}
 			}
 
-			if(!finished)
+			if(!jobFinished)
 			{
 				// if at least one new point, add it to current job
 				if(newPaths.size() > 0)
@@ -203,7 +279,7 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 					jobs.pop();
 
 				//for every other point, add it to job queue
-				for(int i = 1; i < newPaths.size(); i++)
+				for(uint32_t i = 1; i < newPaths.size(); i++)
 				{
 					QVector<PointAdapter*> newPath = workingPath;
 					newPath.append(newPaths.at(i));

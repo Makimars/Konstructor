@@ -12,7 +12,7 @@ class Polygonator : public QObject
 public:
 	static Polygonator *getInstance();
 
-	std::vector<QPolygonF> generatePolygons(QVector<DrawableObject*> drawing);
+	std::vector<QPolygonF> generatePolygonsFromDrawing(QVector<DrawableObject*> drawing);
 
 private:
 	Polygonator();
@@ -20,8 +20,6 @@ private:
 
 	QVector<PointAdapter*> generateAdapters(QVector<DrawableObject*> drawing);
 	QVector<QPolygonF> generatePolygons(QVector<PointAdapter*> transferPoints);
-
-	PointAdapter *getAdapterRepresentation(Point *point);
 };
 
 #endif // POLYGONATOR_H
