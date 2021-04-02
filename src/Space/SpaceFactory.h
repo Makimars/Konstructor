@@ -20,7 +20,7 @@
 #include "include/libigl/include/igl/copyleft/cgal/mesh_boolean.h"
 #endif
 
-//#define CGAL_BOOLEAN
+#define CGAL_BOOLEAN
 #ifdef CGAL_BOOLEAN
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Polyhedron_3.h>
@@ -91,6 +91,7 @@ private:
 	std::vector<Vertex> triangularizeItem(Item *item);
 
 	void assignNormals(std::vector<Vertex> *vertexData);
+	void orientTriangle(Vertex *v0, Vertex *v1, Vertex *v2, bool up = true);
 
 #if defined(CGAL_BOOLEAN) || defined(IGL_BOOLEAN)
 	std::vector<std::vector<Vertex>> calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const;

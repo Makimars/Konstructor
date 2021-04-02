@@ -23,6 +23,7 @@ std::vector<QPolygonF> Polygonator::generatePolygonsFromDrawing(QVector<Drawable
 
 	QVector<PointAdapter*> transferPoints = generateAdapters(drawing);
 	QVector<QPolygonF> polygons = generatePolygons(transferPoints);
+	reorderPolygons(&polygons);
 
 	//delete adapter poins
 	foreach(PointAdapter *point, transferPoints)
@@ -290,4 +291,43 @@ QVector<QPolygonF> Polygonator::generatePolygons(QVector<PointAdapter*> transfer
 	}
 
 	return paths;
+}
+
+void Polygonator::reorderPolygons(QVector<QPolygonF> *polygons)
+{
+	foreach(QPolygonF polygon, *polygons)
+	{
+		if(polygon.size() < 3) break;
+
+		//calculate polygon center
+		QPointF center;
+		for(int i = 0; i < polygon.size(); i++)
+		{
+			center += polygon.at(i);
+		}
+		center = center / polygon.size();
+
+		//calculate angle for every point
+		QVector<double> angles;
+		for(int i = 0; i < polygon.size(); i++)
+		{
+			double angle = atan2(polygon.at(i).y() - center.y(), polygon.at(i).x() - center.x());
+			if(angle < 0)
+				angle = M_PI*2 + angle;
+
+			angles.append(angle);
+		}
+
+		//if the second point goes in the wrong direction, reverse the order
+		if(((angles.at(1) < angles.at(0)) && (*std::max_element(angles.begin(), angles.end()) != angles.at(0))) ||
+			((angles.at(1) > angles.at(0)) && (*std::max_element(angles.begin(), angles.end()) == angles.at(0))))
+		{
+			QPolygonF newPolygon;
+			for(int i = 0; i < polygon.size(); i++)
+			{
+				newPolygon.append(polygon.at(polygon.size() - 1 - i));
+			}
+			polygon = newPolygon;
+		}
+	}
 }

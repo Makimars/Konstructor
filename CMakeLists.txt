@@ -14,13 +14,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(CGAL)
-find_package(pthread)
+#find_package(pthread)
 #find_package(eigen3/Eigen)
 
 file(GLOB_RECURSE IGL_SRC include/igl/include/*.cpp include/igl/include/*.h)
 
 set(INCLUDES
-    ${IGL_SRC}
+    #${IGL_SRC}
 
     include/delaunator/delaunator.cpp
     include/delaunator/delaunator.h

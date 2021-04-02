@@ -20,6 +20,7 @@ private:
 
 	QVector<PointAdapter*> generateAdapters(QVector<DrawableObject*> drawing);
 	QVector<QPolygonF> generatePolygons(QVector<PointAdapter*> transferPoints);
+	void reorderPolygons(QVector<QPolygonF> *polygons);
 };
 
 #endif // POLYGONATOR_H
