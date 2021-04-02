@@ -55,7 +55,7 @@ void ExtrusionDialog::accept()
 		if(polygon->isSelected())
 		{
 			Extrusion extrusion;
-			extrusion.length = ui->lengthInput->value();
+			extrusion.length = ui->lengthInput->value() / Settings::planeToSpaceRatio;
 			extrusion.additive = ui->additiveButton->isChecked();
 			extrusion.direction = direction;
 

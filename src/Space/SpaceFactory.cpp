@@ -15,6 +15,15 @@ SpaceFactory *SpaceFactory::getInstance()
 QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 {
 	uint32_t vertexCount = vertexData->size();
+	std::vector<Vertex> vertexes;
+
+	//convert to real size
+	for(uint32_t i = 0; i < vertexCount; i++)
+	{
+		vertexes.push_back(vertexData->at(i));
+		vertexes.at(i).setPosition(vertexes.at(i).position() * Settings::planeToSpaceRatio);
+	}
+
 
 	QByteArray file;
 	file.fill('k',80); // 80 byte header
@@ -31,11 +40,11 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 	for(uint i = 0; i < vertexCount; i+=3)
 	{
 		//normal vector - 12 bytes
-		file += vectorToByteArray(vertexData->at(i).normal());
+		file += vectorToByteArray(vertexes.at(i).normal());
 
-		file += vertexData->at(i).toByteArray();	//vertex 0 - 12 bytes
-		file += vertexData->at(i +1).toByteArray(); //vertex 1 - 12 bytes
-		file += vertexData->at(i +2).toByteArray(); //vertex 2 - 12 bytes
+		file += vertexes.at(i).toByteArray();	//vertex 0 - 12 bytes
+		file += vertexes.at(i +1).toByteArray(); //vertex 1 - 12 bytes
+		file += vertexes.at(i +2).toByteArray(); //vertex 2 - 12 bytes
 
 		//Attribute byte count - 0 (legacy specification) - 2 bytes
 		file += u_int8_t(0);
@@ -47,6 +56,16 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 
 void SpaceFactory::generateOffFile(std::vector<Vertex> *vertexData, QString filePath)
 {
+	std::vector<Vertex> vertexes;
+
+	//convert to real size
+	for(uint32_t i = 0; i < vertexData->size(); i++)
+	{
+		vertexes.push_back(vertexData->at(i));
+		vertexes.at(i).setPosition(vertexes.at(i).position() * Settings::planeToSpaceRatio);
+	}
+
+
 	namespace PMP = CGAL::Polygon_mesh_processing;
 	namespace params = PMP::parameters;
 
@@ -61,9 +80,9 @@ void SpaceFactory::generateOffFile(std::vector<Vertex> *vertexData, QString file
 	QVector<QVector3D> locations;
 
 	//copy all unique vertexes
-	for(uint32_t ii = 0; ii < vertexData->size(); ii++)
+	for(uint32_t ii = 0; ii < vertexes.size(); ii++)
 	{
-		QVector3D vec = vertexData->at(ii).position();
+		QVector3D vec = vertexes.at(ii).position();
 		if (locations.indexOf(vec) == -1)
 		{
 			locations.push_back(vec);
@@ -71,16 +90,16 @@ void SpaceFactory::generateOffFile(std::vector<Vertex> *vertexData, QString file
 		}
 	}
 
-	uint32_t triangleCount = vertexData->size() / 3;
+	uint32_t triangleCount = vertexes.size() / 3;
 
 	//create index mesh of vertex size
 	for(uint32_t ii = 0; ii < triangleCount; ii++)
 	{
 		polygons.push_back(std::vector<std::size_t>());
 		//triangle
-		polygons.at(ii).push_back(locations.indexOf(vertexData->at(ii*3).position()));
-		polygons.at(ii).push_back(locations.indexOf(vertexData->at(ii*3 +1).position()));
-		polygons.at(ii).push_back(locations.indexOf(vertexData->at(ii*3 +2).position()));
+		polygons.at(ii).push_back(locations.indexOf(vertexes.at(ii*3).position()));
+		polygons.at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +1).position()));
+		polygons.at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +2).position()));
 	}
 
 	CGAL::Polygon_mesh_processing::orient_polygon_soup(points, polygons);
