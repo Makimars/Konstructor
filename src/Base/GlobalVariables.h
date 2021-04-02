@@ -6,6 +6,8 @@
 #define Y_AXIS_ID -3
 
 #include <QString>
+#include <QDir>
+
 namespace Global
 {
 
@@ -54,8 +56,6 @@ enum Mode{
 	const QString konstructorSketch = "Konstructor sketch (*.kosk)";
 	const QString konstructorProject = "Konstructor project (*.kopr)";
 	const QString allFiles;
-
-
 }
 
 #endif // GLOBALVARIABLES_H
