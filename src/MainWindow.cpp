@@ -226,13 +226,20 @@ void MainWindow::on_saveObjectButton_clicked()
 
 void MainWindow::on_exportObjectButton_clicked()
 {
-	QString fileName = QFileDialog::getSaveFileName(
-			this,
-			Global::saveFile,
-			Settings::userProjectRoot,
-			"STL (*.stl)"
-			);
-	this->ui->spaceView->exportToFile(fileName);
+	QFileDialog saveDialog(this);
+	saveDialog.setWindowTitle(Global::saveFile);
+	saveDialog.setDirectory(Settings::userProjectRoot);
+	saveDialog.setNameFilter("STL (*.stl);;OFF (*.off)");
+	saveDialog.setAcceptMode(QFileDialog::AcceptSave);
+
+	saveDialog.exec();
+
+	QStringList files = saveDialog.selectedFiles();
+	if(files.size() > 0)
+	{
+		QString fileName = files.at(0);
+		this->ui->spaceView->exportToFile(fileName);
+	}
 }
 
 void MainWindow::on_settingsButton_clicked()

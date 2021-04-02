@@ -83,10 +83,19 @@ QString SpaceWidget::saveToFile()
 
 void SpaceWidget::exportToFile(QString file)
 {
-	QFile targetFile(file);
-	if(targetFile.open(QIODevice::WriteOnly))
+	int s = file.size();
+	QString suffix = QString(file.at(s-3)) + file.at(s-2) + file.at(s-1);
+	if(suffix == "stl")
 	{
-		targetFile.write(factory->generateStlFile(&vertexData));
+		QFile targetFile(file);
+		if(targetFile.open(QIODevice::WriteOnly))
+		{
+			targetFile.write(factory->generateStlFile(&vertexData));
+		}
+	}
+	else if(suffix == "off")
+	{
+		factory->generateOffFile(&vertexData, file);
 	}
 }
 

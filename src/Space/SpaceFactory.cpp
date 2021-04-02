@@ -45,6 +45,63 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 	return file;
 }
 
+void SpaceFactory::generateOffFile(std::vector<Vertex> *vertexData, QString filePath)
+{
+	namespace PMP = CGAL::Polygon_mesh_processing;
+	namespace params = PMP::parameters;
+
+	typedef CGAL::Exact_predicates_inexact_constructions_kernel          K;
+	typedef CGAL::Polyhedron_3<K, CGAL::Polyhedron_items_with_id_3>      Polyhedron;
+
+	std::vector<K::Point_3> points;
+	std::vector<std::vector<std::size_t>> polygons;
+	std::vector<Polyhedron> meshes;
+	std::vector<std::vector<Vertex>> result;
+
+	QVector<QVector3D> locations;
+
+	//copy all unique vertexes
+	for(uint32_t ii = 0; ii < vertexData->size(); ii++)
+	{
+		QVector3D vec = vertexData->at(ii).position();
+		if (locations.indexOf(vec) == -1)
+		{
+			locations.push_back(vec);
+			points.push_back(K::Point_3(vec.x(), vec.y(), vec.z()));
+		}
+	}
+
+	uint32_t triangleCount = vertexData->size() / 3;
+
+	//create index mesh of vertex size
+	for(uint32_t ii = 0; ii < triangleCount; ii++)
+	{
+		polygons.push_back(std::vector<std::size_t>());
+		//triangle
+		polygons.at(ii).push_back(locations.indexOf(vertexData->at(ii*3).position()));
+		polygons.at(ii).push_back(locations.indexOf(vertexData->at(ii*3 +1).position()));
+		polygons.at(ii).push_back(locations.indexOf(vertexData->at(ii*3 +2).position()));
+	}
+
+	CGAL::Polygon_mesh_processing::orient_polygon_soup(points, polygons);
+	Polyhedron mesh;
+	CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(points, polygons, mesh);
+	// Number the faces because 'orient_to_bound_a_volume' needs a face <--> index map
+	int index = 0;
+	for(Polyhedron::Face_iterator fb=mesh.facets_begin(), fe=mesh.facets_end(); fb!=fe; ++fb)
+	  fb->id() = index++;
+	if(CGAL::is_closed(mesh))
+	{
+		CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
+	}
+
+	//convert via file
+	std::ofstream out(filePath.toStdString());
+	out.precision(17);
+	out << mesh;
+	out.close();
+}
+
 std::vector<Vertex> SpaceFactory::generateBuffer()
 {
 	//vector of (all vertexes in an item)

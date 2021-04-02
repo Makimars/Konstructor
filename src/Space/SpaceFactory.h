@@ -5,6 +5,14 @@
 
 #include "include/delaunator/delaunator.h"
 
+#include <fstream>
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Polyhedron_items_with_id_3.h>
+#include <CGAL/Polygon_mesh_processing/orient_polygon_soup.h>
+#include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
+#include <CGAL/Polygon_mesh_processing/orientation.h>
+
 //#define IGL_BOOLEAN
 #ifdef IGL_BOOLEAN
 // Igl
@@ -44,6 +52,7 @@ public:
 
 public:
 	QByteArray generateStlFile(std::vector<Vertex> *vertexData);
+	void generateOffFile(std::vector<Vertex> *vertexData, QString filePath);
 	std::vector<Vertex> generateBuffer();
 
 public slots:
