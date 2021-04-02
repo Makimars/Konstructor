@@ -159,7 +159,7 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 		}
 	}
 
-#if defined(CGAL_BOOLEAN) || defined(IGL_BOOLEAN)
+#if defined(CGAL_BOOLEAN)
 	vertexesInItems = calculateBoolean(&vertexesInItems);
 #endif
 
@@ -245,118 +245,6 @@ void SpaceFactory::orientTriangle(Vertex *v0, Vertex *v1, Vertex *v2, bool up)
 	}
 }
 
-#ifdef IGL_BOOLEAN
-std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
-{
-	std::vector<Eigen::MatrixXd> vertexesLocations;
-	std::vector<Eigen::MatrixXi> vertexesIndexes;
-
-	std::vector<std::vector<Vertex>> result;
-
-	//convert items to Eigen matrix format
-	for(int i = 0; i < itemsInSpace->size(); i++)
-	{
-		result.push_back(std::vector<Vertex>());
-		Item *item = itemsInSpace->at(i);
-
-		if(!item->isExtruded())
-		{
-			result.at(i) = triangularizedVertexData->at(i);
-			//ensure that indexes in objectsInSpace and vertexLocations remain the equivalent
-			vertexesLocations.push_back(Eigen::MatrixXd(1,3));
-			vertexesIndexes.push_back(Eigen::MatrixXi(1,3));
-		}
-		else
-		{
-			std::vector<Vertex> vertexes = triangularizedVertexData->at(i);
-			QVector<QVector3D> locations;
-
-			//copy all unique vertexes
-			for(uint32_t ii = 0; ii < vertexes.size(); ii++)
-			{
-				QVector3D vec = vertexes.at(ii).position();
-				if (locations.indexOf(vec) == -1)
-				{
-					locations.append(vec);
-				}
-			}
-
-			vertexesLocations.push_back(Eigen::MatrixXd(locations.size(),3));
-			for(int ii = 0; ii < locations.size(); ii++)
-			{
-				QVector3D vec = locations.at(ii);
-				vertexesLocations.at(i)(ii, 0) = vec.x();
-				vertexesLocations.at(i)(ii, 1) = vec.y();
-				vertexesLocations.at(i)(ii, 2) = vec.z();
-			}
-
-			uint32_t triangleCount = vertexes.size() / 3;
-			vertexesIndexes.push_back(Eigen::MatrixXi(triangleCount, 3));
-
-			//create index mesh of vertex size
-			for(uint32_t ii = 0; ii < triangleCount; ii++)
-			{
-				vertexesIndexes.at(i)(ii, 0) = locations.indexOf(vertexes.at(ii*3).position());
-				vertexesIndexes.at(i)(ii, 1) = locations.indexOf(vertexes.at(ii*3 +1).position());
-				vertexesIndexes.at(i)(ii, 2) = locations.indexOf(vertexes.at(ii*3 +2).position());
-			}
-		}
-	}
-
-
-
-	//for every extruded additive item, subtract every extruded subtractive item
-	for(int i = 0; i < itemsInSpace->size(); i++)
-	{
-
-		Item *currentItem = itemsInSpace->at(i);
-
-		//every extruded additive item
-		if(currentItem->isExtruded())
-		{
-			if(currentItem->isAdditive())
-			{
-
-				for(uint32_t ii = 0; ii < vertexesLocations.size(); ii++)
-				{
-					Item *insideItem = itemsInSpace->at(ii);
-
-					//every extruded subtractive item
-					if((!insideItem->isAdditive()) & insideItem->isExtruded())
-					{
-						igl::copyleft::cgal::mesh_boolean(
-									vertexesLocations.at(i), vertexesIndexes.at(i),
-									vertexesLocations.at(ii), vertexesIndexes.at(ii),
-									igl::MeshBooleanType::MESH_BOOLEAN_TYPE_MINUS,
-									vertexesLocations.at(i), vertexesIndexes.at(i)
-														  );
-
-						qDebug() << ii;
-					}
-				}
-
-				// i = object, ii = index value, iii = array index (x, y, z)
-				for(uint32_t ii = 0; ii < vertexesIndexes.at(i).rows(); ii++)
-				{
-					for(int iii = 0; iii < 3; iii++)
-					{
-						int locationIndex = vertexesIndexes.at(i)(ii,iii);
-						double x, y, z;
-						x = vertexesLocations.at(i)(locationIndex, 0);
-						y = vertexesLocations.at(i)(locationIndex, 1);
-						z = vertexesLocations.at(i)(locationIndex, 2);
-
-						result.at(i).push_back(Vertex(x,y,z));
-					}
-				}
-			}
-		}
-	}
-
-	return result;
-}
-#endif
-
 #ifdef CGAL_BOOLEAN
 std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
 {
@@ -423,7 +311,7 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 			  fb->id() = index++;
 			if(CGAL::is_closed(mesh))
 			{
-				CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
+				//CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
 			}
 
 			meshes.at(itemIndex) = mesh;
@@ -500,6 +388,7 @@ qDebug() << filePath;
 										));
 					}
 
+					qDebug() << " ";
 					//faces
 					for(int lineNum = headerSize + pointCount; lineNum < faceCount + pointCount + headerSize; lineNum++)
 					{
@@ -512,7 +401,7 @@ qDebug() << filePath;
 							debugStr += QString::number(points.at(index).y()) + " ";
 							debugStr += QString::number(points.at(index).z()) + " ";
 							vertexData.push_back(Vertex(points.at(index)));
-							debugStr += ";		";
+							debugStr += ";";
 						}
 						qDebug() << debugStr;
 					}
