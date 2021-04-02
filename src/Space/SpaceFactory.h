@@ -83,7 +83,7 @@ private:
 
 	void assignNormals(std::vector<Vertex> *vertexData);
 
-#if defined(CGAL_BOOLEAN) || defined(CGAL_BOOLEAN)
+#if defined(CGAL_BOOLEAN) || defined(IGL_BOOLEAN)
 	std::vector<std::vector<Vertex>> calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const;
 #endif
 
