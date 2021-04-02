@@ -159,6 +159,22 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 		}
 	}
 
+	/*
+	 * for(int i = 0; i < vertexesInItems.size(); i++)
+	{
+		for(int index = 0; index < vertexesInItems.at(i).size(); index++)
+		{
+		QString debugStr;
+			debugStr += QString::number(vertexesInItems.at(i).at(index).position().x()) + "; ";
+			debugStr += QString::number(vertexesInItems.at(i).at(index).position().y()) + "; ";
+			debugStr += QString::number(vertexesInItems.at(i).at(index).position().z()) + "; ";
+		qDebug() << debugStr;
+
+		}
+		qDebug() << debugStr;
+	}
+*/
+
 #if defined(CGAL_BOOLEAN)
 	vertexesInItems = calculateBoolean(&vertexesInItems);
 #endif
@@ -263,7 +279,6 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 	for(int itemIndex = 0; itemIndex < itemsInSpace->size(); itemIndex++)
 	{
 		Item *item = itemsInSpace->at(itemIndex);
-		qDebug() << triangularizedVertexData->at(itemIndex).size();
 
 		result.push_back(std::vector<Vertex>());
 		points.push_back(std::vector<K::Point_3>());
@@ -355,13 +370,10 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 				out << meshes.at(itemIndex);
 				out.close();
 
-qDebug() << filePath;
 				//read file
 				QFile tmpFile(filePath);
 				tmpFile.open(QFile::OpenModeFlag::ReadOnly);
 				QString file = tmpFile.readAll();
-
-			qDebug() << file;
 
 				//load file to vertex list
 				QStringList lines = file.split('\n');
@@ -388,22 +400,19 @@ qDebug() << filePath;
 										));
 					}
 
-					qDebug() << " ";
+					//qDebug() << " ";
 					//faces
 					for(int lineNum = headerSize + pointCount; lineNum < faceCount + pointCount + headerSize; lineNum++)
 					{
 						QString debugStr;
-						for(int vertexIndex = 1; vertexIndex < 4; vertexIndex++)
+						for(int vertexIndex = 2; vertexIndex < 5; vertexIndex++)
 						{
-							int index = lines.at(lineNum).section(' ', vertexIndex, vertexIndex).toInt();
+							//int index = lines.at(lineNum).section(' ', vertexIndex, vertexIndex).toInt();
+							QStringList split = lines.at(lineNum).split(' ');
+							int index = QVariant(split.at(vertexIndex)).toInt();
 
-							debugStr += QString::number(points.at(index).x()) + " ";
-							debugStr += QString::number(points.at(index).y()) + " ";
-							debugStr += QString::number(points.at(index).z()) + " ";
 							vertexData.push_back(Vertex(points.at(index)));
-							debugStr += ";";
 						}
-						qDebug() << debugStr;
 					}
 					result.at(itemIndex) = vertexData;
 				}
