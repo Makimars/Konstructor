@@ -8,20 +8,17 @@ This software is linced under EUPL v1.2, other language versions are located in 
 
 ## Dependencies
 
-- nlohmann (json library)
-- delaunator
+- JSON for modern C++ (included)
+- delaunator-cpp (included)
 - CGAL
-- Eigen3
-- Igl
 
 ## current TODO list
 
 ### Plane
 
-- implement linesAngle
 - fix side projection
 
 ### Space
 
-- subtractive extrusion
 - cube in the right top corner to select view
+- fix side planes
