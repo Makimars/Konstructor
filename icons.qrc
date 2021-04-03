@@ -12,5 +12,17 @@
         <file>icons/ConcentricCircles.png</file>
         <file>icons/ParaelLine.png</file>
         <file>icons/LinesAngle.png</file>
+        <file>icons/dialog-ok-apply.svg</file>
+        <file>icons/application-exit.svg</file>
+        <file>icons/configure.svg</file>
+        <file>icons/document-save.svg</file>
+        <file>icons/document-open.svg</file>
+        <file>icons/document-export.svg</file>
+        <file>icons/document-new.svg</file>
+        <file>icons/document-close.svg</file>
+        <file>icons/edit-select.svg</file>
+        <file>icons/system-lock-screen.svg</file>
+        <file>icons/Arc.png</file>
+        <file>icons/LineCenter.png</file>
     </qresource>
 </RCC>
