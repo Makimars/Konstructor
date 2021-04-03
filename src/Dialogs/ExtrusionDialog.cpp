@@ -30,7 +30,7 @@ void ExtrusionDialog::show(Item *item)
 
 	if(item->isExtruded())
 	{
-		ui->lengthInput->setValue(item->getExtrusion().length);
+		ui->lengthInput->setValue(item->getExtrusion().length * Settings::planeToSpaceRatio);
 		ui->additiveButton->setChecked(item->getExtrusion().additive);
 
 		ExtrusionDirection direction = item->getExtrusion().direction;

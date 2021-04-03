@@ -24,14 +24,14 @@ QKeySequence Settings::openSettings(Qt::CTRL + Qt::SHIFT + Qt::Key_O);
 QKeySequence Settings::quitApp(Qt::CTRL + Qt::Key_Q);
 
 //3D
-int Settings::pointPerRadiusCoeficient = 10;
+int Settings::pointPerRadiusCoeficient = 2;
 bool Settings::colorByNormals = true;
 
 //environment
 QString Settings::userProjectRoot = QDir::homePath();
 QLocale Settings::locals(QLocale::English, QLocale::UnitedKingdom);
 AngleUnits Settings::angleUnits = AngleUnits::degrees;
-int Settings::planeToSpaceRatio = 50;
+int Settings::planeToSpaceRatio = 25;
 int Settings::maxItemSidePlanes = 12;
 
 QVector3D Settings::selectedFaceColor = QVector3D(0.1, 0.1, 1);

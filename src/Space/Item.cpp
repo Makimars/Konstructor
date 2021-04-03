@@ -169,7 +169,7 @@ void Item::setExtrusion()
 			projectedPoints.push_back(globalVertexPos(edges + i));
 			projectedPoints.push_back(globalVertexPos(edges + i + 1));
 ;
-			addPlane(i+2, basePos, rot, projectedPoints);
+			addPlane(i+2, basePos, rot);
 		}
 		//overlapping
 
@@ -183,7 +183,7 @@ void Item::setExtrusion()
 		projectedPoints.push_back(globalVertexPos(edges - 1 + edges));
 		projectedPoints.push_back(globalVertexPos(edges));
 		//+1 = edges - 1 + 2
-		addPlane(edges+1, basePos, rot, projectedPoints);
+		addPlane(edges+1, basePos, rot);
 	}
 
 	emit updateData();
@@ -274,6 +274,8 @@ void Item::addPlane(int index, QVector3D position, QQuaternion rotation)
 
 void Item::addPlane(int index, QVector3D position, QQuaternion rotation, std::vector<QVector3D> existingVertexes)
 {
+	rotation.normalize();
+
 	// ensures that the vector has either nullptr or an instance
 	if(planes.size() < index + 1)
 	{

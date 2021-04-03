@@ -159,25 +159,7 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 		}
 	}
 
-	/*
-	 * for(int i = 0; i < vertexesInItems.size(); i++)
-	{
-		for(int index = 0; index < vertexesInItems.at(i).size(); index++)
-		{
-		QString debugStr;
-			debugStr += QString::number(vertexesInItems.at(i).at(index).position().x()) + "; ";
-			debugStr += QString::number(vertexesInItems.at(i).at(index).position().y()) + "; ";
-			debugStr += QString::number(vertexesInItems.at(i).at(index).position().z()) + "; ";
-		qDebug() << debugStr;
-
-		}
-		qDebug() << debugStr;
-	}
-*/
-
-#if defined(CGAL_BOOLEAN)
 	vertexesInItems = calculateBoolean(&vertexesInItems);
-#endif
 
 	uint32_t itemIndex = 0;
 	std::vector<Vertex> finalBufferVertexes;
@@ -338,80 +320,79 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 		Item *currentItem = itemsInSpace->at(itemIndex);
 
 		//every extruded additive item
-		if(currentItem->isExtruded())
+		if(currentItem->isExtruded() & currentItem->isAdditive())
 		{
-			if(currentItem->isAdditive())
+			for(uint32_t subtractiveItemIndex = 0; subtractiveItemIndex < meshes.size(); subtractiveItemIndex++)
 			{
-				for(uint32_t subtractiveItemIndex = 0; subtractiveItemIndex < meshes.size(); subtractiveItemIndex++)
+				Item *insideItem = itemsInSpace->at(subtractiveItemIndex);
+
+				//every extruded subtractive item
+				if((!insideItem->isAdditive()) & insideItem->isExtruded())
 				{
-					Item *insideItem = itemsInSpace->at(subtractiveItemIndex);
+					bool valid_difference =
+					  PMP::corefine_and_compute_difference(meshes.at(itemIndex),
+														   meshes.at(subtractiveItemIndex),
+														   meshes.at(itemIndex),
+														   params::all_default(), // default parameters for mesh1
+														   params::all_default() // default parameters for mesh2
+														   );
 
-					//every extruded subtractive item
-					if((!insideItem->isAdditive()) & insideItem->isExtruded())
+					if(!valid_difference) std::cout << "Warning: subtraction not valid (SpaceFactory:327)";
+				}
+			}
+
+
+			//convert via file
+			QString filePath = QDir::tempPath() + "/tempmesh.off";
+			std::ofstream out(filePath.toStdString());
+			out.precision(17);
+			out << meshes.at(itemIndex);
+			out.close();
+
+			//read file
+			QFile tmpFile(filePath);
+			tmpFile.open(QFile::OpenModeFlag::ReadOnly);
+			QString file = tmpFile.readAll();
+
+			//load file to vertex list
+			QStringList lines = file.split('\n');
+			//header - filetype - line 1
+			if(lines.at(0).trimmed() == "OFF")
+			{
+				//header - count - line 0
+				int pointCount = lines.at(1).section(' ', 0,0).toInt();
+				int faceCount = lines.at(1).section(' ', 1,1).toInt();
+
+				std::vector<QVector3D> points;
+				std::vector<Vertex> vertexData;
+
+				const int headerSize = 3;
+
+				//points
+				for(int lineNum = headerSize; lineNum < pointCount + headerSize; lineNum++)
+				{
+					points.push_back(
+								QVector3D(
+									lines.at(lineNum).section(' ', 0,0).toDouble(),
+									lines.at(lineNum).section(' ', 1,1).toDouble(),
+									lines.at(lineNum).section(' ', 2,2).toDouble()
+									));
+				}
+
+				//faces
+				for(int lineNum = headerSize + pointCount; lineNum < faceCount + pointCount + headerSize; lineNum++)
+				{
+					QString debugStr;
+					for(int vertexIndex = 2; vertexIndex < 5; vertexIndex++)
 					{
-						bool valid_difference =
-						  PMP::corefine_and_compute_difference(meshes.at(itemIndex),
-															   meshes.at(subtractiveItemIndex),
-															   meshes.at(itemIndex),
-															   params::all_default(), // default parameters for mesh1
-															   params::all_default() // default parameters for mesh2
-															   );
+						QStringList split = lines.at(lineNum).split(' ');
+						int index = QVariant(split.at(vertexIndex)).toInt();
 
-						if(!valid_difference) std::cout << "Warning: subtraction not valid (SpaceFactory:327)";
+						vertexData.push_back(Vertex(points.at(index)));
 					}
 				}
 
-				//convert via file
-				QString filePath = QDir::tempPath() + "/tempmesh.off";
-				std::ofstream out(filePath.toStdString());
-				out.precision(17);
-				out << meshes.at(itemIndex);
-				out.close();
-
-				//read file
-				QFile tmpFile(filePath);
-				tmpFile.open(QFile::OpenModeFlag::ReadOnly);
-				QString file = tmpFile.readAll();
-
-				//load file to vertex list
-				QStringList lines = file.split('\n');
-				//header - filetype - line 1
-				if(lines.at(0).trimmed() == "OFF")
-				{
-					//header - count - line 0
-					int pointCount = lines.at(1).section(' ', 0,0).toInt();
-					int faceCount = lines.at(1).section(' ', 1,1).toInt();
-
-					std::vector<QVector3D> points;
-					std::vector<Vertex> vertexData;
-
-					const int headerSize = 3;
-
-					//points
-					for(int lineNum = headerSize; lineNum < pointCount + headerSize; lineNum++)
-					{
-						points.push_back(
-									QVector3D(
-										lines.at(lineNum).section(' ', 0,0).toDouble(),
-										lines.at(lineNum).section(' ', 1,1).toDouble(),
-										lines.at(lineNum).section(' ', 2,2).toDouble()
-										));
-					}
-
-					//faces
-					for(int lineNum = headerSize + pointCount; lineNum < faceCount + pointCount + headerSize; lineNum++)
-					{
-						QString debugStr;
-						for(int vertexIndex = 2; vertexIndex < 5; vertexIndex++)
-						{
-							QStringList split = lines.at(lineNum).split(' ');
-							int index = QVariant(split.at(vertexIndex)).toInt();
-
-							vertexData.push_back(Vertex(points.at(index)));
-						}
-					}
-					result.at(itemIndex) = vertexData;
-				}
+				result.at(itemIndex) = vertexData;
 			}
 		}
 	}

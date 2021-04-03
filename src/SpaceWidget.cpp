@@ -8,7 +8,7 @@ SpaceWidget::SpaceWidget(QWidget *parent) : QOpenGLWidget(parent)
 	format.setVersion(3,3);
 	setFormat(format);
 
-	camera.translate(-camera.forward()*Settings::planeToSpaceRatio);
+	camera.translate(-camera.forward()*Settings::planeToSpaceRatio*1.5);
 	itemRotation.setScalar(1);
 
 	setFocus();
