@@ -149,7 +149,33 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 		}
 	}
 
-#if defined(CGAL_BOOLEAN) || defined(CGAL_BOOLEAN)
+	//convert to global space
+	for(uint32_t i = 0; i < vertexesInItems.size(); i++)
+	{
+		for(uint32_t vertexesIndex = 0; vertexesIndex < vertexesInItems.at(i).size(); vertexesIndex++)
+		{
+			Vertex *currentVertex = &vertexesInItems.at(i).at(vertexesIndex);
+			currentVertex->setPosition(itemsInSpace->at(i)->toMatrix() * currentVertex->position());
+		}
+	}
+
+	/*
+	 * for(int i = 0; i < vertexesInItems.size(); i++)
+	{
+		for(int index = 0; index < vertexesInItems.at(i).size(); index++)
+		{
+		QString debugStr;
+			debugStr += QString::number(vertexesInItems.at(i).at(index).position().x()) + "; ";
+			debugStr += QString::number(vertexesInItems.at(i).at(index).position().y()) + "; ";
+			debugStr += QString::number(vertexesInItems.at(i).at(index).position().z()) + "; ";
+		qDebug() << debugStr;
+
+		}
+		qDebug() << debugStr;
+	}
+*/
+
+#if defined(CGAL_BOOLEAN)
 	vertexesInItems = calculateBoolean(&vertexesInItems);
 #endif
 
@@ -163,11 +189,6 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 
 		itemIndex += vertexesInItems .at(i).size();
 
-		for(uint32_t vertexesIndex = 0; vertexesIndex < vertexesInItems.at(i).size(); vertexesIndex++)
-		{
-			Vertex *currentVertex = &vertexesInItems.at(i).at(vertexesIndex);
-			currentVertex->setPosition(itemsInSpace->at(i)->toMatrix() * currentVertex->position());
-		}
 		assignNormals(&vertexesInItems.at(i));
 
 		finalBufferVertexes.insert(finalBufferVertexes.end(), vertexesInItems.at(i).begin(), vertexesInItems.at(i).end());
@@ -207,119 +228,39 @@ void SpaceFactory::assignNormals(std::vector<Vertex> *vertexData)
 #endif
 }
 
-#ifdef IGL_BOOLEAN
-std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
+void SpaceFactory::orientTriangle(Vertex *v0, Vertex *v1, Vertex *v2, bool up)
 {
-	std::vector<Eigen::MatrixXd> vertexesLocations;
-	std::vector<Eigen::MatrixXi> vertexesIndexes;
+	Vertex *vertexes[3] = {v0, v1, v2};
 
-	std::vector<std::vector<Vertex>> result;
+	QVector<QVector3D> positions = {v0->position(), v1->position(), v2->position()};
+	QVector3D center = (v0->position() + v1->position() + v2->position()) / 3;
+	QVector<double> angles;
 
-	//convert items to Eigen matrix format
-	for(int i = 0; i < itemsInSpace->size(); i++)
+	//calculate angles
+	for(int i = 0; i < 3; i++)
 	{
-		result.push_back(std::vector<Vertex>());
-		Item *item = itemsInSpace->at(i);
+		double angle = atan2(positions.at(i).y() - center.y(), positions.at(i).x() - center.x());
+		if(angle < 0)
+			angle = M_PI*2 + angle;
 
-		if(!item->isExtruded())
-		{
-			result.at(i) = triangularizedVertexData->at(i);
-			//ensure that indexes in objectsInSpace and vertexLocations remain the equivalent
-			vertexesLocations.push_back(Eigen::MatrixXd(1,3));
-			vertexesIndexes.push_back(Eigen::MatrixXi(1,3));
-		}
-		else
-		{
-			std::vector<Vertex> vertexes = triangularizedVertexData->at(i);
-			QVector<QVector3D> locations;
-
-			//copy all unique vertexes
-			for(uint32_t ii = 0; ii < vertexes.size(); ii++)
-			{
-				QVector3D vec = vertexes.at(ii).position();
-				if (locations.indexOf(vec) == -1)
-				{
-					locations.append(vec);
-				}
-			}
-
-			vertexesLocations.push_back(Eigen::MatrixXd(locations.size(),3));
-			for(int ii = 0; ii < locations.size(); ii++)
-			{
-				QVector3D vec = locations.at(ii);
-				vertexesLocations.at(i)(ii, 0) = vec.x();
-				vertexesLocations.at(i)(ii, 1) = vec.y();
-				vertexesLocations.at(i)(ii, 2) = vec.z();
-			}
-
-			uint32_t triangleCount = vertexes.size() / 3;
-			vertexesIndexes.push_back(Eigen::MatrixXi(triangleCount, 3));
-
-			//create index mesh of vertex size
-			for(uint32_t ii = 0; ii < triangleCount; ii++)
-			{
-				vertexesIndexes.at(i)(ii, 0) = locations.indexOf(vertexes.at(ii*3).position());
-				vertexesIndexes.at(i)(ii, 1) = locations.indexOf(vertexes.at(ii*3 +1).position());
-				vertexesIndexes.at(i)(ii, 2) = locations.indexOf(vertexes.at(ii*3 +2).position());
-			}
-		}
+		angles.append(angle);
 	}
 
-
-
-	//for every extruded additive item, subtract every extruded subtractive item
-	for(int i = 0; i < itemsInSpace->size(); i++)
+	//reorder positions
+	for(int i = 0; i < 3; i++)
 	{
+		double selectedAngle;
+		if(up) selectedAngle = *std::min_element(angles.begin(), angles.end());
+		else selectedAngle = *std::max_element(angles.begin(), angles.end());
 
-		Item *currentItem = itemsInSpace->at(i);
+		int index = angles.indexOf(selectedAngle);
+		vertexes[i]->setPosition(positions.at(index));
 
-		//every extruded additive item
-		if(currentItem->isExtruded())
-		{
-			if(currentItem->isAdditive())
-			{
-
-				for(uint32_t ii = 0; ii < vertexesLocations.size(); ii++)
-				{
-					Item *insideItem = itemsInSpace->at(ii);
-
-					//every extruded subtractive item
-					if((!insideItem->isAdditive()) & insideItem->isExtruded())
-					{
-						igl::copyleft::cgal::mesh_boolean(
-									vertexesLocations.at(i), vertexesIndexes.at(i),
-									vertexesLocations.at(ii), vertexesIndexes.at(ii),
-									igl::MeshBooleanType::MESH_BOOLEAN_TYPE_MINUS,
-									vertexesLocations.at(i), vertexesIndexes.at(i)
-														  );
-
-						qDebug() << ii;
-					}
-				}
-
-				// i = object, ii = index value, iii = array index (x, y, z)
-				for(uint32_t ii = 0; ii < vertexesIndexes.at(i).rows(); ii++)
-				{
-					for(int iii = 0; iii < 3; iii++)
-					{
-						int locationIndex = vertexesIndexes.at(i)(ii,iii);
-						double x, y, z;
-						x = vertexesLocations.at(i)(locationIndex, 0);
-						y = vertexesLocations.at(i)(locationIndex, 1);
-						z = vertexesLocations.at(i)(locationIndex, 2);
-
-						result.at(i).push_back(Vertex(x,y,z));
-					}
-				}
-			}
-		}
+		angles.removeAt(index);
+		positions.removeAt(index);
 	}
-
-	return result;
 }
-#endif
 
-#ifdef CGAL_BOOLEAN
 std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
 {
 	namespace PMP = CGAL::Polygon_mesh_processing;
@@ -419,7 +360,6 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 						if(!valid_difference) std::cout << "Warning: subtraction not valid (SpaceFactory:327)";
 					}
 				}
-				CGAL::Polygon_mesh_processing::triangulate_faces(meshes.at(itemIndex));
 
 				//convert via file
 				QString filePath = QDir::tempPath() + "/tempmesh.off";
@@ -428,13 +368,10 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 				out << meshes.at(itemIndex);
 				out.close();
 
-
 				//read file
 				QFile tmpFile(filePath);
 				tmpFile.open(QFile::OpenModeFlag::ReadOnly);
 				QString file = tmpFile.readAll();
-
-			qDebug() << file;
 
 				//load file to vertex list
 				QStringList lines = file.split('\n');
@@ -465,17 +402,13 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 					for(int lineNum = headerSize + pointCount; lineNum < faceCount + pointCount + headerSize; lineNum++)
 					{
 						QString debugStr;
-						for(int vertexIndex = 1; vertexIndex < 4; vertexIndex++)
+						for(int vertexIndex = 2; vertexIndex < 5; vertexIndex++)
 						{
-							int index = lines.at(lineNum).section(' ', vertexIndex, vertexIndex).toInt();
+							QStringList split = lines.at(lineNum).split(' ');
+							int index = QVariant(split.at(vertexIndex)).toInt();
 
-							debugStr += QString::number(points.at(index).x()) + " ";
-							debugStr += QString::number(points.at(index).y()) + " ";
-							debugStr += QString::number(points.at(index).z()) + " ";
 							vertexData.push_back(Vertex(points.at(index)));
-							debugStr += ";		";
 						}
-						qDebug() << debugStr;
 					}
 					result.at(itemIndex) = vertexData;
 				}
@@ -485,7 +418,6 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 
 	return result;
 }
-#endif
 
 QByteArray SpaceFactory::vectorToByteArray(QVector3D vector)
 {
@@ -675,47 +607,12 @@ std::vector<Vertex> SpaceFactory::triangularizeItem(Item *item)
 		std::vector<Vertex> base[2];
 		int baseSize = (vertexes->size() / 2);
 
+		//assign bases
 		for(int i = 0; i < baseSize; i++)
 			base[0].push_back(vertexes->at(i));
 		for(int i = 0; i < baseSize; i++)
 			base[1].push_back(vertexes->at(baseSize + i));
 
-
-		//calculate bases
-		for (int a = 0; a < 2 ; a++)
-		{
-			int baseHeight = base[a].at(0).position().z();
-
-			std::vector<double> coordinates;
-			for(uint32_t i = 0; i < base[a].size(); i++)
-			{
-				coordinates.push_back(base[a].at(i).position().x());
-				coordinates.push_back(base[a].at(i).position().y());
-			}
-
-			//calculate vertexes for both bases
-			delaunator::Delaunator d(coordinates);
-			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
-			{
-				vertexData.push_back(Vertex(
-					d.coords[2 * d.triangles[i]],
-					d.coords[2 * d.triangles[i] + 1],
-					baseHeight
-				));
-
-				vertexData.push_back(Vertex(
-					d.coords[2 * d.triangles[i + 1]],
-					d.coords[2 * d.triangles[i + 1] + 1],
-					baseHeight
-				));
-
-				vertexData.push_back(Vertex(
-					d.coords[2 * d.triangles[i + 2]],
-					d.coords[2 * d.triangles[i + 2] + 1],
-					baseHeight
-				));
-			}
-		}
 
 		//calculate faces
 		for (uint32_t i = 0; i < base[0].size() - 1; i++)
@@ -740,7 +637,67 @@ std::vector<Vertex> SpaceFactory::triangularizeItem(Item *item)
 			vertexData.push_back(base[1].at(0));
 			vertexData.push_back(base[1].at(lastIndex));
 		}
-	}
 
+		//reverse the bottom base
+		{
+			std::vector<Vertex> newBase;
+			for (uint32_t i = 0; i < base[0].size(); i++)
+			{
+				newBase.push_back(base[0].at(base[0].size() -1 -i));
+			}
+			base[0] = newBase;
+		}
+
+		//calculate bases triangles
+		for (int a = 0; a < 2 ; a++)
+		{
+			int baseHeight = base[a].at(0).position().z();
+
+			std::vector<double> coordinates;
+			for(uint32_t i = 0; i < base[a].size(); i++)
+			{
+				coordinates.push_back(base[a].at(i).position().x());
+				coordinates.push_back(base[a].at(i).position().y());
+			}
+			base[a].clear();
+
+			//calculate vertexes for both bases
+			delaunator::Delaunator d(coordinates);
+			for(std::size_t i = 0; i < d.triangles.size(); i+=3)
+			{
+				base[a].push_back(Vertex(
+					d.coords[2 * d.triangles[i]],
+					d.coords[2 * d.triangles[i] + 1],
+					baseHeight
+				));
+
+				base[a].push_back(Vertex(
+					d.coords[2 * d.triangles[i + 1]],
+					d.coords[2 * d.triangles[i + 1] + 1],
+					baseHeight
+				));
+
+				base[a].push_back(Vertex(
+					d.coords[2 * d.triangles[i + 2]],
+					d.coords[2 * d.triangles[i + 2] + 1],
+					baseHeight
+				));
+			}
+		}
+
+
+		//reorder triangles in bases
+		for (int a = 0; a < 2 ; a++)
+		{
+			for(uint32_t i = 0; i < base[a].size(); i+=3)
+			{
+				orientTriangle(&base[a].at(i), &base[a].at(i+1), &base[a].at(i+1), a == 1);
+			}
+			for(uint32_t i = 0; i < base[a].size(); i++)
+			{
+				vertexData.push_back(base[a].at(i));
+			}
+		}
+	}
 	return vertexData;
 }

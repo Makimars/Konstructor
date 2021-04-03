@@ -1,40 +1,20 @@
 #ifndef SPACEFACTORY_H
 #define SPACEFACTORY_H
 
-#include "Item.h"
+#include <fstream>
+
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+#include <CGAL/Polyhedron_3.h>
+#include <CGAL/Polyhedron_items_with_id_3.h>
+#include <CGAL/Polygon_mesh_processing/orient_polygon_soup.h>
+#include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
+#include <CGAL/Polygon_mesh_processing/orientation.h>
+#include <CGAL/Polygon_mesh_processing/corefinement.h>
 
 #include "include/delaunator/delaunator.h"
 
-#include <fstream>
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Polyhedron_3.h>
-#include <CGAL/Polyhedron_items_with_id_3.h>
-#include <CGAL/Polygon_mesh_processing/orient_polygon_soup.h>
-#include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
-#include <CGAL/Polygon_mesh_processing/orientation.h>
+#include "Item.h"
 
-//#define IGL_BOOLEAN
-#ifdef IGL_BOOLEAN
-// Igl
-#include "include/libigl/include/igl/cotmatrix.h"
-#include "include/libigl/include/igl/copyleft/cgal/mesh_boolean.h"
-#endif
-
-//#define CGAL_BOOLEAN
-#ifdef CGAL_BOOLEAN
-#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
-#include <CGAL/Polyhedron_3.h>
-#include <CGAL/Polyhedron_items_with_id_3.h>
-#include <CGAL/Polygon_mesh_processing/orient_polygon_soup.h>
-#include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
-#include <CGAL/Polygon_mesh_processing/orientation.h>
-
-#include <CGAL/Surface_mesh.h>
-#include <CGAL/Polygon_mesh_processing/corefinement.h>
-#include <CGAL/Polygon_mesh_processing/remesh.h>
-#include <CGAL/boost/graph/selection.h>
-#include <CGAL/Polygon_mesh_processing/triangulate_faces.h>
-#endif
 
 // color normals type
 #define FRAG_NORMALS
@@ -91,10 +71,8 @@ private:
 	std::vector<Vertex> triangularizeItem(Item *item);
 
 	void assignNormals(std::vector<Vertex> *vertexData);
-
-#if defined(CGAL_BOOLEAN) || defined(IGL_BOOLEAN)
+	void orientTriangle(Vertex *v0, Vertex *v1, Vertex *v2, bool up = true);
 	std::vector<std::vector<Vertex>> calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const;
-#endif
 
 	QByteArray vectorToByteArray(QVector3D vector);
 

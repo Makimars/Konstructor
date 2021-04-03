@@ -225,7 +225,6 @@ void SpaceWidget::initializeGL()
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
 	//item buffer
-
 	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/item.vert");
 	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/src/shaders/item.frag");
 	vertexProgram.link();

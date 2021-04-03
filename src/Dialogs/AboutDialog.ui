@@ -228,21 +228,21 @@
    <item row="11" column="0">
     <widget class="QLabel" name="label_17">
      <property name="text">
-      <string>libigl</string>
+      <string>CGAL</string>
      </property>
     </widget>
    </item>
    <item row="11" column="1">
     <widget class="QLabel" name="label_18">
      <property name="text">
-      <string>libigl</string>
+      <string>CGAL</string>
      </property>
     </widget>
    </item>
    <item row="11" column="2">
     <widget class="QPushButton" name="pushButton">
      <property name="text">
-      <string>MPL2</string>
+      <string>LGPLv3/GPLv3</string>
      </property>
      <property name="flat">
       <bool>true</bool>
