@@ -15,7 +15,7 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::on_pushButton_clicked()
 {
-	QDesktopServices::openUrl(QUrl("https://github.com/libigl/libigl/blob/main/LICENSE.MPL2"));
+	QDesktopServices::openUrl(QUrl("https://github.com/CGAL/cgal/blob/master/Installation/LICENSE"));
 }
 
 void AboutDialog::on_pushButton_2_clicked()

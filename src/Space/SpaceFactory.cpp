@@ -261,7 +261,6 @@ void SpaceFactory::orientTriangle(Vertex *v0, Vertex *v1, Vertex *v2, bool up)
 	}
 }
 
-#ifdef CGAL_BOOLEAN
 std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
 {
 	namespace PMP = CGAL::Polygon_mesh_processing;
@@ -326,7 +325,7 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 			  fb->id() = index++;
 			if(CGAL::is_closed(mesh))
 			{
-				//CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
+				CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
 			}
 
 			meshes.at(itemIndex) = mesh;
@@ -361,7 +360,6 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 						if(!valid_difference) std::cout << "Warning: subtraction not valid (SpaceFactory:327)";
 					}
 				}
-				//CGAL::Polygon_mesh_processing::triangulate_faces(meshes.at(itemIndex));
 
 				//convert via file
 				QString filePath = QDir::tempPath() + "/tempmesh.off";
@@ -400,14 +398,12 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 										));
 					}
 
-					//qDebug() << " ";
 					//faces
 					for(int lineNum = headerSize + pointCount; lineNum < faceCount + pointCount + headerSize; lineNum++)
 					{
 						QString debugStr;
 						for(int vertexIndex = 2; vertexIndex < 5; vertexIndex++)
 						{
-							//int index = lines.at(lineNum).section(' ', vertexIndex, vertexIndex).toInt();
 							QStringList split = lines.at(lineNum).split(' ');
 							int index = QVariant(split.at(vertexIndex)).toInt();
 
@@ -422,7 +418,6 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 
 	return result;
 }
-#endif
 
 QByteArray SpaceFactory::vectorToByteArray(QVector3D vector)
 {
