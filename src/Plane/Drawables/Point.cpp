@@ -1,8 +1,11 @@
 #include "Point.h"
 
-Point::Point() : DrawableObject(Global::Point){}
+Point::Point() : DrawableObject(Global::Point)
+{
+	setZValue(POINT_Z_LEVEL);
+}
 
-Point::Point(double x, double y) : DrawableObject(Global::Point)
+Point::Point(double x, double y) : Point()
 {
 	setLocation(x,y);
 }
@@ -72,9 +75,18 @@ void Point::paint(QPainter *painter,
 				  const QStyleOptionGraphicsItem *option,
 				  QWidget *widget)
 {
-	if(this->isHidden())return;
+	if(this->isHidden()) return;
 
 	DrawableObject::paint(painter);
+
+	if(isLocked() | isConstrained())
+	{
+		painter->setBrush(QBrush(Qt::red));
+
+		QPen pen = painter->pen();
+		pen.setColor(Qt::red);
+		painter->setPen(pen);
+	}
 
 	QRectF rect = QRectF(
 				this->x - Settings::pointRenderSize,
@@ -87,14 +99,6 @@ void Point::paint(QPainter *painter,
 		rect += Settings::pointMargin;
 
 	painter->drawEllipse(rect);
-
-	if(isLocked() | isConstrained())
-	{
-		painter->drawImage(
-				QRectF(rect.x()+rect.width(), rect.y(), rect.width()*2, rect.height()*2),
-				QImage(":/icons/Lock.png")
-				);
-	}
 }
 
 //---------     events     ----------

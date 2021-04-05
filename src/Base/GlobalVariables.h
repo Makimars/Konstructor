@@ -1,12 +1,10 @@
 #ifndef GLOBALVARIABLES_H
 #define GLOBALVARIABLES_H
 
-#define ZERO_POINT_ID -1
-#define X_AXIS_ID -2
-#define Y_AXIS_ID -3
-
 #include <QString>
 #include <QDir>
+
+#define POINT_Z_LEVEL 1
 
 namespace Global
 {
