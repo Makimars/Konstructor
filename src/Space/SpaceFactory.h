@@ -14,7 +14,7 @@
 #include "include/delaunator/delaunator.h"
 
 #include "Item.h"
-
+#include "src/Dialogs/MessagesManager.h"
 
 // color normals type
 #define FRAG_NORMALS

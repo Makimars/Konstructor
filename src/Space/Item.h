@@ -32,6 +32,7 @@ public:
 
 	void setExtrusion();
 	void setExtrusion(Extrusion extrusion, Polygon *targetPolygon);
+	void reverseExtrusion();
 	Extrusion getExtrusion();
 
 	std::vector<Vertex> *getExtrudedVertexes();

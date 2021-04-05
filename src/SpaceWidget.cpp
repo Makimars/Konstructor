@@ -343,6 +343,7 @@ void SpaceWidget::paintGL()
 			{
 				vertexProgram.setUniformValue(itemColor, QVector4D(item->getPolygons()->at(i)->getColor(), 1.0f));
 				vertexProgram.setUniformValue(itemIsSelected, item->isSelected() || item->getPolygons()->at(i)->isSelected());
+
 				glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->getDataSize());
 				currentIndex += item->getPolygons()->at(i)->getDataSize();
 			}

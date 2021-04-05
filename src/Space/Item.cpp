@@ -199,6 +199,11 @@ void Item::setExtrusion(Extrusion extrusion, Polygon *targetPolygon)
 	setExtrusion();
 }
 
+void Item::reverseExtrusion()
+{
+	extruded = false;
+}
+
 Extrusion Item::getExtrusion()
 {
 	return extrusion;

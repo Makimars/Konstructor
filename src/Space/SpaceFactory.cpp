@@ -128,7 +128,7 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 	for(int i = 0; i < itemsInSpace->size(); i++)
 		vertexesInItems.push_back(std::vector<Vertex>());
 
-	//triangularize exstruded items
+	//triangularize extruded items
 	for(uint32_t i = 0; i < vertexesInItems.size(); i++)
 	{
 		if(itemsInSpace->at(i)->isExtruded())
@@ -144,7 +144,9 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 				std::vector<Vertex> triangularized = triangularizePolygon(polygons->at(ii)->getQpolygon());
 
 				polygons->at(ii)->setDataSize(triangularized.size());
-				vertexesInItems.at(i) = triangularized;
+				polygons->at(ii)->setText("Polygon " + QString::number(ii));
+
+				vertexesInItems.at(i).insert(vertexesInItems.at(i).begin(), triangularized.begin(), triangularized.end());
 			}
 		}
 	}
@@ -272,45 +274,54 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 		}
 		else
 		{
-			std::vector<Vertex> vertexes = triangularizedVertexData->at(itemIndex);
-			QVector<QVector3D> locations;
-
-			//copy all unique vertexes
-			for(uint32_t ii = 0; ii < vertexes.size(); ii++)
+			try
 			{
-				QVector3D vec = vertexes.at(ii).position();
-				if (locations.indexOf(vec) == -1)
+				std::vector<Vertex> vertexes = triangularizedVertexData->at(itemIndex);
+				QVector<QVector3D> locations;
+
+				//copy all unique vertexes
+				for(uint32_t ii = 0; ii < vertexes.size(); ii++)
 				{
-					locations.push_back(vec);
-					points.at(itemIndex).push_back(K::Point_3(vec.x(), vec.y(), vec.z()));
+					QVector3D vec = vertexes.at(ii).position();
+					if (locations.indexOf(vec) == -1)
+					{
+						locations.push_back(vec);
+						points.at(itemIndex).push_back(K::Point_3(vec.x(), vec.y(), vec.z()));
+					}
 				}
+
+				uint32_t triangleCount = vertexes.size() / 3;
+
+				//create index mesh of vertex size
+				for(uint32_t ii = 0; ii < triangleCount; ii++)
+				{
+					polygons.at(itemIndex).push_back(std::vector<std::size_t>());
+					//triangle
+					polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3).position()));
+					polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +1).position()));
+					polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +2).position()));
+				}
+
+				CGAL::Polygon_mesh_processing::orient_polygon_soup(points.at(itemIndex), polygons.at(itemIndex));
+				Polyhedron mesh;
+				CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(points.at(itemIndex), polygons.at(itemIndex), mesh);
+				// Number the faces because 'orient_to_bound_a_volume' needs a face <--> index map
+				int index = 0;
+				for(Polyhedron::Face_iterator fb=mesh.facets_begin(), fe=mesh.facets_end(); fb!=fe; ++fb)
+				  fb->id() = index++;
+				if(CGAL::is_closed(mesh))
+				{
+					CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
+				}
+
+				meshes.at(itemIndex) = mesh;
 			}
-
-			uint32_t triangleCount = vertexes.size() / 3;
-
-			//create index mesh of vertex size
-			for(uint32_t ii = 0; ii < triangleCount; ii++)
+			catch (std::exception e)
 			{
-				polygons.at(itemIndex).push_back(std::vector<std::size_t>());
-				//triangle
-				polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3).position()));
-				polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +1).position()));
-				polygons.at(itemIndex).at(ii).push_back(locations.indexOf(vertexes.at(ii*3 +2).position()));
+				MessagesManager::showDialogForm("Error in object processing (may happen often when extruding to the back side)");
+				item->reverseExtrusion();
 			}
 
-			CGAL::Polygon_mesh_processing::orient_polygon_soup(points.at(itemIndex), polygons.at(itemIndex));
-			Polyhedron mesh;
-			CGAL::Polygon_mesh_processing::polygon_soup_to_polygon_mesh(points.at(itemIndex), polygons.at(itemIndex), mesh);
-			// Number the faces because 'orient_to_bound_a_volume' needs a face <--> index map
-			int index = 0;
-			for(Polyhedron::Face_iterator fb=mesh.facets_begin(), fe=mesh.facets_end(); fb!=fe; ++fb)
-			  fb->id() = index++;
-			if(CGAL::is_closed(mesh))
-			{
-				CGAL::Polygon_mesh_processing::orient_to_bound_a_volume(mesh);
-			}
-
-			meshes.at(itemIndex) = mesh;
 		}
 	}
 

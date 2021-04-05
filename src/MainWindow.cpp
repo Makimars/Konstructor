@@ -463,7 +463,11 @@ void MainWindow::on_objectsTree_customContextMenuRequested(const QPoint &pos)
     if (index.isValid()) {
 		if(Item *item = dynamic_cast<Item*>(ui->objectsTree->itemAt(pos)))
         {
+			if(item->isExtruded()) extrusionAction.setText("Change Extrusion");
+			else extrusionAction.setText("Extrude");
+
 			QAction *selectedAction = objectContextMenu.exec(ui->objectsTree->viewport()->mapToGlobal(pos));
+
 			if(selectedAction == &extrusionAction)
 			{
 				item->setSelected(false);
