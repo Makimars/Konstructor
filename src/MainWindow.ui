@@ -294,8 +294,8 @@
                  <string>Finish</string>
                 </property>
                 <property name="icon">
-                 <iconset>
-                  <normaloff>../icons/dialog-ok-apply.svg</normaloff>../icons/dialog-ok-apply.svg</iconset>
+                 <iconset resource="../icons.qrc">
+                  <normaloff>:/icons/dialog-ok-apply.svg</normaloff>:/icons/dialog-ok-apply.svg</iconset>
                 </property>
                 <property name="iconSize">
                  <size>
@@ -645,7 +645,7 @@
                  </size>
                 </property>
                 <property name="text">
-                 <string>Parael Line</string>
+                 <string>Parallel Line</string>
                 </property>
                 <property name="icon">
                  <iconset resource="../icons.qrc">

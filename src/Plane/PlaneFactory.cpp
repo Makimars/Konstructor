@@ -240,36 +240,47 @@ QVector<DrawableObject*> PlaneFactory::generateListFromSketch(QString sketch)
 		{
 			case Global::Point:
 				createdObj = new Point();
+				createdObj->setStyle(currentStyle);
 				break;
 			case Global::Line:
 				createdObj = new Line();
+				createdObj->setStyle(currentStyle);
 				break;
 			case Global::Circle:
 				createdObj = new Circle();
+				createdObj->setStyle(currentStyle);
 				break;
 			case Global::Arc:
 				createdObj = new Arc();
+				createdObj->setStyle(currentStyle);
 				break;
 			case Global::Label:
 				createdObj = new Label();
+				createdObj->setStyle(currentStyle);
 				break;
 			case Global::CircleRadiusConstraint:
 				createdObj = new CircleRadiusConstraint();
+				createdObj->setStyle(&constraintStyle);
 				break;
 			case Global::CirclesRadiusDifferenceConstraint:
 				createdObj = new CirclesRadiusDifferenceDimension();
+				createdObj->setStyle(&constraintStyle);
 				break;
 			case Global::PointDistanceConstraint:
 				createdObj = new PointDistanceConstraint();
+				createdObj->setStyle(&constraintStyle);
 				break;
 			case Global::LineCenterPointConstraint:
 				createdObj = new LineCenterPointConstraint();
+				createdObj->setStyle(&constraintStyle);
 				break;
 			case Global::ParaelLinesConstraint:
 				createdObj = new ParaelLinesConstraint();
+				createdObj->setStyle(&constraintStyle);
 				break;
 			case Global::LinesAngleConstraint:
 				createdObj = new LinesAngleConstraint();
+				createdObj->setStyle(&constraintStyle);
 				break;
 			default:
 				createdObj = nullptr;

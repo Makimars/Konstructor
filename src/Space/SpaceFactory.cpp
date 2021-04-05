@@ -543,6 +543,18 @@ SpaceFactory::SpaceFactory(QVector<Item*> *objectsInSpace, QVector<Plane*> *plan
 
 std::vector<Vertex> SpaceFactory::triangularizePolygon(QPolygonF polygon)
 {
+	if(polygon.size() < 3) return std::vector<Vertex>();
+	else if (polygon.size() == 3)
+	{
+		std::vector<Vertex> result;
+		for(int i = 0; i < polygon.size(); i++)
+		{
+			result.push_back(Vertex(polygon.at(i).x(), polygon.at(i).y(), 0));
+		}
+
+		return result;
+	}
+
 	std::vector<double> coordinates;
 	std::vector<QPointF> points = polygon.toStdVector();
 	std::vector<Vertex> vertexData;
@@ -632,6 +644,8 @@ std::vector<Vertex> SpaceFactory::triangularizeItem(Item *item)
 		//calculate bases triangles
 		for (int a = 0; a < 2 ; a++)
 		{
+			if(base[a].size() < 4) break;
+
 			int baseHeight = base[a].at(0).position().z();
 
 			std::vector<double> coordinates;

@@ -16,9 +16,6 @@ public:
 							);
 	static PlaneFactory *getInstance();
 
-	QBrush *getCurrentBrush();
-	QPen *getCurrentPen();
-
 	//object creation
 	Point *makePoint();
 	Point *makePoint(double x, double y);
