@@ -121,11 +121,22 @@ QPainterPath PointDistanceConstraint::shape() const
 				drivenPoint->getY() + normalVector.y()
 				);
 
-	polygon << originPoint->getLocation()
-			<< aboveStartPoint
+	normalVector.normalize();
+	normalVector *= -textHeight;
+
+	QPointF startPointTwo(
+				aboveStartPoint.x() + normalVector.x(),
+				aboveStartPoint.y() + normalVector.y()
+				);
+	QPointF endPointTwo(
+				aboveEndPoint.x() + normalVector.x(),
+				aboveEndPoint.y() + normalVector.y()
+				);
+
+	polygon << aboveStartPoint
 			<< aboveEndPoint
-			<< drivenPoint->getLocation()
-			<< originPoint->getLocation();
+			<< endPointTwo
+			<< startPointTwo;
 
 	QPainterPath path;
 	path.setFillRule(Qt::FillRule::OddEvenFill);

@@ -125,6 +125,9 @@ QVector<PointAdapter*> Polygonator::generateAdapters(QVector<DrawableObject*> dr
 				double angleOne = atan2(arc->getFirstEdgePoint()->getLocation().y() - center.y(), arc->getFirstEdgePoint()->getLocation().x() - center.x());
 				double angleTwo = atan2(arc->getSecondEdgePoint()->getLocation().y() - center.y(), arc->getSecondEdgePoint()->getLocation().x() - center.x());
 
+				if(angleOne < 0) angleOne = M_PI*2 + angleOne;
+				if(angleTwo < 0) angleTwo = M_PI*2 + angleTwo;
+
 				if(angleOne < angleTwo)
 				{
 					startingAngle = angleOne;

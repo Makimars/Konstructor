@@ -287,6 +287,16 @@ QVector<DrawableObject*> PlaneFactory::generateListFromSketch(QString sketch)
 				break;
 		}
 
+		if(UserInputRequester *constraint = dynamic_cast<UserInputRequester*>(createdObj))
+		{
+			QObject::connect(constraint, &UserInputRequester::requestDouble,
+							 this->userInput, &QGraphicsViewUserInput::requestDouble
+							 );
+			QObject::connect(constraint, &UserInputRequester::requestString,
+							 this->userInput, &QGraphicsViewUserInput::requestString
+							 );
+		}
+
 		if(createdObj != nullptr)
 		{
 			createdObj->loadVariables(content);
