@@ -30,7 +30,9 @@ void Item::setPolygons(std::vector<QPolygonF> polygons)
 	this->polygons.clear();
 	foreach(QPolygonF polygon, polygons)
 	{
-		this->polygons.push_back(new Polygon(polygon));
+		Polygon *newPolygon = new Polygon(polygon);
+		newPolygon->setText("Poylgon " + QString::number(this->polygons.size()));
+		this->polygons.push_back(newPolygon);
 	}
 
 	emit updateData();

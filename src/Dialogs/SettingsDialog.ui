@@ -176,16 +176,6 @@
          <item>
           <widget class="QKeySequenceEdit" name="settingsEdit"/>
          </item>
-         <item>
-          <widget class="QLabel" name="label_12">
-           <property name="text">
-            <string>Quit</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QKeySequenceEdit" name="quitEdit"/>
-         </item>
         </layout>
        </widget>
       </item>
