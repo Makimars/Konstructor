@@ -217,6 +217,14 @@ void MainWindow::on_saveObjectButton_clicked()
 			Global::konstructorProject + ";;" + Global::allFiles
 			);
 
+	QStringList splitName = fileName.split('.');
+	if(splitName.size() > 1)
+	{
+		if(splitName.at(splitName.size() -1) != "kopr")
+			fileName += ".kopr";
+	}
+	else fileName += ".kopr";
+
 	QFile targetFile(fileName);
 	if(targetFile.open(QIODevice::WriteOnly))
 	{
@@ -238,6 +246,29 @@ void MainWindow::on_exportObjectButton_clicked()
 	if(files.size() > 0)
 	{
 		QString fileName = files.at(0);
+
+
+		QStringList splitName = fileName.split('.');
+		if(saveDialog.selectedNameFilter().contains(".off"))
+		{
+			if(splitName.size() > 1)
+			{
+				if(splitName.at(splitName.size() -1) != "off")
+					fileName += ".off";
+			}
+			else fileName += ".off";
+		}
+
+		if(saveDialog.selectedNameFilter().contains(".stl"))
+		{
+			if(splitName.size() > 1)
+			{
+				if(splitName.at(splitName.size() -1) != "stl")
+					fileName += ".stl";
+			}
+			else fileName += ".stl";
+		}
+
 		this->ui->spaceView->exportToFile(fileName);
 	}
 }
@@ -268,6 +299,14 @@ void MainWindow::on_saveSketchButton_clicked()
 			Settings::userProjectRoot,
 			Global::konstructorSketch + ";;" + Global::allFiles
 			);
+
+	QStringList splitName = fileName.split('.');
+	if(splitName.size() > 1)
+	{
+		if(splitName.at(splitName.size() -1) != "kosk")
+			fileName += ".kosk";
+	}
+	else fileName += ".kosk";
 
 	QFile targetFile(fileName);
 	if(targetFile.open(QIODevice::WriteOnly))
