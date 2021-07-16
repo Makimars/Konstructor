@@ -18,25 +18,10 @@ void CirclesRadiusDifferenceDimension::resolveTies()
 
 //----------     file handling     ---------
 
-void CirclesRadiusDifferenceDimension::loadVariables(QString input)
+void CirclesRadiusDifferenceDimension::loadData(nlohmann::json jsonInput)
 {
-
-	QStringList varNames = {
-		"radiusDifference"
-	};
-
-	QVector<QVariant> variables = fetchVariables(input, varNames);
-
-	this->radiusDifference = variables[0].toDouble();
-}
-
-QString CirclesRadiusDifferenceDimension::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("radiusDifference", this->radiusDifference);
-	this->fileAddVar("circles0", this->circles[0]->getId());
-	this->fileAddVar("circles1", this->circles[1]->getId());
-	return this->fileFinish();
+	DrawableObject::loadData(jsonInput);
+	this->radiusDifference = jsonInput["radiusDifference"];
 }
 
 void CirclesRadiusDifferenceDimension::loadRelations(QVector<DrawableObject *> list)
@@ -53,6 +38,16 @@ void CirclesRadiusDifferenceDimension::loadRelations(QVector<DrawableObject *> l
 	this->radiusDifference = this->circles[1]->getRadius() - this->circles[0]->getRadius();
 
 	setGeometryUpdates();
+}
+
+nlohmann::json CirclesRadiusDifferenceDimension::toJson()
+{
+	DrawableObject::toJson();
+	json["radiusDifference"] = this->radiusDifference;
+	json["circles0"] = this->circles[0]->getId();
+	json["circles1"] = this->circles[1]->getId();
+
+	return json;
 }
 
 //----------	QGraphicsItem overrides    ----------

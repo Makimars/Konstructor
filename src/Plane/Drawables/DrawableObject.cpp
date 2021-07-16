@@ -9,19 +9,27 @@ DrawableObject::DrawableObject(int type)
 
 //----------	file handling    ----------
 
-void DrawableObject::loadVariables(QString input)
+void DrawableObject::loadData(nlohmann::json jsonInput)
 {
-	fetchVariables(input);
+	this->id = jsonInput["id"];
+	this->constructional = jsonInput["constructional"];
+	this->locked = jsonInput["locked"];
+	this->constrains = jsonInput["constraints"];
+
+	this->json = jsonInput;
 }
 
-QString DrawableObject::toFileString()
+nlohmann::json DrawableObject::toJson()
 {
-    this->file = "";
-	this->fileAddVar("id", this->getId());
-	this->fileAddVar("constructional", this->constructional);
-	this->fileAddVar("locked", locked);
-	this->fileAddVar("constraints", constrains);
-	return this->file;
+	json.clear();
+	json["id"] = this->getId();
+	json["constructional"] = this->constructional;
+	json["locked"] = this->locked;
+	json["constraints"] = this->constrains;
+
+	json["type"] = this->type;
+
+	return json;
 }
 
 void DrawableObject::addConstraint()
@@ -61,65 +69,16 @@ void DrawableObject::removeGeometryUpdates()
 	unsetGeometryUpdates();
 }
 
-//----------	saving    ----------
-
-
-QString DrawableObject::fileFinish()
-{
-	this->file = QString::number(this->type) + "{" + this->file.remove(this->file.length()-1, 1) + "};";
-	return this->file;
-}
-
 //----------     loading objects     ----------
-
-QVector<QVariant> DrawableObject::fetchVariables(QString input, QStringList varNames)
-{
-	this->file = input;
-
-	int startIndex = varNames.length();
-	varNames.append("id");
-	varNames.append("constructional");
-	varNames.append("locked");
-	varNames.append("constraints");
-
-	QVector<QVariant> values;
-	values.resize(varNames.length());
-
-	QStringList variables = input.split(',');
-	for(int i = 0; i < variables.length(); i++)
-	{
-		QStringList parts = variables[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
-
-		int index = varNames.indexOf(varName);
-		if(index >= 0)
-			values[index] = QVariant(varValue);
-	}
-
-	this->id = values[startIndex].toInt();
-	this->constructional = values[startIndex + 1].toBool();
-	this->locked = values[startIndex + 2].toBool();
-	this->constrains = values[startIndex + 3].toInt();
-
-	return values;
-}
 
 QVector<DrawableObject*> DrawableObject::fetchRelations(QVector<DrawableObject*>*list, QStringList varNames)
 {
 	QVector<DrawableObject*> values;
 	values.resize(varNames.length());
 
-	QStringList fileVars = this->file.split(',');
-	for(int i = 0; i < fileVars.length(); i++)
+	for(int i = 0; i < varNames.length(); i++)
 	{
-		QStringList parts = fileVars[i].split(":");
-		QString varName = parts[0];
-		QString varValue = parts[1];
-
-		int index = varNames.indexOf(varName);
-		if(index >= 0)
-			values[index] = DrawableObject::getById(list, QVariant(varValue).toInt());
+		values[i] = DrawableObject::getById(list, this->json[varNames.at(i).toStdString()]);
 	}
 
 	return values;

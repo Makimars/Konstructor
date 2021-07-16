@@ -16,8 +16,8 @@ public:
 	Point *getPoint();
 
 	//file handling
-	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
+	nlohmann::json toJson() override;
 
 	//QGraphicsItem overrides
 	QRectF boundingRect() const override;

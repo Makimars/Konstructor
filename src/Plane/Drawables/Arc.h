@@ -12,8 +12,8 @@ public:
 	void resolveTies() override;
 
 	//file handling
-	QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
+	nlohmann::json toJson() override;
 
 	double getRadius() const;
 	Point *getCenter();

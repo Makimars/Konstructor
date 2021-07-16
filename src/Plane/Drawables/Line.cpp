@@ -12,14 +12,6 @@ Line::Line(Point *startPoint, Point *endPoint) : DrawableObject (Global::Line)
 
 //----------	file handling    ----------
 
-QString Line::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("startPoint", this->startPoint->getId());
-	this->fileAddVar("endPoint", this->endPoint->getId());
-    return DrawableObject::fileFinish();
-}
-
 void Line::loadRelations(QVector<DrawableObject*> list)
 {
     QStringList varNames = {
@@ -32,6 +24,15 @@ void Line::loadRelations(QVector<DrawableObject*> list)
 	this->startPoint = dynamic_cast<Point*>(values[0]);
 	this->endPoint = dynamic_cast<Point*>(values[1]);
 	setGeometryUpdates();
+}
+
+nlohmann::json Line::toJson()
+{
+	DrawableObject::toJson();
+	json["startPoint"] = startPoint->getId();
+	json["endPoint"] = endPoint->getId();
+
+	return json;
 }
 
 //----------	getters and setters    ----------

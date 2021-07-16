@@ -12,9 +12,9 @@ public:
 	void resolveTies() override;
 
 	//file handling
-	void loadVariables(QString input) override;
-	QString toFileString() override;
+	void loadData(nlohmann::json jsonInput) override;
 	void loadRelations(QVector<DrawableObject*> list) override;
+	nlohmann::json toJson() override;
 
 	//getters and setters
 	void setRadiusDifference(double value);

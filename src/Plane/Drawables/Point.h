@@ -10,8 +10,8 @@ public:
 	Point(double x, double y);
 
     //file handling
-    void loadVariables(QString json) override;
-	QString toFileString() override;
+	void loadData(nlohmann::json jsonInput) override;
+	nlohmann::json toJson() override;
 
     //getters and setters
 	double getX() const;

@@ -21,30 +21,14 @@ void PointDistanceConstraint::resolveTies()
 {
 	drivenPoint->setLocation(
 				originPoint->getLocation() + (getLineVector().normalized() * lengthToSet).toPointF()
-			);
+				);
 }
 
-void PointDistanceConstraint::loadVariables(QString input)
+void PointDistanceConstraint::loadData(nlohmann::json jsonInput)
 {
-	QStringList varNames = {
-		"lengthToSet",
-		"distanceFromLine"
-	};
-
-	QVector<QVariant> variables = fetchVariables(input, varNames);
-
-	this->lengthToSet = variables[0].toDouble();
-	this->distanceFromLine = variables[1].toDouble();
-}
-
-QString PointDistanceConstraint::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("lengthToSet", this->lengthToSet);
-	this->fileAddVar("distanceFromLine", this->distanceFromLine);
-	this->fileAddVar("originPoint", this->originPoint->getId());
-	this->fileAddVar("drivenPoint", this->drivenPoint->getId());
-	return this->fileFinish();
+	DrawableObject::loadData(jsonInput);
+	this->lengthToSet = jsonInput["lengthToSet"];
+	this->distanceFromLine = jsonInput["distanceFromLine"];
 }
 
 void PointDistanceConstraint::loadRelations(QVector<DrawableObject *> list)
@@ -60,6 +44,17 @@ void PointDistanceConstraint::loadRelations(QVector<DrawableObject *> list)
 	this->drivenPoint = dynamic_cast<Point*>(values[1]);
 	setGeometryUpdates();
 	originPoint->addConstraint();
+}
+
+nlohmann::json PointDistanceConstraint::toJson()
+{
+	DrawableObject::toJson();
+	json["lengthToSet"] = this->lengthToSet;
+	json["distanceFromLine"] = this->distanceFromLine;
+	json["originPoint"] = this->originPoint->getId();
+	json["drivenPoint"] = this->originPoint->getId();
+
+	return json;
 }
 
 void PointDistanceConstraint::setDistanceFromLine(double distance)

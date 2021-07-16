@@ -13,7 +13,7 @@ public:
 	void resolveTies() override;
 
 	void loadRelations(QVector<DrawableObject *> list) override;
-	QString toFileString() override;
+	nlohmann::json toJson() override;
 
 	QRectF boundingRect() const override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;

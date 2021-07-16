@@ -30,14 +30,7 @@ void Arc::resolveTies()
 	centerPoint->setLocation(acrossPoint + (lineVector*centerDelta).toPointF());
 }
 
-QString Arc::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("centerPoint", this->centerPoint);
-	this->fileAddVar("leftPoint", this->edgePoints[0]);
-	this->fileAddVar("rightPoint", this->edgePoints[1]);
-	return this->fileFinish();
-}
+//----------	file handling    ----------
 
 void Arc::loadRelations(QVector<DrawableObject*> list)
 {
@@ -53,6 +46,16 @@ void Arc::loadRelations(QVector<DrawableObject*> list)
 	this->edgePoints[0] = dynamic_cast<Point*>(values[1]);
 	this->edgePoints[1] = dynamic_cast<Point*>(values[2]);
 	setGeometryUpdates();
+}
+
+nlohmann::json Arc::toJson()
+{
+	DrawableObject::toJson();
+	json["centerPoint"] = this->centerPoint->getId();
+	json["leftPoint"] = this->edgePoints[0]->getId();
+	json["rightPoint"] = this->edgePoints[1]->getId();
+
+	return json;
 }
 
 double Arc::getRadius() const

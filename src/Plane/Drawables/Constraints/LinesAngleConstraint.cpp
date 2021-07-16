@@ -54,30 +54,14 @@ void LinesAngleConstraint::resolveTies()
 	}
 
     edgePointsLocations[0] = edgePoints[0]->getLocation();
-    edgePointsLocations[1] = edgePoints[1]->getLocation();
+	edgePointsLocations[1] = edgePoints[1]->getLocation();
 }
 
-void LinesAngleConstraint::loadVariables(QString input)
+void LinesAngleConstraint::loadData(nlohmann::json jsonInput)
 {
-    QStringList varNames = {
-            "angle",
-            "distanceFromCenter"
-    };
-
-    QVector<QVariant> variables = fetchVariables(input, varNames);
-
-    this->angle = variables[0].toDouble();
-    this->distanceFromCenter = variables[1].toDouble();
-}
-
-QString LinesAngleConstraint::toFileString()
-{
-    DrawableObject::toFileString();
-    this->fileAddVar("angle", this->angle);
-    this->fileAddVar("distanceFromCenter", this->distanceFromCenter);
-    this->fileAddVar("lines0", this->lines[0]->getId());
-    this->fileAddVar("lines1", this->lines[1]->getId());
-    return this->fileFinish();
+	DrawableObject::loadData(jsonInput);
+	this->angle = jsonInput["angle"];
+	this->distanceFromCenter = jsonInput["distanceFromCenter"];
 }
 
 void LinesAngleConstraint::loadRelations(QVector<DrawableObject *> list)
@@ -93,7 +77,18 @@ void LinesAngleConstraint::loadRelations(QVector<DrawableObject *> list)
     this->lines[1] = dynamic_cast<Line*>(values[1]);
 
     calculateEdgePoints();
-    setGeometryUpdates();
+	setGeometryUpdates();
+}
+
+nlohmann::json LinesAngleConstraint::toJson()
+{
+	DrawableObject::toJson();
+	json["angle"] = this->angle;
+	json["distanceFromCenter"] = this->distanceFromCenter;
+	json["lines0"] = this->lines[0]->getId();
+	json["lines1"] = this->lines[1]->getId();
+
+	return json;
 }
 
 void LinesAngleConstraint::setValue(double angle)

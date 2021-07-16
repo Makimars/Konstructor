@@ -62,12 +62,12 @@ void PlaneWidget::loadFromFile(QString file)
 
 QString PlaneWidget::toFile()
 {
-	QString file;
+	nlohmann::json json;
 
 	for(int i = 0; i < this->objectsInSketch.length(); i++)
-		file += this->objectsInSketch.at(i)->toFileString() + "\n";
+		json.push_back(this->objectsInSketch.at(i)->toJson());
 
-	return file;
+	return QString::fromStdString(std::string(json.dump()));
 }
 
 void PlaneWidget::loadProjected(QPolygonF projectedPoints)

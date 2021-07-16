@@ -51,12 +51,13 @@ void ParaelLinesConstraint::loadRelations(QVector<DrawableObject *> list)
 	assignPoints();
 }
 
-QString ParaelLinesConstraint::toFileString()
+nlohmann::json ParaelLinesConstraint::toJson()
 {
-	DrawableObject::toFileString();
-	this->fileAddVar("LineOne", this->lines[0]);
-	this->fileAddVar("LineTwo", this->lines[1]);
-	return DrawableObject::fileFinish();
+	DrawableObject::toJson();
+	json["LineOne"] = this->lines[0]->getId();
+	json["LineTwo"] = this->lines[1]->getId();
+
+	return json;
 }
 
 QRectF ParaelLinesConstraint::boundingRect() const

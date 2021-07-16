@@ -109,7 +109,7 @@ void Item::setExtrusion()
 	extrudedVertexes.clear();
 
 	std::vector<QPointF> polygonPoints = extrudedPolygon->getPoints();
-	for (u_int32_t i = 0; i < polygonPoints.size(); i++)
+	for (uint32_t i = 0; i < polygonPoints.size(); i++)
 	{
 		extrudedVertexes.push_back(Vertex(
 						polygonPoints.at(i).x(),
@@ -268,7 +268,7 @@ void Item::loadRelations(std::vector<Item*> list)
 	basePlane->addChild(this);
 }
 
-QVector3D Item::globalVertexPos(u_int32_t i)
+QVector3D Item::globalVertexPos(uint32_t i)
 {
 	return extrudedVertexes.at(i).position() * toMatrix();
 }

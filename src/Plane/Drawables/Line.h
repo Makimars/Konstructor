@@ -10,8 +10,8 @@ public:
 	Line(Point *startPoint, Point *endPoint);
 
 	//file handling
-    QString toFileString() override;
 	void loadRelations(QVector<DrawableObject*> list) override;
+	nlohmann::json toJson() override;
 
 	//getters and setters
 	double getLength();

@@ -16,23 +16,10 @@ void Circle::resolveTies()
 
 //----------	file handling    ----------
 
-void Circle::loadVariables(QString input)
+void Circle::loadData(nlohmann::json jsonInput)
 {
-	QStringList varNames = {
-		"radius"
-    };
-
-	QVector<QVariant> variables = fetchVariables(input, varNames);
-
-	this->radius = variables[0].toDouble();
-}
-
-QString Circle::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("centerPoint", this->centerPoint->getId());
-	this->fileAddVar("radius", this->radius);
-	return this->fileFinish();
+	DrawableObject::loadData(jsonInput);
+	this->radius = jsonInput["radius"];
 }
 
 void Circle::loadRelations(QVector<DrawableObject*> list)
@@ -45,6 +32,15 @@ void Circle::loadRelations(QVector<DrawableObject*> list)
 
 	this->centerPoint = dynamic_cast<Point*>(values[0]);
 	setGeometryUpdates();
+}
+
+nlohmann::json Circle::toJson()
+{
+	DrawableObject::toJson();
+	json["centerPoint"] = this->centerPoint->getId();
+	json["radius"] = this->radius;
+
+	return json;
 }
 
 //----------	getters and setters    ----------

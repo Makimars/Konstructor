@@ -10,27 +10,21 @@ Label::Label(QPointF location, QString text) : Label()
 
 //---------    file handeling     ---------
 
-void Label::loadVariables(QString input)
+void Label::loadData(nlohmann::json jsonInput)
 {
-	QStringList varNames = {
-		"text",
-		"x",
-		"y"
-	};
-
-	QVector<QVariant> variables = fetchVariables(input, varNames);
-
-	this->text = variables[0].toString();
-	this->location = QPointF(variables[1].toDouble(), variables[2].toDouble());
+	DrawableObject::loadData(jsonInput);
+	this->text.fromStdString(jsonInput["text"]);
+	this->location = QPointF(jsonInput["x"], jsonInput["y"]);
 }
 
-QString Label::toFileString()
+nlohmann::json Label::toJson()
 {
-	DrawableObject::toFileString();
-	this->fileAddVar("text", this->text);
-	this->fileAddVar("x", this->location.x());
-	this->fileAddVar("y", this->location.y());
-	return this->fileFinish();
+	DrawableObject::toJson();
+	json["x"] = location.x();
+	json["y"] = location.y();
+	json["text"] = text.toStdString();
+
+	return json;
 }
 
 //----------	getters and setters    ----------

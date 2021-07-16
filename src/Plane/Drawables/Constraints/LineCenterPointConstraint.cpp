@@ -33,15 +33,7 @@ Point *LineCenterPointConstraint::getPoint()
 	return centerPoint;
 }
 
-QString LineCenterPointConstraint::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("line", this->line);
-	this->fileAddVar("centerPoint", this->centerPoint);
-	return DrawableObject::fileFinish();
-}
-
-void LineCenterPointConstraint::loadRelations(QVector<DrawableObject *> list)
+void LineCenterPointConstraint::loadRelations(QVector<DrawableObject*> list)
 {
 	QStringList varNames = {
 		"line",
@@ -55,6 +47,15 @@ void LineCenterPointConstraint::loadRelations(QVector<DrawableObject *> list)
 
 	setGeometryUpdates();
 	centerPoint->addConstraint();
+}
+
+nlohmann::json LineCenterPointConstraint::toJson()
+{
+	DrawableObject::toJson();
+	json["line"] = this->line->getId();
+	json["centerPoint"] = this->centerPoint->getId();
+
+	return json;
 }
 
 QRectF LineCenterPointConstraint::boundingRect() const

@@ -23,23 +23,10 @@ void CircleRadiusConstraint::resolveTies()
 
 //----------     file handling     ----------
 
-void CircleRadiusConstraint::loadVariables(QString input)
+void CircleRadiusConstraint::loadData(nlohmann::json jsonInput)
 {
-	QStringList varNames = {
-		"radius"
-	};
-
-	QVector<QVariant> variables = fetchVariables(input, varNames);
-
-	this->radius = variables[0].toDouble();
-}
-
-QString CircleRadiusConstraint::toFileString()
-{
-	DrawableObject::toFileString();
-	this->fileAddVar("radius", this->radius);
-	this->fileAddVar("circle", this->circle->getId());
-	return DrawableObject::fileFinish();
+	DrawableObject::loadData(jsonInput);
+	this->radius = jsonInput["radius"];
 }
 
 void CircleRadiusConstraint::loadRelations(QVector<DrawableObject*> list)
@@ -53,6 +40,15 @@ void CircleRadiusConstraint::loadRelations(QVector<DrawableObject*> list)
 	this->circle = dynamic_cast<Circle*>(values[0]);
 	setGeometryUpdates();
 	circle->addConstraint();
+}
+
+nlohmann::json CircleRadiusConstraint::toJson()
+{
+	DrawableObject::toJson();
+	json["circle"] = this->circle->getId();
+	json["radius"] = this->radius;
+
+	return json;
 }
 
 //----------     QGraphicsItem overrides     ----------

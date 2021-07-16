@@ -12,25 +12,20 @@ Point::Point(double x, double y) : Point()
 
 //----------	file handling    ----------
 
-void Point::loadVariables(QString input)
+void Point::loadData(nlohmann::json jsonInput)
 {
-	QStringList varNames = {
-		"x",
-		"y"
-	};
-
-	QVector<QVariant> variables = fetchVariables(input, varNames);
-
-	this->x = variables[0].toDouble();
-	this->y = variables[1].toDouble();
+	DrawableObject::loadData(jsonInput);
+	this->x = jsonInput["x"];
+	this->y = jsonInput["y"];
 }
 
-QString Point::toFileString()
+nlohmann::json Point::toJson()
 {
-	DrawableObject::toFileString();
-	this->fileAddVar("x", this->x);
-	this->fileAddVar("y", this->y);
-	return DrawableObject::fileFinish();
+	DrawableObject::toJson();
+	json["x"] = x;
+	json["y"] = y;
+
+	return json;
 }
 
 //----------	getters and setters    ----------

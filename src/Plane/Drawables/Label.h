@@ -10,8 +10,8 @@ public:
 	Label(QPointF location, QString text);
 
 	//file handling
-	void loadVariables(QString input) override;
-	QString toFileString() override;
+	void loadData(nlohmann::json jsonInput) override;
+	nlohmann::json toJson() override;
 
 	//getters and setters
 	QString getText();

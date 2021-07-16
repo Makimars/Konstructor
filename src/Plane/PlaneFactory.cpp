@@ -225,18 +225,15 @@ void PlaneFactory::deleteAllStaticDrawables()
 
 QVector<DrawableObject*> PlaneFactory::generateListFromSketch(QString sketch)
 {
-	QStringList splited = sketch.trimmed().replace('\n',"").split(";");
-	splited.removeAt(splited.length()-1);
-
 	QVector<DrawableObject*> loadedObjects;
+	nlohmann::json json = nlohmann::json::parse(sketch.toStdString());
 
-	foreach(QString line, splited)
+	for(uint32_t i = 0; i < json.size(); i++)
 	{
-		QString type = line.section('{',0,0).trimmed();
-		QString content = line.section('{',1,1).section('}',0,0);
 		DrawableObject *createdObj;
+		int type = json.at(i)["type"];
 
-		switch(QVariant::fromValue(type).toInt())
+		switch(type)
 		{
 			case Global::Point:
 				createdObj = new Point();
@@ -299,7 +296,7 @@ QVector<DrawableObject*> PlaneFactory::generateListFromSketch(QString sketch)
 
 		if(createdObj != nullptr)
 		{
-			createdObj->loadVariables(content);
+			createdObj->loadData(json.at(i));
 			loadedObjects.append(createdObj);
 		}
 	}
