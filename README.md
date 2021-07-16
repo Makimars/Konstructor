@@ -11,14 +11,23 @@ This software is linced under EUPL v1.2, other language versions are located in 
 - JSON for modern C++ (included)
 - delaunator-cpp (included)
 - CGAL
+- QT 5
 
 ## current TODO list
 
 ### Plane
 
 - fix side projection
+- rewok constraints to use equasions (low priority)
+
+### Polygonator
+
+- better polygon finder
 
 ### Space
 
 - cube in the right top corner to select view
 - fix side planes
+- better polygon viewer
+- unified internal data format
+- separate data managment to SpaceFactory
