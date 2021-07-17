@@ -33,8 +33,15 @@ void Item::setPolygons(std::vector<QPolygonF> polygons)
 		Polygon *newPolygon = new Polygon(polygon);
 		newPolygon->setText("Poylgon " + QString::number(this->polygons.size()));
 		this->polygons.push_back(newPolygon);
-	}
 
+		for(int i = 0; i < polygon.size() - 1; i++)
+		{
+			this->outerLines.push_back(Vertex(polygon.at(i).x(), polygon.at(i).y(), 0));
+			this->outerLines.push_back(Vertex(polygon.at(i+1).x(), polygon.at(i+1).y(), 0));
+		}
+		this->outerLines.push_back(Vertex(polygon.at(0).x(), polygon.at(0).y(), 0));
+		this->outerLines.push_back(Vertex(polygon.at(polygon.size()).x(), polygon.at(polygon.size()).y(), 0));
+	}
 	emit updateData();
 }
 
@@ -209,6 +216,11 @@ Extrusion Item::getExtrusion()
 std::vector<Vertex> *Item::getExtrudedVertexes()
 {
 	return &extrudedVertexes;
+}
+
+std::vector<Vertex> *Item::getOuterLines()
+{
+	return &this->outerLines;
 }
 
 nlohmann::json Item::toJson()

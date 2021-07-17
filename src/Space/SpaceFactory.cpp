@@ -177,6 +177,19 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 	return finalBufferVertexes;
 }
 
+std::vector<Vertex> SpaceFactory::generateLinesBuffer()
+{
+	std::vector<Vertex> buffer;
+
+	for(int i = 0; i < itemsInSpace->size(); i++)
+	{
+		for(uint32_t ii = 0; ii < itemsInSpace->at(i)->getOuterLines()->size(); ii++)
+			buffer.push_back(itemsInSpace->at(i)->getOuterLines()->at(ii));
+	}
+
+	return buffer;
+}
+
 void SpaceFactory::assignNormals(std::vector<Vertex> *vertexData)
 {
 	QVector3D objectCenter;

@@ -119,6 +119,14 @@ void SpaceWidget::reallocateItems()
 	itemBuffer.allocate(itemVertexData.data(), itemVertexData.size() * sizeof(Vertex));
 	itemBuffer.release();
 
+	//outer object lines
+	lineVertexData.clear();
+	lineVertexData = factory->generateLinesBuffer();
+
+	lineBuffer.bind();
+	lineBuffer.allocate(lineVertexData.data(), lineVertexData.size() * sizeof(Vertex));
+	lineBuffer.release();
+
 	update();
 }
 
@@ -260,6 +268,40 @@ void SpaceWidget::initializeGL()
 	itemBuffer.release();
 
 
+	//lines buffer
+
+	glLineWidth(20);
+
+	linesProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/item.vert");
+	linesProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/src/shaders/planes.frag");
+	linesProgram.link();
+	linesProgram.bind();
+
+	linesParameter.itemToSpace = planesProgram.uniformLocation("itemToSpace");
+	linesParameter.worldToCamera = planesProgram.uniformLocation("worldToCamera");
+	linesParameter.cameraToView = planesProgram.uniformLocation("cameraToView");
+	linesParameter.itemToRotate = planesProgram.uniformLocation("itemToRotate");
+
+	lineColor = planesProgram.uniformLocation("planeColor");
+
+	linesProgram.release();
+
+	lineBuffer.create();
+	lineBuffer.bind();
+	lineBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+	lineBuffer.allocate(lineVertexData.data(), lineVertexData.size() * sizeof(Vertex));
+
+	lineBufferObject.create();
+	lineBufferObject.bind();
+
+	linesProgram.enableAttributeArray(0);
+	linesProgram.enableAttributeArray(1);
+	linesProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
+	linesProgram.setAttributeBuffer(1, GL_FLOAT, Vertex::normalOffset(), Vertex::NormalTupleSize, Vertex::stride());
+	lineBufferObject.release();
+	lineBuffer.release();
+
+
 	//planes buffer
 
 	planesProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/planes.vert");
@@ -357,7 +399,52 @@ void SpaceWidget::paintGL()
 
 	itemProgram.release();
 
+
+	//lines
+
+
+
+	linesProgram.bind();
+	linesProgram.setUniformValue(linesParameter.worldToCamera, camera.toMatrix());
+	linesProgram.setUniformValue(linesParameter.cameraToView, projection);
+
+	linesProgram.setUniformValue(lineColor, QVector4D(0,1,0,1));
+
+	//rotation of items in view (already given value by previous section)
+	linesProgram.setUniformValue(linesParameter.itemToRotate, mtr);
+
+	//items
+	lineBufferObject.bind();
+
+	// positions are already global in the buffer, but if I remove the matrix from shader, planes stop working
+	//vertexProgram.setUniformValue(vertexParameter.itemToSpace, item->toMatrix());
+	{
+		QMatrix4x4 mat;
+		mat.setColumn(0, QVector4D(1,0,0,0));
+		mat.setColumn(1, QVector4D(0,1,0,0));
+		mat.setColumn(2, QVector4D(0,0,1,0));
+		mat.setColumn(3, QVector4D(0,0,0,1));
+		linesProgram.setUniformValue(linesParameter.itemToSpace, mat);
+	}
+	glLineWidth(20);
+
+	int currentLinesIndex = 0;
+	for(int i = 0; i < objectsInSpace.size(); i++)
+	{
+		Item *item = objectsInSpace.at(i);
+
+		glDrawArrays(GL_LINES, currentLinesIndex, item->getOuterLines()->size());
+		currentLinesIndex += item->getOuterLines()->size();
+		qDebug() << currentLinesIndex;
+	}
+
+	lineBufferObject.release();
+
+	linesProgram.release();
+
+
 	//planes
+
 	planesProgram.bind();
 	planeBufferObject.bind();
 

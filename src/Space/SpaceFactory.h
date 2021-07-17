@@ -34,6 +34,7 @@ public:
 	QByteArray generateStlFile(std::vector<Vertex> *vertexData);
 	void generateOffFile(std::vector<Vertex> *vertexData, QString filePath);
 	std::vector<Vertex> generateBuffer();
+	std::vector<Vertex> generateLinesBuffer();
 
 public slots:
 	void recieveTargetItem(QTreeWidgetItem *item);

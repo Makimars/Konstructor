@@ -34,6 +34,10 @@ public:
 	Extrusion getExtrusion();
 
 	std::vector<Vertex> *getExtrudedVertexes();
+	//get mesh - CGAL mesh format
+	//get vertex bufer - vertexes for the opengl buffer, generated from mesh in function
+	//get line buffer - outer line vertexes for the opengl buffer
+	std::vector<Vertex> *getOuterLines();
 
 	nlohmann::json toJson();
 	void loadData(QString basePlaneId, Extrusion extrusion, bool extruded, int extrudedPolygon);
@@ -51,6 +55,11 @@ private:
 
 	//extruded vertex data
 	std::vector<Vertex> extrudedVertexes;
+	//TODO: mesh
+	std::vector<Vertex> points;
+	std::vector<std::vector<uint64_t>> triangles;
+	//TODO: outerLines
+	std::vector<Vertex> outerLines;
 
 	//extrusion info
 	bool extruded = false;

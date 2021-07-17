@@ -62,13 +62,19 @@ private:
 	QOpenGLBuffer planeBuffer;
 	QOpenGLVertexArrayObject planeBufferObject;
 
+	//processed line data
+	std::vector<Vertex> lineVertexData;
+	QOpenGLBuffer lineBuffer;
+	QOpenGLVertexArrayObject lineBufferObject;
 
 	// Shader Information
 	vertexProgramParameters itemParameter;
 	vertexProgramParameters planesParameter;
+	vertexProgramParameters linesParameter;
 
 	int itemColor;
 	int planeColor;
+	int lineColor;
 
 	int selectedItemColor;
 	int itemIsSelected;
