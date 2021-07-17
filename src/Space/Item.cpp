@@ -43,11 +43,6 @@ QVector<Polygon*> *Item::getPolygons()
 	return &polygons;
 }
 
-void Item::setItemIndex(int index)
-{
-	itemIndex = index;
-}
-
 void Item::setDataSize(int size)
 {
 	extrudedDataSize = size;

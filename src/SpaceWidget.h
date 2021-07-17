@@ -47,13 +47,14 @@ private:
 	SpaceFactory *factory;
 
 	QVector<Item*> objectsInSpace;
-	QOpenGLShaderProgram vertexProgram;
+	QOpenGLShaderProgram itemProgram;
 	QOpenGLShaderProgram planesProgram;
+	QOpenGLShaderProgram linesProgram;
 
 	//processed vertexes data
-	std::vector<Vertex> vertexData;
-	QOpenGLBuffer vertexBuffer;
-	QOpenGLVertexArrayObject vertexBufferObject;
+	std::vector<Vertex> itemVertexData;
+	QOpenGLBuffer itemBuffer;
+	QOpenGLVertexArrayObject itemBufferObject;
 
 	//processed plane data
 	QVector<Plane*> planes;
@@ -63,7 +64,7 @@ private:
 
 
 	// Shader Information
-	vertexProgramParameters vertexParameter;
+	vertexProgramParameters itemParameter;
 	vertexProgramParameters planesParameter;
 
 	int itemColor;

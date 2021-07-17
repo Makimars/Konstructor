@@ -163,15 +163,11 @@ std::vector<Vertex> SpaceFactory::generateBuffer()
 
 	vertexesInItems = calculateBoolean(&vertexesInItems);
 
-	uint32_t itemIndex = 0;
 	std::vector<Vertex> finalBufferVertexes;
 	//copy final data to the buffer
 	for(uint32_t i = 0; i < vertexesInItems.size(); i++)
 	{
 		if(itemsInSpace->at(i)->isExtruded()) itemsInSpace->at(i)->setDataSize(vertexesInItems.at(i).size());
-		itemsInSpace->at(i)->setItemIndex(itemIndex);
-
-		itemIndex += vertexesInItems .at(i).size();
 
 		assignNormals(&vertexesInItems.at(i));
 

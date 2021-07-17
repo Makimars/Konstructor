@@ -17,8 +17,6 @@ public:
 	void setPolygons(std::vector<QPolygonF> polygons);
 	QVector<Polygon*> *getPolygons();
 
-	void setItemIndex(int index);
-	int getItemIndex();
 	void setDataSize(int size);
 	int getDataSize();
 	bool isExtruded() const;
@@ -59,8 +57,6 @@ private:
 	Extrusion extrusion;
 	Polygon *extrudedPolygon;
 
-	//item's position within the global buffer
-	int itemIndex;
 	//size of extruded vertexes in the global buffer
 	int extrudedDataSize;
 
@@ -80,7 +76,6 @@ signals:
 };
 
 inline QString Item::getSketch() { return sketch; }
-inline int Item::getItemIndex() { return itemIndex; }
 inline QMatrix4x4 Item::toMatrix(){ return basePlane->toMatrix(); }
 
 #endif // ITEM_H

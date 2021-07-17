@@ -90,12 +90,12 @@ void SpaceWidget::exportToFile(QString file)
 		QFile targetFile(file);
 		if(targetFile.open(QIODevice::WriteOnly))
 		{
-			targetFile.write(factory->generateStlFile(&vertexData));
+			targetFile.write(factory->generateStlFile(&itemVertexData));
 		}
 	}
 	else if(suffix == "off")
 	{
-		factory->generateOffFile(&vertexData, file);
+		factory->generateOffFile(&itemVertexData, file);
 	}
 }
 
@@ -111,13 +111,13 @@ void SpaceWidget::reset()
 
 void SpaceWidget::reallocateItems()
 {
-	vertexData.clear();
+	itemVertexData.clear();
 	//generates buffer data
-	vertexData = factory->generateBuffer();
+	itemVertexData = factory->generateBuffer();
 
-	vertexBuffer.bind();
-	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));
-	vertexBuffer.release();
+	itemBuffer.bind();
+	itemBuffer.allocate(itemVertexData.data(), itemVertexData.size() * sizeof(Vertex));
+	itemBuffer.release();
 
 	update();
 }
@@ -225,39 +225,39 @@ void SpaceWidget::initializeGL()
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
 	//item buffer
-	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/item.vert");
-	vertexProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/src/shaders/item.frag");
-	vertexProgram.link();
-	vertexProgram.bind();
+	itemProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/src/shaders/item.vert");
+	itemProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/src/shaders/item.frag");
+	itemProgram.link();
+	itemProgram.bind();
 
-	vertexParameter.itemToSpace = vertexProgram.uniformLocation("itemToSpace");
-	vertexParameter.worldToCamera = vertexProgram.uniformLocation("worldToCamera");
-	vertexParameter.cameraToView = vertexProgram.uniformLocation("cameraToView");
-	vertexParameter.itemToRotate = vertexProgram.uniformLocation("itemToRotate");
+	itemParameter.itemToSpace = itemProgram.uniformLocation("itemToSpace");
+	itemParameter.worldToCamera = itemProgram.uniformLocation("worldToCamera");
+	itemParameter.cameraToView = itemProgram.uniformLocation("cameraToView");
+	itemParameter.itemToRotate = itemProgram.uniformLocation("itemToRotate");
 
-	selectedItemColor = vertexProgram.uniformLocation("selectedItemColor");
-	itemIsSelected = vertexProgram.uniformLocation("isSelected");
+	selectedItemColor = itemProgram.uniformLocation("selectedItemColor");
+	itemIsSelected = itemProgram.uniformLocation("isSelected");
 
-	itemColor = vertexProgram.uniformLocation("itemColor");
-	selectedTransparentValue = vertexProgram.uniformLocation("selectedTransparentValue");
-	lightByNormals = vertexProgram.uniformLocation("lightByNormals");
+	itemColor = itemProgram.uniformLocation("itemColor");
+	selectedTransparentValue = itemProgram.uniformLocation("selectedTransparentValue");
+	lightByNormals = itemProgram.uniformLocation("lightByNormals");
 
-	vertexProgram.release();
+	itemProgram.release();
 
-	vertexBuffer.create();
-	vertexBuffer.bind();
-	vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-	vertexBuffer.allocate(vertexData.data(), vertexData.size() * sizeof(Vertex));
+	itemBuffer.create();
+	itemBuffer.bind();
+	itemBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+	itemBuffer.allocate(itemVertexData.data(), itemVertexData.size() * sizeof(Vertex));
 
-	vertexBufferObject.create();
-	vertexBufferObject.bind();
+	itemBufferObject.create();
+	itemBufferObject.bind();
 
-	vertexProgram.enableAttributeArray(0);
-	vertexProgram.enableAttributeArray(1);
-	vertexProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
-	vertexProgram.setAttributeBuffer(1, GL_FLOAT, Vertex::normalOffset(), Vertex::NormalTupleSize, Vertex::stride());
-	vertexBufferObject.release();
-	vertexBuffer.release();
+	itemProgram.enableAttributeArray(0);
+	itemProgram.enableAttributeArray(1);
+	itemProgram.setAttributeBuffer(0, GL_FLOAT, Vertex::positionOffset(), Vertex::PositionTupleSize, Vertex::stride());
+	itemProgram.setAttributeBuffer(1, GL_FLOAT, Vertex::normalOffset(), Vertex::NormalTupleSize, Vertex::stride());
+	itemBufferObject.release();
+	itemBuffer.release();
 
 
 	//planes buffer
@@ -304,54 +304,58 @@ void SpaceWidget::paintGL()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	vertexProgram.bind();
-	vertexProgram.setUniformValue(vertexParameter.worldToCamera, camera.toMatrix());
-	vertexProgram.setUniformValue(vertexParameter.cameraToView, projection);
-	vertexProgram.setUniformValue(selectedItemColor, Settings::selectedFaceColor);
-	vertexProgram.setUniformValue(lightByNormals, Settings::colorByNormals);
+	itemProgram.bind();
+	itemProgram.setUniformValue(itemParameter.worldToCamera, camera.toMatrix());
+	itemProgram.setUniformValue(itemParameter.cameraToView, projection);
+	itemProgram.setUniformValue(selectedItemColor, Settings::selectedFaceColor);
+	itemProgram.setUniformValue(lightByNormals, Settings::colorByNormals);
 
 	QMatrix4x4 mtr;
 	mtr.rotate(itemRotation.normalized());
-	vertexProgram.setUniformValue(vertexParameter.itemToRotate, mtr);
+	itemProgram.setUniformValue(itemParameter.itemToRotate, mtr);
 
 	//items
-	vertexBufferObject.bind();
-	vertexProgram.setUniformValue(selectedTransparentValue, 1.0f);
+	itemBufferObject.bind();
+	itemProgram.setUniformValue(selectedTransparentValue, 1.0f);
 
-	foreach (Item *item, objectsInSpace)
+	// positions are already global in the buffer, but if I remove the matrix from shader, planes stop working
+	//vertexProgram.setUniformValue(vertexParameter.itemToSpace, item->toMatrix());
 	{
-		int currentIndex = item->getItemIndex();
-
-		// positions are already global in the buffer, but if I remove the matrix from shader, planes stop working
-		//vertexProgram.setUniformValue(vertexParameter.itemToSpace, item->toMatrix());
 		QMatrix4x4 mat;
 		mat.setColumn(0, QVector4D(1,0,0,0));
 		mat.setColumn(1, QVector4D(0,1,0,0));
 		mat.setColumn(2, QVector4D(0,0,1,0));
 		mat.setColumn(3, QVector4D(0,0,0,1));
-		vertexProgram.setUniformValue(vertexParameter.itemToSpace, mat);
+		itemProgram.setUniformValue(itemParameter.itemToSpace, mat);
+	}
+
+	int currentVertexIndex = 0;
+	for(int i = 0; i < objectsInSpace.size(); i++)
+	{
+		Item *item = objectsInSpace.at(i);
 
 		if(item->isExtruded())
 		{
-			vertexProgram.setUniformValue(itemColor, QVector4D(item->getColor(), 1.0f));
-			vertexProgram.setUniformValue(itemIsSelected, item->isSelected());
-			glDrawArrays(GL_TRIANGLES, currentIndex, item->getDataSize());
+			itemProgram.setUniformValue(itemColor, QVector4D(item->getColor(), 1.0f));
+			itemProgram.setUniformValue(itemIsSelected, item->isSelected());
+			glDrawArrays(GL_TRIANGLES, currentVertexIndex, item->getDataSize());
+			currentVertexIndex += item->getDataSize();
 		}
 		else
 		{
-			for(int i = 0; i < item->getPolygons()->size(); i++)
+			for(int ii = 0; ii < item->getPolygons()->size(); ii++)
 			{
-				vertexProgram.setUniformValue(itemColor, QVector4D(item->getPolygons()->at(i)->getColor(), 1.0f));
-				vertexProgram.setUniformValue(itemIsSelected, item->isSelected() || item->getPolygons()->at(i)->isSelected());
+				itemProgram.setUniformValue(itemColor, QVector4D(item->getPolygons()->at(ii)->getColor(), 1.0f));
+				itemProgram.setUniformValue(itemIsSelected, item->isSelected() || item->getPolygons()->at(ii)->isSelected());
 
-				glDrawArrays(GL_TRIANGLES, currentIndex, item->getPolygons()->at(i)->getDataSize());
-				currentIndex += item->getPolygons()->at(i)->getDataSize();
+				glDrawArrays(GL_TRIANGLES, currentVertexIndex, item->getPolygons()->at(ii)->getDataSize());
+				currentVertexIndex += item->getPolygons()->at(ii)->getDataSize();
 			}
 		}
 	}
-	vertexBufferObject.release();
+	itemBufferObject.release();
 
-	vertexProgram.release();
+	itemProgram.release();
 
 	//planes
 	planesProgram.bind();
@@ -361,7 +365,7 @@ void SpaceWidget::paintGL()
 	planesProgram.setUniformValue(planesParameter.cameraToView, projection);
 	planesProgram.setUniformValue(planeColor, Settings::planeColor);
 
-	planesProgram.setUniformValue(vertexParameter.itemToRotate, mtr);
+	planesProgram.setUniformValue(itemParameter.itemToRotate, mtr);
 
 	for(int i = 0; i < planes.size(); i++)
 	{
