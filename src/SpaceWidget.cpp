@@ -113,7 +113,7 @@ void SpaceWidget::reallocateItems()
 {
 	itemVertexData.clear();
 	//generates buffer data
-	itemVertexData = factory->generateBuffer();
+	itemVertexData = factory->generateItemBuffer();
 
 	itemBuffer.bind();
 	itemBuffer.allocate(itemVertexData.data(), itemVertexData.size() * sizeof(Vertex));
@@ -435,7 +435,6 @@ void SpaceWidget::paintGL()
 
 		glDrawArrays(GL_LINES, currentLinesIndex, item->getOuterLines()->size());
 		currentLinesIndex += item->getOuterLines()->size();
-		qDebug() << currentLinesIndex;
 	}
 
 	lineBufferObject.release();
