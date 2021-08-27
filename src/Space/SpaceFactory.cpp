@@ -56,6 +56,7 @@ QByteArray SpaceFactory::generateStlFile(std::vector<Vertex> *vertexData)
 
 void SpaceFactory::generateOffFile(std::vector<Vertex> *vertexData, QString filePath)
 {
+#ifndef NO_CGAL
 	std::vector<Vertex> vertexes;
 
 	//convert to real size
@@ -119,6 +120,7 @@ void SpaceFactory::generateOffFile(std::vector<Vertex> *vertexData, QString file
 	out.precision(17);
 	out << mesh;
 	out.close();
+#endif
 }
 
 std::vector<Vertex> SpaceFactory::generateBuffer()
@@ -256,6 +258,7 @@ void SpaceFactory::orientTriangle(Vertex *v0, Vertex *v1, Vertex *v2, bool up)
 
 std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vector<std::vector<Vertex>> *triangularizedVertexData) const
 {
+#ifndef NO_CGAL
 	namespace PMP = CGAL::Polygon_mesh_processing;
 	namespace params = PMP::parameters;
 
@@ -418,6 +421,11 @@ std::vector<std::vector<Vertex>> SpaceFactory::calculateBoolean(const std::vecto
 	}
 
 	return result;
+#endif
+#ifdef NO_CGAL
+	std::vector<std::vector<Vertex>> data = *triangularizedVertexData;
+	return data;
+#endif
 }
 
 QByteArray SpaceFactory::vectorToByteArray(QVector3D vector)

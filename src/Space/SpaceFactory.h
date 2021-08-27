@@ -1,6 +1,11 @@
 #ifndef SPACEFACTORY_H
 #define SPACEFACTORY_H
 
+//disable CGAL for faster development
+#define NO_CGAL
+
+#ifndef NO_CGAL
+
 #include <fstream>
 
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
@@ -10,6 +15,8 @@
 #include <CGAL/Polygon_mesh_processing/polygon_soup_to_polygon_mesh.h>
 #include <CGAL/Polygon_mesh_processing/orientation.h>
 #include <CGAL/Polygon_mesh_processing/corefinement.h>
+
+#endif
 
 #include "include/delaunator/delaunator.h"
 
