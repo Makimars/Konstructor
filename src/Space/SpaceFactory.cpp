@@ -255,7 +255,7 @@ void SpaceFactory::addPlane(Plane *plane)
 	planes->append(plane);
 	plane->setItemIndex(itemsInSpace->indexOf(dynamic_cast<Item*>(plane->parent())));
 
-	emit allocateNewPlane();
+	emit reallocatePlanes();
 }
 
 void SpaceFactory::deletePlane(Plane *plane)

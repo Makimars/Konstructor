@@ -85,21 +85,21 @@ std::vector<Vertex> SpaceProcessor::generateLinesBuffer(const QVector<Item*> *it
 
 std::vector<Vertex> SpaceProcessor::generatePlanesBuffer(const QVector<Plane*> *planes)
 {
-    std::vector<Vertex> result;
+	std::vector<Vertex> planesVertexes;
 
     for(int i = 0; i < planes->size(); i++)
     {
-	int planeSize = 20;//planes->at(i)->getSize();
+		int planeSize = 20;//planes->at(i)->getSize();
 
-	result.push_back(Vertex( planeSize,  planeSize, 0));
-	result.push_back(Vertex( planeSize, -planeSize, 0));
-	result.push_back(Vertex(-planeSize, -planeSize, 0));
-	result.push_back(Vertex( planeSize,  planeSize, 0));
-	result.push_back(Vertex(-planeSize,  planeSize, 0));
-	result.push_back(Vertex(-planeSize, -planeSize, 0));
+		planesVertexes.push_back(Vertex( planeSize,  planeSize, 0));
+		planesVertexes.push_back(Vertex( planeSize, -planeSize, 0));
+		planesVertexes.push_back(Vertex(-planeSize, -planeSize, 0));
+		planesVertexes.push_back(Vertex( planeSize,  planeSize, 0));
+		planesVertexes.push_back(Vertex(-planeSize,  planeSize, 0));
+		planesVertexes.push_back(Vertex(-planeSize, -planeSize, 0));
     }
 
-	return result;
+	return planesVertexes;
 }
 
 std::vector<Vertex> SpaceProcessor::triangularizePolygon(QPolygonF polygon)

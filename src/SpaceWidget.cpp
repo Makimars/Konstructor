@@ -21,9 +21,6 @@ SpaceWidget::SpaceWidget(QWidget *parent) : QOpenGLWidget(parent)
 	connect(factory, &SpaceFactory::reallocatePlanes,
 			this, &SpaceWidget::reallocatePlanes
 			);
-	connect(factory, &SpaceFactory::allocateNewPlane,
-			this, &SpaceWidget::allocateNewPlane
-			);
 
 	connect(factory, &SpaceFactory::getBasePlane,
 			this, &SpaceWidget::getBasePlane
@@ -133,33 +130,7 @@ void SpaceWidget::reallocateItems()
 void SpaceWidget::reallocatePlanes()
 {
 	planeVertexData.clear();
-
-	for(int i = 0; i < planes.size(); i++ )
-	{
-		allocateNewPlane();
-	}
-}
-
-void SpaceWidget::allocateNewPlane(double planeSize)
-{
-	planeVertexData.push_back(
-				Vertex(planeSize, planeSize, 0)
-				);
-	planeVertexData.push_back(
-				Vertex(planeSize, -planeSize, 0)
-				);
-	planeVertexData.push_back(
-				Vertex(-planeSize, -planeSize, 0)
-				);
-	planeVertexData.push_back(
-				Vertex(planeSize, planeSize, 0)
-				);
-	planeVertexData.push_back(
-				Vertex(-planeSize, planeSize, 0)
-				);
-	planeVertexData.push_back(
-				Vertex(-planeSize, -planeSize, 0)
-				);
+	planeVertexData = factory->generatePlanesBuffer();
 
 	planeBuffer.bind();
 	planeBuffer.allocate(planeVertexData.data(), planeVertexData.size() * sizeof(Vertex));
