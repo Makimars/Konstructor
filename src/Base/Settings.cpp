@@ -36,6 +36,7 @@ int Settings::maxItemSidePlanes = 12;
 
 QVector3D Settings::selectedFaceColor = QVector3D(0.1, 0.1, 1);
 QVector4D Settings::planeColor = QVector4D(1, 0, 0, 0.3);
+QVector4D Settings::lineColor = QVector4D(1, 0, 1, 0);
 
 void Settings::fromJson(QString json)
 {

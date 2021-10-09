@@ -60,6 +60,7 @@ public:
 
 	static QVector3D selectedFaceColor;
 	static QVector4D planeColor;
+	static QVector4D lineColor;
 };
 
 #endif // SETTINGS_H

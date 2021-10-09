@@ -73,12 +73,24 @@ std::vector<Vertex> SpaceProcessor::generateItemBuffer(const QVector<Item*> *ite
 std::vector<Vertex> SpaceProcessor::generateLinesBuffer(const QVector<Item*> *items)
 {
     std::vector<Vertex> buffer;
-
+/*
     for(int i = 0; i < items->size(); i++)
     {
 	    for(uint32_t ii = 0; ii < items->at(i)->getOuterLines()->size(); ii++)
 		    buffer.push_back(items->at(i)->getOuterLines()->at(ii));
     }
+*/
+	for(int i = 0; i < items->size(); i++)
+	{
+		if(items->at(i)->isExtruded())
+		{
+
+		}
+
+		//for(uint32_t ii = 0; ii < items->at(i)->getOuterLines()->size(); ii++)
+		  //  buffer.push_back(items->at(i)->getOuterLines()->at(ii));
+	}
+
 
 	return buffer;
 }

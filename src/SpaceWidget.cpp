@@ -248,12 +248,12 @@ void SpaceWidget::initializeGL()
 	linesProgram.link();
 	linesProgram.bind();
 
-	linesParameter.itemToSpace = planesProgram.uniformLocation("itemToSpace");
-	linesParameter.worldToCamera = planesProgram.uniformLocation("worldToCamera");
-	linesParameter.cameraToView = planesProgram.uniformLocation("cameraToView");
-	linesParameter.itemToRotate = planesProgram.uniformLocation("itemToRotate");
+	linesParameter.itemToSpace = linesProgram.uniformLocation("itemToSpace");
+	linesParameter.worldToCamera = linesProgram.uniformLocation("worldToCamera");
+	linesParameter.cameraToView = linesProgram.uniformLocation("cameraToView");
+	linesParameter.itemToRotate = linesProgram.uniformLocation("itemToRotate");
 
-	lineColor = planesProgram.uniformLocation("planeColor");
+	lineColor = linesProgram.uniformLocation("planeColor");
 
 	linesProgram.release();
 
@@ -379,7 +379,7 @@ void SpaceWidget::paintGL()
 	linesProgram.setUniformValue(linesParameter.worldToCamera, camera.toMatrix());
 	linesProgram.setUniformValue(linesParameter.cameraToView, projection);
 
-	linesProgram.setUniformValue(lineColor, QVector4D(0,1,0,1));
+	linesProgram.setUniformValue(lineColor, Settings::lineColor);
 
 	//rotation of items in view (already given value by previous section)
 	linesProgram.setUniformValue(linesParameter.itemToRotate, mtr);

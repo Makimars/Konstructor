@@ -34,14 +34,23 @@ void Item::setPolygons(std::vector<QPolygonF> polygons)
 		newPolygon->setText("Poylgon " + QString::number(this->polygons.size()));
 		this->polygons.push_back(newPolygon);
 
-		for(int i = 0; i < polygon.size() - 1; i++)
+		std::vector<QPointF> points = polygon.toStdVector();
+		int iterations = points.size()-1;
+		for(int i = 0; i < iterations; i++)
 		{
-			this->outerLines.push_back(Vertex(polygon.at(i).x(), polygon.at(i).y(), 0));
-			this->outerLines.push_back(Vertex(polygon.at(i+1).x(), polygon.at(i+1).y(), 0));
+			this->outerLines.push_back(Vertex(points.at(i).x(), points.at(i).y(), 0));
+			this->outerLines.push_back(Vertex(points.at(i+1).x(), points.at(i+1).y(), 0));
 		}
-		this->outerLines.push_back(Vertex(polygon.at(0).x(), polygon.at(0).y(), 0));
-		this->outerLines.push_back(Vertex(polygon.at(polygon.size()).x(), polygon.at(polygon.size()).y(), 0));
+		this->outerLines.push_back(Vertex(points.at(0).x(), points.at(0).y(), 0));
+		this->outerLines.push_back(Vertex(points.at(iterations).x(), points.at(iterations).y(), 0));
 	}
+
+	for(uint32_t i = 0; i < outerLines.size(); i++)
+	{
+		outerLines.at(i) = Vertex(outerLines.at(i).position().x() / Settings::planeToSpaceRatio, outerLines.at(i).position().y() / Settings::planeToSpaceRatio, 0);
+		qDebug() << outerLines.at(i).position();
+	}
+
 	emit updateData();
 }
 
